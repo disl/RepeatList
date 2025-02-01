@@ -5,6 +5,9 @@
         public App()
         {
             InitializeComponent();
+
+            // Datenbankdatei kopieren
+            Task.Run(async () => await DatabaseHelper.CopyDatabaseToAppData("todo.db3")).Wait();
         }
 
         protected override Window CreateWindow(IActivationState? activationState)

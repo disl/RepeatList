@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.Maui.Controls;
-using RepeatList.Models;
+﻿using RepeatList.Models;
 using RepeatList.Services;
 
-namespace TodoApp
+namespace RepeatList
 {
     public partial class MainPage : ContentPage
     {
@@ -72,4 +69,5 @@ namespace TodoApp
             }
         }
     }
+
 }

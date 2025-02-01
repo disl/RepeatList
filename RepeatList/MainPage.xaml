@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="TodoApp.MainPage">
+             x:Class="RepeatList.MainPage">
 
     <StackLayout>
         <!-- Header List -->
@@ -31,4 +31,5 @@
         <Button Text="Add Position" Clicked="OnAddPositionClicked" />
         <Button Text="Delete Position" Clicked="OnDeletePositionClicked" />
     </StackLayout>
+
 </ContentPage>

@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using SQLitePCL;
 
 namespace RepeatList
 {
@@ -18,6 +19,9 @@ namespace RepeatList
 #if DEBUG
     		builder.Logging.AddDebug();
 #endif
+
+            // **SQLite initialisieren**
+            Batteries.Init();
 
             return builder.Build();
         }

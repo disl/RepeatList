@@ -1,15 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Microsoft.Data.Sqlite;
+using RepeatList.Models;
 
 namespace RepeatList.Services
 {
-    using Microsoft.Data.Sqlite;
-    using RepeatList.Models;
-    using System.Collections.Generic;
-    using System.Threading.Tasks;
+
 
     public class DatabaseService
     {
@@ -17,7 +11,9 @@ namespace RepeatList.Services
 
         public DatabaseService()
         {
-            _connection = new SqliteConnection("Data Source=todo.db");
+            var localDbPath = Path.Combine(FileSystem.AppDataDirectory, "todo.db3");
+            var connectionString = $"Data Source={localDbPath}";
+            _connection = new SqliteConnection(connectionString);
             _connection.Open();
 
             // Tabellen erstellen, falls sie nicht existieren
@@ -36,6 +32,7 @@ namespace RepeatList.Services
                 FOREIGN KEY (HeaderId) REFERENCES Header(Id)
             );";
             command.ExecuteNonQuery();
+
         }
 
         // Header CRUD
