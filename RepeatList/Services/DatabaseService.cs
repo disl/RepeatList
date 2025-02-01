@@ -1,0 +1,141 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace RepeatList.Services
+{
+    using Microsoft.Data.Sqlite;
+    using RepeatList.Models;
+    using System.Collections.Generic;
+    using System.Threading.Tasks;
+
+    public class DatabaseService
+    {
+        private SqliteConnection _connection;
+
+        public DatabaseService()
+        {
+            _connection = new SqliteConnection("Data Source=todo.db");
+            _connection.Open();
+
+            // Tabellen erstellen, falls sie nicht existieren
+            var command = _connection.CreateCommand();
+            command.CommandText = @"
+            CREATE TABLE IF NOT EXISTS Header (
+                Id INTEGER PRIMARY KEY AUTOINCREMENT,
+                ListName TEXT NOT NULL,
+                Date TEXT NOT NULL
+            );
+            CREATE TABLE IF NOT EXISTS Position (
+                Id INTEGER PRIMARY KEY AUTOINCREMENT,
+                HeaderId INTEGER NOT NULL,
+                Title TEXT NOT NULL,
+                IsCompleted INTEGER DEFAULT 0,
+                FOREIGN KEY (HeaderId) REFERENCES Header(Id)
+            );";
+            command.ExecuteNonQuery();
+        }
+
+        // Header CRUD
+        public async Task<List<Header>> GetHeadersAsync()
+        {
+            var headers = new List<Header>();
+
+            var command = _connection.CreateCommand();
+            command.CommandText = "SELECT * FROM Header";
+
+            using (var reader = await command.ExecuteReaderAsync())
+            {
+                while (await reader.ReadAsync())
+                {
+                    headers.Add(new Header
+                    {
+                        Id = reader.GetInt32(0),
+                        ListName = reader.GetString(1),
+                        Date = DateTime.Parse(reader.GetString(2))
+                    });
+                }
+            }
+
+            return headers;
+        }
+
+        public async Task<int> AddHeaderAsync(Header header)
+        {
+            var command = _connection.CreateCommand();
+            command.CommandText = "INSERT INTO Header (ListName, Date) VALUES (@ListName, @Date)";
+            command.Parameters.AddWithValue("@ListName", header.ListName);
+            command.Parameters.AddWithValue("@Date", header.Date.ToString("yyyy-MM-dd"));
+
+            return await command.ExecuteNonQueryAsync();
+        }
+
+        public async Task<int> DeleteHeaderAsync(int id)
+        {
+            var command = _connection.CreateCommand();
+            command.CommandText = "DELETE FROM Header WHERE Id = @Id";
+            command.Parameters.AddWithValue("@Id", id);
+
+            return await command.ExecuteNonQueryAsync();
+        }
+
+        // Position CRUD
+        public async Task<List<Position>> GetPositionsAsync(int headerId)
+        {
+            var positions = new List<Position>();
+
+            var command = _connection.CreateCommand();
+            command.CommandText = "SELECT * FROM Position WHERE HeaderId = @HeaderId";
+            command.Parameters.AddWithValue("@HeaderId", headerId);
+
+            using (var reader = await command.ExecuteReaderAsync())
+            {
+                while (await reader.ReadAsync())
+                {
+                    positions.Add(new Position
+                    {
+                        Id = reader.GetInt32(0),
+                        HeaderId = reader.GetInt32(1),
+                        Title = reader.GetString(2),
+                        IsCompleted = reader.GetBoolean(3)
+                    });
+                }
+            }
+
+            return positions;
+        }
+
+        public async Task<int> AddPositionAsync(Position position)
+        {
+            var command = _connection.CreateCommand();
+            command.CommandText = "INSERT INTO Position (HeaderId, Title, IsCompleted) VALUES (@HeaderId, @Title, @IsCompleted)";
+            command.Parameters.AddWithValue("@HeaderId", position.HeaderId);
+            command.Parameters.AddWithValue("@Title", position.Title);
+            command.Parameters.AddWithValue("@IsCompleted", position.IsCompleted);
+
+            return await command.ExecuteNonQueryAsync();
+        }
+
+        public async Task<int> UpdatePositionAsync(Position position)
+        {
+            var command = _connection.CreateCommand();
+            command.CommandText = "UPDATE Position SET Title = @Title, IsCompleted = @IsCompleted WHERE Id = @Id";
+            command.Parameters.AddWithValue("@Title", position.Title);
+            command.Parameters.AddWithValue("@IsCompleted", position.IsCompleted);
+            command.Parameters.AddWithValue("@Id", position.Id);
+
+            return await command.ExecuteNonQueryAsync();
+        }
+
+        public async Task<int> DeletePositionAsync(int id)
+        {
+            var command = _connection.CreateCommand();
+            command.CommandText = "DELETE FROM Position WHERE Id = @Id";
+            command.Parameters.AddWithValue("@Id", id);
+
+            return await command.ExecuteNonQueryAsync();
+        }
+    }
+}

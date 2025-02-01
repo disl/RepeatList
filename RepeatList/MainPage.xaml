@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="TodoApp.MainPage">
+
+    <StackLayout>
+        <!-- Header List -->
+        <ListView x:Name="HeaderListView" ItemSelected="OnHeaderSelected">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <TextCell Text="{Binding ListName}" Detail="{Binding Date, StringFormat='Date: {0:yyyy-MM-dd}'}" />
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+
+        <!-- Add Header -->
+        <Entry x:Name="HeaderEntry" Placeholder="Enter a new list name" />
+        <Button Text="Add Header" Clicked="OnAddHeaderClicked" />
+
+        <!-- Positions for Selected Header -->
+        <ListView x:Name="PositionListView" ItemSelected="OnPositionSelected">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <TextCell Text="{Binding Title}" Detail="{Binding IsCompleted, StringFormat='Completed: {0}'}" />
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+
+        <!-- Add Position -->
+        <Entry x:Name="PositionEntry" Placeholder="Enter a new task" />
+        <Button Text="Add Position" Clicked="OnAddPositionClicked" />
+        <Button Text="Delete Position" Clicked="OnDeletePositionClicked" />
+    </StackLayout>
+</ContentPage>
