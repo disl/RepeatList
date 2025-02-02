@@ -1,5 +1,6 @@
 ﻿using RepeatList.Models;
 using RepeatList.Services;
+using System.Collections.ObjectModel;
 
 namespace RepeatList
 {
@@ -7,18 +8,26 @@ namespace RepeatList
     {
         private DatabaseService _databaseService;
         private List<Header> _headers;
-        private List<Position> _positions;
+        //private List<Position> _positions;
+        public ObservableCollection<Position> Positions { get; set; } = new();
         private Header _selectedHeader;
         private Position _selectedPosition;
+        private bool _startUpdate;
 
         public MainPage()
         {
             InitializeComponent();
+
+            BindingContext = this; // Damit das Binding auf `Positions` funktioniert
             _databaseService = new DatabaseService();
-            LoadHeaders();
+            _ = LoadHeaders();
+            if (_headers != null && _headers.Count > 0)
+                HeaderListView.SelectedItem=_headers[0];
+                //_ =LoadPositions(_headers[0].Id);
         }
 
-        private async void LoadHeaders()
+
+        private async Task LoadHeaders()
         {
             _headers = await _databaseService.GetHeadersAsync();
             HeaderListView.ItemsSource = _headers;
@@ -29,7 +38,7 @@ namespace RepeatList
             var newHeader = new Header { ListName = HeaderEntry.Text, Date = DateTime.Now };
             await _databaseService.AddHeaderAsync(newHeader);
             HeaderEntry.Text = string.Empty;
-            LoadHeaders();
+            await LoadHeaders();
         }
 
         private async void OnHeaderSelected(object sender, SelectedItemChangedEventArgs e)
@@ -37,8 +46,7 @@ namespace RepeatList
             _selectedHeader = e.SelectedItem as Header;
             if (_selectedHeader != null)
             {
-                _positions = await _databaseService.GetPositionsAsync(_selectedHeader.Id);
-                PositionListView.ItemsSource = _positions;
+                await LoadPositions(_selectedHeader.Id);
             }
         }
 
@@ -46,11 +54,58 @@ namespace RepeatList
         {
             if (_selectedHeader != null)
             {
-                var newPosition = new Position { HeaderId = _selectedHeader.Id, Title = PositionEntry.Text, IsCompleted = false };
-                await _databaseService.AddPositionAsync(newPosition);
-                PositionEntry.Text = string.Empty;
-                _positions = await _databaseService.GetPositionsAsync(_selectedHeader.Id);
-                PositionListView.ItemsSource = _positions;
+                if (string.IsNullOrEmpty(PositionEntry.Text))
+                {
+                    //PositionEntry.Text="???";
+                    PositionEntry.SelectionLength=3;
+                    PositionEntry.CursorPosition=0;
+                    PositionEntry.Focus();
+                }
+                else
+                {
+                    var newPosition = new Position { HeaderId = _selectedHeader.Id, Title = PositionEntry.Text, IsCompleted = false };
+                    await _databaseService.AddPositionAsync(newPosition);
+                    PositionEntry.Text = string.Empty;
+                    //_positions = await _databaseService.GetPositionsAsync(_selectedHeader.Id);
+                    //PositionListView.ItemsSource = _positions;
+                    await LoadPositions(_selectedHeader.Id);
+                    //PositionListView.ItemsSource = Positions;
+                }
+            }
+        }
+
+
+        private async Task LoadPositions(int headerId)
+        {
+            var positions = await _databaseService.GetPositionsAsync(headerId);
+
+            if (positions==null)
+                return;
+
+            if (Positions != null)
+                Positions.Clear(); // Alte Daten löschen
+            else
+                Positions = new ObservableCollection<Position>();
+            foreach (var position in positions)
+            {
+                Positions.Add(position); // Daten hinzufügen
+            }
+        }
+
+        private async void OnPositionToggled(object sender, ToggledEventArgs e)
+        {
+            if (IsBusy == false && sender is Switch switchControl && switchControl.BindingContext is Position position)
+            {
+                position.IsCompleted = e.Value;
+                await _databaseService.UpdatePositionAsync(position); // Änderung in SQLite speichern
+
+                //var updatedPositions = await _databaseService.GetPositionsAsync(position.HeaderId);
+                //PositionListView.ItemsSource = null; // Sicherstellen, dass die UI aktualisiert wird
+                //PositionListView.ItemsSource = updatedPositions;
+
+                IsBusy=true;
+                await LoadPositions(_selectedHeader.Id);
+                IsBusy = false;
             }
         }
 
@@ -64,8 +119,10 @@ namespace RepeatList
             if (_selectedPosition != null)
             {
                 await _databaseService.DeletePositionAsync(_selectedPosition.Id);
-                _positions = await _databaseService.GetPositionsAsync(_selectedHeader.Id);
-                PositionListView.ItemsSource = _positions;
+                //_positions = await _databaseService.GetPositionsAsync(_selectedHeader.Id);
+                //PositionListView.ItemsSource = _positions;
+                await LoadPositions(_selectedHeader.Id);
+                //PositionListView.ItemsSource = Positions;
             }
         }
     }

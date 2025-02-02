@@ -84,7 +84,7 @@ namespace RepeatList.Services
             var positions = new List<Position>();
 
             var command = _connection.CreateCommand();
-            command.CommandText = "SELECT * FROM Position WHERE HeaderId = @HeaderId";
+            command.CommandText = "SELECT * FROM Position WHERE HeaderId = @HeaderId Order By IsCompleted DESC";
             command.Parameters.AddWithValue("@HeaderId", headerId);
 
             using (var reader = await command.ExecuteReaderAsync())
@@ -117,13 +117,20 @@ namespace RepeatList.Services
 
         public async Task<int> UpdatePositionAsync(Position position)
         {
+            if (position == null || position.Id==0)
+                return 0;
+
             var command = _connection.CreateCommand();
             command.CommandText = "UPDATE Position SET Title = @Title, IsCompleted = @IsCompleted WHERE Id = @Id";
             command.Parameters.AddWithValue("@Title", position.Title);
             command.Parameters.AddWithValue("@IsCompleted", position.IsCompleted);
             command.Parameters.AddWithValue("@Id", position.Id);
 
-            return await command.ExecuteNonQueryAsync();
+            var ret_val = await command.ExecuteNonQueryAsync();
+
+            //await GetPositionsAsync(position.HeaderId);
+
+            return ret_val;
         }
 
         public async Task<int> DeletePositionAsync(int id)

@@ -8,6 +8,8 @@
 
             // Datenbankdatei kopieren
             Task.Run(async () => await DatabaseHelper.CopyDatabaseToAppData("todo.db3")).Wait();
+
+            //MainPage = new MainPage();
         }
 
         protected override Window CreateWindow(IActivationState? activationState)

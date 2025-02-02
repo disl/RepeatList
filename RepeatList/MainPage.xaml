@@ -1,7 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="RepeatList.MainPage">
+             x:Class="RepeatList.MainPage"
+             
+             >
 
     <StackLayout>
         <!-- Header List -->
@@ -18,18 +20,39 @@
         <Button Text="Add Header" Clicked="OnAddHeaderClicked" />
 
         <!-- Positions for Selected Header -->
-        <ListView x:Name="PositionListView" ItemSelected="OnPositionSelected">
+        <ListView x:Name="PositionListView"  ItemsSource="{Binding Positions}" ItemSelected="OnPositionSelected">
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <TextCell Text="{Binding Title}" Detail="{Binding IsCompleted, StringFormat='Completed: {0}'}" />
+                    <ViewCell>
+                        <Grid Padding="10" ColumnDefinitions="*, Auto">
+                            <Label Text="{Binding Title}" VerticalOptions="Center" Grid.Column="0"/>
+                            <Switch IsToggled="{Binding IsCompleted, Mode=TwoWay}" 
+                                    Toggled="OnPositionToggled"                                     
+                                    Grid.Column="1"/>
+                        </Grid>
+                    </ViewCell>
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
 
         <!-- Add Position -->
-        <Entry x:Name="PositionEntry" Placeholder="Enter a new task" />
-        <Button Text="Add Position" Clicked="OnAddPositionClicked" />
-        <Button Text="Delete Position" Clicked="OnDeletePositionClicked" />
+        <StackLayout Orientation="Horizontal"  Spacing="10" Margin="0,10,0,0" >
+            <Entry x:Name="PositionEntry" Placeholder="Enter a new task" HorizontalOptions="FillAndExpand" />
+            <ImageButton Source="add_icon.png"
+                 HeightRequest="40"
+                 WidthRequest="40"
+                 Clicked="OnAddPositionClicked"
+                 BackgroundColor="Transparent"
+                 HorizontalOptions="End"/>
+            <ImageButton Source="delete_icon.png"
+                 HeightRequest="40"
+                 WidthRequest="40"
+                 Clicked="OnDeletePositionClicked"
+                 BackgroundColor="Transparent" 
+                 HorizontalOptions="End"/>
+        </StackLayout>
+        <!--<Button Text="Add Position" Clicked="OnAddPositionClicked" />
+        <Button Text="Delete Position" Clicked="OnDeletePositionClicked" />-->
     </StackLayout>
 
 </ContentPage>
