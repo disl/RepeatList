@@ -2,7 +2,7 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="RepeatList.MainPage"
-             
+      
              >
 
     <StackLayout>
@@ -16,11 +16,35 @@
         </ListView>
 
         <!-- Add Header -->
-        <Entry x:Name="HeaderEntry" Placeholder="Enter a new list name" />
-        <Button Text="Add Header" Clicked="OnAddHeaderClicked" />
+        <StackLayout Orientation="Horizontal"  Spacing="10" Margin="0,10,0,0" >
+            <Entry x:Name="HeaderEntry" Placeholder="Enter a new list name" HorizontalOptions="FillAndExpand"/>
+            <ImageButton Source="add_icon.png"
+                         HeightRequest="40"
+                         WidthRequest="40"
+                         Clicked="OnAddHeaderClicked"
+                         BackgroundColor="Transparent"
+                         HorizontalOptions="End"/>
+            <ImageButton Source="delete_icon.png"
+                         HeightRequest="40"
+                         WidthRequest="40"
+                         Clicked="OnDeleteHeaderClicked"
+                         BackgroundColor="Transparent" 
+                         HorizontalOptions="End"/>
+            <ImageButton Source="copy_icon.png"
+                         HeightRequest="40"
+                         WidthRequest="40"
+                         Clicked="OnCopyHeaderClicked"
+                         BackgroundColor="Transparent" 
+                         HorizontalOptions="End"/>          
+        </StackLayout>
 
         <!-- Positions for Selected Header -->
-        <ListView x:Name="PositionListView"  ItemsSource="{Binding Positions}" ItemSelected="OnPositionSelected">
+        <ListView x:Name="PositionListView"   ItemsSource="{Binding Positions}" ItemSelected="OnPositionSelected">
+            <ListView.Header>
+                <StackLayout>
+                    <Label  Text="POSITIONEN" FontSize="Body" HorizontalOptions="Center"  Margin="10,0,0,0" />
+                </StackLayout>
+            </ListView.Header>
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ViewCell>

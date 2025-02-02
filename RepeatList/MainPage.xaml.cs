@@ -9,21 +9,21 @@ namespace RepeatList
         private DatabaseService _databaseService;
         private List<Header> _headers;
         //private List<Position> _positions;
-        public ObservableCollection<Position> Positions { get; set; } = new();
+        private ObservableCollection<Position> Positions { get; set; } = new();
         private Header _selectedHeader;
         private Position _selectedPosition;
-        private bool _startUpdate;
+        //private bool _startUpdate;
 
         public MainPage()
         {
             InitializeComponent();
 
             BindingContext = this; // Damit das Binding auf `Positions` funktioniert
+
             _databaseService = new DatabaseService();
             _ = LoadHeaders();
             if (_headers != null && _headers.Count > 0)
                 HeaderListView.SelectedItem=_headers[0];
-                //_ =LoadPositions(_headers[0].Id);
         }
 
 
@@ -35,10 +35,21 @@ namespace RepeatList
 
         private async void OnAddHeaderClicked(object sender, EventArgs e)
         {
-            var newHeader = new Header { ListName = HeaderEntry.Text, Date = DateTime.Now };
-            await _databaseService.AddHeaderAsync(newHeader);
-            HeaderEntry.Text = string.Empty;
-            await LoadHeaders();
+            if (string.IsNullOrEmpty(HeaderEntry.Text))
+            {
+                //PositionEntry.Text="???";
+                //HeaderEntry.SelectionLength=3;
+                //HeaderEntry.CursorPosition=0;
+                HeaderEntry.Focus();
+            }
+            else
+            {
+                var newHeader = new Header { ListName = HeaderEntry.Text, Date = DateTime.Now };
+                var new_id =  await _databaseService.AddHeaderAsync(newHeader);
+
+                HeaderEntry.Text = string.Empty;
+                await LoadHeaders();
+            }
         }
 
         private async void OnHeaderSelected(object sender, SelectedItemChangedEventArgs e)
@@ -57,8 +68,8 @@ namespace RepeatList
                 if (string.IsNullOrEmpty(PositionEntry.Text))
                 {
                     //PositionEntry.Text="???";
-                    PositionEntry.SelectionLength=3;
-                    PositionEntry.CursorPosition=0;
+                    //PositionEntry.SelectionLength=3;
+                    //PositionEntry.CursorPosition=0;
                     PositionEntry.Focus();
                 }
                 else
@@ -77,18 +88,16 @@ namespace RepeatList
 
         private async Task LoadPositions(int headerId)
         {
-            var positions = await _databaseService.GetPositionsAsync(headerId);
+            var list = await _databaseService.GetPositionsAsync(headerId);
 
-            if (positions==null)
+            Positions.Clear();
+
+            if (list==null)
                 return;
 
-            if (Positions != null)
-                Positions.Clear(); // Alte Daten löschen
-            else
-                Positions = new ObservableCollection<Position>();
-            foreach (var position in positions)
+            foreach (var pos in list)
             {
-                Positions.Add(position); // Daten hinzufügen
+                Positions.Add(pos); 
             }
         }
 
@@ -123,6 +132,28 @@ namespace RepeatList
                 //PositionListView.ItemsSource = _positions;
                 await LoadPositions(_selectedHeader.Id);
                 //PositionListView.ItemsSource = Positions;
+            }
+        }
+
+        private async void OnDeleteHeaderClicked(object sender, EventArgs e)
+        {
+            if (_selectedHeader != null)
+            {
+                await _databaseService.DeletePositionsByHeaderIdAsync(_selectedHeader.Id);
+                await _databaseService.DeleteHeaderAsync(_selectedHeader.Id);
+                await LoadHeaders();
+                await LoadPositions(_selectedHeader.Id);
+            }
+        }
+
+        private void OnCopyHeaderClicked(object sender, EventArgs e)
+        {
+            if (_selectedHeader != null)
+            {
+            //    var newHeader = new Header { ListName = HeaderEntry.Text, Date = DateTime.Now };
+            //    await _databaseService.AddHeaderAsync(newHeader);
+            //    HeaderEntry.Text = string.Empty;
+            //    await LoadHeaders();
             }
         }
     }

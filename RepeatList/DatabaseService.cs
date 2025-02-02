@@ -22,7 +22,7 @@ namespace RepeatList.Services
             CREATE TABLE IF NOT EXISTS Header (
                 Id INTEGER PRIMARY KEY AUTOINCREMENT,
                 ListName TEXT NOT NULL,
-                Date TEXT NOT NULL
+                Date datetime default current_timestamp NOT NULL
             );
             CREATE TABLE IF NOT EXISTS Position (
                 Id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -41,7 +41,7 @@ namespace RepeatList.Services
             var headers = new List<Header>();
 
             var command = _connection.CreateCommand();
-            command.CommandText = "SELECT * FROM Header";
+            command.CommandText = "SELECT * FROM Header ORDER BY Date DESC";
 
             using (var reader = await command.ExecuteReaderAsync())
             {
@@ -65,8 +65,16 @@ namespace RepeatList.Services
             command.CommandText = "INSERT INTO Header (ListName, Date) VALUES (@ListName, @Date)";
             command.Parameters.AddWithValue("@ListName", header.ListName);
             command.Parameters.AddWithValue("@Date", header.Date.ToString("yyyy-MM-dd"));
+            await command.ExecuteNonQueryAsync();
 
-            return await command.ExecuteNonQueryAsync();
+            // Die letzte eingefügte ID abrufen
+            var idCommand = _connection.CreateCommand();
+            idCommand.CommandText = "SELECT last_insert_rowid()";
+            var newId_obj = await idCommand.ExecuteScalarAsync();
+            if (newId_obj != null)
+                return (int)newId_obj;
+            else
+                return -1;
         }
 
         public async Task<int> DeleteHeaderAsync(int id)
@@ -81,6 +89,9 @@ namespace RepeatList.Services
         // Position CRUD
         public async Task<List<Position>> GetPositionsAsync(int headerId)
         {
+            if (headerId == 0)
+                return new List<Position>();
+
             var positions = new List<Position>();
 
             var command = _connection.CreateCommand();
@@ -138,6 +149,15 @@ namespace RepeatList.Services
             var command = _connection.CreateCommand();
             command.CommandText = "DELETE FROM Position WHERE Id = @Id";
             command.Parameters.AddWithValue("@Id", id);
+
+            return await command.ExecuteNonQueryAsync();
+        }
+
+        public async Task<int> DeletePositionsByHeaderIdAsync(int HeaderId)
+        {
+            var command = _connection.CreateCommand();
+            command.CommandText = "DELETE FROM Position WHERE  HeaderId = @HeaderId";
+            command.Parameters.AddWithValue("@HeaderId", HeaderId);
 
             return await command.ExecuteNonQueryAsync();
         }
