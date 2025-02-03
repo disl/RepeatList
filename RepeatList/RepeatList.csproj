@@ -76,13 +76,11 @@
 
 	<ItemGroup>
 	  <None Remove="Platforms\Android\Resources\values\todo.db3" />
+	  <None Remove="Platforms\Android\todo.db3" />
 	  <None Remove="todo.db" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <EmbeddedResource Include="Platforms\Android\todo.db3">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </EmbeddedResource>
 	  <EmbeddedResource Include="Resources\todo.db3">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </EmbeddedResource>

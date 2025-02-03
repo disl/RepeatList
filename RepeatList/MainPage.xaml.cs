@@ -1,161 +1,131 @@
 ﻿using RepeatList.Models;
-using RepeatList.Services;
-using System.Collections.ObjectModel;
+using RepeatList.ViewModels;
 
 namespace RepeatList
 {
     public partial class MainPage : ContentPage
     {
-        private DatabaseService _databaseService;
-        private List<Header> _headers;
-        //private List<Position> _positions;
-        private ObservableCollection<Position> Positions { get; set; } = new();
-        private Header _selectedHeader;
-        private Position _selectedPosition;
-        //private bool _startUpdate;
+        public MainPageViewModel ViewModel { get; set; }
 
         public MainPage()
         {
             InitializeComponent();
 
-            BindingContext = this; // Damit das Binding auf `Positions` funktioniert
+            ViewModel = BindingContext as  MainPageViewModel;
 
-            _databaseService = new DatabaseService();
-            _ = LoadHeaders();
-            if (_headers != null && _headers.Count > 0)
-                HeaderListView.SelectedItem=_headers[0];
+            if (ViewModel != null && ViewModel.Headers != null && ViewModel.Headers.Count > 0)
+                HeaderListView.SelectedItem=ViewModel.Headers[0];
         }
 
-
-        private async Task LoadHeaders()
-        {
-            _headers = await _databaseService.GetHeadersAsync();
-            HeaderListView.ItemsSource = _headers;
-        }
+        #region HEADER
 
         private async void OnAddHeaderClicked(object sender, EventArgs e)
         {
             if (string.IsNullOrEmpty(HeaderEntry.Text))
             {
-                //PositionEntry.Text="???";
-                //HeaderEntry.SelectionLength=3;
-                //HeaderEntry.CursorPosition=0;
                 HeaderEntry.Focus();
             }
             else
             {
-                var newHeader = new Header { ListName = HeaderEntry.Text, Date = DateTime.Now };
-                var new_id =  await _databaseService.AddHeaderAsync(newHeader);
-
+                var new_id = await ViewModel.AddHeader(HeaderEntry.Text);
                 HeaderEntry.Text = string.Empty;
-                await LoadHeaders();
             }
         }
 
         private async void OnHeaderSelected(object sender, SelectedItemChangedEventArgs e)
         {
-            _selectedHeader = e.SelectedItem as Header;
+            var _selectedHeader = e.SelectedItem as Header;
             if (_selectedHeader != null)
             {
-                await LoadPositions(_selectedHeader.Id);
-            }
-        }
-
-        private async void OnAddPositionClicked(object sender, EventArgs e)
-        {
-            if (_selectedHeader != null)
-            {
-                if (string.IsNullOrEmpty(PositionEntry.Text))
-                {
-                    //PositionEntry.Text="???";
-                    //PositionEntry.SelectionLength=3;
-                    //PositionEntry.CursorPosition=0;
-                    PositionEntry.Focus();
-                }
-                else
-                {
-                    var newPosition = new Position { HeaderId = _selectedHeader.Id, Title = PositionEntry.Text, IsCompleted = false };
-                    await _databaseService.AddPositionAsync(newPosition);
-                    PositionEntry.Text = string.Empty;
-                    //_positions = await _databaseService.GetPositionsAsync(_selectedHeader.Id);
-                    //PositionListView.ItemsSource = _positions;
-                    await LoadPositions(_selectedHeader.Id);
-                    //PositionListView.ItemsSource = Positions;
-                }
-            }
-        }
-
-
-        private async Task LoadPositions(int headerId)
-        {
-            var list = await _databaseService.GetPositionsAsync(headerId);
-
-            Positions.Clear();
-
-            if (list==null)
-                return;
-
-            foreach (var pos in list)
-            {
-                Positions.Add(pos); 
-            }
-        }
-
-        private async void OnPositionToggled(object sender, ToggledEventArgs e)
-        {
-            if (IsBusy == false && sender is Switch switchControl && switchControl.BindingContext is Position position)
-            {
-                position.IsCompleted = e.Value;
-                await _databaseService.UpdatePositionAsync(position); // Änderung in SQLite speichern
-
-                //var updatedPositions = await _databaseService.GetPositionsAsync(position.HeaderId);
-                //PositionListView.ItemsSource = null; // Sicherstellen, dass die UI aktualisiert wird
-                //PositionListView.ItemsSource = updatedPositions;
-
-                IsBusy=true;
-                await LoadPositions(_selectedHeader.Id);
-                IsBusy = false;
-            }
-        }
-
-        private void OnPositionSelected(object sender, SelectedItemChangedEventArgs e)
-        {
-            _selectedPosition = e.SelectedItem as Position;
-        }
-
-        private async void OnDeletePositionClicked(object sender, EventArgs e)
-        {
-            if (_selectedPosition != null)
-            {
-                await _databaseService.DeletePositionAsync(_selectedPosition.Id);
-                //_positions = await _databaseService.GetPositionsAsync(_selectedHeader.Id);
-                //PositionListView.ItemsSource = _positions;
-                await LoadPositions(_selectedHeader.Id);
-                //PositionListView.ItemsSource = Positions;
+                ViewModel.Header_SelectedItem= _selectedHeader;
+                await ViewModel.LoadPositions();
             }
         }
 
         private async void OnDeleteHeaderClicked(object sender, EventArgs e)
         {
-            if (_selectedHeader != null)
+            if (ViewModel.Header_SelectedItem != null)
             {
-                await _databaseService.DeletePositionsByHeaderIdAsync(_selectedHeader.Id);
-                await _databaseService.DeleteHeaderAsync(_selectedHeader.Id);
-                await LoadHeaders();
-                await LoadPositions(_selectedHeader.Id);
+                bool answer = await DisplayAlert("Question?", "Would you like to play a game", "Yes", "No");
+                if (answer)
+                    await ViewModel.DeleteHeader(ViewModel.Header_SelectedItem);
             }
         }
 
-        private void OnCopyHeaderClicked(object sender, EventArgs e)
+        private async void OnCopyHeaderClicked(object sender, EventArgs e)
         {
-            if (_selectedHeader != null)
+            if (ViewModel.Header_SelectedItem != null)
             {
-            //    var newHeader = new Header { ListName = HeaderEntry.Text, Date = DateTime.Now };
-            //    await _databaseService.AddHeaderAsync(newHeader);
-            //    HeaderEntry.Text = string.Empty;
-            //    await LoadHeaders();
+
             }
         }
+
+        private void OnClearHeaderEntryClicked(object sender, EventArgs e)
+        {
+            HeaderEntry.Text = string.Empty;
+            HeaderEntry.Focus();
+        }
+
+
+        #endregion
+
+
+        #region POSITIONS
+
+        private async void OnAddPositionClicked(object sender, EventArgs e)
+        {
+            if (ViewModel.Header_SelectedItem != null)
+            {
+                if (string.IsNullOrEmpty(PositionEntry.Text))
+                {
+                    PositionEntry.Focus();
+                }
+                else
+                {
+                    await ViewModel.AddPosition(PositionEntry.Text);
+                    PositionEntry.Text = string.Empty;
+                }
+            }
+        }
+
+        private async void OnPositionToggled(object sender, ToggledEventArgs e)
+        {
+            if (ViewModel.IsBusy) return;
+
+            if (sender is Microsoft.Maui.Controls.Switch switchControl && e !=null  && switchControl.BindingContext != null && switchControl.BindingContext is Position position)
+            {
+                ViewModel.IsBusy = true;
+
+                position.IsCompleted = e.Value;
+                await ViewModel.UpdatePosition(position); 
+
+                ViewModel.IsBusy = false;
+            }
+        }
+
+        private void OnPositionSelected(object sender, SelectedItemChangedEventArgs e)
+        {
+            ViewModel.Position_SelectedItem = e.SelectedItem as Position;
+        }
+
+        private async void OnDeletePositionClicked(object sender, EventArgs e)
+        {
+            if (ViewModel.Position_SelectedItem != null)
+            {
+                await ViewModel.DeletePosition(ViewModel.Position_SelectedItem);
+            }
+        }
+
+       
+
+        private void OnClearPositionEntryClicked(object sender, EventArgs e)
+        {
+            PositionEntry.Text = string.Empty;
+            PositionEntry.Focus();
+        }
+
+        #endregion
+
     }
 
 }

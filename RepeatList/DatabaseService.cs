@@ -1,6 +1,7 @@
 ﻿using Microsoft.Data.Sqlite;
 using RepeatList.Models;
 
+
 namespace RepeatList.Services
 {
 
@@ -22,7 +23,7 @@ namespace RepeatList.Services
             CREATE TABLE IF NOT EXISTS Header (
                 Id INTEGER PRIMARY KEY AUTOINCREMENT,
                 ListName TEXT NOT NULL,
-                Date datetime default current_timestamp NOT NULL
+                Date TEXT NOT NULL
             );
             CREATE TABLE IF NOT EXISTS Position (
                 Id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -59,20 +60,49 @@ namespace RepeatList.Services
             return headers;
         }
 
+        public async Task<Header?> GetHeaderAsync(int Id)
+        {
+            var headers = new List<Header>();
+            var header = new Header();
+
+            var command = _connection.CreateCommand();
+            command.CommandText = "SELECT * FROM Header WHERE Id=@Id";
+            command.Parameters.AddWithValue("@Id", Id);
+
+            using (var reader = await command.ExecuteReaderAsync())
+            {
+                while (await reader.ReadAsync())
+                {
+                    headers.Add(new Header
+                    {
+                        Id = reader.GetInt32(0),
+                        ListName = reader.GetString(1),
+                        Date = DateTime.Parse(reader.GetString(2))
+                    });
+                }
+            }
+
+            if(headers != null && headers.Count == 1)
+                header = headers[0];
+            else header = null;
+
+            return header;
+        }
+
         public async Task<int> AddHeaderAsync(Header header)
         {
             var command = _connection.CreateCommand();
             command.CommandText = "INSERT INTO Header (ListName, Date) VALUES (@ListName, @Date)";
             command.Parameters.AddWithValue("@ListName", header.ListName);
-            command.Parameters.AddWithValue("@Date", header.Date.ToString("yyyy-MM-dd"));
+            command.Parameters.AddWithValue("@Date", header.Date.ToString("u"));
             await command.ExecuteNonQueryAsync();
 
             // Die letzte eingefügte ID abrufen
             var idCommand = _connection.CreateCommand();
             idCommand.CommandText = "SELECT last_insert_rowid()";
             var newId_obj = await idCommand.ExecuteScalarAsync();
-            if (newId_obj != null)
-                return (int)newId_obj;
+            if (newId_obj != DBNull.Value)
+                return Convert.ToInt32(newId_obj);
             else
                 return -1;
         }
