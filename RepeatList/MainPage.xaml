@@ -2,55 +2,100 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="RepeatList.MainPage"
-             xmlns:local="clr-namespace:RepeatList.ViewModels"
-             >
+             xmlns:local="clr-namespace:RepeatList.ViewModels">
 
     <ContentPage.BindingContext>
         <local:MainPageViewModel />
     </ContentPage.BindingContext>
-    <StackLayout>
-        <!-- Header List -->
-        <ListView x:Name="HeaderListView" ItemsSource="{Binding Headers}" SelectedItem="{Binding Header_SelectedItem}" ItemSelected="OnHeaderSelected">
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <TextCell Text="{Binding ListName}" Detail="{Binding Date, StringFormat='Date: {0:yyyy-MM-dd-HH-mm}'}" />
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
-        <!-- Add Header -->
-        <StackLayout Orientation="Horizontal"  Spacing="10" Margin="0,10,0,0">
-            <ImageButton Source="delete_icon.png" Clicked="OnClearHeaderEntryClicked" HeightRequest="40" WidthRequest="40" BackgroundColor="Transparent" HorizontalOptions="Start"/>
-            <Entry x:Name="HeaderEntry" Placeholder="Enter a new list name" HorizontalOptions="FillAndExpand" />
-            <ImageButton Source="add_icon.png" Clicked="OnAddHeaderClicked" HeightRequest="40" WidthRequest="40" BackgroundColor="Transparent" HorizontalOptions="End"/>
-            <ImageButton Source="remove_icon.png" Clicked="OnDeleteHeaderClicked" HeightRequest="40" WidthRequest="40" BackgroundColor="Transparent"  HorizontalOptions="End"/>
-            <ImageButton Source="copy_icon.png" Clicked="OnCopyHeaderClicked" HeightRequest="40" WidthRequest="40" BackgroundColor="Transparent" HorizontalOptions="End"/>
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem  IconImageSource="kofi_symbol.png" Clicked="CoffeeButtonClicked" />
+    </ContentPage.ToolbarItems>
+
+    <Grid Padding="20" BackgroundColor="WhiteSmoke">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1.5*" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="4*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <!-- LISTEN-ÜBERSICHT -->
+        <Border Grid.Row="0" Stroke="Gray" StrokeThickness="1" Background="Transparent" Padding="10" Margin="5" >
+            <Border.StrokeShape>
+                <RoundRectangle CornerRadius="5" />
+            </Border.StrokeShape>
+            <!--<Border.Shadow>
+                <Shadow Brush="Black" Opacity="0.3" />
+            </Border.Shadow>-->
+            <ListView x:Name="HeaderListView" ItemsSource="{Binding Headers}" Grid.Row="0" SelectionMode="Single"   
+                      SelectedItem="{Binding Header_SelectedItem}" ItemSelected="OnHeaderSelected" SeparatorVisibility="None">
+                <ListView.Header>
+                    <StackLayout>
+                        <Label  Text="LISTS"  FontSize="Medium" HorizontalOptions="Center"  Margin="10,0,0,0" />
+                    </StackLayout>
+                </ListView.Header>
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Grid Padding="7" ColumnDefinitions="5*,1*, 1*">
+                                <Label Text="{Binding ListName}"  VerticalOptions="Center"   Grid.Column="0"/>
+                                <ImageButton Source="edit_icon.png" Clicked="OnEditHeaderClicked" CommandParameter="{Binding}"  Grid.Column="1"/>
+                                <ImageButton Source="copy_icon.png" Clicked="OnCopyHeaderClicked" CommandParameter="{Binding}"  Grid.Column="2"/>
+                            </Grid>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </Border>
+
+        <!-- LISTEN-BUTTONS -->
+        <StackLayout Orientation="Horizontal" Grid.Row="1" Padding="5">
+            <ImageButton Source="close_icon.png" Clicked="OnClearHeaderEntryClicked" HeightRequest="30" WidthRequest="30"/>
+            <Entry x:Name="HeaderEntry" Placeholder="New list" HorizontalOptions="FillAndExpand"/>
+            <ImageButton Source="add_icon.png" Clicked="OnAddHeaderClicked" HeightRequest="30" WidthRequest="30"/>
+            <ImageButton Source="delete_icon.png" Clicked="OnDeleteHeaderClicked" HeightRequest="30" WidthRequest="30"/>
         </StackLayout>
-        <!-- Positions -->
-        <ListView x:Name="PositionListView" ItemsSource="{Binding Positions}" SelectedItem="{Binding Position_SelectedItem}"  ItemSelected="OnPositionSelected">
-            <ListView.Header>
-                <StackLayout>
-                    <Label  Text="POSITIONEN" FontSize="Body" HorizontalOptions="Center"  Margin="10,0,0,0" />
-                </StackLayout>
-            </ListView.Header>
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <ViewCell>
-                        <Grid Padding="10" ColumnDefinitions="*, Auto">
-                            <Label Text="{Binding Title}" VerticalOptions="Center"  Grid.Column="0"/>
-                            <Switch IsToggled="{Binding IsCompleted, Mode=TwoWay}" 
+
+        <!-- POSITIONEN-ÜBERSICHT -->
+        <Border Grid.Row="2" Stroke="Gray" StrokeThickness="1" Background="Transparent" Padding="10" Margin="5" >
+            <Border.StrokeShape>
+                <RoundRectangle CornerRadius="5" />
+            </Border.StrokeShape>
+            <!--<Border.Shadow>
+                <Shadow Brush="Black" Opacity="0.3" />
+            </Border.Shadow>-->
+            <ListView x:Name="PositionListView" ItemsSource="{Binding Positions}"  
+                      SelectedItem="{Binding Position_SelectedItem}"  ItemSelected="OnPositionSelected" SeparatorVisibility="None">
+                <ListView.Header>
+                    <StackLayout>
+                        <Label  Text="POSITIONS" FontSize="Medium"  HorizontalOptions="Center"  Margin="10,0,0,0" />
+                    </StackLayout>
+                </ListView.Header>
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Grid Padding="10" ColumnDefinitions="5*, 1.5*,1*">
+                                <Label Text="{Binding Title}" VerticalOptions="Center"  Grid.Column="0"/>
+                                <ImageButton Source="edit_icon.png" Clicked="OnEditPositionClicked" CommandParameter="{Binding}"  Grid.Column="1"/>
+                                <Switch IsToggled="{Binding IsCompleted, Mode=TwoWay}" 
                                     Toggled="OnPositionToggled"    
-                                    Grid.Column="1"/>
-                        </Grid>
-                    </ViewCell>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
-        <!-- Add Position -->
-        <StackLayout Orientation="Horizontal"  Spacing="10" Margin="0,10,0,0" >
-            <ImageButton Source="delete_icon.png" Clicked="OnClearPositionEntryClicked" HeightRequest="40" WidthRequest="40" BackgroundColor="Transparent" HorizontalOptions="Start"/>
-            <Entry x:Name="PositionEntry" Placeholder="Enter a new task" HorizontalOptions="FillAndExpand"  />
-            <ImageButton Source="add_icon.png" Clicked="OnAddPositionClicked" HeightRequest="40" WidthRequest="40" BackgroundColor="Transparent" HorizontalOptions="End"/>
-            <ImageButton Source="remove_icon.png" Clicked="OnDeletePositionClicked" HeightRequest="40" WidthRequest="40" BackgroundColor="Transparent" HorizontalOptions="End"/>
+                                    Grid.Column="2"/>
+                            </Grid>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+
+        </Border>
+
+        <!-- POSITIONEN-BUTTONS -->
+        <StackLayout Orientation="Horizontal" Grid.Row="3"  Padding="5">
+            <ImageButton Source="close_icon.png" Clicked="OnClearPositionEntryClicked" HeightRequest="30" WidthRequest="30"/>
+            <Entry x:Name="PositionEntry" Placeholder="New item" HorizontalOptions="FillAndExpand"/>
+            <ImageButton Source="add_icon.png" Clicked="OnAddPositionClicked" HeightRequest="30" WidthRequest="30"/>
+            <ImageButton Source="delete_icon.png" Clicked="OnDeletePositionClicked" HeightRequest="30" WidthRequest="30"/>
         </StackLayout>
-    </StackLayout>
+
+    </Grid>
 </ContentPage>

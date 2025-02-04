@@ -8,8 +8,10 @@
     Title="RepeatList">
 
     <ShellContent
-        Title="Liste"
+        Title="Repeating lists"
         ContentTemplate="{DataTemplate local:MainPage}"
-        Route="MainPage" />
+        Route="MainPage"
+        
+        />
 
 </Shell>

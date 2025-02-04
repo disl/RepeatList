@@ -191,5 +191,25 @@ namespace RepeatList.Services
 
             return await command.ExecuteNonQueryAsync();
         }
+
+        internal async Task<int> EditHeadersTitleAsync(Header header, string new_list_name)
+        {
+            var command = _connection.CreateCommand();
+            command.CommandText = "UPDATE Header SET ListName=@ListName WHERE Id=@Id";
+            command.Parameters.AddWithValue("@Id", header.Id);
+            command.Parameters.AddWithValue("@ListName", new_list_name);
+
+            return await command.ExecuteNonQueryAsync();
+        }
+
+        internal async Task<int> EditPositionsTitleAsync(Position position, string new_title)
+        {
+            var command = _connection.CreateCommand();
+            command.CommandText = "UPDATE Position SET Title=@title WHERE Id=@Id";
+            command.Parameters.AddWithValue("@Id", position.Id);
+            command.Parameters.AddWithValue("@title", new_title);
+
+            return await command.ExecuteNonQueryAsync();
+        }
     }
 }

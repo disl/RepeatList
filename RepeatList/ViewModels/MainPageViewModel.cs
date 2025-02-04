@@ -12,6 +12,7 @@ namespace RepeatList.ViewModels
         private DatabaseService _databaseService;
         public event PropertyChangedEventHandler PropertyChanged;
 
+        public double ButtonsSize = 30;
 
         private Header _header_SelectedItem;
         public Header Header_SelectedItem
@@ -157,9 +158,6 @@ namespace RepeatList.ViewModels
             await _databaseService.DeleteHeaderAsync(header.Id);
             await LoadHeaders();
             await LoadPositions();
-
-            //var sorted_list = Positions.OrderBy(x => x.IsCompleted).ToList();
-            //SetSortedPositionsList(sorted_list);
         }
 
         public async Task UpdatePosition(Models.Position pos)
@@ -171,10 +169,6 @@ namespace RepeatList.ViewModels
 
             var sorted_list = Positions.OrderBy(x => x.IsCompleted).ToList();
             SetSortedPositionsList(sorted_list);
-            //Positions = new ObservableCollection<Position>(); // new ObservableCollection<Position>(sorted_list);
-            //Positions =  new ObservableCollection<Position>(sorted_list);
-
-            //await LoadPositions();
 
             IsBusy =false;
         }
@@ -199,6 +193,49 @@ namespace RepeatList.ViewModels
         public async Task DeletePositionsByHeaderIdAsync()
         {
             await _databaseService.DeletePositionsByHeaderIdAsync(Header_SelectedItem.Id);
+            await LoadPositions();
+        }
+
+        public async Task<int?> CopyHeader(Header header, string new_list_name)
+        {
+            var positions = await _databaseService.GetPositionsAsync(header.Id);
+
+            Header new_header = new Header();
+            new_header.Date = DateTime.Now;
+            new_header.ListName=new_list_name;
+            var new_header_id = await _databaseService.AddHeaderAsync(new_header);
+            if(new_header_id > 0 && positions != null && positions.Count > 0)
+            {
+                foreach (var pos in positions)
+                {
+                    Position new_pos = new();
+                    new_pos.HeaderId = new_header_id;
+                    new_pos.Title = pos.Title;
+                    new_pos.IsCompleted =false;
+                    await _databaseService.AddPositionAsync(new_pos);
+                }
+
+                await LoadHeaders();
+
+                var selectedItem = await _databaseService.GetHeaderAsync(new_header_id);
+                Header_SelectedItem = selectedItem;
+
+                return new_header_id;
+            }
+            return null;
+        }
+
+        internal async Task EditNameHeader(Header header, string new_list_name)
+        {
+            Header_SelectedItem = header;
+            await _databaseService.EditHeadersTitleAsync(header, new_list_name);
+            await LoadHeaders();
+        }
+
+        internal async Task EditTitleOfPosition(Position position, string title)
+        {
+            Position_SelectedItem = position;
+            await _databaseService.EditPositionsTitleAsync(position, title);
             await LoadPositions();
         }
     }

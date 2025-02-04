@@ -46,7 +46,7 @@ namespace RepeatList
         {
             if (ViewModel.Header_SelectedItem != null)
             {
-                bool answer = await DisplayAlert("Question?", "Would you like to play a game", "Yes", "No");
+                bool answer = await DisplayAlert("Delete list", "Are you sure?", "Yes", "No");
                 if (answer)
                     await ViewModel.DeleteHeader(ViewModel.Header_SelectedItem);
             }
@@ -54,9 +54,14 @@ namespace RepeatList
 
         private async void OnCopyHeaderClicked(object sender, EventArgs e)
         {
-            if (ViewModel.Header_SelectedItem != null)
+            var button = sender as ImageButton;
+            if (button?.CommandParameter is Header header)
             {
-
+                string new_list_name = await DisplayPromptAsync("Input", "Enter list name:");
+                if (!string.IsNullOrWhiteSpace(new_list_name))
+                {
+                    await ViewModel.CopyHeader(header, new_list_name);
+                }
             }
         }
 
@@ -97,7 +102,7 @@ namespace RepeatList
                 ViewModel.IsBusy = true;
 
                 position.IsCompleted = e.Value;
-                await ViewModel.UpdatePosition(position); 
+                await ViewModel.UpdatePosition(position);
 
                 ViewModel.IsBusy = false;
             }
@@ -116,7 +121,7 @@ namespace RepeatList
             }
         }
 
-       
+
 
         private void OnClearPositionEntryClicked(object sender, EventArgs e)
         {
@@ -126,6 +131,37 @@ namespace RepeatList
 
         #endregion
 
+        private async void OnEditHeaderClicked(object sender, EventArgs e)
+        {
+            var button = sender as ImageButton;
+            if (button?.CommandParameter is Header header)
+            {
+                string new_list_name = await DisplayPromptAsync("Input", "Enter new list name:", initialValue: header.ListName);
+                if (!string.IsNullOrWhiteSpace(new_list_name))
+                {
+                    await ViewModel.EditNameHeader(header, new_list_name);
+                }
+            }
+        }
+
+        private async void OnEditPositionClicked(object sender, EventArgs e)
+        {
+            var button = sender as ImageButton;
+            if (button?.CommandParameter is Position position)
+            {
+                string new_title = await DisplayPromptAsync("Input", "Enter new position title:", initialValue: position.Title);
+                if (!string.IsNullOrWhiteSpace(new_title))
+                {
+                    await ViewModel.EditTitleOfPosition(position, new_title);
+                }
+            }
+        }
+
+        private async void CoffeeButtonClicked(object sender, EventArgs e)
+        {
+            string url = "https://Ko-fi.com/dnepr65";
+            await Launcher.OpenAsync(new Uri(url));
+        }
     }
 
 }
