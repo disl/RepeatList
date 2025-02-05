@@ -1,4 +1,4 @@
-﻿namespace RepeatList.Themes
+﻿namespace RepeatList
 {
     public partial class DarkTheme : ResourceDictionary
     {
