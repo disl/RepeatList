@@ -12,7 +12,7 @@
         <ToolbarItem  IconImageSource="kofi_symbol.png" Clicked="CoffeeButtonClicked" />
     </ContentPage.ToolbarItems>
 
-    <Grid Padding="20" BackgroundColor="WhiteSmoke">
+    <Grid Padding="20" BackgroundColor="White">
         <Grid.RowDefinitions>
             <RowDefinition Height="1.5*" />
             <RowDefinition Height="Auto" />

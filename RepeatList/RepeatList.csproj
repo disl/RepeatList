@@ -46,7 +46,7 @@
 		<MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appiconfg.svg" Color="#512BD4" />
 
 		<!-- Splash Screen -->
-		<MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#512BD4" BaseSize="128,128" />
+		<MauiSplashScreen Include="Resources\Splash\splash.svg" Color="Lavender" BaseSize="350,350" />
 
 		<!-- Images -->
 		<MauiImage Include="Resources\Images\*" />
@@ -62,21 +62,30 @@
 	<ItemGroup>
 	  <AndroidResource Remove="Platforms\MacCatalyst\**" />
 	  <AndroidResource Remove="Platforms\Tizen\**" />
+	  <AndroidResource Remove="Resources\Images\backup\**" />
 	  <Compile Remove="Platforms\MacCatalyst\**" />
 	  <Compile Remove="Platforms\Tizen\**" />
+	  <Compile Remove="Resources\Images\backup\**" />
 	  <EmbeddedResource Remove="Platforms\MacCatalyst\**" />
 	  <EmbeddedResource Remove="Platforms\Tizen\**" />
+	  <EmbeddedResource Remove="Resources\Images\backup\**" />
 	  <MauiCss Remove="Platforms\MacCatalyst\**" />
 	  <MauiCss Remove="Platforms\Tizen\**" />
+	  <MauiCss Remove="Resources\Images\backup\**" />
+	  <MauiImage Remove="Resources\Images\backup\**" />
 	  <MauiXaml Remove="Platforms\MacCatalyst\**" />
 	  <MauiXaml Remove="Platforms\Tizen\**" />
+	  <MauiXaml Remove="Resources\Images\backup\**" />
 	  <None Remove="Platforms\MacCatalyst\**" />
 	  <None Remove="Platforms\Tizen\**" />
+	  <None Remove="Resources\Images\backup\**" />
 	</ItemGroup>
 
 	<ItemGroup>
 	  <None Remove="Platforms\Android\Resources\values\todo.db3" />
 	  <None Remove="Platforms\Android\todo.db3" />
+	  <None Remove="Resources\Splash\splash - Kopie.svg" />
+	  <None Remove="Resources\Splash\splash_old.svg" />
 	  <None Remove="todo.db" />
 	</ItemGroup>
 
@@ -97,6 +106,12 @@
 
 	<ItemGroup>
 	  <MauiXaml Update="Platforms\Windows\App.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Themes\DarkTheme.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Themes\LightTheme.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	</ItemGroup>

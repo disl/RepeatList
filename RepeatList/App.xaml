@@ -4,11 +4,14 @@
              xmlns:local="clr-namespace:RepeatList"
              x:Class="RepeatList.App">
     <Application.Resources>
-        <ResourceDictionary>
+
+        <ResourceDictionary Source="Themes/DarkTheme.xaml" />
+
+        <!--<ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Resources/Styles/Colors.xaml" />
                 <ResourceDictionary Source="Resources/Styles/Styles.xaml" />
             </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
+        </ResourceDictionary>-->
     </Application.Resources>
 </Application>
