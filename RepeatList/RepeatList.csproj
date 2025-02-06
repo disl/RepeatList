@@ -63,22 +63,28 @@
 	  <AndroidResource Remove="Platforms\MacCatalyst\**" />
 	  <AndroidResource Remove="Platforms\Tizen\**" />
 	  <AndroidResource Remove="Resources\Images\backup\**" />
+	  <AndroidResource Remove="Themes\**" />
 	  <Compile Remove="Platforms\MacCatalyst\**" />
 	  <Compile Remove="Platforms\Tizen\**" />
 	  <Compile Remove="Resources\Images\backup\**" />
+	  <Compile Remove="Themes\**" />
 	  <EmbeddedResource Remove="Platforms\MacCatalyst\**" />
 	  <EmbeddedResource Remove="Platforms\Tizen\**" />
 	  <EmbeddedResource Remove="Resources\Images\backup\**" />
+	  <EmbeddedResource Remove="Themes\**" />
 	  <MauiCss Remove="Platforms\MacCatalyst\**" />
 	  <MauiCss Remove="Platforms\Tizen\**" />
 	  <MauiCss Remove="Resources\Images\backup\**" />
+	  <MauiCss Remove="Themes\**" />
 	  <MauiImage Remove="Resources\Images\backup\**" />
 	  <MauiXaml Remove="Platforms\MacCatalyst\**" />
 	  <MauiXaml Remove="Platforms\Tizen\**" />
 	  <MauiXaml Remove="Resources\Images\backup\**" />
+	  <MauiXaml Remove="Themes\**" />
 	  <None Remove="Platforms\MacCatalyst\**" />
 	  <None Remove="Platforms\Tizen\**" />
 	  <None Remove="Resources\Images\backup\**" />
+	  <None Remove="Themes\**" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -96,6 +102,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<PackageReference Include="CommunityToolkit.Maui" Version="11.0.0" />
 		<PackageReference Include="Microsoft.Data.Sqlite.Core" Version="9.0.1" />
 		<PackageReference Include="Microsoft.Maui.Controls" Version="9.0.30" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="9.0.1" />
@@ -106,12 +113,6 @@
 
 	<ItemGroup>
 	  <MauiXaml Update="Platforms\Windows\App.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="Themes\DarkTheme.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="Themes\LightTheme.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	</ItemGroup>

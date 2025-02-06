@@ -12,4 +12,18 @@
     <Color x:Key="TertiaryTextColor">Gray</Color>
     <Color x:Key="TransparentColor">Transparent</Color>
 
+    <!--<Color x:Key="PrimaryColor">#FFFFFF</Color>-->
+    <!--<Color x:Key="SecondaryColor">#000000</Color>-->
+    <Color x:Key="BackgroundColor">#F5F5F5</Color>
+    <Color x:Key="TextColor">#000000</Color>
+
+    <Style TargetType="Label">
+        <Setter Property="TextColor" Value="{DynamicResource TextColor}" />
+    </Style>
+
+    <Style TargetType="Button">
+        <Setter Property="BackgroundColor" Value="{DynamicResource PrimaryColor}" />
+        <Setter Property="TextColor" Value="{DynamicResource TextColor}" />
+    </Style>
+
 </ResourceDictionary>

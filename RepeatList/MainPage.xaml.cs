@@ -5,6 +5,8 @@ namespace RepeatList
 {
     public partial class MainPage : ContentPage
     {
+        private App? m_application;
+
         public MainPageViewModel ViewModel { get; set; }
 
         public MainPage()
@@ -15,6 +17,12 @@ namespace RepeatList
 
             if (ViewModel != null && ViewModel.Headers != null && ViewModel.Headers.Count > 0)
                 HeaderListView.SelectedItem=ViewModel.Headers[0];
+
+            //m_application = Application.Current as App;
+            //if (m_application != null)
+            //    m_application.LoadTheme("DarkTheme.xaml");
+
+            Application.Current.UserAppTheme = AppTheme.Dark;
         }
 
         #region HEADER
@@ -161,6 +169,16 @@ namespace RepeatList
         {
             string url = "https://Ko-fi.com/dnepr65";
             await Launcher.OpenAsync(new Uri(url));
+        }
+
+        private void Expander_lists_ExpandedChanged(object sender, CommunityToolkit.Maui.Core.ExpandedChangedEventArgs e)
+        {
+
+        }
+
+        private void Expander_positions_ExpandedChanged(object sender, CommunityToolkit.Maui.Core.ExpandedChangedEventArgs e)
+        {
+
         }
     }
 
