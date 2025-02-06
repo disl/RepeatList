@@ -1,6 +1,5 @@
 ﻿using RepeatList.Models;
 using RepeatList.Services;
-using System.Collections.Immutable;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 
@@ -25,7 +24,7 @@ namespace RepeatList.ViewModels
             }
         }
 
-        private ObservableCollection<Header>? _headers=new ObservableCollection<Header>();
+        private ObservableCollection<Header>? _headers = new ObservableCollection<Header>();
         public ObservableCollection<Header>? Headers
         {
             get => _headers;
@@ -36,7 +35,7 @@ namespace RepeatList.ViewModels
             }
         }
 
-        private Header? _header=new Header();
+        private Header? _header = new Header();
         public Header? Header
         {
             get => _header;
@@ -59,7 +58,7 @@ namespace RepeatList.ViewModels
             }
         }
 
-        private ObservableCollection<Models.Position> _positions=new ObservableCollection<Models.Position>();
+        private ObservableCollection<Models.Position> _positions = new ObservableCollection<Models.Position>();
         public ObservableCollection<Models.Position> Positions
         {
             get => _positions;
@@ -79,7 +78,7 @@ namespace RepeatList.ViewModels
         public async Task LoadHeaders()
         {
             var headers = await _databaseService.GetHeadersAsync();
-            if (headers == null) 
+            if (headers == null)
                 return;
 
             Headers.Clear();
@@ -114,6 +113,54 @@ namespace RepeatList.ViewModels
             }
         }
 
+        private bool _isExpander_listsExpended=true;
+        public bool IsExpander_listsExpended
+        {
+            get => _isExpander_listsExpended;
+            set
+            {
+                _isExpander_listsExpended = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsExpander_listsExpended)));
+
+                Expander_listsIcon=value ? "collapse_icon.png" : "expand_icon.png";
+            }
+        }
+
+        private string _expander_listsIcon;
+        public string Expander_listsIcon
+        {
+            get => _expander_listsIcon;
+            set
+            {
+                _expander_listsIcon = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Expander_listsIcon)));
+            }
+        }
+
+        private bool _expander_positionsExpended=true;
+        public bool Expander_positionsExpended
+        {
+            get => _expander_positionsExpended;
+            set
+            {
+                _expander_positionsExpended = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Expander_positionsExpended)));
+
+                Expander_positionsIcon=value ? "collapse_icon.png" : "expand_icon.png";
+            }
+        }
+
+        private string _expander_positionsIcon;
+        public string Expander_positionsIcon
+        {
+            get => _expander_positionsIcon;
+            set
+            {
+                _expander_positionsIcon = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Expander_positionsIcon)));
+            }
+        }
+
         public async Task LoadPositions()
         {
             IsBusy = true;
@@ -132,8 +179,8 @@ namespace RepeatList.ViewModels
 
             var sort_pos_arr = _pos_arr.OrderByDescending(x => x.IsCompleted).ToList();
 
-           
-            Positions = new ObservableCollection<Position>( sort_pos_arr);
+
+            Positions = new ObservableCollection<Position>(sort_pos_arr);
 
             var sorted_list = Positions.OrderBy(x => x.IsCompleted).ToList();
             SetSortedPositionsList(sorted_list);
@@ -204,7 +251,7 @@ namespace RepeatList.ViewModels
             new_header.Date = DateTime.Now;
             new_header.ListName=new_list_name;
             var new_header_id = await _databaseService.AddHeaderAsync(new_header);
-            if(new_header_id > 0 && positions != null && positions.Count > 0)
+            if (new_header_id > 0 && positions != null && positions.Count > 0)
             {
                 foreach (var pos in positions)
                 {
