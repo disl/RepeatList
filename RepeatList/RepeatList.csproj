@@ -39,14 +39,15 @@
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</SupportedOSPlatformVersion>
 		<TargetPlatformMinVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</TargetPlatformMinVersion>
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'tizen'">6.5</SupportedOSPlatformVersion>
+		<PackageIcon>playstore_128.png</PackageIcon>
 	</PropertyGroup>
 
 	<ItemGroup>
 		<!-- App Icon -->
-		<MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appiconfg.svg" Color="#512BD4" />
+		<MauiIcon Update="Resources\AppIcon\appicon.svg" />
 
 		<!-- Splash Screen -->
-		<MauiSplashScreen Include="Resources\Splash\splash.svg" Color="Lavender" BaseSize="350,350" />
+		<MauiSplashScreen Update="Resources\Splash\splashscreen.svg" />
 
 		<!-- Images -->
 		<MauiImage Include="Resources\Images\*" />
@@ -60,45 +61,53 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <AndroidResource Remove="Platforms\MacCatalyst\**" />
-	  <AndroidResource Remove="Platforms\Tizen\**" />
-	  <AndroidResource Remove="Resources\Images\backup\**" />
-	  <AndroidResource Remove="Themes\**" />
-	  <Compile Remove="Platforms\MacCatalyst\**" />
-	  <Compile Remove="Platforms\Tizen\**" />
-	  <Compile Remove="Resources\Images\backup\**" />
-	  <Compile Remove="Themes\**" />
-	  <EmbeddedResource Remove="Platforms\MacCatalyst\**" />
-	  <EmbeddedResource Remove="Platforms\Tizen\**" />
-	  <EmbeddedResource Remove="Resources\Images\backup\**" />
-	  <EmbeddedResource Remove="Themes\**" />
-	  <MauiCss Remove="Platforms\MacCatalyst\**" />
-	  <MauiCss Remove="Platforms\Tizen\**" />
-	  <MauiCss Remove="Resources\Images\backup\**" />
-	  <MauiCss Remove="Themes\**" />
-	  <MauiImage Remove="Resources\Images\backup\**" />
-	  <MauiXaml Remove="Platforms\MacCatalyst\**" />
-	  <MauiXaml Remove="Platforms\Tizen\**" />
-	  <MauiXaml Remove="Resources\Images\backup\**" />
-	  <MauiXaml Remove="Themes\**" />
-	  <None Remove="Platforms\MacCatalyst\**" />
-	  <None Remove="Platforms\Tizen\**" />
-	  <None Remove="Resources\Images\backup\**" />
-	  <None Remove="Themes\**" />
+		<AndroidResource Remove="Platforms\MacCatalyst\**" />
+		<AndroidResource Remove="Platforms\Tizen\**" />
+		<AndroidResource Remove="Resources\AppIcon\Backup\**" />
+		<AndroidResource Remove="Resources\Images\backup\**" />
+		<AndroidResource Remove="Themes\**" />
+		<Compile Remove="Platforms\MacCatalyst\**" />
+		<Compile Remove="Platforms\Tizen\**" />
+		<Compile Remove="Resources\AppIcon\Backup\**" />
+		<Compile Remove="Resources\Images\backup\**" />
+		<Compile Remove="Themes\**" />
+		<EmbeddedResource Remove="Platforms\MacCatalyst\**" />
+		<EmbeddedResource Remove="Platforms\Tizen\**" />
+		<EmbeddedResource Remove="Resources\AppIcon\Backup\**" />
+		<EmbeddedResource Remove="Resources\Images\backup\**" />
+		<EmbeddedResource Remove="Themes\**" />
+		<MauiCss Remove="Platforms\MacCatalyst\**" />
+		<MauiCss Remove="Platforms\Tizen\**" />
+		<MauiCss Remove="Resources\AppIcon\Backup\**" />
+		<MauiCss Remove="Resources\Images\backup\**" />
+		<MauiCss Remove="Themes\**" />
+		<MauiImage Remove="Resources\Images\backup\**" />
+		<MauiXaml Remove="Platforms\MacCatalyst\**" />
+		<MauiXaml Remove="Platforms\Tizen\**" />
+		<MauiXaml Remove="Resources\AppIcon\Backup\**" />
+		<MauiXaml Remove="Resources\Images\backup\**" />
+		<MauiXaml Remove="Themes\**" />
+		<None Remove="Platforms\MacCatalyst\**" />
+		<None Remove="Platforms\Tizen\**" />
+		<None Remove="Resources\AppIcon\Backup\**" />
+		<None Remove="Resources\Images\backup\**" />
+		<None Remove="Themes\**" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <None Remove="Platforms\Android\Resources\values\todo.db3" />
-	  <None Remove="Platforms\Android\todo.db3" />
-	  <None Remove="Resources\Splash\splash - Kopie.svg" />
-	  <None Remove="Resources\Splash\splash_old.svg" />
-	  <None Remove="todo.db" />
+		<None Remove="Platforms\Android\Resources\values\todo.db3" />
+		<None Remove="Platforms\Android\todo.db3" />
+		<None Remove="Resources\AppIcon\appicon.svg" />
+		<None Remove="Resources\Splash\splash - Kopie.svg" />
+		<None Remove="Resources\Splash\splashscreen.svg" />
+		<None Remove="Resources\Splash\splash_old.svg" />
+		<None Remove="todo.db" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <EmbeddedResource Include="Resources\todo.db3">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </EmbeddedResource>
+		<EmbeddedResource Include="Resources\todo.db3">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</EmbeddedResource>
 	</ItemGroup>
 
 	<ItemGroup>
@@ -112,13 +121,28 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <MauiXaml Update="Platforms\Windows\App.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
+		<MauiXaml Update="Platforms\Windows\App.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="Services\" />
+		<Folder Include="Services\" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <MauiIcon Include="Resources\AppIcon\appicon.svg" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<MauiSplashScreen Include="Resources\Splash\splashscreen.svg" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Include="..\..\..\..\Downloads\AppIcons\playstore_128.png">
+	    <Pack>True</Pack>
+	    <PackagePath>\</PackagePath>
+	  </None>
 	</ItemGroup>
 
 </Project>

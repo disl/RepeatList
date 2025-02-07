@@ -211,5 +211,15 @@ namespace RepeatList.Services
 
             return await command.ExecuteNonQueryAsync();
         }
+        
+        internal async Task<int> UpdateIsCompletedPositionsAsync(int HeaderId, bool IsCompleted)
+        {
+            var command = _connection.CreateCommand();
+            command.CommandText = "UPDATE Position SET IsCompleted=@IsCompleted WHERE  HeaderId = @HeaderId";
+            command.Parameters.AddWithValue("@HeaderId", HeaderId);
+            command.Parameters.AddWithValue("@IsCompleted", IsCompleted);
+
+            return await command.ExecuteNonQueryAsync();
+        }
     }
 }

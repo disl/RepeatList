@@ -5,30 +5,14 @@
              xmlns:local="clr-namespace:RepeatList.ViewModels"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              >
-
     <ContentPage.BindingContext>
         <local:MainPageViewModel />
     </ContentPage.BindingContext>
-
     <ContentPage.ToolbarItems>
         <ToolbarItem  IconImageSource="kofi_symbol.png" Clicked="CoffeeButtonClicked" />
     </ContentPage.ToolbarItems>
-
-    <!--<Grid Padding="20" >
-        <Grid.RowDefinitions>
-            <RowDefinition Height="2*" />
-            -->
-    <!--<RowDefinition Height="Auto" />-->
-    <!--
-            <RowDefinition Height="4*" />
-            -->
-    <!--<RowDefinition Height="Auto" />-->
-    <!--
-        </Grid.RowDefinitions>-->
-
     <ScrollView>
         <VerticalStackLayout Padding="20" Spacing="10">
-
             <!-- LISTS -->
             <toolkit:Expander IsExpanded="{Binding IsExpander_listsExpended, Mode=TwoWay}" >
                 <toolkit:Expander.Header >
@@ -39,7 +23,6 @@
                 </toolkit:Expander.Header>
                 <VerticalStackLayout >
                     <Button Text="Add new list" Clicked="OnAddHeaderClicked" TextColor="White"   HorizontalOptions="End" Margin="10"/>
-                    <!-- LISTEN-ÜBERSICHT -->
                     <Border  Stroke="Gray" StrokeThickness="1"  Padding="10" Margin="5" >
                         <Border.StrokeShape>
                             <RoundRectangle CornerRadius="5" />
@@ -63,45 +46,33 @@
                 </VerticalStackLayout>
             </toolkit:Expander>
 
-            <StackLayout Orientation="Horizontal">
-                <Label Text="POSITIONS" FontAttributes="Bold" FontSize="Medium" HorizontalOptions="Start" Margin="5,10,0,0" />
+            <!-- POSITIONEN -->
+            <Label Text="POSITIONS" FontAttributes="Bold" FontSize="Medium" HorizontalOptions="Start" Margin="5,10,0,0" />
+            <StackLayout Orientation="Horizontal" HorizontalOptions="Center">
                 <Button Text="Add new item" Clicked="OnAddPositionClicked" TextColor="White"   HorizontalOptions="EndAndExpand" Margin="0,5,10,5" />
+                <Button Text="Reset positions" Clicked="OnResetPositionsClicked" TextColor="White"   HorizontalOptions="EndAndExpand" Margin="0,5,10,5" />
             </StackLayout>
-            <!-- POSITIONEN-ÜBERSICHT -->
-                    <Border   Stroke="Gray" StrokeThickness="1"  Padding="10" Margin="5" >
-                        <Border.StrokeShape>
-                            <RoundRectangle CornerRadius="5" />
-                        </Border.StrokeShape>
-                        <ListView x:Name="PositionListView" ItemsSource="{Binding Positions}" VerticalOptions="FillAndExpand"  
+
+            <Border   Stroke="Gray" StrokeThickness="1"  Padding="10" Margin="5" >
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="5" />
+                </Border.StrokeShape>
+                <ListView x:Name="PositionListView" ItemsSource="{Binding Positions}" VerticalOptions="FillAndExpand"  
                             SelectedItem="{Binding Position_SelectedItem}"  ItemSelected="OnPositionSelected" SeparatorVisibility="None">
-                            <ListView.ItemTemplate>
-                                <DataTemplate>
-                                    <ViewCell>
-                                        <Grid Padding="10" ColumnDefinitions="4*, 2*,1.3*,1*">
-                                            <Label Text="{Binding Title}" VerticalOptions="Center"  Grid.Column="0"/>
-                                            <Switch IsToggled="{Binding IsCompleted, Mode=TwoWay}" Toggled="OnPositionToggled" Grid.Column="1"/>
-                                            <ImageButton Source="edit_icon.png" Clicked="OnEditPositionClicked" CommandParameter="{Binding}"  Grid.Column="2"/>
-                                            <ImageButton Source="delete_icon.png" Clicked="OnDeleteHeaderClicked" CommandParameter="{Binding}"  Grid.Column="3"/>
-                                        </Grid>
-                                    </ViewCell>
-                                </DataTemplate>
-                            </ListView.ItemTemplate>
-                        </ListView>
-
-                    </Border>
-
-                    <!-- POSITIONEN-BUTTONS -->
-                    <!--<StackLayout Orientation="Horizontal" Spacing="10" >
-                        --><!--<ImageButton Source="close_icon.png" Clicked="OnClearPositionEntryClicked" HeightRequest="40" WidthRequest="40"/>--><!--
-                        <Entry x:Name="PositionEntry" Placeholder="New item" HorizontalOptions="FillAndExpand"/>
-                        <ImageButton Source="add_icon.png" Clicked="OnAddPositionClicked" HeightRequest="40" WidthRequest="40"/>
-                        <ImageButton Source="delete_icon.png" Clicked="OnDeletePositionClicked" HeightRequest="40" WidthRequest="40"/>
-                    </StackLayout>-->
-                    <!--</StackLayout>-->
-
-                <!--</VerticalStackLayout>
-            </toolkit:Expander>-->
-
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <Grid Padding="10" ColumnDefinitions="4*, 2*,1.3*,1*">
+                                    <Label Text="{Binding Title}" VerticalOptions="Center"  Grid.Column="0"/>
+                                    <Switch IsToggled="{Binding IsCompleted, Mode=TwoWay}" Toggled="OnPositionToggled" Grid.Column="1"/>
+                                    <ImageButton Source="edit_icon.png" Clicked="OnEditPositionClicked" CommandParameter="{Binding}"  Grid.Column="2"/>
+                                    <ImageButton Source="delete_icon.png" Clicked="OnDeletePositionClicked" CommandParameter="{Binding}"  Grid.Column="3"/>
+                                </Grid>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </Border>
         </VerticalStackLayout>
     </ScrollView>
 </ContentPage>

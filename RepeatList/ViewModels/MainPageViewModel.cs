@@ -285,5 +285,11 @@ namespace RepeatList.ViewModels
             await _databaseService.EditPositionsTitleAsync(position, title);
             await LoadPositions();
         }
+
+        internal async Task ResetPositionsAsync()
+        {
+            await _databaseService.UpdateIsCompletedPositionsAsync(Header_SelectedItem.Id, false);
+            await LoadPositions();
+        }
     }
 }

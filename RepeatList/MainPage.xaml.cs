@@ -116,15 +116,16 @@ namespace RepeatList
 
         private async void OnDeletePositionClicked(object sender, EventArgs e)
         {
-            if (ViewModel.Position_SelectedItem != null)
+            var button = sender as ImageButton;
+            if (button?.CommandParameter is Position pos)
             {
-                await ViewModel.DeletePosition(ViewModel.Position_SelectedItem);
+                await ViewModel.DeletePosition(pos);
             }
         }
 
 
 
-        
+
 
         #endregion
 
@@ -160,7 +161,12 @@ namespace RepeatList
             await Launcher.OpenAsync(new Uri(url));
         }
 
-        
+        private async void OnResetPositionsClicked(object sender, EventArgs e)
+        {
+            bool answer = await DisplayAlert("Reset Positions", "Are you sure?", "Yes", "No");
+            if (answer)
+                await ViewModel.ResetPositionsAsync();
+        }
     }
 
 }
