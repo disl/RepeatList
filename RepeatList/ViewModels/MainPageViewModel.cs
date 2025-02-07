@@ -286,7 +286,7 @@ namespace RepeatList.ViewModels
             await LoadPositions();
         }
 
-        internal async Task ResetPositionsAsync()
+        public async Task ResetPositionsAsync()
         {
             await _databaseService.UpdateIsCompletedPositionsAsync(Header_SelectedItem.Id, false);
             await LoadPositions();

@@ -192,7 +192,7 @@ namespace RepeatList.Services
             return await command.ExecuteNonQueryAsync();
         }
 
-        internal async Task<int> EditHeadersTitleAsync(Header header, string new_list_name)
+        public async Task<int> EditHeadersTitleAsync(Header header, string new_list_name)
         {
             var command = _connection.CreateCommand();
             command.CommandText = "UPDATE Header SET ListName=@ListName WHERE Id=@Id";
@@ -202,7 +202,7 @@ namespace RepeatList.Services
             return await command.ExecuteNonQueryAsync();
         }
 
-        internal async Task<int> EditPositionsTitleAsync(Position position, string new_title)
+        public async Task<int> EditPositionsTitleAsync(Position position, string new_title)
         {
             var command = _connection.CreateCommand();
             command.CommandText = "UPDATE Position SET Title=@title WHERE Id=@Id";
@@ -211,8 +211,8 @@ namespace RepeatList.Services
 
             return await command.ExecuteNonQueryAsync();
         }
-        
-        internal async Task<int> UpdateIsCompletedPositionsAsync(int HeaderId, bool IsCompleted)
+
+        public async Task<int> UpdateIsCompletedPositionsAsync(int HeaderId, bool IsCompleted)
         {
             var command = _connection.CreateCommand();
             command.CommandText = "UPDATE Position SET IsCompleted=@IsCompleted WHERE  HeaderId = @HeaderId";

@@ -157,7 +157,7 @@ namespace RepeatList
 
         private async void CoffeeButtonClicked(object sender, EventArgs e)
         {
-            string url = "https://Ko-fi.com/dnepr65";
+            string url = "https://Ko-fi.com/disl";
             await Launcher.OpenAsync(new Uri(url));
         }
 
