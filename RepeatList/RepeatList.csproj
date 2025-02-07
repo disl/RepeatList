@@ -44,10 +44,10 @@
 
 	<ItemGroup>
 		<!-- App Icon -->
-		<MauiIcon Update="Resources\AppIcon\appicon.svg" />
+		<!--<MauiIcon Include="Resources\AppIcon\appicon.svg" />-->
 
 		<!-- Splash Screen -->
-		<MauiSplashScreen Update="Resources\Splash\splashscreen.svg" />
+		<!--<MauiSplashScreen Update="Resources\Splash\splashscreen.svg" />-->
 
 		<!-- Images -->
 		<MauiImage Include="Resources\Images\*" />
@@ -63,33 +63,27 @@
 	<ItemGroup>
 		<AndroidResource Remove="Platforms\MacCatalyst\**" />
 		<AndroidResource Remove="Platforms\Tizen\**" />
-		<AndroidResource Remove="Resources\AppIcon\Backup\**" />
 		<AndroidResource Remove="Resources\Images\backup\**" />
 		<AndroidResource Remove="Themes\**" />
 		<Compile Remove="Platforms\MacCatalyst\**" />
 		<Compile Remove="Platforms\Tizen\**" />
-		<Compile Remove="Resources\AppIcon\Backup\**" />
 		<Compile Remove="Resources\Images\backup\**" />
 		<Compile Remove="Themes\**" />
 		<EmbeddedResource Remove="Platforms\MacCatalyst\**" />
 		<EmbeddedResource Remove="Platforms\Tizen\**" />
-		<EmbeddedResource Remove="Resources\AppIcon\Backup\**" />
 		<EmbeddedResource Remove="Resources\Images\backup\**" />
 		<EmbeddedResource Remove="Themes\**" />
 		<MauiCss Remove="Platforms\MacCatalyst\**" />
 		<MauiCss Remove="Platforms\Tizen\**" />
-		<MauiCss Remove="Resources\AppIcon\Backup\**" />
 		<MauiCss Remove="Resources\Images\backup\**" />
 		<MauiCss Remove="Themes\**" />
 		<MauiImage Remove="Resources\Images\backup\**" />
 		<MauiXaml Remove="Platforms\MacCatalyst\**" />
 		<MauiXaml Remove="Platforms\Tizen\**" />
-		<MauiXaml Remove="Resources\AppIcon\Backup\**" />
 		<MauiXaml Remove="Resources\Images\backup\**" />
 		<MauiXaml Remove="Themes\**" />
 		<None Remove="Platforms\MacCatalyst\**" />
 		<None Remove="Platforms\Tizen\**" />
-		<None Remove="Resources\AppIcon\Backup\**" />
 		<None Remove="Resources\Images\backup\**" />
 		<None Remove="Themes\**" />
 	</ItemGroup>
@@ -97,9 +91,8 @@
 	<ItemGroup>
 		<None Remove="Platforms\Android\Resources\values\todo.db3" />
 		<None Remove="Platforms\Android\todo.db3" />
-		<None Remove="Resources\AppIcon\appicon.svg" />
+		<None Remove="Resources\Splash\playstore.svg" />
 		<None Remove="Resources\Splash\splash - Kopie.svg" />
-		<None Remove="Resources\Splash\splashscreen.svg" />
 		<None Remove="Resources\Splash\splash_old.svg" />
 		<None Remove="todo.db" />
 	</ItemGroup>
@@ -131,11 +124,11 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <MauiIcon Include="Resources\AppIcon\appicon.svg" />
+	  <MauiIcon Include="Resources\AppIcon\appicon.png" />
 	</ItemGroup>
 
 	<ItemGroup>
-		<MauiSplashScreen Include="Resources\Splash\splashscreen.svg" />
+	  <MauiSplashScreen Include="Resources\Splash\playstore.svg" />
 	</ItemGroup>
 
 	<ItemGroup>
