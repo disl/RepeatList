@@ -158,7 +158,9 @@ namespace RepeatList
         {
             string url = "https://Ko-fi.com/dnepr65";
             await Launcher.OpenAsync(new Uri(url));
-        }       
+        }
+
+        
     }
 
 }

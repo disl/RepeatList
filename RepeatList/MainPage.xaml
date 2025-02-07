@@ -30,7 +30,7 @@
         <VerticalStackLayout Padding="20" Spacing="10">
 
             <!-- LISTS -->
-            <toolkit:Expander ExpandedChanged="Expander_lists_ExpandedChanged" IsExpanded="{Binding IsExpander_listsExpended, Mode=TwoWay}" >
+            <toolkit:Expander IsExpanded="{Binding IsExpander_listsExpended, Mode=TwoWay}" >
                 <toolkit:Expander.Header >
                     <StackLayout Orientation="Horizontal">
                         <Label Text="LISTS" FontAttributes="Bold" FontSize="Medium" HorizontalOptions="Start" />
@@ -39,7 +39,7 @@
                 </toolkit:Expander.Header>
                 <VerticalStackLayout >
                     <Button Text="Add new list" Clicked="OnAddHeaderClicked" TextColor="White"   HorizontalOptions="End" Margin="10"/>
-                        <!-- LISTEN-ÜBERSICHT -->
+                    <!-- LISTEN-ÜBERSICHT -->
                     <Border  Stroke="Gray" StrokeThickness="1"  Padding="10" Margin="5" >
                         <Border.StrokeShape>
                             <RoundRectangle CornerRadius="5" />
@@ -62,18 +62,6 @@
                     </Border>
                 </VerticalStackLayout>
             </toolkit:Expander>
-
-            
-            
-            <!-- POSITIONS -->
-            <!--<toolkit:Expander ExpandedChanged="Expander_positions_ExpandedChanged" IsExpanded="{Binding Expander_positionsExpended, Mode=TwoWay}">
-                <toolkit:Expander.Header>
-                    <StackLayout Orientation="Horizontal">
-                        <Label Text="POSITIONEN" FontAttributes="Bold" FontSize="Medium" />
-                        <Image Source="{Binding Expander_positionsIcon}"  HeightRequest="40" WidthRequest="40" HorizontalOptions="EndAndExpand" />
-                    </StackLayout>
-                </toolkit:Expander.Header>
-                <VerticalStackLayout Padding="10" >-->
 
             <StackLayout Orientation="Horizontal">
                 <Label Text="POSITIONS" FontAttributes="Bold" FontSize="Medium" HorizontalOptions="Start" Margin="5,10,0,0" />
