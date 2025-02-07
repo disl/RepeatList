@@ -5,8 +5,6 @@ namespace RepeatList
 {
     public partial class MainPage : ContentPage
     {
-        private App? m_application;
-
         public MainPageViewModel ViewModel { get; set; }
 
         public MainPage()
@@ -25,14 +23,10 @@ namespace RepeatList
 
         private async void OnAddHeaderClicked(object sender, EventArgs e)
         {
-            if (string.IsNullOrEmpty(HeaderEntry.Text))
+            string new_list_name = await DisplayPromptAsync("Input", "Enter new list name:");
+            if (!string.IsNullOrWhiteSpace(new_list_name))
             {
-                HeaderEntry.Focus();
-            }
-            else
-            {
-                var new_id = await ViewModel.AddHeader(HeaderEntry.Text);
-                HeaderEntry.Text = string.Empty;
+                var new_id = await ViewModel.AddHeader(new_list_name);
             }
         }
 
@@ -48,11 +42,12 @@ namespace RepeatList
 
         private async void OnDeleteHeaderClicked(object sender, EventArgs e)
         {
-            if (ViewModel.Header_SelectedItem != null)
+            var button = sender as ImageButton;
+            if (button?.CommandParameter is Header header)
             {
                 bool answer = await DisplayAlert("Delete list", "Are you sure?", "Yes", "No");
                 if (answer)
-                    await ViewModel.DeleteHeader(ViewModel.Header_SelectedItem);
+                    await ViewModel.DeleteHeader(header);
             }
         }
 
@@ -69,11 +64,7 @@ namespace RepeatList
             }
         }
 
-        private void OnClearHeaderEntryClicked(object sender, EventArgs e)
-        {
-            HeaderEntry.Text = string.Empty;
-            HeaderEntry.Focus();
-        }
+
 
 
         #endregion
@@ -83,18 +74,24 @@ namespace RepeatList
 
         private async void OnAddPositionClicked(object sender, EventArgs e)
         {
-            if (ViewModel.Header_SelectedItem != null)
+            string new_item_name = await DisplayPromptAsync("Input", "Enter new item:");
+            if (!string.IsNullOrWhiteSpace(new_item_name))
             {
-                if (string.IsNullOrEmpty(PositionEntry.Text))
-                {
-                    PositionEntry.Focus();
-                }
-                else
-                {
-                    await ViewModel.AddPosition(PositionEntry.Text);
-                    PositionEntry.Text = string.Empty;
-                }
+                await ViewModel.AddPosition(new_item_name);
             }
+
+            //if (ViewModel.Header_SelectedItem != null)
+            //{
+            //    if (string.IsNullOrEmpty(PositionEntry.Text))
+            //    {
+            //        PositionEntry.Focus();
+            //    }
+            //    else
+            //    {
+            //        await ViewModel.AddPosition(PositionEntry.Text);
+            //        PositionEntry.Text = string.Empty;
+            //    }
+            //}
         }
 
         private async void OnPositionToggled(object sender, ToggledEventArgs e)
@@ -125,11 +122,9 @@ namespace RepeatList
             }
         }
 
-        private void OnClearPositionEntryClicked(object sender, EventArgs e)
-        {
-            PositionEntry.Text = string.Empty;
-            PositionEntry.Focus();
-        }
+
+
+        
 
         #endregion
 
