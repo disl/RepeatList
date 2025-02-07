@@ -30,7 +30,7 @@
         <VerticalStackLayout Padding="20" Spacing="10">
 
             <!-- LISTS -->
-            <toolkit:Expander ExpandedChanged="Expander_lists_ExpandedChanged"  >
+            <toolkit:Expander   >
                 <toolkit:Expander.Header >
                     <StackLayout Orientation="Horizontal">
                         <Label Text="LISTS" FontAttributes="Bold" FontSize="Medium" HorizontalOptions="Start" />
@@ -83,7 +83,7 @@
             </toolkit:Expander>
 
             <!-- POSITIONS -->
-            <toolkit:Expander ExpandedChanged="Expander_positions_ExpandedChanged">
+            <toolkit:Expander >
                 <toolkit:Expander.Header>
                     <Label Text="POSITIONEN" FontAttributes="Bold" FontSize="Medium" />
                 </toolkit:Expander.Header>
