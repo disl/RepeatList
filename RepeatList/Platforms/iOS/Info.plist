@@ -28,5 +28,11 @@
 	</array>
 	<key>XSAppIconAssets</key>
 	<string>Assets.xcassets/appicon.appiconset</string>
+
+	<key>NSSpeechRecognitionUsageDescription</key>
+	<string>Spracherkennung wird benötigt, um gesprochene Sprache in Text umzuwandeln.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Der Zugriff auf das Mikrofon wird benötigt, um Spracheingaben zu erfassen.</string>
+
 </dict>
 </plist>

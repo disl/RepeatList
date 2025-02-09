@@ -190,6 +190,8 @@ namespace RepeatList.ViewModels
 
         public async Task AddPosition(string PositionEntryText)
         {
+            if(Header_SelectedItem  == null || string.IsNullOrEmpty(PositionEntryText)) return;
+
             var newPosition = new Models.Position { HeaderId = Header_SelectedItem.Id, Title = PositionEntryText, IsCompleted = false };
             await _databaseService.AddPositionAsync(newPosition);
             await LoadPositions();
@@ -200,6 +202,8 @@ namespace RepeatList.ViewModels
 
         public async Task DeleteHeader(Models.Header header)
         {
+            if(header == null) return;
+
             Header_SelectedItem = header;
             await DeletePositionsByHeaderIdAsync();
             await _databaseService.DeleteHeaderAsync(header.Id);
@@ -239,6 +243,8 @@ namespace RepeatList.ViewModels
 
         public async Task DeletePositionsByHeaderIdAsync()
         {
+            if (Header_SelectedItem == null || IsBusy) return;
+
             await _databaseService.DeletePositionsByHeaderIdAsync(Header_SelectedItem.Id);
             await LoadPositions();
         }
@@ -288,6 +294,8 @@ namespace RepeatList.ViewModels
 
         public async Task ResetPositionsAsync()
         {
+        if (Header_SelectedItem == null) return;
+
             await _databaseService.UpdateIsCompletedPositionsAsync(Header_SelectedItem.Id, false);
             await LoadPositions();
         }

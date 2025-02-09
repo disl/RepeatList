@@ -95,6 +95,7 @@
 
 	<ItemGroup>
 	  <Compile Remove="Program.cs" />
+	  <Compile Remove="Services\SpeechService.cs" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -123,13 +124,12 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<MauiXaml Update="InputTextWithMicrophone.xaml">
+		  <Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
 		<MauiXaml Update="Platforms\Windows\App.xaml">
 			<Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
-	</ItemGroup>
-
-	<ItemGroup>
-		<Folder Include="Services\" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -145,6 +145,10 @@
 	    <Pack>True</Pack>
 	    <PackagePath>\</PackagePath>
 	  </None>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Services\" />
 	</ItemGroup>
 
 </Project>

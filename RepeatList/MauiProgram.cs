@@ -1,5 +1,8 @@
 ﻿using CommunityToolkit.Maui;
+using CommunityToolkit.Maui.Media;
 using Microsoft.Extensions.Logging;
+
+//using CommunityToolkit.Maui.Media;
 using SQLitePCL;
 
 namespace RepeatList
@@ -10,25 +13,55 @@ namespace RepeatList
         {
             var builder = MauiApp.CreateBuilder();
             builder
-                .UseMauiApp<App>()
-
-            // Initialize the .NET MAUI Community Toolkit by adding the below line of code
+                .UseMauiApp<App>()// Initialize the .NET MAUI Community Toolkit MediaElement by adding the below line of code
+            //.UseMauiCommunityToolkitMediaElement()// After initializing the .NET MAUI Community Toolkit, optionally add additional fonts
             .UseMauiCommunityToolkit()
+            .ConfigureFonts(fonts =>
+            {
+                fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
+                fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
+            })
+            ;
 
-                .ConfigureFonts(fonts =>
-                {
-                    fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
-                    fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
-                });
+            // Services
+            builder.Services.AddSingleton<ISpeechToText>(SpeechToText.Default);
 
 #if DEBUG
             builder.Logging.AddDebug();
 #endif
-
             // **SQLite initialisieren**
             Batteries.Init();
 
+//#if ANDROID
+//        builder.Services.AddSingleton<ISpeechToText>(new Android.SpeechToTextImplementation());
+//#else
+//            builder.Services.AddSingleton<ISpeechToText>(SpeechToText.Default);
+//#endif
+
+
             return builder.Build();
         }
+        //        public static MauiApp CreateMauiApp()
+        //        {
+        //            var builder = MauiApp.CreateBuilder();
+        //            builder.UseMauiApp<App>()// Initialize the .NET MAUI Community Toolkit by adding the below line of code
+        //            .UseMauiCommunityToolkit()
+        //            .ConfigureServices(services =>
+        //            {
+        //                services.AddSingleton<ISpeechToText>(SpeechToText.Default);
+        //            })
+        //            .ConfigureFonts(fonts =>
+        //            {
+        //                fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
+        //                fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
+        //            })
+        //            .UseMauiCommunityToolkitMediaElement();
+        //#if DEBUG
+        //            builder.Logging.AddDebug();
+        //#endif
+        //            // **SQLite initialisieren**
+        //            Batteries.Init();
+        //            return builder.Build();
+        //        }
     }
 }

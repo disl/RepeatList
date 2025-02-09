@@ -1,15 +1,21 @@
-﻿using RepeatList.Models;
+﻿using CommunityToolkit.Maui.Media;
+using RepeatList.Models;
 using RepeatList.ViewModels;
+using System.Globalization;
 
 namespace RepeatList
 {
     public partial class MainPage : ContentPage
     {
+        private readonly ISpeechToText _speechToText;
+
         public MainPageViewModel ViewModel { get; set; }
 
-        public MainPage()
+        public MainPage(ISpeechToText speechToText)
         {
             InitializeComponent();
+
+            this._speechToText=speechToText;
 
             ViewModel = BindingContext as  MainPageViewModel;
 
@@ -64,6 +70,18 @@ namespace RepeatList
             }
         }
 
+        private async void OnEditHeaderClicked(object sender, EventArgs e)
+        {
+            var button = sender as ImageButton;
+            if (button?.CommandParameter is Header header)
+            {
+                string new_list_name = await DisplayPromptAsync("Input", "Enter new list name:", initialValue: header.ListName);
+                if (!string.IsNullOrWhiteSpace(new_list_name))
+                {
+                    await ViewModel.EditNameHeader(header, new_list_name);
+                }
+            }
+        }
 
 
 
@@ -74,24 +92,19 @@ namespace RepeatList
 
         private async void OnAddPositionClicked(object sender, EventArgs e)
         {
-            string new_item_name = await DisplayPromptAsync("Input", "Enter new item:");
+            //var text = await SpeechToText.Default.ListenAsync(new CultureInfo().def, null, CancellationToken.None);
+
+            var promptPage = new InputTextWithMicrophone(_speechToText);
+            await Navigation.PushModalAsync(promptPage);
+
+            string new_item_name = await promptPage.Result;
+            //string new_item_name = await DisplayPromptAsync("Input", "Enter new item:", initialValue: result);
             if (!string.IsNullOrWhiteSpace(new_item_name))
             {
                 await ViewModel.AddPosition(new_item_name);
             }
 
-            //if (ViewModel.Header_SelectedItem != null)
-            //{
-            //    if (string.IsNullOrEmpty(PositionEntry.Text))
-            //    {
-            //        PositionEntry.Focus();
-            //    }
-            //    else
-            //    {
-            //        await ViewModel.AddPosition(PositionEntry.Text);
-            //        PositionEntry.Text = string.Empty;
-            //    }
-            //}
+
         }
 
         private async void OnPositionToggled(object sender, ToggledEventArgs e)
@@ -123,25 +136,6 @@ namespace RepeatList
             }
         }
 
-
-
-
-
-        #endregion
-
-        private async void OnEditHeaderClicked(object sender, EventArgs e)
-        {
-            var button = sender as ImageButton;
-            if (button?.CommandParameter is Header header)
-            {
-                string new_list_name = await DisplayPromptAsync("Input", "Enter new list name:", initialValue: header.ListName);
-                if (!string.IsNullOrWhiteSpace(new_list_name))
-                {
-                    await ViewModel.EditNameHeader(header, new_list_name);
-                }
-            }
-        }
-
         private async void OnEditPositionClicked(object sender, EventArgs e)
         {
             var button = sender as ImageButton;
@@ -155,18 +149,27 @@ namespace RepeatList
             }
         }
 
-        private async void CoffeeButtonClicked(object sender, EventArgs e)
-        {
-            string url = "https://Ko-fi.com/disl";
-            await Launcher.OpenAsync(new Uri(url));
-        }
-
         private async void OnResetPositionsClicked(object sender, EventArgs e)
         {
             bool answer = await DisplayAlert("Reset Positions", "Are you sure?", "Yes", "No");
             if (answer)
                 await ViewModel.ResetPositionsAsync();
         }
+
+        #endregion
+
+
+        #region Coffee
+
+        private async void CoffeeButtonClicked(object sender, EventArgs e)
+        {
+            string url = "https://Ko-fi.com/disl";
+            await Launcher.OpenAsync(new Uri(url));
+        }
+
+        #endregion
+
+
     }
 
 }
