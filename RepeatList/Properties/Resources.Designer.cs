@@ -61,11 +61,29 @@ namespace RepeatList.Properties {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Add new list ähnelt.
+        /// </summary>
+        public static string AddNewList {
+            get {
+                return ResourceManager.GetString("AddNewList", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die You can use a short phrase, e.g. ‘apple 3 kg’, or enter a series of elements with a separator, e.g. ‘comma’, e.g. ‘apple 3 kg comma carrots 1 pack comma orange juice 1 pack comma meat 1 kg’, e.g. via Microphone. ähnelt.
         /// </summary>
         public static string InputTextWithMicrophoneViewModel_PlaceholderText {
             get {
                 return ResourceManager.GetString("InputTextWithMicrophoneViewModel_PlaceholderText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Lists ähnelt.
+        /// </summary>
+        public static string Lists {
+            get {
+                return ResourceManager.GetString("Lists", resourceCulture);
             }
         }
     }

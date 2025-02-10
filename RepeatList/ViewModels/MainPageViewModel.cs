@@ -1,7 +1,9 @@
 ﻿using RepeatList.Models;
+using RepeatList.Properties;
 using RepeatList.Services;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
 
 namespace RepeatList.ViewModels
@@ -12,6 +14,23 @@ namespace RepeatList.ViewModels
         public event PropertyChangedEventHandler PropertyChanged;
 
         public double ButtonsSize = 30;
+
+        protected bool SetProperty<T>(ref T field, T newValue, [CallerMemberName] string propertyName = null)
+        {
+            if (!Equals(field, newValue))
+            {
+                field = newValue;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+                return true;
+            }
+
+            return false;
+        }
+
+        private string label_lists =  Resources.Lists.ToUpper();
+        public string Label_lists { get => label_lists; set => SetProperty(ref label_lists, value); } 
+
+
 
         private Header _header_SelectedItem;
         public Header Header_SelectedItem

@@ -5,22 +5,22 @@
              xmlns:local="clr-namespace:RepeatList.ViewModels"
              Title="InputTextWithMicrophone"
              >
-   
+
     <ContentPage.BindingContext>
         <local:InputTextWithMicrophoneViewModel/>
     </ContentPage.BindingContext>
     <Border BackgroundColor="Black" StrokeThickness="1" Stroke="LightGray" 
-            Padding="20" Margin="20"  WidthRequest="370"  HeightRequest="250" VerticalOptions="FillAndExpand"
+            Padding="20" Margin="20"    VerticalOptions="CenterAndExpand" 
         >
         <Border.StrokeShape>
             <RoundRectangle CornerRadius="15"/>
         </Border.StrokeShape>
-        <VerticalStackLayout HorizontalOptions="Center"  Spacing="20" VerticalOptions="CenterAndExpand">
-            <HorizontalStackLayout>
-                <Label Text="{Binding LabelText}" VerticalOptions="Center" HorizontalOptions="Start" />
-                <Entry   Text="{Binding InputText}"    VerticalOptions="Center"    HorizontalOptions="StartAndExpand" ClearButtonVisibility="WhileEditing" WidthRequest="200" />
-                <ImageButton Clicked="OnMicrophone_Clicked" Source="microphone_icon.png" WidthRequest="50" HeightRequest="50" />
-            </HorizontalStackLayout>
+        <VerticalStackLayout Spacing="10" VerticalOptions="CenterAndExpand" >
+
+                <Label Text="{Binding LabelText}" VerticalOptions="CenterAndExpand"  HorizontalOptions="FillAndExpand" />
+                <Editor   Text="{Binding InputText}" AutoSize="TextChanges"  WidthRequest="300"     />
+                <!--<ImageButton Clicked="OnMicrophone_Clicked" Source="microphone_icon.png" WidthRequest="50" HeightRequest="50" />-->
+
             <Button Text="OK" Clicked="OkButton_Clicked"  />
             <Button Text="Cancel" Clicked="OnCancel" BackgroundColor="Red" TextColor="White"/>
         </VerticalStackLayout>

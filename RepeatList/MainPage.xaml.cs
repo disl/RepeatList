@@ -1,7 +1,6 @@
 ﻿using CommunityToolkit.Maui.Media;
 using RepeatList.Models;
 using RepeatList.ViewModels;
-using System.Globalization;
 
 namespace RepeatList
 {

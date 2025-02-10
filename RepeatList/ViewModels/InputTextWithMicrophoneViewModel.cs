@@ -20,11 +20,10 @@ namespace RepeatList.ViewModels
         }
 
         private string inputText;
-
         public string InputText { get => inputText; set => SetProperty(ref inputText, value); }
 
-        private string labelText= "Input text:";
 
+        private string labelText= Properties.Resources.InputTextWithMicrophoneViewModel_PlaceholderText;
         public string LabelText { get => labelText; set => SetProperty(ref labelText, value); }
 
 
