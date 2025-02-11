@@ -4,6 +4,7 @@ using RepeatList.Services;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using Position = RepeatList.Models.Position;
 
 
 namespace RepeatList.ViewModels
@@ -23,12 +24,23 @@ namespace RepeatList.ViewModels
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
                 return true;
             }
-
             return false;
         }
 
         private string label_lists =  Resources.Lists.ToUpper();
         public string Label_lists { get => label_lists; set => SetProperty(ref label_lists, value); } 
+        
+        private string label_addNewList =  Resources.AddNewList;
+        public string Label_AddNewList { get => label_addNewList; set => SetProperty(ref label_addNewList, value); }
+        
+        private string label_Positions =  Resources.Positions.ToUpper();
+        public string Label_Positions { get => label_Positions; set => SetProperty(ref label_Positions, value); }
+        
+        private string label_AddNewItem =  Resources.AddNewItem;
+        public string Label_AddNewItem { get => label_AddNewItem; set => SetProperty(ref label_AddNewItem, value); }
+        
+        private string label_ResetPositions =  Resources.ResetPositions;
+        public string Label_ResetPositions { get => label_ResetPositions; set => SetProperty(ref label_ResetPositions, value); }
 
 
 

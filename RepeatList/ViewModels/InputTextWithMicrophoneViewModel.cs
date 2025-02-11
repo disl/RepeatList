@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using RepeatList.Properties;
+using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
 namespace RepeatList.ViewModels
@@ -19,11 +20,14 @@ namespace RepeatList.ViewModels
             return false;
         }
 
+        private string label_Cancel = Resources.Cancel;
+        public string Label_Cancel { get => label_Cancel; set => SetProperty(ref label_Cancel, value); }
+
         private string inputText;
         public string InputText { get => inputText; set => SetProperty(ref inputText, value); }
 
 
-        private string labelText= Properties.Resources.InputTextWithMicrophoneViewModel_PlaceholderText;
+        private string labelText= Resources.InputTextWithMicrophoneViewModel_PlaceholderText;
         public string LabelText { get => labelText; set => SetProperty(ref labelText, value); }
 
 

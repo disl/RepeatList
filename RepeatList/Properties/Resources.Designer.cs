@@ -61,6 +61,15 @@ namespace RepeatList.Properties {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Add Item ähnelt.
+        /// </summary>
+        public static string AddNewItem {
+            get {
+                return ResourceManager.GetString("AddNewItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Add new list ähnelt.
         /// </summary>
         public static string AddNewList {
@@ -70,7 +79,16 @@ namespace RepeatList.Properties {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die You can use a short phrase, e.g. ‘apple 3 kg’, or enter a series of elements with a separator, e.g. ‘comma’, e.g. ‘apple 3 kg comma carrots 1 pack comma orange juice 1 pack comma meat 1 kg’, e.g. via Microphone. ähnelt.
+        ///   Sucht eine lokalisierte Zeichenfolge, die Cancel ähnelt.
+        /// </summary>
+        public static string Cancel {
+            get {
+                return ResourceManager.GetString("Cancel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die You can use a simple phrase, e.g. ‘milk 2 pcs’, or a list as a phrase with a separator, e.g. ‘milk 2 pcs comma meat 0.5 kg comma juice 1 pack’. The separator word must be the same: ‘comma’, ‘;’, ‘,’ (if no comma is used) or something else. ähnelt.
         /// </summary>
         public static string InputTextWithMicrophoneViewModel_PlaceholderText {
             get {
@@ -84,6 +102,24 @@ namespace RepeatList.Properties {
         public static string Lists {
             get {
                 return ResourceManager.GetString("Lists", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Positions ähnelt.
+        /// </summary>
+        public static string Positions {
+            get {
+                return ResourceManager.GetString("Positions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Reset ähnelt.
+        /// </summary>
+        public static string ResetPositions {
+            get {
+                return ResourceManager.GetString("ResetPositions", resourceCulture);
             }
         }
     }

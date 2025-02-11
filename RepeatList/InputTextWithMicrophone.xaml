@@ -22,7 +22,7 @@
                 <!--<ImageButton Clicked="OnMicrophone_Clicked" Source="microphone_icon.png" WidthRequest="50" HeightRequest="50" />-->
 
             <Button Text="OK" Clicked="OkButton_Clicked"  />
-            <Button Text="Cancel" Clicked="OnCancel" BackgroundColor="Red" TextColor="White"/>
+            <Button Text="{Binding Label_Cancel}" Clicked="OnCancel" BackgroundColor="Red" TextColor="White"/>
         </VerticalStackLayout>
     </Border>
 </ContentPage>

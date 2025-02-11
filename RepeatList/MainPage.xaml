@@ -22,7 +22,7 @@
                     </StackLayout>
                 </toolkit:Expander.Header>
                 <VerticalStackLayout >
-                    <Button Text="Add new list" Clicked="OnAddHeaderClicked" TextColor="White"   HorizontalOptions="End" Margin="10"/>
+                    <Button Text="{Binding Label_AddNewList}" Clicked="OnAddHeaderClicked" TextColor="White"   HorizontalOptions="End" Margin="10"/>
                     <Border  Stroke="Gray" StrokeThickness="1"  Padding="10" Margin="5" >
                         <Border.StrokeShape>
                             <RoundRectangle CornerRadius="5" />
@@ -47,10 +47,10 @@
             </toolkit:Expander>
 
             <!-- POSITIONEN -->
-            <Label Text="POSITIONS" FontAttributes="Bold" FontSize="Medium" HorizontalOptions="Start" Margin="5,10,0,0" />
+            <Label Text="{Binding Label_Positions}" FontAttributes="Bold" FontSize="Medium" HorizontalOptions="Start" Margin="5,10,0,0" />
             <StackLayout Orientation="Horizontal" HorizontalOptions="Center">
-                <Button Text="Add new item" Clicked="OnAddPositionClicked" TextColor="White"   HorizontalOptions="EndAndExpand" Margin="0,5,10,5" />
-                <Button Text="Reset positions" Clicked="OnResetPositionsClicked" TextColor="White"   HorizontalOptions="EndAndExpand" Margin="0,5,10,5" />
+                <Button Text="{Binding Label_AddNewItem}" Clicked="OnAddPositionClicked" TextColor="White"   HorizontalOptions="EndAndExpand" Margin="0,5,10,5" />
+                <Button Text="{Binding Label_ResetPositions}" Clicked="OnResetPositionsClicked" TextColor="White"   HorizontalOptions="EndAndExpand" Margin="0,5,10,5" />
             </StackLayout>
             <Border   Stroke="Gray" StrokeThickness="1"  Padding="10" Margin="5" >
                 <Border.StrokeShape>

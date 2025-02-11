@@ -44,7 +44,7 @@
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net9.0-android|AnyCPU'">
-	  <EmbedAssembliesIntoApk>True</EmbedAssembliesIntoApk>
+	  <EmbedAssembliesIntoApk>False</EmbedAssembliesIntoApk>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -68,27 +68,33 @@
 	<ItemGroup>
 		<AndroidResource Remove="Platforms\MacCatalyst\**" />
 		<AndroidResource Remove="Platforms\Tizen\**" />
+		<AndroidResource Remove="Platforms\Windows\**" />
 		<AndroidResource Remove="Resources\Images\backup\**" />
 		<AndroidResource Remove="Themes\**" />
 		<Compile Remove="Platforms\MacCatalyst\**" />
 		<Compile Remove="Platforms\Tizen\**" />
+		<Compile Remove="Platforms\Windows\**" />
 		<Compile Remove="Resources\Images\backup\**" />
 		<Compile Remove="Themes\**" />
 		<EmbeddedResource Remove="Platforms\MacCatalyst\**" />
 		<EmbeddedResource Remove="Platforms\Tizen\**" />
+		<EmbeddedResource Remove="Platforms\Windows\**" />
 		<EmbeddedResource Remove="Resources\Images\backup\**" />
 		<EmbeddedResource Remove="Themes\**" />
 		<MauiCss Remove="Platforms\MacCatalyst\**" />
 		<MauiCss Remove="Platforms\Tizen\**" />
+		<MauiCss Remove="Platforms\Windows\**" />
 		<MauiCss Remove="Resources\Images\backup\**" />
 		<MauiCss Remove="Themes\**" />
 		<MauiImage Remove="Resources\Images\backup\**" />
 		<MauiXaml Remove="Platforms\MacCatalyst\**" />
 		<MauiXaml Remove="Platforms\Tizen\**" />
+		<MauiXaml Remove="Platforms\Windows\**" />
 		<MauiXaml Remove="Resources\Images\backup\**" />
 		<MauiXaml Remove="Themes\**" />
 		<None Remove="Platforms\MacCatalyst\**" />
 		<None Remove="Platforms\Tizen\**" />
+		<None Remove="Platforms\Windows\**" />
 		<None Remove="Resources\Images\backup\**" />
 		<None Remove="Themes\**" />
 	</ItemGroup>
@@ -132,9 +138,6 @@
 	<ItemGroup>
 		<MauiXaml Update="InputTextWithMicrophone.xaml">
 		  <Generator>MSBuild:Compile</Generator>
-		</MauiXaml>
-		<MauiXaml Update="Platforms\Windows\App.xaml">
-			<Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
 	</ItemGroup>
 
