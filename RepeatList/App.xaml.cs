@@ -20,30 +20,30 @@
             return new Window(new AppShell());
         }
 
-        public void LoadTheme(string themeName)
-        {
-            //try
-            //{
-            //    // Clear existing resources
-            //    Resources.MergedDictionaries.Clear();
+        //public void LoadTheme(string themeName)
+        //{
+        //    //try
+        //    //{
+        //    //    // Clear existing resources
+        //    //    Resources.MergedDictionaries.Clear();
 
-            //    // Load the new theme
-            //    var assembly = GetType().Assembly;
-            //    var themePath = $"RepeatList.Themes.{themeName}";
-            //    using (var stream = assembly.GetManifestResourceStream(themePath))
-            //    {
-            //        using (StreamReader reader = new StreamReader(stream))
-            //        {
-            //            var theme = reader.ReadToEnd();
-            //            //var res_dict = theme as ResourceDictionary;
-            //            if (theme != null)
-            //            {
-            //                Resources.MergedDictionaries.Add(theme);
-            //            }
-            //        }
-            //    }
-            //}
-            //catch (Exception ex) { }
-        }
+        //    //    // Load the new theme
+        //    //    var assembly = GetType().Assembly;
+        //    //    var themePath = $"RepeatList.Themes.{themeName}";
+        //    //    using (var stream = assembly.GetManifestResourceStream(themePath))
+        //    //    {
+        //    //        using (StreamReader reader = new StreamReader(stream))
+        //    //        {
+        //    //            var theme = reader.ReadToEnd();
+        //    //            //var res_dict = theme as ResourceDictionary;
+        //    //            if (theme != null)
+        //    //            {
+        //    //                Resources.MergedDictionaries.Add(theme);
+        //    //            }
+        //    //        }
+        //    //    }
+        //    //}
+        //    //catch (Exception ex) { }
+        //}
     }
 }

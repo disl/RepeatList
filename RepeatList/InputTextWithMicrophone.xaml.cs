@@ -44,7 +44,7 @@ public partial class InputTextWithMicrophone : ContentPage
 
     private void OnDoubleCommaButton_Clicked(object sender, EventArgs e)
     {
-        ViewModel.InputText +=",,";
+        ViewModel.InputText += ",,";
     }
 
     #region microphon_backup

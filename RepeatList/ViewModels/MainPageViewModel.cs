@@ -1,11 +1,9 @@
-﻿using Android.Health.Connect.DataTypes;
-using RepeatList.Models;
+﻿using RepeatList.Models;
 using RepeatList.Properties;
 using RepeatList.Services;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using static System.Net.Mime.MediaTypeNames;
 using Position = RepeatList.Models.Position;
 
 
