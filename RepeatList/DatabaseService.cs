@@ -42,7 +42,7 @@ namespace RepeatList.Services
             var headers = new List<Header>();
 
             var command = _connection.CreateCommand();
-            command.CommandText = "SELECT * FROM Header ORDER BY Date DESC";
+            command.CommandText = "SELECT * FROM Header ORDER BY ListName";  //Date DESC";
 
             using (var reader = await command.ExecuteReaderAsync())
             {
@@ -125,7 +125,7 @@ namespace RepeatList.Services
             var positions = new List<Position>();
 
             var command = _connection.CreateCommand();
-            command.CommandText = "SELECT * FROM Position WHERE HeaderId = @HeaderId Order By IsCompleted DESC";
+            command.CommandText = "SELECT * FROM Position WHERE HeaderId = @HeaderId Order By IsCompleted DESC, Title";
             command.Parameters.AddWithValue("@HeaderId", headerId);
 
             using (var reader = await command.ExecuteReaderAsync())

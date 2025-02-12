@@ -1,9 +1,11 @@
-﻿using RepeatList.Models;
+﻿using Android.Health.Connect.DataTypes;
+using RepeatList.Models;
 using RepeatList.Properties;
 using RepeatList.Services;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using static System.Net.Mime.MediaTypeNames;
 using Position = RepeatList.Models.Position;
 
 
@@ -27,19 +29,19 @@ namespace RepeatList.ViewModels
             return false;
         }
 
-        private string label_lists =  Resources.Lists.ToUpper();
-        public string Label_lists { get => label_lists; set => SetProperty(ref label_lists, value); } 
-        
-        private string label_addNewList =  Resources.AddNewList;
+        private string label_lists = Resources.Lists.ToUpper();
+        public string Label_lists { get => label_lists; set => SetProperty(ref label_lists, value); }
+
+        private string label_addNewList = Resources.AddNewList;
         public string Label_AddNewList { get => label_addNewList; set => SetProperty(ref label_addNewList, value); }
-        
-        private string label_Positions =  Resources.Positions.ToUpper();
+
+        private string label_Positions = Resources.Positions.ToUpper();
         public string Label_Positions { get => label_Positions; set => SetProperty(ref label_Positions, value); }
-        
-        private string label_AddNewItem =  Resources.AddNewItem;
+
+        private string label_AddNewItem = Resources.AddNewItem;
         public string Label_AddNewItem { get => label_AddNewItem; set => SetProperty(ref label_AddNewItem, value); }
-        
-        private string label_ResetPositions =  Resources.ResetPositions;
+
+        private string label_ResetPositions = Resources.ResetPositions;
         public string Label_ResetPositions { get => label_ResetPositions; set => SetProperty(ref label_ResetPositions, value); }
 
 
@@ -144,7 +146,7 @@ namespace RepeatList.ViewModels
             }
         }
 
-        private bool _isExpander_listsExpended=true;
+        private bool _isExpander_listsExpended = true;
         public bool IsExpander_listsExpended
         {
             get => _isExpander_listsExpended;
@@ -168,7 +170,7 @@ namespace RepeatList.ViewModels
             }
         }
 
-        private bool _expander_positionsExpended=true;
+        private bool _expander_positionsExpended = true;
         public bool Expander_positionsExpended
         {
             get => _expander_positionsExpended;
@@ -208,12 +210,11 @@ namespace RepeatList.ViewModels
                 return;
             }
 
-            var sort_pos_arr = _pos_arr.OrderByDescending(x => x.IsCompleted).ToList();
-
+            var sort_pos_arr = _pos_arr.OrderByDescending(x => x.IsCompleted).ThenBy(a => a.Title).ToList();
 
             Positions = new ObservableCollection<Position>(sort_pos_arr);
 
-            var sorted_list = Positions.OrderBy(x => x.IsCompleted).ToList();
+            var sorted_list = Positions.OrderBy(x => x.IsCompleted).ThenBy(a => a.Title).ToList();
             SetSortedPositionsList(sorted_list);
 
             IsBusy=false;
@@ -221,19 +222,49 @@ namespace RepeatList.ViewModels
 
         public async Task AddPosition(string PositionEntryText)
         {
-            if(Header_SelectedItem  == null || string.IsNullOrEmpty(PositionEntryText)) return;
+            if (Header_SelectedItem  == null || string.IsNullOrEmpty(PositionEntryText)) return;
+
+            IsBusy = true;
+
+            await DeleteIfAvailable(PositionEntryText);
+            //Thread.Sleep(1000);
 
             var newPosition = new Models.Position { HeaderId = Header_SelectedItem.Id, Title = PositionEntryText, IsCompleted = false };
             await _databaseService.AddPositionAsync(newPosition);
             await LoadPositions();
 
-            var sorted_list = Positions.OrderBy(x => x.IsCompleted).ToList();
+            var sorted_list = Positions.OrderBy(x => x.IsCompleted).ThenBy(a => a.Title).ToList();
             SetSortedPositionsList(sorted_list);
+
+            IsBusy = false;
+        }
+
+        private async Task DeleteIfAvailable(string positionEntryText)
+        {
+            var first_word = GetFirstWordFromString(positionEntryText);
+            var pos = Positions.FirstOrDefault(x => x.Title.ToLower().Contains(first_word.ToLower()));
+            if (pos != null)
+            {
+                await DeletePosition(pos);
+            }
+        }
+
+        private string? GetFirstWordFromString(string positionEntryText)
+        {
+            if (!string.IsNullOrEmpty(positionEntryText))
+            {
+                var arr = positionEntryText.Split(' ');
+                if (arr.Length > 0)
+                    return arr[0];
+                else
+                    return null;
+            }
+            return null;
         }
 
         public async Task DeleteHeader(Models.Header header)
         {
-            if(header == null) return;
+            if (header == null) return;
 
             Header_SelectedItem = header;
             await DeletePositionsByHeaderIdAsync();
@@ -249,7 +280,7 @@ namespace RepeatList.ViewModels
             Position_SelectedItem = pos;
             await _databaseService.UpdatePositionAsync(pos);
 
-            var sorted_list = Positions.OrderBy(x => x.IsCompleted).ToList();
+            var sorted_list = Positions.OrderBy(x => x.IsCompleted).ThenBy(a => a.Title).ToList();
             SetSortedPositionsList(sorted_list);
 
             IsBusy =false;
@@ -257,7 +288,7 @@ namespace RepeatList.ViewModels
 
         private void SetSortedPositionsList(List<Position> sortedItems)
         {
-            var sorted_list = Positions.OrderBy(x => x.IsCompleted).ToList();
+            var sorted_list = Positions.OrderBy(x => x.IsCompleted).ThenBy(a => a.Title).ToList();
             Positions.Clear();
             foreach (var item in sortedItems)
             {
@@ -325,7 +356,7 @@ namespace RepeatList.ViewModels
 
         public async Task ResetPositionsAsync()
         {
-        if (Header_SelectedItem == null) return;
+            if (Header_SelectedItem == null) return;
 
             await _databaseService.UpdateIsCompletedPositionsAsync(Header_SelectedItem.Id, false);
             await LoadPositions();

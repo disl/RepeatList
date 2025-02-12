@@ -61,7 +61,7 @@ namespace RepeatList.Properties {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die Add Item ähnelt.
+        ///   Sucht eine lokalisierte Zeichenfolge, die Add Items ähnelt.
         /// </summary>
         public static string AddNewItem {
             get {
@@ -79,6 +79,15 @@ namespace RepeatList.Properties {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Are you sure? ähnelt.
+        /// </summary>
+        public static string Are_you_sure {
+            get {
+                return ResourceManager.GetString("Are_you_sure", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Cancel ähnelt.
         /// </summary>
         public static string Cancel {
@@ -88,7 +97,61 @@ namespace RepeatList.Properties {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die You can use a simple phrase, e.g. ‘milk 2 pcs’, or a list as a phrase with a separator, e.g. ‘milk 2 pcs comma meat 0.5 kg comma juice 1 pack’. The separator word must be the same: ‘comma’, ‘;’, ‘,’ (if no comma is used) or something else. ähnelt.
+        ///   Sucht eine lokalisierte Zeichenfolge, die Delete list ähnelt.
+        /// </summary>
+        public static string Delete_list {
+            get {
+                return ResourceManager.GetString("Delete_list", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Do you want to use commas (‘,’) as list element separators? ähnelt.
+        /// </summary>
+        public static string Do_you_want_to_use_commas_as_list_element_separators {
+            get {
+                return ResourceManager.GetString("Do_you_want_to_use_commas_as_list_element_separators", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Enter list name ähnelt.
+        /// </summary>
+        public static string Enter_list_name {
+            get {
+                return ResourceManager.GetString("Enter_list_name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Enter new list name ähnelt.
+        /// </summary>
+        public static string Enter_new_list_name {
+            get {
+                return ResourceManager.GetString("Enter_new_list_name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Enter new position title ähnelt.
+        /// </summary>
+        public static string Enter_new_position_title {
+            get {
+                return ResourceManager.GetString("Enter_new_position_title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Input ähnelt.
+        /// </summary>
+        public static string Input {
+            get {
+                return ResourceManager.GetString("Input", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die You can use a simple phrase, e.g. ‘milk 2 pcs’, or a list as a phrase with a double comma (‘,,’) as a separator, e.g. ‘milk 2 pcs,,meat 0.5 kg,,juice 1 pack,,barrels 1 p.’. Such a list could be sent via WatsApp, for example, and read in quickly. ähnelt.
         /// </summary>
         public static string InputTextWithMicrophoneViewModel_PlaceholderText {
             get {
@@ -102,6 +165,15 @@ namespace RepeatList.Properties {
         public static string Lists {
             get {
                 return ResourceManager.GetString("Lists", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die No ähnelt.
+        /// </summary>
+        public static string no {
+            get {
+                return ResourceManager.GetString("no", resourceCulture);
             }
         }
         
@@ -120,6 +192,15 @@ namespace RepeatList.Properties {
         public static string ResetPositions {
             get {
                 return ResourceManager.GetString("ResetPositions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Yes ähnelt.
+        /// </summary>
+        public static string yes {
+            get {
+                return ResourceManager.GetString("yes", resourceCulture);
             }
         }
     }

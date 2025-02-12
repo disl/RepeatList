@@ -1,20 +1,19 @@
-﻿using CommunityToolkit.Maui.Media;
-using RepeatList.Models;
+﻿using RepeatList.Models;
 using RepeatList.ViewModels;
 
 namespace RepeatList
 {
     public partial class MainPage : ContentPage
     {
-        private readonly ISpeechToText _speechToText;
+        //private readonly ISpeechToText _speechToText;
 
         public MainPageViewModel ViewModel { get; set; }
 
-        public MainPage(ISpeechToText speechToText)
+        public MainPage()  //ISpeechToText speechToText)
         {
             InitializeComponent();
 
-            this._speechToText=speechToText;
+            //this._speechToText=speechToText;
 
             ViewModel = BindingContext as  MainPageViewModel;
 
@@ -28,7 +27,7 @@ namespace RepeatList
 
         private async void OnAddHeaderClicked(object sender, EventArgs e)
         {
-            string new_list_name = await DisplayPromptAsync("Input", "Enter new list name:");
+            string new_list_name = await DisplayPromptAsync(Properties.Resources.Input, Properties.Resources.Enter_new_list_name, "OK", Properties.Resources.Cancel);
             if (!string.IsNullOrWhiteSpace(new_list_name))
             {
                 var new_id = await ViewModel.AddHeader(new_list_name);
@@ -50,7 +49,7 @@ namespace RepeatList
             var button = sender as ImageButton;
             if (button?.CommandParameter is Header header)
             {
-                bool answer = await DisplayAlert("Delete list", "Are you sure?", "Yes", "No");
+                bool answer = await DisplayAlert(Properties.Resources.Delete_list, Properties.Resources.Are_you_sure, Properties.Resources.yes, Properties.Resources.no);
                 if (answer)
                     await ViewModel.DeleteHeader(header);
             }
@@ -61,7 +60,7 @@ namespace RepeatList
             var button = sender as ImageButton;
             if (button?.CommandParameter is Header header)
             {
-                string new_list_name = await DisplayPromptAsync("Input", "Enter list name:");
+                string new_list_name = await DisplayPromptAsync(Properties.Resources.Input, Properties.Resources.Enter_list_name, "OK", Properties.Resources.Cancel);
                 if (!string.IsNullOrWhiteSpace(new_list_name))
                 {
                     await ViewModel.CopyHeader(header, new_list_name);
@@ -74,7 +73,7 @@ namespace RepeatList
             var button = sender as ImageButton;
             if (button?.CommandParameter is Header header)
             {
-                string new_list_name = await DisplayPromptAsync("Input", "Enter new list name:", initialValue: header.ListName);
+                string new_list_name = await DisplayPromptAsync(Properties.Resources.Input, Properties.Resources.Enter_new_list_name, "OK", Properties.Resources.Cancel, initialValue: header.ListName);
                 if (!string.IsNullOrWhiteSpace(new_list_name))
                 {
                     await ViewModel.EditNameHeader(header, new_list_name);
@@ -93,22 +92,40 @@ namespace RepeatList
         {
             //var text = await SpeechToText.Default.ListenAsync(new CultureInfo().def, null, CancellationToken.None);
 
-            var promptPage = new InputTextWithMicrophone(_speechToText);
+            IsBusy=true;
+
+            var promptPage = new InputTextWithMicrophone();  //_speechToText);
             await Navigation.PushModalAsync(promptPage);
 
             string new_item_name = await promptPage.Result;
-            //string new_item_name = await DisplayPromptAsync("Input", "Enter new item:", initialValue: result);
+            //string new_item_name = await DisplayPromptAsync(Properties.Resources.Input, "Enter new item:", initialValue: result);
             if (!string.IsNullOrWhiteSpace(new_item_name))
             {
-                await ViewModel.AddPosition(new_item_name);
+                if (new_item_name.Contains(",,"))
+                {
+                    var items_list = new_item_name.Split(",,").ToList();
+                    if (items_list.Count > 0)
+                    {
+                        foreach (var item in items_list)
+                        {
+                            await ViewModel.AddPosition(item.Trim());
+                        }
+                    }
+                    else
+                        await ViewModel.AddPosition(new_item_name);
+                }
+                else
+                    await ViewModel.AddPosition(new_item_name);
             }
 
-
+            IsBusy=false;
         }
 
         private async void OnPositionToggled(object sender, ToggledEventArgs e)
         {
             if (ViewModel.IsBusy) return;
+
+            IsBusy=true;
 
             if (sender is Microsoft.Maui.Controls.Switch switchControl && e !=null  && switchControl.BindingContext != null && switchControl.BindingContext is Position position)
             {
@@ -119,6 +136,8 @@ namespace RepeatList
 
                 ViewModel.IsBusy = false;
             }
+
+            IsBusy=false;
         }
 
         private void OnPositionSelected(object sender, SelectedItemChangedEventArgs e)
@@ -140,7 +159,7 @@ namespace RepeatList
             var button = sender as ImageButton;
             if (button?.CommandParameter is Position position)
             {
-                string new_title = await DisplayPromptAsync("Input", "Enter new position title:", initialValue: position.Title);
+                string new_title = await DisplayPromptAsync(Properties.Resources.Input, Properties.Resources.Enter_new_position_title, "OK", Properties.Resources.Cancel, initialValue: position.Title);
                 if (!string.IsNullOrWhiteSpace(new_title))
                 {
                     await ViewModel.EditTitleOfPosition(position, new_title);
@@ -150,7 +169,7 @@ namespace RepeatList
 
         private async void OnResetPositionsClicked(object sender, EventArgs e)
         {
-            bool answer = await DisplayAlert("Reset Positions", "Are you sure?", "Yes", "No");
+            bool answer = await DisplayAlert(Properties.Resources.ResetPositions, Properties.Resources.Are_you_sure, Properties.Resources.yes, Properties.Resources.no);
             if (answer)
                 await ViewModel.ResetPositionsAsync();
         }

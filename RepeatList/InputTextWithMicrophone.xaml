@@ -5,24 +5,25 @@
              xmlns:local="clr-namespace:RepeatList.ViewModels"
              Title="InputTextWithMicrophone"
              >
-
     <ContentPage.BindingContext>
         <local:InputTextWithMicrophoneViewModel/>
     </ContentPage.BindingContext>
     <Border BackgroundColor="Black" StrokeThickness="1" Stroke="LightGray" 
-            Padding="20" Margin="20"    VerticalOptions="CenterAndExpand" 
-        >
+            Padding="20" Margin="20"    VerticalOptions="CenterAndExpand">
         <Border.StrokeShape>
             <RoundRectangle CornerRadius="15"/>
         </Border.StrokeShape>
-        <VerticalStackLayout Spacing="10" VerticalOptions="CenterAndExpand" >
+        <VerticalStackLayout Spacing="10" VerticalOptions="StartAndExpand" >
 
-                <Label Text="{Binding LabelText}" VerticalOptions="CenterAndExpand"  HorizontalOptions="FillAndExpand" />
-                <Editor   Text="{Binding InputText}" AutoSize="TextChanges"  WidthRequest="300"     />
-                <!--<ImageButton Clicked="OnMicrophone_Clicked" Source="microphone_icon.png" WidthRequest="50" HeightRequest="50" />-->
+            <Label Text="{Binding LabelText}" VerticalOptions="CenterAndExpand"  HorizontalOptions="FillAndExpand" />
+            <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand" >
+                <Editor  Text="{Binding InputText, Mode=TwoWay }" AutoSize="TextChanges"   HorizontalOptions="FillAndExpand"  />
+                <Button Text=",," FontSize="Large" Clicked="OnDoubleCommaButton_Clicked"    />
+            </StackLayout>
+            <!--<ImageButton Clicked="OnMicrophone_Clicked" Source="microphone_icon.png" WidthRequest="50" HeightRequest="50" />-->
 
             <Button Text="OK" Clicked="OkButton_Clicked"  />
-            <Button Text="{Binding Label_Cancel}" Clicked="OnCancel" BackgroundColor="Red" TextColor="White"/>
+            <Button Text="{Binding Label_Cancel}" Clicked="OnCancel" BackgroundColor="Red"  TextColor="White"/>
         </VerticalStackLayout>
     </Border>
 </ContentPage>

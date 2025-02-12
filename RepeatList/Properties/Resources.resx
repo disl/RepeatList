@@ -118,24 +118,51 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="AddNewItem" xml:space="preserve">
-    <value>Add Item</value>
+    <value>Add Items</value>
   </data>
   <data name="AddNewList" xml:space="preserve">
     <value>Add new list</value>
   </data>
+  <data name="Are_you_sure" xml:space="preserve">
+    <value>Are you sure?</value>
+  </data>
   <data name="Cancel" xml:space="preserve">
     <value>Cancel</value>
   </data>
+  <data name="Delete_list" xml:space="preserve">
+    <value>Delete list</value>
+  </data>
+  <data name="Do_you_want_to_use_commas_as_list_element_separators" xml:space="preserve">
+    <value>Do you want to use commas (‘,’) as list element separators?</value>
+  </data>
+  <data name="Enter_list_name" xml:space="preserve">
+    <value>Enter list name</value>
+  </data>
+  <data name="Enter_new_list_name" xml:space="preserve">
+    <value>Enter new list name</value>
+  </data>
+  <data name="Enter_new_position_title" xml:space="preserve">
+    <value>Enter new position title</value>
+  </data>
+  <data name="Input" xml:space="preserve">
+    <value>Input</value>
+  </data>
   <data name="InputTextWithMicrophoneViewModel_PlaceholderText" xml:space="preserve">
-    <value>You can use a simple phrase, e.g. ‘milk 2 pcs’, or a list as a phrase with a separator, e.g. ‘milk 2 pcs comma meat 0.5 kg comma juice 1 pack’. The separator word must be the same: ‘comma’, ‘;’, ‘,’ (if no comma is used) or something else.</value>
+    <value>You can use a simple phrase, e.g. ‘milk 2 pcs’, or a list as a phrase with a double comma (‘,,’) as a separator, e.g. ‘milk 2 pcs,,meat 0.5 kg,,juice 1 pack,,barrels 1 p.’. Such a list could be sent via WatsApp, for example, and read in quickly.</value>
   </data>
   <data name="Lists" xml:space="preserve">
     <value>Lists</value>
+  </data>
+  <data name="no" xml:space="preserve">
+    <value>No</value>
   </data>
   <data name="Positions" xml:space="preserve">
     <value>Positions</value>
   </data>
   <data name="ResetPositions" xml:space="preserve">
     <value>Reset</value>
+  </data>
+  <data name="yes" xml:space="preserve">
+    <value>Yes</value>
   </data>
 </root>
