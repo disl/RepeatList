@@ -142,6 +142,15 @@ namespace RepeatList.Properties {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Export current list ähnelt.
+        /// </summary>
+        public static string Export_list {
+            get {
+                return ResourceManager.GetString("Export_list", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Input ähnelt.
         /// </summary>
         public static string Input {
@@ -183,6 +192,15 @@ namespace RepeatList.Properties {
         public static string Positions {
             get {
                 return ResourceManager.GetString("Positions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Reset current list ähnelt.
+        /// </summary>
+        public static string Reset_current_list {
+            get {
+                return ResourceManager.GetString("Reset_current_list", resourceCulture);
             }
         }
         

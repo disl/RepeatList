@@ -144,6 +144,9 @@
   <data name="Enter_new_position_title" xml:space="preserve">
     <value>Enter new position title</value>
   </data>
+  <data name="Export_list" xml:space="preserve">
+    <value>Export current list</value>
+  </data>
   <data name="Input" xml:space="preserve">
     <value>Input</value>
   </data>
@@ -161,6 +164,9 @@
   </data>
   <data name="ResetPositions" xml:space="preserve">
     <value>Reset</value>
+  </data>
+  <data name="Reset_current_list" xml:space="preserve">
+    <value>Reset current list</value>
   </data>
   <data name="yes" xml:space="preserve">
     <value>Yes</value>

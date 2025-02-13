@@ -1,110 +1,90 @@
-﻿using RepeatList.Models;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using RepeatList.Models;
 using RepeatList.Properties;
 using RepeatList.Services;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Runtime.CompilerServices;
 using Position = RepeatList.Models.Position;
 
 
 namespace RepeatList.ViewModels
 {
-    public class MainPageViewModel : INotifyPropertyChanged
+    public partial class MainPageViewModel : ObservableObject   // INotifyPropertyChanged,
     {
         private DatabaseService _databaseService;
         public event PropertyChangedEventHandler PropertyChanged;
 
         public double ButtonsSize = 30;
 
-        protected bool SetProperty<T>(ref T field, T newValue, [CallerMemberName] string propertyName = null)
-        {
-            if (!Equals(field, newValue))
-            {
-                field = newValue;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-                return true;
-            }
-            return false;
-        }
-
-        private string label_lists = Resources.Lists.ToUpper();
-        public string Label_lists { get => label_lists; set => SetProperty(ref label_lists, value); }
-
-        private string label_addNewList = Resources.AddNewList;
-        public string Label_AddNewList { get => label_addNewList; set => SetProperty(ref label_addNewList, value); }
-
-        private string label_Positions = Resources.Positions.ToUpper();
-        public string Label_Positions { get => label_Positions; set => SetProperty(ref label_Positions, value); }
-
-        private string label_AddNewItem = Resources.AddNewItem;
-        public string Label_AddNewItem { get => label_AddNewItem; set => SetProperty(ref label_AddNewItem, value); }
-
-        private string label_ResetPositions = Resources.ResetPositions;
-        public string Label_ResetPositions { get => label_ResetPositions; set => SetProperty(ref label_ResetPositions, value); }
-
-
-
-        private Header _header_SelectedItem;
-        public Header Header_SelectedItem
-        {
-            get => _header_SelectedItem;
-            set
-            {
-                _header_SelectedItem = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Header_SelectedItem)));
-            }
-        }
-
-        private ObservableCollection<Header>? _headers = new ObservableCollection<Header>();
-        public ObservableCollection<Header>? Headers
-        {
-            get => _headers;
-            set
-            {
-                _headers = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Headers)));
-            }
-        }
-
-        private Header? _header = new Header();
-        public Header? Header
-        {
-            get => _header;
-            set
-            {
-                _header = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Header)));
-            }
-        }
-
-
-        private Models.Position? _position_selectedItem;
-        public Models.Position? Position_SelectedItem
-        {
-            get => _position_selectedItem;
-            set
-            {
-                _position_selectedItem = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Position_SelectedItem)));
-            }
-        }
-
-        private ObservableCollection<Models.Position> _positions = new ObservableCollection<Models.Position>();
-        public ObservableCollection<Models.Position> Positions
-        {
-            get => _positions;
-            set
-            {
-                _positions = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Positions)));
-            }
-        }
-
         public MainPageViewModel()
         {
             _databaseService = new DatabaseService();
             _= LoadHeaders();
         }
+
+
+        #region PROPERTIES
+
+        [ObservableProperty] private int imageButton_size = 35;
+        [ObservableProperty] private string label_lists = Resources.Lists.ToUpper();
+        [ObservableProperty] private string label_addNewList = Resources.AddNewList;
+        [ObservableProperty] private string label_Positions = Resources.Positions.ToUpper();
+        [ObservableProperty] private string label_AddNewItem = Resources.AddNewItem;
+        [ObservableProperty] private string label_ResetPositions = Resources.ResetPositions;
+        [ObservableProperty] private string _Label_Export_list = Resources.Export_list;
+        [ObservableProperty] private string _Label_Reset_current_list = Resources.Reset_current_list;
+
+        [ObservableProperty] private Header header_SelectedItem;
+        [ObservableProperty] private ObservableCollection<Header>? headers = new ObservableCollection<Header>();
+        [ObservableProperty] private Header? header = new Header();
+        [ObservableProperty] private Models.Position? position_selectedItem;
+        [ObservableProperty] private ObservableCollection<Models.Position> positions = new ObservableCollection<Models.Position>();
+
+        [ObservableProperty] public bool isBusy;
+        [ObservableProperty] private string expander_listsIcon = "collapse_icon.png";
+
+        [ObservableProperty] public bool isExpander_listsExpended = true;
+
+        //[ObservableProperty] public string exportedList;
+        //[ObservableProperty] public string exportedListTitle;
+
+        partial void OnIsExpander_listsExpendedChanged(bool oldValue, bool newValue)
+        {
+            Expander_listsIcon=newValue ? "collapse_icon.png" : "expand_icon.png";
+        }
+
+
+
+        #endregion
+
+
+        #region COMMANDS
+
+        [RelayCommand]
+        public async Task Export_list_Clicked() //string ExportedList, string Title)
+        {
+            if (Positions == null || Positions.Count == 0 || Header==null)
+                return;
+
+            var ExportedList = String.Join(",,", Positions.Select(x => x.Title).ToList());
+            var ExportedListTitle = "Export: " + Header_SelectedItem.ListName;
+
+            var file_name = string.Format("repeat_list_export_{0}.txt", DateTime.Now.ToString("yyyyMMddHHmmss"));
+            await Utilities.ShareFileAsync(file_name, ExportedList, ExportedListTitle);
+        }
+
+        [RelayCommand]
+        public void Reset_current_list_Clicked()
+        {
+            int trail = 1;
+        }
+
+        #endregion
+
+
+        #region FUNCTIONS
+
 
         public async Task LoadHeaders()
         {
@@ -133,65 +113,6 @@ namespace RepeatList.ViewModels
             return new_id;
         }
 
-        private bool _isBusy;
-        public bool IsBusy
-        {
-            get => _isBusy;
-            set
-            {
-                _isBusy = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsBusy)));
-            }
-        }
-
-        private bool _isExpander_listsExpended = true;
-        public bool IsExpander_listsExpended
-        {
-            get => _isExpander_listsExpended;
-            set
-            {
-                _isExpander_listsExpended = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsExpander_listsExpended)));
-
-                Expander_listsIcon=value ? "collapse_icon.png" : "expand_icon.png";
-            }
-        }
-
-        private string _expander_listsIcon;
-        public string Expander_listsIcon
-        {
-            get => _expander_listsIcon;
-            set
-            {
-                _expander_listsIcon = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Expander_listsIcon)));
-            }
-        }
-
-        private bool _expander_positionsExpended = true;
-        public bool Expander_positionsExpended
-        {
-            get => _expander_positionsExpended;
-            set
-            {
-                _expander_positionsExpended = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Expander_positionsExpended)));
-
-                Expander_positionsIcon=value ? "collapse_icon.png" : "expand_icon.png";
-            }
-        }
-
-        private string _expander_positionsIcon;
-        public string Expander_positionsIcon
-        {
-            get => _expander_positionsIcon;
-            set
-            {
-                _expander_positionsIcon = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Expander_positionsIcon)));
-            }
-        }
-
         public async Task LoadPositions()
         {
             IsBusy = true;
@@ -204,7 +125,7 @@ namespace RepeatList.ViewModels
             var _pos_arr = await _databaseService.GetPositionsAsync(Header_SelectedItem.Id);
             if (_pos_arr == null || _pos_arr.Count == 0)
             {
-                IsBusy = false;
+                isBusy = false;
                 return;
             }
 
@@ -225,7 +146,6 @@ namespace RepeatList.ViewModels
             IsBusy = true;
 
             await DeleteIfAvailable(PositionEntryText);
-            //Thread.Sleep(1000);
 
             var newPosition = new Models.Position { HeaderId = Header_SelectedItem.Id, Title = PositionEntryText, IsCompleted = false };
             await _databaseService.AddPositionAsync(newPosition);
@@ -275,7 +195,7 @@ namespace RepeatList.ViewModels
         {
             IsBusy=true;
 
-            Position_SelectedItem = pos;
+            Position_selectedItem = pos;
             await _databaseService.UpdatePositionAsync(pos);
 
             var sorted_list = Positions.OrderBy(x => x.IsCompleted).ThenBy(a => a.Title).ToList();
@@ -296,7 +216,7 @@ namespace RepeatList.ViewModels
 
         public async Task DeletePosition(Models.Position pos)
         {
-            Position_SelectedItem= pos;
+            Position_selectedItem= pos;
             await _databaseService.DeletePositionAsync(pos.Id);
             await LoadPositions();
         }
@@ -347,7 +267,7 @@ namespace RepeatList.ViewModels
 
         internal async Task EditTitleOfPosition(Position position, string title)
         {
-            Position_SelectedItem = position;
+            Position_selectedItem = position;
             await _databaseService.EditPositionsTitleAsync(position, title);
             await LoadPositions();
         }
@@ -359,5 +279,8 @@ namespace RepeatList.ViewModels
             await _databaseService.UpdateIsCompletedPositionsAsync(Header_SelectedItem.Id, false);
             await LoadPositions();
         }
+
+
+        #endregion
     }
 }

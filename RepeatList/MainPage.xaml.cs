@@ -142,7 +142,7 @@ namespace RepeatList
 
         private void OnPositionSelected(object sender, SelectedItemChangedEventArgs e)
         {
-            ViewModel.Position_SelectedItem = e.SelectedItem as Position;
+            ViewModel.Position_selectedItem = e.SelectedItem as Position;
         }
 
         private async void OnDeletePositionClicked(object sender, EventArgs e)
