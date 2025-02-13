@@ -31,7 +31,13 @@ namespace RepeatList.Services
                 Title TEXT NOT NULL,
                 IsCompleted INTEGER DEFAULT 0,
                 FOREIGN KEY (HeaderId) REFERENCES Header(Id)
-            );";
+            );
+            CREATE TABLE IF NOT EXISTS Setup(
+                Id INTEGER PRIMARY KEY AUTOINCREMENT,
+                DefaultLanguage TEXT NOT NULL DEFAULT 'en-US',
+                DefaultAppTheme TEXT NOT NULL DEFAULT 'Dark',
+            );"
+            ;
             command.ExecuteNonQuery();
 
         }
@@ -82,7 +88,7 @@ namespace RepeatList.Services
                 }
             }
 
-            if(headers != null && headers.Count == 1)
+            if (headers != null && headers.Count == 1)
                 header = headers[0];
             else header = null;
 
@@ -221,5 +227,90 @@ namespace RepeatList.Services
 
             return await command.ExecuteNonQueryAsync();
         }
+
+        #region SETUP
+
+
+        // Header CRUD
+        public async Task<List<Setup>> GetSetupsAsync()
+        {
+            var Setups = new List<Setup>();
+
+            var command = _connection.CreateCommand();
+            command.CommandText = "SELECT TOP 1 * FROM Setup";  //Date DESC";
+
+            using (var reader = await command.ExecuteReaderAsync())
+            {
+                while (await reader.ReadAsync())
+                {
+                    Setups.Add(new Setup
+                    {
+                        Id = reader.GetInt32(0),
+                        DefaultLanguage = reader.GetString(1),
+                        DefaultAppTheme = reader.GetString(2)
+                    });
+                }
+            }
+
+            return Setups;
+        }
+
+        public async Task<Setup?> GetSetupAsync(int Id)
+        {
+            var Setups = new List<Setup>();
+            var Setup = new Setup();
+
+            var command = _connection.CreateCommand();
+            command.CommandText = "SELECT * FROM Setup WHERE Id=@Id";
+            command.Parameters.AddWithValue("@Id", Id);
+
+            using (var reader = await command.ExecuteReaderAsync())
+            {
+                while (await reader.ReadAsync())
+                {
+                    Setups.Add(new Setup
+                    {
+                        Id = reader.GetInt32(0),
+                        DefaultLanguage = reader.GetString(1),
+                        DefaultAppTheme = reader.GetString(2)
+                    });
+                }
+            }
+
+            if (Setups != null && Setups.Count == 1)
+                Setup = Setups[0];
+            else Setup = null;
+
+            return Setup;
+        }
+
+        public async Task<int> AddSetupAsync(Setup Setup)
+        {
+            var command = _connection.CreateCommand();
+            command.CommandText = "INSERT INTO Setup (DefaultLanguage, DefaultAppTheme) VALUES (@DefaultLanguage, @DefaultAppTheme)";
+            command.Parameters.AddWithValue("@DefaultLanguage", Setup.DefaultLanguage);
+            command.Parameters.AddWithValue("@DefaultAppTheme", Setup.DefaultAppTheme);
+            await command.ExecuteNonQueryAsync();
+
+            // Die letzte eingefügte ID abrufen
+            var idCommand = _connection.CreateCommand();
+            idCommand.CommandText = "SELECT last_insert_rowid()";
+            var newId_obj = await idCommand.ExecuteScalarAsync();
+            if (newId_obj != DBNull.Value)
+                return Convert.ToInt32(newId_obj);
+            else
+                return -1;
+        }
+
+        public async Task<int> DeleteSetupAsync(int id)
+        {
+            var command = _connection.CreateCommand();
+            command.CommandText = "DELETE FROM Setup WHERE Id = @Id";
+            command.Parameters.AddWithValue("@Id", id);
+
+            return await command.ExecuteNonQueryAsync();
+        }
+
+        #endregion
     }
 }

@@ -7,13 +7,7 @@
     Shell.FlyoutBehavior="Flyout"
     Title="RepeatList">
 
-    <ShellContent
-        Title="Repeating lists"
-        ContentTemplate="{DataTemplate local:MainPage}"
-        Route="MainPage"
-        
-        
+    <ShellContent  Title="Repeating lists"  ContentTemplate="{DataTemplate local:MainPage}"  Route="MainPage" />
 
-        />
-
+    
 </Shell>
