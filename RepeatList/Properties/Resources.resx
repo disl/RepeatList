@@ -123,6 +123,9 @@
   <data name="AddNewList" xml:space="preserve">
     <value>Add new list</value>
   </data>
+  <data name="Application_is_closed_to_update_changes" xml:space="preserve">
+    <value>Application is closed to update changes</value>
+  </data>
   <data name="Are_you_sure" xml:space="preserve">
     <value>Are you sure?</value>
   </data>
@@ -153,6 +156,9 @@
   <data name="InputTextWithMicrophoneViewModel_PlaceholderText" xml:space="preserve">
     <value>You can use a simple phrase, e.g. ‘milk 2 pcs’, or a list as a phrase with a double comma (‘,,’) as a separator, e.g. ‘milk 2 pcs,,meat 0.5 kg,,juice 1 pack,,barrels 1 p.’. Such a list could be sent via WatsApp, for example, and read in quickly.</value>
   </data>
+  <data name="language" xml:space="preserve">
+    <value>Language</value>
+  </data>
   <data name="Lists" xml:space="preserve">
     <value>Lists</value>
   </data>
@@ -167,6 +173,9 @@
   </data>
   <data name="Reset_current_list" xml:space="preserve">
     <value>Reset current list</value>
+  </data>
+  <data name="theme" xml:space="preserve">
+    <value>Thema</value>
   </data>
   <data name="yes" xml:space="preserve">
     <value>Yes</value>

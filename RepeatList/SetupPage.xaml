@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="RepeatList.SetupPage"
+             xmlns:local="clr-namespace:RepeatList.ViewModels"
+             >
+    <ContentPage.BindingContext>
+        <local:SetupPageViewModel/>
+    </ContentPage.BindingContext>
+    <StackLayout  VerticalOptions="StartAndExpand" Margin="20" Spacing="20" >
+        <StackLayout Orientation="Horizontal">
+            <Label Text="{Binding Title_language}" VerticalOptions="CenterAndExpand"  WidthRequest="70"
+                   TextColor="{AppThemeBinding Light={DynamicResource PrimaryTextColor}, Dark={DynamicResource PrimaryTextColorLight}}" />
+            <Picker x:Name="LanguagePicker"  Title="{Binding Title_language}" 
+                    TextColor="{AppThemeBinding Light={DynamicResource PrimaryTextColor}, Dark={DynamicResource PrimaryTextColorLight}}"
+                    TitleColor="{AppThemeBinding Light={DynamicResource PrimaryTextColor}, Dark={DynamicResource PrimaryTextColorLight}}"
+                     SelectedIndexChanged="LanguagePicker_SelectedIndexChanged"
+                    SelectedItem="{Binding SelectedItem.DefaultLanguage, Mode=TwoWay}">
+                <Picker.ItemsSource>
+                    <x:Array Type="{x:Type x:String}">
+                        <x:String>en-US</x:String>
+                        <x:String>de-DE</x:String>
+                    </x:Array>
+                </Picker.ItemsSource>
+            </Picker>
+        </StackLayout>
+        <StackLayout Orientation="Horizontal">
+            <Label Text="{Binding Title_thema}" VerticalOptions="CenterAndExpand"  WidthRequest="70" 
+                   TextColor="{AppThemeBinding Light={DynamicResource PrimaryTextColor}, Dark={DynamicResource PrimaryTextColorLight}}" />
+            <Picker x:Name="ThemaPicker" Title="{Binding Title_thema}" 
+                    TextColor="{AppThemeBinding Light={DynamicResource PrimaryTextColor}, Dark={DynamicResource PrimaryTextColorLight}}"
+                   TitleColor="{AppThemeBinding Light={DynamicResource PrimaryTextColor}, Dark={DynamicResource PrimaryTextColorLight}}"
+                    SelectedIndexChanged="ThemaPicker_SelectedIndexChanged"
+                SelectedItem="{Binding SelectedItem.DefaultAppTheme, Mode=TwoWay}">
+                <Picker.ItemsSource>
+                    <x:Array Type="{x:Type x:String}">
+                        <x:String>Dark</x:String>
+                        <x:String>Light</x:String>
+                    </x:Array>
+                </Picker.ItemsSource>
+            </Picker>
+        </StackLayout>
+        <StackLayout Orientation="Horizontal" HorizontalOptions="StartAndExpand" Spacing="10" >
+            <Button Text="OK" Clicked="OkButton_Clicked" HorizontalOptions="FillAndExpand" WidthRequest="150" />
+            <Button Text="{Binding Label_cancel}" Clicked="OnCancel" BackgroundColor="Red"  TextColor="White" WidthRequest="150"/>
+        </StackLayout>
+    </StackLayout>
+</ContentPage>

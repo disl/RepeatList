@@ -1,0 +1,93 @@
+using RepeatList.ViewModels;
+using System.Globalization;
+
+namespace RepeatList;
+
+public partial class SetupPage : ContentPage
+{
+    public SetupPageViewModel ViewModel { get; set; }
+
+    bool _isStart = true;
+    AppTheme _appTheme;
+    string _oldThema;
+
+    string _oldLanguage;
+    string _currLanguage;
+
+    public SetupPage()
+    {
+        InitializeComponent();
+
+        ViewModel = BindingContext as  SetupPageViewModel;
+
+        _oldThema = ViewModel.SelectedItem.DefaultAppTheme;
+        _oldLanguage = ViewModel.SelectedItem.DefaultLanguage;
+    }
+
+    private async void OkButton_Clicked(object sender, EventArgs e)
+    {
+        // Save in DB
+        await ViewModel.UpdateSetup();
+
+        Application.Current.UserAppTheme = _appTheme;
+        SetCurrentCulture(_currLanguage);
+
+        if (_oldLanguage != _currLanguage)
+        {
+            // 
+            await DisplayAlert("Information", Properties.Resources.Application_is_closed_to_update_changes, "OK");
+            Application.Current?.Quit();
+        }
+        else
+            await Shell.Current.GoToAsync("//MainPage");
+    }
+
+    private void SetCurrentCulture(string curr_culture)
+    {
+        //CultureInfo ci = new CultureInfo("en-US");
+        var ci = new CultureInfo(_currLanguage);
+        Thread.CurrentThread.CurrentCulture = ci;
+        Thread.CurrentThread.CurrentUICulture = ci;
+    }
+
+    private async void OnCancel(object sender, EventArgs e)
+    {
+        // Thema
+        if (_oldThema == "Dark")
+            Application.Current.UserAppTheme = AppTheme.Dark;
+        else
+            Application.Current.UserAppTheme = AppTheme.Light;
+
+        // Language
+        SetCurrentCulture(_oldLanguage);
+
+        await Shell.Current.GoToAsync("//MainPage");
+    }
+
+    private void LanguagePicker_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        if (_isStart)
+        {
+            _isStart=false;
+            return;
+        }
+        if (ViewModel == null)
+            return;
+        _currLanguage = ViewModel.SelectedItem.DefaultLanguage;
+    }
+
+    private async void ThemaPicker_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        if (_isStart)
+        {
+            _isStart=false;
+            return;
+        }
+        if (ViewModel == null)
+            return;
+        if (ViewModel.SelectedItem.DefaultAppTheme == "Dark")
+            _appTheme = AppTheme.Dark;
+        else
+            _appTheme = AppTheme.Light;
+    }
+}

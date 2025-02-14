@@ -5,9 +5,14 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:RepeatList"
     Shell.FlyoutBehavior="Flyout"
+    xmlns:controls="clr-namespace:RepeatList.Controls"
     Title="RepeatList">
+    <Shell.FlyoutHeader>
+        <controls:FlyoutHeader />
+    </Shell.FlyoutHeader>
+    
 
     <ShellContent  Title="Repeating lists"  ContentTemplate="{DataTemplate local:MainPage}"  Route="MainPage" />
+    <ShellContent  Title="Setup"  ContentTemplate="{DataTemplate local:SetupPage}"  Route="SetupPage" />
 
-    
 </Shell>

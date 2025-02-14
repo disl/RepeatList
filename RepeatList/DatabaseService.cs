@@ -35,7 +35,7 @@ namespace RepeatList.Services
             CREATE TABLE IF NOT EXISTS Setup(
                 Id INTEGER PRIMARY KEY AUTOINCREMENT,
                 DefaultLanguage TEXT NOT NULL DEFAULT 'en-US',
-                DefaultAppTheme TEXT NOT NULL DEFAULT 'Dark',
+                DefaultAppTheme TEXT NOT NULL DEFAULT 'Dark'
             );"
             ;
             command.ExecuteNonQuery();
@@ -237,7 +237,7 @@ namespace RepeatList.Services
             var Setups = new List<Setup>();
 
             var command = _connection.CreateCommand();
-            command.CommandText = "SELECT TOP 1 * FROM Setup";  //Date DESC";
+            command.CommandText = "SELECT * FROM Setup LIMIT 1"; 
 
             using (var reader = await command.ExecuteReaderAsync())
             {
@@ -251,7 +251,6 @@ namespace RepeatList.Services
                     });
                 }
             }
-
             return Setups;
         }
 
@@ -309,6 +308,24 @@ namespace RepeatList.Services
             command.Parameters.AddWithValue("@Id", id);
 
             return await command.ExecuteNonQueryAsync();
+        }
+
+        public async Task<int> UpdateSetupAsync(Setup position)
+        {
+            if (position == null || position.Id==0)
+                return 0;
+
+            var command = _connection.CreateCommand();
+            command.CommandText = "UPDATE Setup SET DefaultLanguage = @DefaultLanguage, DefaultAppTheme = @DefaultAppTheme WHERE Id = @Id";
+            command.Parameters.AddWithValue("@DefaultLanguage", position.DefaultLanguage);
+            command.Parameters.AddWithValue("@DefaultAppTheme", position.DefaultAppTheme);
+            command.Parameters.AddWithValue("@Id", position.Id);
+
+            var ret_val = await command.ExecuteNonQueryAsync();
+
+            //await GetPositionsAsync(position.HeaderId);
+
+            return ret_val;
         }
 
         #endregion

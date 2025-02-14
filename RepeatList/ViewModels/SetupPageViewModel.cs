@@ -1,13 +1,10 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using RepeatList.Models;
+using RepeatList.Properties;
 using RepeatList.Services;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Globalization;
 
 namespace RepeatList.ViewModels
 {
@@ -20,6 +17,10 @@ namespace RepeatList.ViewModels
 
         [ObservableProperty] public ObservableCollection<Setup> list = new ObservableCollection<Setup>();
         [ObservableProperty] public Setup? selectedItem;
+
+        [ObservableProperty] public string title_language = Resources.language;
+        [ObservableProperty] public string title_thema = Resources.theme;
+        [ObservableProperty] public string label_cancel = Resources.Cancel;
 
         #endregion
 
@@ -34,17 +35,36 @@ namespace RepeatList.ViewModels
         public async Task Load()
         {
             var _list = await _databaseService.GetSetupsAsync();
-            if (_list == null)
-                return;
-
-            if(List == null)
-                List = new ObservableCollection<Setup>();
-            List.Clear();
-            List = new ObservableCollection<Setup>(_list);
-
-            if (List != null &&  List.Count > 0)
+            if (_list == null || _list.Count == 0)
             {
-                SelectedItem = List.FirstOrDefault();
+                await Add(CultureInfo.CurrentCulture.TwoLetterISOLanguageName, "Dark");
+            }
+            else
+            {
+                if (List == null)
+                    List = new ObservableCollection<Setup>();
+                List.Clear();
+                List = new ObservableCollection<Setup>(_list);
+
+
+                if (List != null &&  List.Count > 0)
+                {
+                    SelectedItem = List.FirstOrDefault();
+
+                    // Thema
+                    if (SelectedItem.DefaultAppTheme == "Dark")
+                        Application.Current.UserAppTheme = AppTheme.Dark;
+                    else
+                        Application.Current.UserAppTheme = AppTheme.Light;
+
+                    // Language
+                    CultureInfo ci = new CultureInfo("en-US");
+                    //if (SelectedItem.DefaultLanguage == "de-DE")
+                    ci = new CultureInfo(SelectedItem.DefaultLanguage);
+
+                    Thread.CurrentThread.CurrentCulture = ci;
+                    Thread.CurrentThread.CurrentUICulture = ci;
+                }
             }
         }
 
@@ -70,13 +90,13 @@ namespace RepeatList.ViewModels
             await Load();
         }
 
+        public async Task UpdateSetup()
+        {
+            if (SelectedItem == null) return;
 
-        //[ObservableProperty] private string imageButton_size = 35; 
-        //[ObservableProperty] private string defaultLanguage;
-        //[ObservableProperty] private string defaultAppTheme;
-
-
-
+            await _databaseService.UpdateSetupAsync(SelectedItem);
+            await Load();
+        }
 
     }
 }

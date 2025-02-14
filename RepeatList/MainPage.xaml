@@ -8,82 +8,88 @@
     <ContentPage.BindingContext>
         <local:MainPageViewModel />
     </ContentPage.BindingContext>
-    <ContentPage.ToolbarItems>
-        <!--<ToolbarItem  IconImageSource="kofi_symbol.png" Clicked="CoffeeButtonClicked" />-->
+    <!--<ContentPage.ToolbarItems>
+        -->
+    <!--<ToolbarItem  IconImageSource="kofi_symbol.png" Clicked="CoffeeButtonClicked" />-->
+    <!--
         <ToolbarItem  StyleId="Item1" Order="Secondary" Text="{Binding Label_Export_list}" Command="{Binding Export_list_ClickedCommand}" />
         <ToolbarItem  StyleId="Item2" Order="Secondary" Text="{Binding Label_Reset_current_list}" Command="{Binding Reset_current_list_ClickedCommand}" />
-    </ContentPage.ToolbarItems>
-    <ScrollView>
-        <VerticalStackLayout Padding="20" Spacing="10">
-            <!-- LISTS -->
-            <toolkit:Expander IsExpanded="{Binding IsExpander_listsExpended, Mode=TwoWay}">
-                <toolkit:Expander.Header >
-                    <StackLayout Orientation="Horizontal" Spacing="10">
-                        <Label Text="{Binding Label_lists}" FontAttributes="Bold" FontSize="Medium" HorizontalOptions="StartAndExpand" VerticalOptions="Center" />
-                        <Image Source="{Binding Expander_listsIcon}"   WidthRequest="40" HorizontalOptions="EndAndExpand" />
-                    </StackLayout>
-                </toolkit:Expander.Header>
-                <StackLayout Orientation="Vertical">
-                    <StackLayout Orientation="Horizontal" HorizontalOptions="EndAndExpand" Margin="0,20,0,10" Spacing="10">
-                        <!--<Button Text="{Binding Label_addNewList}" Clicked="OnAddHeaderClicked" TextColor="White"   HorizontalOptions="End" Margin="10"/>-->
-                        <ImageButton Source="add_icon.png" Clicked="OnAddHeaderClicked"   
-                            MaximumWidthRequest="{Binding ImageButton_size}" MaximumHeightRequest="{Binding ImageButton_size}" />
-                        <ImageButton Source="share_icon.png" Command="{Binding Export_list_ClickedCommand}" 
-                            MaximumWidthRequest="{Binding ImageButton_size}" MaximumHeightRequest="{Binding ImageButton_size}" />
-                    </StackLayout>
-                    <Border  Stroke="Gray" StrokeThickness="1"  Padding="10" Margin="5" >
-                        <Border.StrokeShape>
-                            <RoundRectangle CornerRadius="5" />
-                        </Border.StrokeShape>
-                        <ListView x:Name="HeaderListView" ItemsSource="{Binding Headers}" SelectionMode="Single"   
-                                      SelectedItem="{Binding Header_SelectedItem}" ItemSelected="OnHeaderSelected" SeparatorVisibility="None">
-                            <ListView.ItemTemplate>
-                                <DataTemplate>
-                                    <ViewCell>
-                                        <Grid Padding="7" ColumnDefinitions="5*,1*, 1*, 1*">
-                                            <Label Text="{Binding ListName}"  VerticalOptions="Center"   Grid.Column="0"/>
-                                            <ImageButton Source="edit_icon.png" Clicked="OnEditHeaderClicked" CommandParameter="{Binding}"  Grid.Column="1"/>
-                                            <ImageButton Source="copy_icon.png" Clicked="OnCopyHeaderClicked" CommandParameter="{Binding}"  Grid.Column="2"/>
-                                            <ImageButton Source="delete_icon.png" Clicked="OnDeleteHeaderClicked" CommandParameter="{Binding}"  Grid.Column="3"/>
-                                        </Grid>
-                                    </ViewCell>
-                                </DataTemplate>
-                            </ListView.ItemTemplate>
-                        </ListView>
-                    </Border>
+    </ContentPage.ToolbarItems>-->
+    <!--<ScrollView>-->
+    <VerticalStackLayout Padding="20" Spacing="10" >
+        <!-- LISTS -->
+        <toolkit:Expander IsExpanded="{Binding IsExpander_listsExpended, Mode=TwoWay}">
+            <toolkit:Expander.Header >
+                <StackLayout Orientation="Horizontal" Spacing="10">
+                    <Label Text="{Binding Label_lists}" FontAttributes="Bold" FontSize="Medium" HorizontalOptions="StartAndExpand" VerticalOptions="Center" 
+                           TextColor="{AppThemeBinding Light={DynamicResource PrimaryTextColor}, Dark={DynamicResource PrimaryTextColorLight}}"  />
+                    <Image Source="{Binding Expander_listsIcon}"   WidthRequest="40" HorizontalOptions="EndAndExpand" />
                 </StackLayout>
-            </toolkit:Expander>
-
-            <!-- POSITIONEN -->
-            <Label Text="{Binding Label_Positions}" FontAttributes="Bold" FontSize="Medium" HorizontalOptions="Start" Margin="0,10,0,0" />
-            <StackLayout Orientation="Horizontal" HorizontalOptions="EndAndExpand" Spacing="10">
-                <!--<Button Text="{Binding Label_AddNewItem}" Clicked="OnAddPositionClicked" TextColor="White"   HorizontalOptions="CenterAndExpand" Margin="0,5,10,5" />-->
-                <!--<Button Text="{Binding Label_ResetPositions}" Clicked="OnResetPositionsClicked" TextColor="White"   HorizontalOptions="EndAndExpand" Margin="0,5,10,5" />-->
-                <ImageButton Source="add_icon.png" Clicked="OnAddPositionClicked"   
-                             MaximumWidthRequest="{Binding ImageButton_size}" MaximumHeightRequest="{Binding ImageButton_size}" />
-                <ImageButton Source="restart_icon.png" Clicked="OnResetPositionsClicked"
-                             MaximumWidthRequest="{Binding ImageButton_size}" MaximumHeightRequest="{Binding ImageButton_size}" />
+            </toolkit:Expander.Header>
+            <StackLayout Orientation="Vertical">
+                <StackLayout Orientation="Horizontal" HorizontalOptions="EndAndExpand" Margin="0,20,0,10" Spacing="10">
+                    <!--<Button Text="{Binding Label_addNewList}" Clicked="OnAddHeaderClicked" TextColor="White"   HorizontalOptions="End" Margin="10"/>-->
+                    <ImageButton Source="add_icon.png" Clicked="OnAddHeaderClicked"   
+                            MaximumWidthRequest="{Binding ImageButton_size}" MaximumHeightRequest="{Binding ImageButton_size}" />
+                    <ImageButton Source="share_icon.png" Command="{Binding Export_list_ClickedCommand}" 
+                            MaximumWidthRequest="{Binding ImageButton_size}" MaximumHeightRequest="{Binding ImageButton_size}" />
+                </StackLayout>
+                <Border  Stroke="Gray" StrokeThickness="1"  Padding="10" Margin="5" >
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="5" />
+                    </Border.StrokeShape>
+                    <ListView x:Name="HeaderListView" ItemsSource="{Binding Headers}" SelectionMode="Single"    
+                                      SelectedItem="{Binding Header_SelectedItem}" ItemSelected="OnHeaderSelected" SeparatorVisibility="None">
+                        <ListView.ItemTemplate TextColor="{AppThemeBinding Light={DynamicResource PrimaryTextColor}, Dark={DynamicResource PrimaryTextColorLight}}">
+                            <DataTemplate>
+                                <ViewCell>
+                                    <Grid Padding="7" ColumnDefinitions="5*,1*, 1*, 1*">
+                                        <Label Text="{Binding ListName}"  VerticalOptions="Center"   Grid.Column="0" 
+                                               TextColor="{AppThemeBinding Light={DynamicResource PrimaryTextColor}, Dark={DynamicResource PrimaryTextColorLight}}"/>
+                                        <ImageButton Source="edit_icon.png" Clicked="OnEditHeaderClicked" CommandParameter="{Binding}"  Grid.Column="1"/>
+                                        <ImageButton Source="copy_icon.png" Clicked="OnCopyHeaderClicked" CommandParameter="{Binding}"  Grid.Column="2"/>
+                                        <ImageButton Source="delete_icon.png" Clicked="OnDeleteHeaderClicked" CommandParameter="{Binding}"  Grid.Column="3"/>
+                                    </Grid>
+                                </ViewCell>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </Border>
             </StackLayout>
-            <Border   Stroke="Gray" StrokeThickness="1"  Padding="10" Margin="5" >
-                <Border.StrokeShape>
-                    <RoundRectangle CornerRadius="5" />
-                </Border.StrokeShape>
-                <ListView x:Name="PositionListView" ItemsSource="{Binding Positions}" VerticalOptions="FillAndExpand"  
+        </toolkit:Expander>
+
+        <!-- POSITIONEN -->
+        <Label Text="{Binding Label_Positions}" FontAttributes="Bold" FontSize="Medium" HorizontalOptions="Start" Margin="0,10,0,0"
+               TextColor="{AppThemeBinding Light={DynamicResource PrimaryTextColor}, Dark={DynamicResource PrimaryTextColorLight}}" />
+        <StackLayout Orientation="Horizontal" HorizontalOptions="EndAndExpand" Spacing="10">
+            <!--<Button Text="{Binding Label_AddNewItem}" Clicked="OnAddPositionClicked" TextColor="White"   HorizontalOptions="CenterAndExpand" Margin="0,5,10,5" />-->
+            <!--<Button Text="{Binding Label_ResetPositions}" Clicked="OnResetPositionsClicked" TextColor="White"   HorizontalOptions="EndAndExpand" Margin="0,5,10,5" />-->
+            <ImageButton Source="add_icon.png" Clicked="OnAddPositionClicked"   
+                             MaximumWidthRequest="{Binding ImageButton_size}" MaximumHeightRequest="{Binding ImageButton_size}" />
+            <ImageButton Source="restart_icon.png" Clicked="OnResetPositionsClicked"
+                             MaximumWidthRequest="{Binding ImageButton_size}" MaximumHeightRequest="{Binding ImageButton_size}" />
+        </StackLayout>
+        <Border   Stroke="Gray" StrokeThickness="1"  Padding="10" Margin="5" >
+            <Border.StrokeShape>
+                <RoundRectangle CornerRadius="5" />
+            </Border.StrokeShape>
+            <ListView x:Name="PositionListView" ItemsSource="{Binding Positions}" VerticalOptions="FillAndExpand"  
                             SelectedItem="{Binding Position_selectedItem}"  ItemSelected="OnPositionSelected" SeparatorVisibility="None">
-                    <ListView.ItemTemplate>
-                        <DataTemplate>
-                            <ViewCell>
-                                <Grid Padding="10" ColumnDefinitions="4*, 2*,1.3*,1*">
-                                    <Label Text="{Binding Title}" VerticalOptions="CenterAndExpand" FontAutoScalingEnabled="True"  Grid.Column="0"/>
-                                    <Switch IsToggled="{Binding IsCompleted, Mode=TwoWay}" Toggled="OnPositionToggled" Grid.Column="1"/>
-                                    <ImageButton Source="edit_icon.png" Clicked="OnEditPositionClicked" CommandParameter="{Binding}"  Grid.Column="2"/>
-                                    <ImageButton Source="delete_icon.png" Clicked="OnDeletePositionClicked" CommandParameter="{Binding}"  Grid.Column="3"/>
-                                </Grid>
-                            </ViewCell>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
-            </Border>
-        </VerticalStackLayout>
-    </ScrollView>
+                <ListView.ItemTemplate TextColor="{AppThemeBinding Light={DynamicResource PrimaryTextColor}, Dark={DynamicResource PrimaryTextColorLight}}">
+                    <DataTemplate>
+                        <ViewCell>
+                            <Grid Padding="10" ColumnDefinitions="4*, 2*,1.3*,1*">
+                                <Label Text="{Binding Title}" VerticalOptions="CenterAndExpand" FontAutoScalingEnabled="True"  Grid.Column="0"
+                                       TextColor="{AppThemeBinding Light={DynamicResource PrimaryTextColor}, Dark={DynamicResource PrimaryTextColorLight}}"/>
+                                <Switch IsToggled="{Binding IsCompleted, Mode=TwoWay}" Toggled="OnPositionToggled" Grid.Column="1"/>
+                                <ImageButton Source="edit_icon.png" Clicked="OnEditPositionClicked" CommandParameter="{Binding}"  Grid.Column="2"/>
+                                <ImageButton Source="delete_icon.png" Clicked="OnDeletePositionClicked" CommandParameter="{Binding}"  Grid.Column="3"/>
+                            </Grid>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </Border>
+    </VerticalStackLayout>
+    <!--</ScrollView>-->
 </ContentPage>

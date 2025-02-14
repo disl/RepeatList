@@ -8,7 +8,14 @@
             <ResourceDictionary.MergedDictionaries>
                 <!-- Load the default theme (LightTheme) -->
                 <!--<ResourceDictionary Source="Themes/DarkTheme.xaml" />-->
+                
+
             </ResourceDictionary.MergedDictionaries>
+
+            <Color x:Key="PrimaryTextColor">#000000</Color>
+            <!-- Dark Theme -->
+            <Color x:Key="PrimaryTextColorLight">#FFFFFF</Color>
+            <!-- Light Theme -->
         </ResourceDictionary>
     </Application.Resources>
 </Application>

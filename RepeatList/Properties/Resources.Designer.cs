@@ -79,6 +79,15 @@ namespace RepeatList.Properties {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Application is closed to update changes ähnelt.
+        /// </summary>
+        public static string Application_is_closed_to_update_changes {
+            get {
+                return ResourceManager.GetString("Application_is_closed_to_update_changes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Are you sure? ähnelt.
         /// </summary>
         public static string Are_you_sure {
@@ -169,6 +178,15 @@ namespace RepeatList.Properties {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Language ähnelt.
+        /// </summary>
+        public static string language {
+            get {
+                return ResourceManager.GetString("language", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Lists ähnelt.
         /// </summary>
         public static string Lists {
@@ -210,6 +228,15 @@ namespace RepeatList.Properties {
         public static string ResetPositions {
             get {
                 return ResourceManager.GetString("ResetPositions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Thema ähnelt.
+        /// </summary>
+        public static string theme {
+            get {
+                return ResourceManager.GetString("theme", resourceCulture);
             }
         }
         

@@ -123,6 +123,9 @@
   <data name="AddNewList" xml:space="preserve">
     <value>Neue Liste hinzufügen</value>
   </data>
+  <data name="Application_is_closed_to_update_changes" xml:space="preserve">
+    <value>Anwendung wird geschlossen, um Änderungen zu aktualisieren</value>
+  </data>
   <data name="Are_you_sure" xml:space="preserve">
     <value>Sind Sie sicher?</value>
   </data>
@@ -153,6 +156,9 @@
   <data name="InputTextWithMicrophoneViewModel_PlaceholderText" xml:space="preserve">
     <value>Sie können eine einfache Phrase verwenden, z. B. "Milch 2 St.", oder eine Liste als Phrase mit einem Doppelkomma (",,") als Trennzeichen, z. B. "Milch 2 St.,,Fleisch 0,5 kg,,Saft 1 Packung,,Bonnen 1 S.". Eine solche Liste könnte z.B. per WatsApp verschickt und schnell eingelesen werden.</value>
   </data>
+  <data name="language" xml:space="preserve">
+    <value>Sprache</value>
+  </data>
   <data name="Lists" xml:space="preserve">
     <value>Listen</value>
   </data>
@@ -167,6 +173,9 @@
   </data>
   <data name="Reset_current_list" xml:space="preserve">
     <value>Aktuelle Liste zurücksetzen</value>
+  </data>
+  <data name="theme" xml:space="preserve">
+    <value>Thema</value>
   </data>
   <data name="yes" xml:space="preserve">
     <value>Ja</value>

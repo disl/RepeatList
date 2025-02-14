@@ -1,5 +1,6 @@
 ﻿using RepeatList.Models;
 using RepeatList.ViewModels;
+using System.Globalization;
 
 namespace RepeatList
 {
@@ -7,20 +8,39 @@ namespace RepeatList
     {
         //private readonly ISpeechToText _speechToText;
 
+        public SetupPageViewModel SetupPageViewModel { get; set; }
         public MainPageViewModel ViewModel { get; set; }
 
         public MainPage()  //ISpeechToText speechToText)
         {
             InitializeComponent();
 
-            //this._speechToText=speechToText;
-
             ViewModel = BindingContext as  MainPageViewModel;
-
+          
             if (ViewModel != null && ViewModel.Headers != null && ViewModel.Headers.Count > 0)
                 HeaderListView.SelectedItem=ViewModel.Headers[0];
 
-            Application.Current.UserAppTheme = AppTheme.Dark;
+            SetupPageViewModel = new SetupPageViewModel();
+            if (SetupPageViewModel.SelectedItem != null)
+            {
+                SetCurrentCulture(SetupPageViewModel.SelectedItem.DefaultLanguage);
+            }
+        }
+
+        protected override void OnAppearing()
+        {
+            string tmp_lists= Properties.Resources.Lists.ToUpper();
+
+            ViewModel.Label_lists = tmp_lists;
+            ViewModel.Label_Positions =  Properties.Resources.Positions.ToUpper();
+        }
+
+        private void SetCurrentCulture(string curr_culture)
+        {
+            //CultureInfo ci = new CultureInfo("en-US");
+            var ci = new CultureInfo(curr_culture);
+            Thread.CurrentThread.CurrentCulture = ci;
+            Thread.CurrentThread.CurrentUICulture = ci;
         }
 
         #region HEADER

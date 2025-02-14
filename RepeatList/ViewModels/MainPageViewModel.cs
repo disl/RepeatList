@@ -14,17 +14,26 @@ namespace RepeatList.ViewModels
     {
         private DatabaseService _databaseService;
         public event PropertyChangedEventHandler PropertyChanged;
+        private SetupPageViewModel setupPageViewModel;
 
         public double ButtonsSize = 30;
 
         public MainPageViewModel()
         {
-            _databaseService = new DatabaseService();
-            _= LoadHeaders();
+            _databaseService =  new DatabaseService();
+            setupPageViewModel=new SetupPageViewModel();
+
+            _ = setupPageViewModel.Load();
+            CurrentCulture= setupPageViewModel.SelectedItem.DefaultLanguage;
+
+            _ = LoadHeaders();
+
+           
         }
 
-
         #region PROPERTIES
+
+        [ObservableProperty] private string currentCulture;
 
         [ObservableProperty] private int imageButton_size = 35;
         [ObservableProperty] private string label_lists = Resources.Lists.ToUpper();

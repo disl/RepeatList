@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Maui;
 using CommunityToolkit.Maui.Media;
 using Microsoft.Extensions.Logging;
+using RepeatList.ViewModels;
 using SQLitePCL;
 
 namespace RepeatList
@@ -22,7 +23,16 @@ namespace RepeatList
             ;
 
             // Services
-            builder.Services.AddSingleton<ISpeechToText>(SpeechToText.Default);
+            //builder.Services.AddSingleton<ISpeechToText>(SpeechToText.Default);
+
+            builder.Services.AddSingleton<MainPage>();
+            builder.Services.AddSingleton<MainPageViewModel>();
+
+            builder.Services.AddSingleton<InputTextWithMicrophone>();
+            builder.Services.AddSingleton<InputTextWithMicrophoneViewModel>();
+
+            builder.Services.AddSingleton<SetupPage>();
+            builder.Services.AddSingleton<SetupPageViewModel>();
 
 #if DEBUG
             builder.Logging.AddDebug();
