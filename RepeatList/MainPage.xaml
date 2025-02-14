@@ -16,7 +16,7 @@
         <ToolbarItem  StyleId="Item2" Order="Secondary" Text="{Binding Label_Reset_current_list}" Command="{Binding Reset_current_list_ClickedCommand}" />
     </ContentPage.ToolbarItems>-->
     <!--<ScrollView>-->
-    <VerticalStackLayout Padding="20" Spacing="10" >
+    <VerticalStackLayout Padding="20" Spacing="10" VerticalOptions="FillAndExpand" >
         <!-- LISTS -->
         <toolkit:Expander IsExpanded="{Binding IsExpander_listsExpended, Mode=TwoWay}">
             <toolkit:Expander.Header >
@@ -38,7 +38,7 @@
                     <Border.StrokeShape>
                         <RoundRectangle CornerRadius="5" />
                     </Border.StrokeShape>
-                    <ListView x:Name="HeaderListView" ItemsSource="{Binding Headers}" SelectionMode="Single"    
+                    <ListView x:Name="HeaderListView" ItemsSource="{Binding Headers}" SelectionMode="Single"   MaximumHeightRequest="200" InputTransparent="True"
                                       SelectedItem="{Binding Header_SelectedItem}" ItemSelected="OnHeaderSelected" SeparatorVisibility="None">
                         <ListView.ItemTemplate TextColor="{AppThemeBinding Light={DynamicResource PrimaryTextColor}, Dark={DynamicResource PrimaryTextColorLight}}">
                             <DataTemplate>
@@ -59,37 +59,59 @@
         </toolkit:Expander>
 
         <!-- POSITIONEN -->
-        <Label Text="{Binding Label_Positions}" FontAttributes="Bold" FontSize="Medium" HorizontalOptions="Start" Margin="0,10,0,0"
-               TextColor="{AppThemeBinding Light={DynamicResource PrimaryTextColor}, Dark={DynamicResource PrimaryTextColorLight}}" />
-        <StackLayout Orientation="Horizontal" HorizontalOptions="EndAndExpand" Spacing="10">
+        <!--<VerticalStackLayout>-->
+        <StackLayout Orientation="Horizontal"  Spacing="10">
             <!--<Button Text="{Binding Label_AddNewItem}" Clicked="OnAddPositionClicked" TextColor="White"   HorizontalOptions="CenterAndExpand" Margin="0,5,10,5" />-->
             <!--<Button Text="{Binding Label_ResetPositions}" Clicked="OnResetPositionsClicked" TextColor="White"   HorizontalOptions="EndAndExpand" Margin="0,5,10,5" />-->
+            <Label Text="{Binding Label_Positions}" FontAttributes="Bold" FontSize="Medium" HorizontalOptions="StartAndExpand" Margin="0,10,0,0"
+                TextColor="{AppThemeBinding Light={DynamicResource PrimaryTextColor}, Dark={DynamicResource PrimaryTextColorLight}}" />
             <ImageButton Source="add_icon.png" Clicked="OnAddPositionClicked"   
-                             MaximumWidthRequest="{Binding ImageButton_size}" MaximumHeightRequest="{Binding ImageButton_size}" />
+                             MaximumWidthRequest="{Binding ImageButton_size}" MaximumHeightRequest="{Binding ImageButton_size}" HorizontalOptions="End" />
             <ImageButton Source="restart_icon.png" Clicked="OnResetPositionsClicked"
-                             MaximumWidthRequest="{Binding ImageButton_size}" MaximumHeightRequest="{Binding ImageButton_size}" />
+                             MaximumWidthRequest="{Binding ImageButton_size}" MaximumHeightRequest="{Binding ImageButton_size}"  HorizontalOptions="End"/>
         </StackLayout>
-        <Border   Stroke="Gray" StrokeThickness="1"  Padding="10" Margin="5" >
+        <!--<ScrollView>-->
+        <Border   Stroke="Gray" StrokeThickness="1"  Padding="10" Margin="5" VerticalOptions="FillAndExpand" >
             <Border.StrokeShape>
                 <RoundRectangle CornerRadius="5" />
             </Border.StrokeShape>
-            <ListView x:Name="PositionListView" ItemsSource="{Binding Positions}" VerticalOptions="FillAndExpand"  
-                            SelectedItem="{Binding Position_selectedItem}"  ItemSelected="OnPositionSelected" SeparatorVisibility="None">
-                <ListView.ItemTemplate TextColor="{AppThemeBinding Light={DynamicResource PrimaryTextColor}, Dark={DynamicResource PrimaryTextColorLight}}">
+            <!--<ScrollView>-->
+            <ListView x:Name="PositionListView" ItemsSource="{Binding Positions, Mode=OneWay}" MaximumHeightRequest="{Binding PositionsListHeight}"
+                            SelectedItem="{Binding Position_selectedItem}"  ItemSelected="OnPositionSelected" SeparatorVisibility="None"
+                      
+                      > 
+                <ListView.ItemTemplate TextColor="{AppThemeBinding Light={DynamicResource PrimaryTextColor}, Dark={DynamicResource PrimaryTextColorLight}}" >
                     <DataTemplate>
                         <ViewCell>
-                            <Grid Padding="10" ColumnDefinitions="4*, 2*,1.3*,1*">
-                                <Label Text="{Binding Title}" VerticalOptions="CenterAndExpand" FontAutoScalingEnabled="True"  Grid.Column="0"
+                            <ViewCell.View>
+                                <Grid Padding="10" ColumnDefinitions="4*, 2*,1.3*,1*">
+                                    <Grid.Triggers>
+                                        <DataTrigger TargetType="Grid" Binding="{Binding IsCompleted}" Value="True">
+                                            <Setter Property="BackgroundColor" Value="LightGreen"/>
+                                        </DataTrigger>
+                                        <DataTrigger TargetType="Grid" Binding="{Binding IsCompleted}" Value="False">
+                                            <Setter Property="BackgroundColor" Value="LightGray"/>
+                                        </DataTrigger>
+                                    </Grid.Triggers>
+                                    <Label Text="{Binding Title}" VerticalOptions="CenterAndExpand" FontAutoScalingEnabled="True"  Grid.Column="0"
                                        TextColor="{AppThemeBinding Light={DynamicResource PrimaryTextColor}, Dark={DynamicResource PrimaryTextColorLight}}"/>
-                                <Switch IsToggled="{Binding IsCompleted, Mode=TwoWay}" Toggled="OnPositionToggled" Grid.Column="1"/>
-                                <ImageButton Source="edit_icon.png" Clicked="OnEditPositionClicked" CommandParameter="{Binding}"  Grid.Column="2"/>
-                                <ImageButton Source="delete_icon.png" Clicked="OnDeletePositionClicked" CommandParameter="{Binding}"  Grid.Column="3"/>
-                            </Grid>
+
+                                    <ImageButton Source="edit_icon.png" Clicked="OnCheckedButtonClicked" CommandParameter="{Binding}"  Grid.Column="1"/>
+
+                                    <!--<Switch IsToggled="{Binding IsCompleted, Mode=TwoWay}" Toggled="OnPositionToggled" Grid.Column="1"/>-->
+                                    <!--<CheckBox IsChecked="{Binding IsCompleted, Mode=TwoWay}" IsEnabled="False"  Grid.Column="2"/>-->
+                                    <ImageButton Source="edit_icon.png" Clicked="OnEditPositionClicked" CommandParameter="{Binding}"  Grid.Column="2"/>
+                                    <ImageButton Source="delete_icon.png" Clicked="OnDeletePositionClicked" CommandParameter="{Binding}"  Grid.Column="3"/>
+                                </Grid>
+                            </ViewCell.View>
                         </ViewCell>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
+            <!--</ScrollView>-->
+            <!--</VerticalStackLayout>-->
         </Border>
+        <!--</ScrollView>-->
     </VerticalStackLayout>
     <!--</ScrollView>-->
 </ContentPage>

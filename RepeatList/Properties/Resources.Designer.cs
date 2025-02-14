@@ -214,6 +214,15 @@ namespace RepeatList.Properties {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Replace old list element when inserting ähnelt.
+        /// </summary>
+        public static string Replace_old_list_element_when_inserting {
+            get {
+                return ResourceManager.GetString("Replace_old_list_element_when_inserting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Reset current list ähnelt.
         /// </summary>
         public static string Reset_current_list {

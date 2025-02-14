@@ -30,7 +30,8 @@ public partial class SetupPage : ContentPage
         await ViewModel.UpdateSetup();
 
         Application.Current.UserAppTheme = _appTheme;
-        SetCurrentCulture(_currLanguage);
+        if (_currLanguage != null)
+            SetCurrentCulture(_currLanguage);
 
         if (_oldLanguage != _currLanguage)
         {

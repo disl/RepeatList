@@ -175,7 +175,7 @@ namespace RepeatList.Services
 
             var ret_val = await command.ExecuteNonQueryAsync();
 
-            //await GetPositionsAsync(position.HeaderId);
+           // await GetPositionsAsync(position.HeaderId);
 
             return ret_val;
         }

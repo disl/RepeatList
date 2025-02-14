@@ -26,10 +26,28 @@ namespace RepeatList.ViewModels
         private string inputText;
         public string InputText { get => inputText; set => SetProperty(ref inputText, value); }
 
+        private string labelReplaceText = Resources.Replace_old_list_element_when_inserting;
+        public string LabelReplaceText { get => labelReplaceText; set => SetProperty(ref labelReplaceText, value); }
 
-        private string labelText= Resources.InputTextWithMicrophoneViewModel_PlaceholderText;
+
+        private string labelText = Resources.InputTextWithMicrophoneViewModel_PlaceholderText;
         public string LabelText { get => labelText; set => SetProperty(ref labelText, value); }
 
+        bool replace_old_word_when_inserting;
+        public bool Replace_old_word_when_inserting
+        {
+            get
+            {
+                replace_old_word_when_inserting =Preferences.Get("Replace_old_word_when_inserting", true);
+                return replace_old_word_when_inserting;
+            }
+            set
+            {
+                replace_old_word_when_inserting = value;
+                Preferences.Set("Replace_old_word_when_inserting", value);
+                SetProperty(ref replace_old_word_when_inserting, value);
+            }
+        }
 
     }
 }

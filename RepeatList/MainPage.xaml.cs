@@ -56,12 +56,22 @@ namespace RepeatList
 
         private async void OnHeaderSelected(object sender, SelectedItemChangedEventArgs e)
         {
+            //ViewModel.IsBusy=true;
+
+            ViewModel.HeaderSelected=true;
+
             var _selectedHeader = e.SelectedItem as Header;
             if (_selectedHeader != null)
             {
                 ViewModel.Header_SelectedItem= _selectedHeader;
                 await ViewModel.LoadPositions();
+
+                //PositionsListHeight=newValue ? 400 : 600;
             }
+
+            //ViewModel.IsBusy=false;
+
+            //ViewModel.HeaderSelected=false;
         }
 
         private async void OnDeleteHeaderClicked(object sender, EventArgs e)
@@ -144,10 +154,18 @@ namespace RepeatList
         private async void OnPositionToggled(object sender, ToggledEventArgs e)
         {
             if (ViewModel.IsBusy) return;
+            if (ViewModel.HeaderSelected)
+            {
+                ViewModel.HeaderSelected=false;
+                return;
+            }
 
-            IsBusy=true;
+            //IsBusy=true;
 
-            if (sender is Microsoft.Maui.Controls.Switch switchControl && e !=null  && switchControl.BindingContext != null && switchControl.BindingContext is Position position)
+            if (sender is Microsoft.Maui.Controls.Switch switchControl &&
+                e !=null  &&
+                switchControl.BindingContext != null &&
+                switchControl.BindingContext is Position position)
             {
                 ViewModel.IsBusy = true;
 
@@ -157,7 +175,7 @@ namespace RepeatList
                 ViewModel.IsBusy = false;
             }
 
-            IsBusy=false;
+            //IsBusy=false;
         }
 
         private void OnPositionSelected(object sender, SelectedItemChangedEventArgs e)
@@ -205,9 +223,59 @@ namespace RepeatList
             await Launcher.OpenAsync(new Uri(url));
         }
 
+
         #endregion
 
 
+        private async void OnPositionChecked(object sender, CheckedChangedEventArgs e)
+        {
+            if (ViewModel.IsBusy) return;
+            if (ViewModel.HeaderSelected)
+            {
+                ViewModel.HeaderSelected=false;
+                return;
+            }
+
+            //IsBusy=true;
+
+            if (sender is Microsoft.Maui.Controls.CheckBox switchControl &&
+                e !=null  &&
+                switchControl.BindingContext != null &&
+                switchControl.BindingContext is Position position)
+            {
+                ViewModel.IsBusy = true;
+
+                position.IsCompleted = e.Value;
+                await ViewModel.UpdatePosition(position);
+
+                ViewModel.IsBusy = false;
+            }
+        }
+
+        private async void OnCheckedButtonClicked(object sender, EventArgs e)
+        {
+            if (ViewModel.IsBusy) return;
+            if (ViewModel.HeaderSelected)
+            {
+                ViewModel.HeaderSelected=false;
+                return;
+            }
+
+            //IsBusy=true;
+
+            if (sender is Microsoft.Maui.Controls.ImageButton switchControl &&
+                e !=null  &&
+                switchControl.BindingContext != null &&
+                switchControl.BindingContext is Position position)
+            {
+                ViewModel.IsBusy = true;
+
+                position.IsCompleted = !position.IsCompleted;  // e.Value;
+                await ViewModel.UpdatePosition(position);
+
+                ViewModel.IsBusy = false;
+            }
+        }
     }
 
 }
