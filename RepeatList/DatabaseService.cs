@@ -128,6 +128,8 @@ namespace RepeatList.Services
             if (headerId == 0)
                 return new List<Position>();
 
+            
+
             var positions = new List<Position>();
 
             var command = _connection.CreateCommand();

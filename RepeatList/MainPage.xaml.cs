@@ -15,8 +15,11 @@ namespace RepeatList
         {
             InitializeComponent();
 
-            ViewModel = BindingContext as  MainPageViewModel;
-          
+            //ViewModel = BindingContext as  MainPageViewModel;
+            ViewModel = new MainPageViewModel();
+            BindingContext = ViewModel;
+
+
             if (ViewModel != null && ViewModel.Headers != null && ViewModel.Headers.Count > 0)
                 HeaderListView.SelectedItem=ViewModel.Headers[0];
 
@@ -51,12 +54,13 @@ namespace RepeatList
             if (!string.IsNullOrWhiteSpace(new_list_name))
             {
                 var new_id = await ViewModel.AddHeader(new_list_name);
+                ViewModel.SetFirstItemForHeaders();
             }
         }
 
         private async void OnHeaderSelected(object sender, SelectedItemChangedEventArgs e)
         {
-            //ViewModel.IsBusy=true;
+            ViewModel.IsBusy=true;
 
             ViewModel.HeaderSelected=true;
 
@@ -64,12 +68,16 @@ namespace RepeatList
             if (_selectedHeader != null)
             {
                 ViewModel.Header_SelectedItem= _selectedHeader;
+
                 await ViewModel.LoadPositions();
+
+                expander.IsExpanded= !expander.IsExpanded;
+                expander.IsExpanded= !expander.IsExpanded;
 
                 //PositionsListHeight=newValue ? 400 : 600;
             }
 
-            //ViewModel.IsBusy=false;
+            ViewModel.IsBusy=false;
 
             //ViewModel.HeaderSelected=false;
         }
@@ -81,7 +89,13 @@ namespace RepeatList
             {
                 bool answer = await DisplayAlert(Properties.Resources.Delete_list, Properties.Resources.Are_you_sure, Properties.Resources.yes, Properties.Resources.no);
                 if (answer)
+                {
                     await ViewModel.DeleteHeader(header);
+                    ViewModel.SetFirstItemForHeaders();
+
+                    expander.IsExpanded= !expander.IsExpanded;
+                    expander.IsExpanded= !expander.IsExpanded;
+                }
             }
         }
 
@@ -93,7 +107,12 @@ namespace RepeatList
                 string new_list_name = await DisplayPromptAsync(Properties.Resources.Input, Properties.Resources.Enter_list_name, "OK", Properties.Resources.Cancel);
                 if (!string.IsNullOrWhiteSpace(new_list_name))
                 {
-                    await ViewModel.CopyHeader(header, new_list_name);
+                    var new_int = await ViewModel.CopyHeader(header, new_list_name);
+                    ViewModel.SetFirstItemForHeaders();
+
+                    expander.IsExpanded= !expander.IsExpanded;
+                    expander.IsExpanded= !expander.IsExpanded;
+
                 }
             }
         }
@@ -107,6 +126,9 @@ namespace RepeatList
                 if (!string.IsNullOrWhiteSpace(new_list_name))
                 {
                     await ViewModel.EditNameHeader(header, new_list_name);
+
+                    expander.IsExpanded= !expander.IsExpanded;
+                    expander.IsExpanded= !expander.IsExpanded;
                 }
             }
         }
@@ -122,7 +144,7 @@ namespace RepeatList
         {
             //var text = await SpeechToText.Default.ListenAsync(new CultureInfo().def, null, CancellationToken.None);
 
-            IsBusy=true;
+            ViewModel.IsBusy=true;
 
             var promptPage = new InputTextWithMicrophone();  //_speechToText);
             await Navigation.PushModalAsync(promptPage);
@@ -148,7 +170,10 @@ namespace RepeatList
                     await ViewModel.AddPosition(new_item_name);
             }
 
-            IsBusy=false;
+            expander.IsExpanded= !expander.IsExpanded;
+            expander.IsExpanded= !expander.IsExpanded;
+
+            ViewModel.IsBusy=false;
         }
 
         private async void OnPositionToggled(object sender, ToggledEventArgs e)
@@ -160,7 +185,7 @@ namespace RepeatList
                 return;
             }
 
-            //IsBusy=true;
+            //ViewModel.IsBusy=true;
 
             if (sender is Microsoft.Maui.Controls.Switch switchControl &&
                 e !=null  &&
@@ -175,13 +200,13 @@ namespace RepeatList
                 ViewModel.IsBusy = false;
             }
 
-            //IsBusy=false;
+            //ViewModel.IsBusy=false;
         }
 
-        private void OnPositionSelected(object sender, SelectedItemChangedEventArgs e)
-        {
-            ViewModel.Position_selectedItem = e.SelectedItem as Position;
-        }
+        //private void OnPositionSelected(object sender, SelectedItemChangedEventArgs e)
+        //{
+        //    ViewModel.Position_selectedItem = e.SelectedItem as Position;
+        //}
 
         private async void OnDeletePositionClicked(object sender, EventArgs e)
         {
@@ -236,7 +261,7 @@ namespace RepeatList
                 return;
             }
 
-            //IsBusy=true;
+            //ViewModel.IsBusy=true;
 
             if (sender is Microsoft.Maui.Controls.CheckBox switchControl &&
                 e !=null  &&
@@ -255,13 +280,13 @@ namespace RepeatList
         private async void OnCheckedButtonClicked(object sender, EventArgs e)
         {
             if (ViewModel.IsBusy) return;
-            if (ViewModel.HeaderSelected)
-            {
-                ViewModel.HeaderSelected=false;
-                return;
-            }
+            //if (ViewModel.HeaderSelected)
+            //{
+            //    ViewModel.HeaderSelected=false;
+            //    return;
+            //}
 
-            //IsBusy=true;
+            //ViewModel.IsBusy=true;
 
             if (sender is Microsoft.Maui.Controls.ImageButton switchControl &&
                 e !=null  &&
@@ -275,6 +300,11 @@ namespace RepeatList
 
                 ViewModel.IsBusy = false;
             }
+        }
+
+        private void OnPositionSelected_new(object sender, SelectionChangedEventArgs e)
+        {
+            ViewModel.Position_selectedItem = e.CurrentSelection as Position;
         }
     }
 
