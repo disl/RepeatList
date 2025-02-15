@@ -234,7 +234,10 @@ namespace RepeatList
         {
             bool answer = await DisplayAlert(Properties.Resources.ResetPositions, Properties.Resources.Are_you_sure, Properties.Resources.yes, Properties.Resources.no);
             if (answer)
+            {
                 await ViewModel.ResetPositionsAsync();
+
+            }
         }
 
         #endregion

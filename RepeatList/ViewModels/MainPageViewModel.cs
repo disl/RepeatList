@@ -186,8 +186,6 @@ namespace RepeatList.ViewModels
             var sorted_list = _pos_arr.OrderBy(x => x.IsCompleted).ThenBy(a => a.Title).ToList();
             SetSortedPositionsList(sorted_list);
 
-            //Header_SelectedItem=Header_SelectedItem;
-
             IsBusy=false;
             PositionListViewVisible=true;
         }
