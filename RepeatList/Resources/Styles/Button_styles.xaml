@@ -1,0 +1,67 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ResourceDictionary xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="RepeatList.Resources.Styles.Button_styles">
+
+    <!-- BUTTONS -->
+
+    <!-- SAMPLE USAGE:  
+<StackLayout Spacing="10" Padding="20">
+    <Button Text="Primary" Style="{StaticResource PrimaryButtonStyle}" />
+    <Button Text="Secondary" Style="{StaticResource SecondaryButtonStyle}" />
+    <Button Text="Success" Style="{StaticResource SuccessButtonStyle}" />
+    <Button Text="Warning" Style="{StaticResource WarningButtonStyle}" />
+    <Button Text="Danger" Style="{StaticResource DangerButtonStyle}" />
+</StackLayout>
+-->
+
+    <!-- Farben für Light-Mode -->
+    <Color x:Key="PrimaryLight">#007AFF</Color>
+    <Color x:Key="SecondaryLight">#6C757D</Color>
+    <Color x:Key="SuccessLight">#28A745</Color>
+    <Color x:Key="WarningLight">#FFC107</Color>
+    <Color x:Key="DangerLight">#DC3545</Color>
+
+    <!-- Farben für Dark-Mode -->
+    <Color x:Key="PrimaryDark">#0A84FF</Color>
+    <Color x:Key="SecondaryDark">#ADB5BD</Color>
+    <Color x:Key="SuccessDark">#34C759</Color>
+    <Color x:Key="WarningDark">#FFCC00</Color>
+    <Color x:Key="DangerDark">#FF453A</Color>
+
+    <!-- Basis-Button-Style -->
+    <Style x:Key="BaseButtonStyle" TargetType="Button">
+        <Setter Property="TextColor" Value="White"/>
+        <Setter Property="CornerRadius" Value="8"/>
+        <Setter Property="Padding" Value="10"/>
+        <Setter Property="FontSize" Value="16"/>
+    </Style>
+
+    <!-- Button-Stile mit AppThemeBinding -->
+    <Style x:Key="PrimaryButtonStyle" TargetType="Button" BasedOn="{StaticResource BaseButtonStyle}">
+        <Setter Property="BackgroundColor" 
+            Value="{AppThemeBinding Light={StaticResource PrimaryLight}, Dark={StaticResource PrimaryDark}}" />
+    </Style>
+
+    <Style x:Key="SecondaryButtonStyle" TargetType="Button" BasedOn="{StaticResource BaseButtonStyle}">
+        <Setter Property="BackgroundColor" 
+            Value="{AppThemeBinding Light={StaticResource SecondaryLight}, Dark={StaticResource SecondaryDark}}" />
+    </Style>
+
+    <Style x:Key="SuccessButtonStyle" TargetType="Button" BasedOn="{StaticResource BaseButtonStyle}">
+        <Setter Property="BackgroundColor" 
+            Value="{AppThemeBinding Light={StaticResource SuccessLight}, Dark={StaticResource SuccessDark}}" />
+    </Style>
+
+    <Style x:Key="WarningButtonStyle" TargetType="Button" BasedOn="{StaticResource BaseButtonStyle}">
+        <Setter Property="BackgroundColor" 
+            Value="{AppThemeBinding Light={StaticResource WarningLight}, Dark={StaticResource WarningDark}}" />
+    </Style>
+
+    <Style x:Key="DangerButtonStyle" TargetType="Button" BasedOn="{StaticResource BaseButtonStyle}">
+        <Setter Property="BackgroundColor" 
+            Value="{AppThemeBinding Light={StaticResource DangerLight}, Dark={StaticResource DangerDark}}" />
+    </Style>
+
+
+</ResourceDictionary>

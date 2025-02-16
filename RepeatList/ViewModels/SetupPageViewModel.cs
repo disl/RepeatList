@@ -1,6 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using RepeatList.Models;
-using RepeatList.Properties;
 using RepeatList.Services;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -18,9 +17,9 @@ namespace RepeatList.ViewModels
         [ObservableProperty] public ObservableCollection<Setup> list = new ObservableCollection<Setup>();
         [ObservableProperty] public Setup? selectedItem;
 
-        [ObservableProperty] public string title_language = Resources.language;
-        [ObservableProperty] public string title_thema = Resources.theme;
-        [ObservableProperty] public string label_cancel = Resources.Cancel;
+        [ObservableProperty] public string title_language = Properties.Resources.language;
+        [ObservableProperty] public string title_thema = Properties.Resources.theme;
+        [ObservableProperty] public string label_cancel = Properties.Resources.Cancel;
 
         #endregion
 

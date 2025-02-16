@@ -214,7 +214,7 @@ namespace RepeatList.Properties {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die Replace old list element when inserting ähnelt.
+        ///   Sucht eine lokalisierte Zeichenfolge, die Replace list element when inserting ähnelt.
         /// </summary>
         public static string Replace_old_list_element_when_inserting {
             get {

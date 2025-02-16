@@ -1,8 +1,6 @@
-﻿using CommunityToolkit.Maui.Views;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using RepeatList.Models;
-using RepeatList.Properties;
 using RepeatList.Services;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -66,13 +64,13 @@ namespace RepeatList.ViewModels
         [ObservableProperty] private string currentCulture;
 
         [ObservableProperty] private int imageButton_size = 35;
-        [ObservableProperty] private string label_lists = Resources.Lists.ToUpper();
-        [ObservableProperty] private string label_addNewList = Resources.AddNewList;
-        [ObservableProperty] private string label_Positions = Resources.Positions.ToUpper();
-        [ObservableProperty] private string label_AddNewItem = Resources.AddNewItem;
-        [ObservableProperty] private string label_ResetPositions = Resources.ResetPositions;
-        [ObservableProperty] private string _Label_Export_list = Resources.Export_list;
-        [ObservableProperty] private string _Label_Reset_current_list = Resources.Reset_current_list;
+        [ObservableProperty] private string label_lists = Properties.Resources.Lists.ToUpper();
+        [ObservableProperty] private string label_addNewList = Properties.Resources.AddNewList;
+        [ObservableProperty] private string label_Positions = Properties.Resources.Positions.ToUpper();
+        [ObservableProperty] private string label_AddNewItem = Properties.Resources.AddNewItem;
+        [ObservableProperty] private string label_ResetPositions = Properties.Resources.ResetPositions;
+        [ObservableProperty] private string _Label_Export_list = Properties.Resources.Export_list;
+        [ObservableProperty] private string _Label_Reset_current_list = Properties.Resources.Reset_current_list;
 
         [ObservableProperty] private Header header_SelectedItem;
         [ObservableProperty] private ObservableCollection<Header>? headers = new ObservableCollection<Header>();
