@@ -124,6 +124,15 @@ namespace RepeatList.Properties {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Done ähnelt.
+        /// </summary>
+        public static string done {
+            get {
+                return ResourceManager.GetString("done", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Enter list name ähnelt.
         /// </summary>
         public static string Enter_list_name {
@@ -246,6 +255,15 @@ namespace RepeatList.Properties {
         public static string theme {
             get {
                 return ResourceManager.GetString("theme", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Undone ähnelt.
+        /// </summary>
+        public static string undone {
+            get {
+                return ResourceManager.GetString("undone", resourceCulture);
             }
         }
         

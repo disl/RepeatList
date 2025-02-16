@@ -274,6 +274,7 @@ namespace RepeatList
                 ViewModel.IsBusy = true;
 
                 position.IsCompleted = e.Value;
+                position.InsertedAt= DateTime.Now;
                 await ViewModel.UpdatePosition(position);
 
                 ViewModel.IsBusy = false;
@@ -299,6 +300,7 @@ namespace RepeatList
                 ViewModel.IsBusy = true;
 
                 position.IsCompleted = !position.IsCompleted;  // e.Value;
+                position.InsertedAt= DateTime.Now;
                 await ViewModel.UpdatePosition(position);
 
                 ViewModel.IsBusy = false;

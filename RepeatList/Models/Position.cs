@@ -9,6 +9,8 @@ namespace RepeatList.Models
         public int HeaderId { get; set; } // Fremdschlüssel zum Header
         public string? Title { get; set; }
 
+        public DateTime? InsertedAt { get; set; }
+
         public string PositionImageSource
         {
             get

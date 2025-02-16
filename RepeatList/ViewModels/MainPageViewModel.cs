@@ -1,4 +1,5 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Maui.Core.Extensions;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using RepeatList.Models;
 using RepeatList.Services;
@@ -71,12 +72,17 @@ namespace RepeatList.ViewModels
         [ObservableProperty] private string label_ResetPositions = Properties.Resources.ResetPositions;
         [ObservableProperty] private string _Label_Export_list = Properties.Resources.Export_list;
         [ObservableProperty] private string _Label_Reset_current_list = Properties.Resources.Reset_current_list;
+        [ObservableProperty] private string _Label_done = Properties.Resources.done;
+        [ObservableProperty] private string _Label_undone = Properties.Resources.undone;
 
         [ObservableProperty] private Header header_SelectedItem;
         [ObservableProperty] private ObservableCollection<Header>? headers = new ObservableCollection<Header>();
         [ObservableProperty] private Header? header = new Header();
         [ObservableProperty] private Models.Position? position_selectedItem;
+
         [ObservableProperty] private ObservableCollection<Position> positions = new ObservableCollection<Position>();
+        [ObservableProperty] private ObservableCollection<Position> positions_undone = new ObservableCollection<Position>();
+        [ObservableProperty] private ObservableCollection<Position> positions_done = new ObservableCollection<Position>();
 
         public event PropertyChangedEventHandler _PropertyChanged;
         protected void OnPropertyChanged_(string propertyName)
@@ -108,6 +114,9 @@ namespace RepeatList.ViewModels
         [RelayCommand]
         public async Task Export_list_Clicked() //string ExportedList, string Title)
         {
+            //if (Positions == null || Positions.Count == 0 || Header==null)
+            //    return;
+
             if (Positions == null || Positions.Count == 0 || Header==null)
                 return;
 
@@ -166,8 +175,9 @@ namespace RepeatList.ViewModels
             if (Header_SelectedItem == null)
                 return;
 
-            //Positions = new ObservableCollection<Position>();  //.Clear();
             Positions.Clear();
+            Positions_undone.Clear();
+            Positions_done.Clear();
 
             PositionListViewVisible =false;
 
@@ -177,12 +187,17 @@ namespace RepeatList.ViewModels
                 IsBusy = false;
                 return;
             }
+            //var sorted_list = _pos_arr.OrderBy(x => x.IsCompleted).ThenBy(a => a.Title).ToList();
+            //SetSortedPositionsList(sorted_list);
 
-            //var sort_pos_arr = _pos_arr.OrderBy(x => x.IsCompleted).ThenBy(a => a.Title).ToList();
-            //Positions = new ObservableCollection<Position>(sort_pos_arr);
+            
 
-            var sorted_list = _pos_arr.OrderBy(x => x.IsCompleted).ThenBy(a => a.Title).ToList();
-            SetSortedPositionsList(sorted_list);
+            Positions = _pos_arr.OrderBy(x => x.IsCompleted).ThenBy(a => a.Title).ToObservableCollection();
+            Positions_undone = _pos_arr.Where(a=>a.IsCompleted== false).OrderBy(x => x.Title).ToObservableCollection();
+            Positions_done = _pos_arr.Where(a => a.IsCompleted).OrderByDescending(x => x.InsertedAt).ToObservableCollection();
+
+            Label_done = string.Format("{0} ({1})", Properties.Resources.done, Positions_done.Count);
+            Label_undone = string.Format("{0} ({1})", Properties.Resources.undone, Positions_undone.Count);
 
             IsBusy=false;
             PositionListViewVisible=true;
@@ -257,6 +272,7 @@ namespace RepeatList.ViewModels
             IsBusy=true;
 
             Position_selectedItem = pos;
+            pos.InsertedAt = DateTime.Now;
             await _databaseService.UpdatePositionAsync(pos);
 
             await LoadPositions();

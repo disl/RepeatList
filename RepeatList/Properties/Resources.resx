@@ -135,6 +135,9 @@
   <data name="Delete_list" xml:space="preserve">
     <value>Delete list</value>
   </data>
+  <data name="done" xml:space="preserve">
+    <value>Done</value>
+  </data>
   <data name="Do_you_want_to_use_commas_as_list_element_separators" xml:space="preserve">
     <value>Do you want to use commas (‘,’) as list element separators?</value>
   </data>
@@ -179,6 +182,9 @@
   </data>
   <data name="theme" xml:space="preserve">
     <value>Thema</value>
+  </data>
+  <data name="undone" xml:space="preserve">
+    <value>Undone</value>
   </data>
   <data name="yes" xml:space="preserve">
     <value>Yes</value>
