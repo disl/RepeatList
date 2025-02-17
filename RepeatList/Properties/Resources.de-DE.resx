@@ -180,6 +180,15 @@
   <data name="Reset_current_list" xml:space="preserve">
     <value>Aktuelle Liste zurücksetzen</value>
   </data>
+  <data name="sort_by" xml:space="preserve">
+    <value>Sortieren nach</value>
+  </data>
+  <data name="sort_by_alphabet" xml:space="preserve">
+    <value>Sortierung nach Alphabet</value>
+  </data>
+  <data name="sort_by_date" xml:space="preserve">
+    <value>Sortierung nach Datum</value>
+  </data>
   <data name="theme" xml:space="preserve">
     <value>Thema</value>
   </data>

@@ -71,9 +71,9 @@
             <ImageButton Source="restart_icon.png" Clicked="OnResetPositionsClicked"
                              MaximumWidthRequest="{Binding ImageButton_size}" MaximumHeightRequest="{Binding ImageButton_size}"  HorizontalOptions="End"/>
         </StackLayout>
-        
+
         <!-- Undone -->
-        <Label Text="{Binding Label_undone}" FontAttributes="Bold"  HorizontalOptions="Center" Margin="0" FontSize="Medium"
+        <Label Text="{Binding Label_undone}" FontAttributes="Bold"  HorizontalOptions="StartAndExpand" Margin="0" FontSize="Medium"
             TextColor="{AppThemeBinding Light={DynamicResource PrimaryTextColor}, Dark={DynamicResource PrimaryTextColorLight}}" />
         <Border   Stroke="Gray" StrokeThickness="1"  Padding="10"  VerticalOptions="FillAndExpand" >
             <Border.StrokeShape>
@@ -95,10 +95,29 @@
                 </CollectionView.ItemTemplate>
             </CollectionView>
         </Border>
-        
+
         <!-- Done -->
-        <Label Text="{Binding Label_done}" FontAttributes="Bold"  HorizontalOptions="Center" Margin="0" FontSize="Medium"
-            TextColor="{AppThemeBinding Light={DynamicResource PrimaryTextColor}, Dark={DynamicResource PrimaryTextColorLight}}" />
+        <StackLayout Orientation="Horizontal" >
+            <Label Text="{Binding Label_done}" FontAttributes="Bold"  HorizontalOptions="StartAndExpand" FontSize="Medium" VerticalOptions="Center"
+                TextColor="{AppThemeBinding Light={DynamicResource PrimaryTextColor}, Dark={DynamicResource PrimaryTextColorLight}}" />
+
+            <!--<Label Text="{Binding Title_sort_by}"   HorizontalOptions="EndAndExpand"  VerticalOptions="End"
+                TextColor="{AppThemeBinding Light={DynamicResource PrimaryTextColor}, Dark={DynamicResource PrimaryTextColorLight}}" />-->
+            <Picker x:Name="KindOfSortingPicker" Title="{Binding  Title_sort_by}"  HorizontalOptions="EndAndExpand" VerticalOptions="Center" Margin="0"
+                    TextColor="{AppThemeBinding Light={DynamicResource PrimaryTextColor}, Dark={DynamicResource PrimaryTextColorLight}}"
+                    TitleColor="{AppThemeBinding Light={DynamicResource PrimaryTextColor}, Dark={DynamicResource PrimaryTextColorLight}}"
+                    SelectedIndexChanged="SortingPicker_SelectedIndexChanged"
+                    SelectedItem="{Binding  SelectedItem_KindOfSorting, Mode=TwoWay}">
+                <Picker.ItemDisplayBinding>
+                    <Binding Path="Name" />
+                </Picker.ItemDisplayBinding>
+            </Picker>
+        </StackLayout>
+        <HorizontalStackLayout>
+
+
+        </HorizontalStackLayout>
+
         <Border   Stroke="Gray" StrokeThickness="1"  Padding="10"  VerticalOptions="FillAndExpand" >
             <Border.StrokeShape>
                 <RoundRectangle CornerRadius="5" />

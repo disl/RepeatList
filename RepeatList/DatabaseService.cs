@@ -1,5 +1,6 @@
 ﻿using Microsoft.Data.Sqlite;
 using RepeatList.Models;
+using System.Data.SQLite;
 
 
 namespace RepeatList.Services
@@ -30,16 +31,49 @@ namespace RepeatList.Services
                 HeaderId INTEGER NOT NULL,
                 Title TEXT NOT NULL,
                 IsCompleted INTEGER DEFAULT 0,
+                InsertedAt TEXT DEFAULT CURRENT_TIMESTAMP,
                 FOREIGN KEY (HeaderId) REFERENCES Header(Id)
             );
             CREATE TABLE IF NOT EXISTS Setup(
                 Id INTEGER PRIMARY KEY AUTOINCREMENT,
                 DefaultLanguage TEXT NOT NULL DEFAULT 'en-US',
                 DefaultAppTheme TEXT NOT NULL DEFAULT 'Dark'
+                
             );"
+
+
             ;
             command.ExecuteNonQuery();
 
+            //AddColumnIfNotExists("Position", "InsertedAt", "TEXT", _connection, "DEFAULT CURRENT_TIMESTAMP");
+
+        }
+
+        void AddColumnIfNotExists(string tableName, string columnName, string columnType, SqliteConnection? connection, string Default = "")
+        {
+            //using var connection = new SqliteConnection($"Data Source={dbPath};Version=3;");
+            //connection.Open();
+
+            string checkColumnQuery = $"PRAGMA table_info({tableName});";
+            using var command = new SqliteCommand(checkColumnQuery, connection);
+            using var reader = command.ExecuteReader();
+
+            bool columnExists = false;
+            while (reader.Read())
+            {
+                if (reader["name"].ToString() == columnName)
+                {
+                    columnExists = true;
+                    break;
+                }
+            }
+
+            if (!columnExists)
+            {
+                string alterTableQuery = $"ALTER TABLE {tableName} ADD COLUMN {columnName} {columnType} " + Default + ";";
+                using var alterCommand = new SqliteCommand(alterTableQuery, connection);
+                alterCommand.ExecuteNonQuery();
+            }
         }
 
         // Header CRUD
@@ -128,8 +162,6 @@ namespace RepeatList.Services
             if (headerId == 0)
                 return new List<Position>();
 
-            
-
             var positions = new List<Position>();
 
             var command = _connection.CreateCommand();
@@ -145,7 +177,8 @@ namespace RepeatList.Services
                         Id = reader.GetInt32(0),
                         HeaderId = reader.GetInt32(1),
                         Title = reader.GetString(2),
-                        IsCompleted = reader.GetBoolean(3)
+                        IsCompleted = reader.GetBoolean(3),
+                        InsertedAt = DateTime.Parse(reader.GetString(4))
                     });
                 }
             }
@@ -160,6 +193,7 @@ namespace RepeatList.Services
             command.Parameters.AddWithValue("@HeaderId", position.HeaderId);
             command.Parameters.AddWithValue("@Title", position.Title);
             command.Parameters.AddWithValue("@IsCompleted", position.IsCompleted);
+            command.Parameters.AddWithValue("@InsertedAt", position.InsertedAt);
 
             return await command.ExecuteNonQueryAsync();
         }
@@ -170,14 +204,15 @@ namespace RepeatList.Services
                 return 0;
 
             var command = _connection.CreateCommand();
-            command.CommandText = "UPDATE Position SET Title = @Title, IsCompleted = @IsCompleted WHERE Id = @Id";
+            command.CommandText = "UPDATE Position SET Title = @Title, IsCompleted = @IsCompleted, InsertedAt=@InsertedAt WHERE Id = @Id";
             command.Parameters.AddWithValue("@Title", position.Title);
             command.Parameters.AddWithValue("@IsCompleted", position.IsCompleted);
             command.Parameters.AddWithValue("@Id", position.Id);
+            command.Parameters.AddWithValue("@InsertedAt", position.InsertedAt);
 
             var ret_val = await command.ExecuteNonQueryAsync();
 
-           // await GetPositionsAsync(position.HeaderId);
+            // await GetPositionsAsync(position.HeaderId);
 
             return ret_val;
         }
@@ -239,7 +274,7 @@ namespace RepeatList.Services
             var Setups = new List<Setup>();
 
             var command = _connection.CreateCommand();
-            command.CommandText = "SELECT * FROM Setup LIMIT 1"; 
+            command.CommandText = "SELECT * FROM Setup LIMIT 1";
 
             using (var reader = await command.ExecuteReaderAsync())
             {

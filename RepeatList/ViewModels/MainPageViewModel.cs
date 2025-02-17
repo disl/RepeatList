@@ -49,8 +49,22 @@ namespace RepeatList.ViewModels
             }
         }
 
-        [ObservableProperty] public bool positionListViewVisible;
+        [ObservableProperty] public string title_sort_by = Properties.Resources.sort_by;
+        [ObservableProperty] public string title_KindOfSorting = "Sort";
+        [ObservableProperty] public CMBType_String selectedItem_KindOfSorting = new CMBType_String(Properties.Resources.sort_by_date, "date");
+        //async void OnSelectedItem_KindOfSortingChanged(CMBType_String oldValue, CMBType_String newValue)
+        //{
+        //    await LoadPositions();
+        //}
 
+        [ObservableProperty]
+        public ObservableCollection<CMBType_String> itemSource_KindOfSorting = new ObservableCollection<CMBType_String>
+        {
+             new CMBType_String(Properties.Resources.sort_by_date, "date"),
+             new CMBType_String(Properties.Resources.sort_by_alphabet, "alpha" )
+        };
+
+        [ObservableProperty] public bool positionListViewVisible;
         [ObservableProperty] public bool headerSelected;
         [ObservableProperty] public string positionImageSource = "check_box_blank.png";
 
@@ -160,7 +174,7 @@ namespace RepeatList.ViewModels
 
             await LoadHeaders();
 
-            
+
             //var selectedItem = await _databaseService.GetHeaderAsync(new_id);
             //if (selectedItem != null)
             //    Header_SelectedItem = selectedItem;
@@ -190,11 +204,15 @@ namespace RepeatList.ViewModels
             //var sorted_list = _pos_arr.OrderBy(x => x.IsCompleted).ThenBy(a => a.Title).ToList();
             //SetSortedPositionsList(sorted_list);
 
-            
+
 
             Positions = _pos_arr.OrderBy(x => x.IsCompleted).ThenBy(a => a.Title).ToObservableCollection();
-            Positions_undone = _pos_arr.Where(a=>a.IsCompleted== false).OrderBy(x => x.Title).ToObservableCollection();
-            Positions_done = _pos_arr.Where(a => a.IsCompleted).OrderByDescending(x => x.InsertedAt).ToObservableCollection();
+            Positions_undone = _pos_arr.Where(a => a.IsCompleted== false).OrderBy(x => x.Title).ToObservableCollection();
+
+            if(selectedItem_KindOfSorting.Value=="date")
+                Positions_done = _pos_arr.Where(a => a.IsCompleted).OrderByDescending(x => x.InsertedAt).ToObservableCollection();
+            else if (selectedItem_KindOfSorting.Value=="alpha")
+                Positions_done = _pos_arr.Where(a => a.IsCompleted).OrderBy(x => x.Title).ToObservableCollection();
 
             Label_done = string.Format("{0} ({1})", Properties.Resources.done, Positions_done.Count);
             Label_undone = string.Format("{0} ({1})", Properties.Resources.undone, Positions_undone.Count);
@@ -264,7 +282,7 @@ namespace RepeatList.ViewModels
             await _databaseService.DeleteHeaderAsync(header.Id);
             await LoadHeaders();
             await LoadPositions();
-          
+
         }
 
         public async Task UpdatePosition(Models.Position pos)

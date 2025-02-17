@@ -250,6 +250,33 @@ namespace RepeatList.Properties {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Sort by ähnelt.
+        /// </summary>
+        public static string sort_by {
+            get {
+                return ResourceManager.GetString("sort_by", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Sort by alphabet ähnelt.
+        /// </summary>
+        public static string sort_by_alphabet {
+            get {
+                return ResourceManager.GetString("sort_by_alphabet", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Sort by date ähnelt.
+        /// </summary>
+        public static string sort_by_date {
+            get {
+                return ResourceManager.GetString("sort_by_date", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Thema ähnelt.
         /// </summary>
         public static string theme {

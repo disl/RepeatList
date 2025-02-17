@@ -1,4 +1,5 @@
-﻿using RepeatList.Models;
+﻿using CommunityToolkit.Maui.Core.Extensions;
+using RepeatList.Models;
 using RepeatList.ViewModels;
 using System.Globalization;
 
@@ -28,6 +29,8 @@ namespace RepeatList
             {
                 SetCurrentCulture(SetupPageViewModel.SelectedItem.DefaultLanguage);
             }
+
+            KindOfSortingPicker.ItemsSource = ViewModel.ItemSource_KindOfSorting.ToObservableCollection();
         }
 
         protected override void OnAppearing()
@@ -310,6 +313,12 @@ namespace RepeatList
         private void OnPositionSelected_new(object sender, SelectionChangedEventArgs e)
         {
             ViewModel.Position_selectedItem = e.CurrentSelection as Position;
+        }
+
+        private async void SortingPicker_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            var picker = sender as Picker;
+            await ViewModel.LoadPositions();
         }
     }
 
