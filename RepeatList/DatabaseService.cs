@@ -189,7 +189,7 @@ namespace RepeatList.Services
         public async Task<int> AddPositionAsync(Position position)
         {
             var command = _connection.CreateCommand();
-            command.CommandText = "INSERT INTO Position (HeaderId, Title, IsCompleted) VALUES (@HeaderId, @Title, @IsCompleted)";
+            command.CommandText = "INSERT INTO Position (HeaderId, Title, IsCompleted, InsertedAt) VALUES (@HeaderId, @Title, @IsCompleted, @InsertedAt)";
             command.Parameters.AddWithValue("@HeaderId", position.HeaderId);
             command.Parameters.AddWithValue("@Title", position.Title);
             command.Parameters.AddWithValue("@IsCompleted", position.IsCompleted);

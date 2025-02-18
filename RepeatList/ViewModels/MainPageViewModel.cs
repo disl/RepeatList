@@ -15,6 +15,7 @@ namespace RepeatList.ViewModels
         private DatabaseService _databaseService;
         public event PropertyChangedEventHandler PropertyChanged;
         private SetupPageViewModel setupPageViewModel;
+        public string SelectedItem_KindOfSorting_key_name = "SelectedItem_KindOfSorting";
 
         public double ButtonsSize = 30;
 
@@ -29,6 +30,20 @@ namespace RepeatList.ViewModels
             _ = LoadHeaders();
 
             SetFirstItemForHeaders();
+
+            //KindOfSortingPicker.ItemsSource = ItemSource_KindOfSorting.ToObservableCollection();
+
+            InitSelectedItem_KindOfSorting();
+        }
+
+        private void InitSelectedItem_KindOfSorting()
+        {
+            
+            string _selectedItem_KindOfSorting = Preferences.Get(SelectedItem_KindOfSorting_key_name, "date");
+            if (_selectedItem_KindOfSorting == null)
+                SelectedItem_KindOfSorting = new CMBType_String(Properties.Resources.sort_by, "date");
+            else
+                SelectedItem_KindOfSorting =  ItemSource_KindOfSorting.FirstOrDefault(x=>x.Value == _selectedItem_KindOfSorting);  // new CMBType_String(Properties.Resources.sort_by, "date");
         }
 
         public void SetFirstItemForHeaders()
@@ -51,7 +66,7 @@ namespace RepeatList.ViewModels
 
         [ObservableProperty] public string title_sort_by = Properties.Resources.sort_by;
         [ObservableProperty] public string title_KindOfSorting = "Sort";
-        [ObservableProperty] public CMBType_String selectedItem_KindOfSorting = new CMBType_String(Properties.Resources.sort_by_date, "date");
+        [ObservableProperty] public CMBType_String selectedItem_KindOfSorting;
         //async void OnSelectedItem_KindOfSortingChanged(CMBType_String oldValue, CMBType_String newValue)
         //{
         //    await LoadPositions();
@@ -209,9 +224,15 @@ namespace RepeatList.ViewModels
             Positions = _pos_arr.OrderBy(x => x.IsCompleted).ThenBy(a => a.Title).ToObservableCollection();
             Positions_undone = _pos_arr.Where(a => a.IsCompleted== false).OrderBy(x => x.Title).ToObservableCollection();
 
-            if(selectedItem_KindOfSorting.Value=="date")
+            if(SelectedItem_KindOfSorting == null)
+            {
+                // ????????
+                SelectedItem_KindOfSorting = new CMBType_String(Properties.Resources.sort_by, "date");
+            }
+
+            if(SelectedItem_KindOfSorting.Value=="date")
                 Positions_done = _pos_arr.Where(a => a.IsCompleted).OrderByDescending(x => x.InsertedAt).ToObservableCollection();
-            else if (selectedItem_KindOfSorting.Value=="alpha")
+            else if (SelectedItem_KindOfSorting.Value=="alpha")
                 Positions_done = _pos_arr.Where(a => a.IsCompleted).OrderBy(x => x.Title).ToObservableCollection();
 
             Label_done = string.Format("{0} ({1})", Properties.Resources.done, Positions_done.Count);
@@ -230,7 +251,7 @@ namespace RepeatList.ViewModels
             if (Replace_old_word_when_inserting)
                 await DeleteIfAvailable(PositionEntryText);
 
-            var newPosition = new Models.Position { HeaderId = Header_SelectedItem.Id, Title = PositionEntryText, IsCompleted = false };
+            var newPosition = new Models.Position { HeaderId = Header_SelectedItem.Id, Title = PositionEntryText, IsCompleted = false, InsertedAt=DateTime.Now };
             await _databaseService.AddPositionAsync(newPosition);
             await LoadPositions();
 

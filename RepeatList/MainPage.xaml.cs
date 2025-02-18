@@ -1,6 +1,8 @@
-﻿using CommunityToolkit.Maui.Core.Extensions;
+﻿using AndroidX.Lifecycle;
+using CommunityToolkit.Maui.Core.Extensions;
 using RepeatList.Models;
 using RepeatList.ViewModels;
+using System.Collections.ObjectModel;
 using System.Globalization;
 
 namespace RepeatList
@@ -30,12 +32,24 @@ namespace RepeatList
                 SetCurrentCulture(SetupPageViewModel.SelectedItem.DefaultLanguage);
             }
 
+            ViewModel.ItemSource_KindOfSorting = new ObservableCollection<CMBType_String>
+            {
+             new CMBType_String(Properties.Resources.sort_by_date, "date"),
+             new CMBType_String(Properties.Resources.sort_by_alphabet, "alpha" )
+            };
             KindOfSortingPicker.ItemsSource = ViewModel.ItemSource_KindOfSorting.ToObservableCollection();
+
+            var _selectedItem_KindOfSorting_key_name = Preferences.Get(ViewModel.SelectedItem_KindOfSorting_key_name, "date");  //, ViewModel.SelectedItem_KindOfSorting.Value);
+            if (!string.IsNullOrEmpty(_selectedItem_KindOfSorting_key_name))
+                ViewModel.SelectedItem_KindOfSorting = ViewModel.ItemSource_KindOfSorting.FirstOrDefault(x => x.Value == _selectedItem_KindOfSorting_key_name);
+            else
+                ViewModel.SelectedItem_KindOfSorting = ViewModel.ItemSource_KindOfSorting.FirstOrDefault(x => x.Value == "date");
+            KindOfSortingPicker.SelectedIndex = ViewModel.ItemSource_KindOfSorting.IndexOf(ViewModel.SelectedItem_KindOfSorting);
         }
 
         protected override void OnAppearing()
         {
-            string tmp_lists= Properties.Resources.Lists.ToUpper();
+            string tmp_lists = Properties.Resources.Lists.ToUpper();
 
             ViewModel.Label_lists = tmp_lists;
             ViewModel.Label_Positions =  Properties.Resources.Positions.ToUpper();
@@ -319,6 +333,7 @@ namespace RepeatList
         {
             var picker = sender as Picker;
             await ViewModel.LoadPositions();
+            Preferences.Set(ViewModel.SelectedItem_KindOfSorting_key_name, ViewModel.SelectedItem_KindOfSorting.Value);
         }
     }
 

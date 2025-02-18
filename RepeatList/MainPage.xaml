@@ -107,6 +107,7 @@
                     TextColor="{AppThemeBinding Light={DynamicResource PrimaryTextColor}, Dark={DynamicResource PrimaryTextColorLight}}"
                     TitleColor="{AppThemeBinding Light={DynamicResource PrimaryTextColor}, Dark={DynamicResource PrimaryTextColorLight}}"
                     SelectedIndexChanged="SortingPicker_SelectedIndexChanged"
+                
                     SelectedItem="{Binding  SelectedItem_KindOfSorting, Mode=TwoWay}">
                 <Picker.ItemDisplayBinding>
                     <Binding Path="Name" />
