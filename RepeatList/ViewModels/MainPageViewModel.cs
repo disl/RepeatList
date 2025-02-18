@@ -14,7 +14,7 @@ namespace RepeatList.ViewModels
     {
         private DatabaseService _databaseService;
         public event PropertyChangedEventHandler PropertyChanged;
-        private SetupPageViewModel setupPageViewModel;
+        private SetupPageViewModel? setupPageViewModel;
         public string SelectedItem_KindOfSorting_key_name = "SelectedItem_KindOfSorting";
 
         public double ButtonsSize = 30;

@@ -132,6 +132,12 @@
   <data name="Cancel" xml:space="preserve">
     <value>Cancel</value>
   </data>
+  <data name="collapse" xml:space="preserve">
+    <value>falten</value>
+  </data>
+  <data name="copy_list" xml:space="preserve">
+    <value>Copy list</value>
+  </data>
   <data name="Delete_list" xml:space="preserve">
     <value>Delete list</value>
   </data>
@@ -149,6 +155,9 @@
   </data>
   <data name="Enter_new_position_title" xml:space="preserve">
     <value>Enter new position title</value>
+  </data>
+  <data name="expand" xml:space="preserve">
+    <value>erweiten</value>
   </data>
   <data name="Export_list" xml:space="preserve">
     <value>Export current list</value>

@@ -22,6 +22,7 @@ public partial class SetupPage : ContentPage
 
         _oldThema = ViewModel.SelectedItem.DefaultAppTheme;
         _oldLanguage = ViewModel.SelectedItem.DefaultLanguage;
+        _currLanguage=_oldLanguage;
     }
 
     private async void OkButton_Clicked(object sender, EventArgs e)

@@ -106,6 +106,24 @@ namespace RepeatList.Properties {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die falten ähnelt.
+        /// </summary>
+        public static string collapse {
+            get {
+                return ResourceManager.GetString("collapse", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Copy list ähnelt.
+        /// </summary>
+        public static string copy_list {
+            get {
+                return ResourceManager.GetString("copy_list", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Delete list ähnelt.
         /// </summary>
         public static string Delete_list {
@@ -156,6 +174,15 @@ namespace RepeatList.Properties {
         public static string Enter_new_position_title {
             get {
                 return ResourceManager.GetString("Enter_new_position_title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die erweiten ähnelt.
+        /// </summary>
+        public static string expand {
+            get {
+                return ResourceManager.GetString("expand", resourceCulture);
             }
         }
         

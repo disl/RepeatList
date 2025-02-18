@@ -1,5 +1,4 @@
-﻿using AndroidX.Lifecycle;
-using CommunityToolkit.Maui.Core.Extensions;
+﻿using CommunityToolkit.Maui.Core.Extensions;
 using RepeatList.Models;
 using RepeatList.ViewModels;
 using System.Collections.ObjectModel;
@@ -22,6 +21,7 @@ namespace RepeatList
             ViewModel = new MainPageViewModel();
             BindingContext = ViewModel;
 
+            ViewModel.IsBusy=true;
 
             if (ViewModel != null && ViewModel.Headers != null && ViewModel.Headers.Count > 0)
                 HeaderListView.SelectedItem=ViewModel.Headers[0];
@@ -45,6 +45,8 @@ namespace RepeatList
             else
                 ViewModel.SelectedItem_KindOfSorting = ViewModel.ItemSource_KindOfSorting.FirstOrDefault(x => x.Value == "date");
             KindOfSortingPicker.SelectedIndex = ViewModel.ItemSource_KindOfSorting.IndexOf(ViewModel.SelectedItem_KindOfSorting);
+
+            ViewModel.IsBusy=false;
         }
 
         protected override void OnAppearing()
@@ -121,7 +123,7 @@ namespace RepeatList
             var button = sender as ImageButton;
             if (button?.CommandParameter is Header header)
             {
-                string new_list_name = await DisplayPromptAsync(Properties.Resources.Input, Properties.Resources.Enter_list_name, "OK", Properties.Resources.Cancel);
+                string new_list_name = await DisplayPromptAsync(Properties.Resources.copy_list, Properties.Resources.Enter_list_name, "OK", Properties.Resources.Cancel);
                 if (!string.IsNullOrWhiteSpace(new_list_name))
                 {
                     var new_int = await ViewModel.CopyHeader(header, new_list_name);

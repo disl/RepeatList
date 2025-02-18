@@ -2,15 +2,15 @@
 <ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="RepeatList.Controls.FlyoutHeader"
-             HeightRequest="200">
-    <Grid BackgroundColor="Black">
-        <Image Aspect="AspectFill"
+             HeightRequest="50">
+    <Grid BackgroundColor="RoyalBlue">
+        <!--<Image Aspect="AspectFill"
                Source="repeat_list_300.jpg"
-               Opacity="0.6" />
-        <!--<Label Text="Animals"
-               TextColor="White"
+               Opacity="0.6" />-->
+        <Label Text="Repeating lists"
+               TextColor="LightGray"
                FontAttributes="Bold"
                HorizontalTextAlignment="Center"
-               VerticalTextAlignment="Center" />-->
+               VerticalTextAlignment="Center" />
     </Grid>
 </ContentView>
