@@ -1,4 +1,5 @@
-﻿using CommunityToolkit.Maui.Core.Extensions;
+﻿using CommunityToolkit.Maui.Alerts;
+using CommunityToolkit.Maui.Core.Extensions;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using RepeatList.Models;
@@ -38,12 +39,12 @@ namespace RepeatList.ViewModels
 
         private void InitSelectedItem_KindOfSorting()
         {
-            
+
             string _selectedItem_KindOfSorting = Preferences.Get(SelectedItem_KindOfSorting_key_name, "date");
             if (_selectedItem_KindOfSorting == null)
                 SelectedItem_KindOfSorting = new CMBType_String(Properties.Resources.sort_by, "date");
             else
-                SelectedItem_KindOfSorting =  ItemSource_KindOfSorting.FirstOrDefault(x=>x.Value == _selectedItem_KindOfSorting);  // new CMBType_String(Properties.Resources.sort_by, "date");
+                SelectedItem_KindOfSorting =  ItemSource_KindOfSorting.FirstOrDefault(x => x.Value == _selectedItem_KindOfSorting);  // new CMBType_String(Properties.Resources.sort_by, "date");
         }
 
         public void SetFirstItemForHeaders()
@@ -100,6 +101,7 @@ namespace RepeatList.ViewModels
         [ObservableProperty] private string label_AddNewItem = Properties.Resources.AddNewItem;
         [ObservableProperty] private string label_ResetPositions = Properties.Resources.ResetPositions;
         [ObservableProperty] private string _Label_Export_list = Properties.Resources.Export_list;
+        [ObservableProperty] private string label_copy_list_to_clipboard = Properties.Resources.Copy_list_to_clipboard;
         [ObservableProperty] private string _Label_Reset_current_list = Properties.Resources.Reset_current_list;
         [ObservableProperty] private string _Label_done = Properties.Resources.done;
         [ObservableProperty] private string _Label_undone = Properties.Resources.undone;
@@ -141,11 +143,19 @@ namespace RepeatList.ViewModels
         #region COMMANDS
 
         [RelayCommand]
+        public async Task Clipboard_list_Clicked() //string ExportedList, string Title)
+        {
+            if (Positions == null || Positions.Count == 0 || Header==null)
+                return;
+            var ExportedList = String.Join(",,", Positions.Select(x => x.Title).ToList());
+            await Clipboard.Default.SetTextAsync(ExportedList);
+            await Application.Current.MainPage.DisplaySnackbar(Properties.Resources.The_list_was_saved_as_a_string_in_the_clipboard, duration: new TimeSpan(0,0,7));
+                //.DisplayAlert("Info", Properties.Resources.The_list_was_saved_as_a_string_in_the_clipboard, "OK");
+        }
+
+        [RelayCommand]
         public async Task Export_list_Clicked() //string ExportedList, string Title)
         {
-            //if (Positions == null || Positions.Count == 0 || Header==null)
-            //    return;
-
             if (Positions == null || Positions.Count == 0 || Header==null)
                 return;
 
@@ -224,13 +234,13 @@ namespace RepeatList.ViewModels
             Positions = _pos_arr.OrderBy(x => x.IsCompleted).ThenBy(a => a.Title).ToObservableCollection();
             Positions_undone = _pos_arr.Where(a => a.IsCompleted== false).OrderBy(x => x.Title).ToObservableCollection();
 
-            if(SelectedItem_KindOfSorting == null)
+            if (SelectedItem_KindOfSorting == null)
             {
                 // ????????
                 SelectedItem_KindOfSorting = new CMBType_String(Properties.Resources.sort_by, "date");
             }
 
-            if(SelectedItem_KindOfSorting.Value=="date")
+            if (SelectedItem_KindOfSorting.Value=="date")
                 Positions_done = _pos_arr.Where(a => a.IsCompleted).OrderByDescending(x => x.InsertedAt).ToObservableCollection();
             else if (SelectedItem_KindOfSorting.Value=="alpha")
                 Positions_done = _pos_arr.Where(a => a.IsCompleted).OrderBy(x => x.Title).ToObservableCollection();

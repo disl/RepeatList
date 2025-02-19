@@ -138,6 +138,9 @@
   <data name="copy_list" xml:space="preserve">
     <value>Copy list</value>
   </data>
+  <data name="Copy_list_to_clipboard" xml:space="preserve">
+    <value>Copy list to clipboard</value>
+  </data>
   <data name="Delete_list" xml:space="preserve">
     <value>Delete list</value>
   </data>
@@ -200,6 +203,9 @@
   </data>
   <data name="theme" xml:space="preserve">
     <value>Thema</value>
+  </data>
+  <data name="The_list_was_saved_as_a_string_in_the_clipboard" xml:space="preserve">
+    <value>The list was saved as a string in the clipboard. This can now be sent via WatsApp, for example.</value>
   </data>
   <data name="undone" xml:space="preserve">
     <value>Undone</value>

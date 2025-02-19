@@ -11,14 +11,15 @@
 
 
 
-    <!--<ContentPage.ToolbarItems>
-        -->
-    <!--<ToolbarItem  IconImageSource="kofi_symbol.png" Clicked="CoffeeButtonClicked" />-->
-    <!--
-        <ToolbarItem  StyleId="Item1" Order="Secondary" Text="{Binding Label_Export_list}" Command="{Binding Export_list_ClickedCommand}" />
-        <ToolbarItem  StyleId="Item2" Order="Secondary" Text="{Binding Label_Reset_current_list}" Command="{Binding Reset_current_list_ClickedCommand}" />
-    </ContentPage.ToolbarItems>-->
-    <StackLayout Margin="20" VerticalOptions="FillAndExpand" Spacing="10" >
+    <ContentPage.ToolbarItems>
+
+        <ToolbarItem  IconImageSource="kofi_symbol.png" Clicked="CoffeeButtonClicked" />
+
+        <ToolbarItem  StyleId="Item1" Order="Secondary" IconImageSource="send_icon.png" Text="{Binding Label_copy_list_to_clipboard}" Command="{Binding Clipboard_list_ClickedCommand}" />
+        <ToolbarItem  StyleId="Item1" Order="Secondary"  IconImageSource="share_icon.png"  Text="{Binding Label_Export_list}" Command="{Binding Export_list_ClickedCommand}" />
+        <!--<ToolbarItem  StyleId="Item2" Order="Secondary" Text="{Binding Label_Reset_current_list}" Command="{Binding Reset_current_list_ClickedCommand}" />-->
+    </ContentPage.ToolbarItems>
+    <StackLayout Margin="15" VerticalOptions="FillAndExpand" Spacing="10" >
 
         <ActivityIndicator IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}" />
 
@@ -31,14 +32,16 @@
                     <Image Source="{Binding Expander_listsIcon}"   WidthRequest="40" HorizontalOptions="EndAndExpand" />
                 </StackLayout>
             </toolkit:Expander.Header>
-            <StackLayout Orientation="Vertical" >
-                <StackLayout Orientation="Horizontal" Spacing="10" Margin="0,15,0,0" HorizontalOptions="End">
+            <StackLayout Orientation="Vertical">
+                <StackLayout Orientation="Horizontal" Spacing="10" Margin="0,15,0,10" HorizontalOptions="End">
                     <ImageButton Source="add_icon.png" Clicked="OnAddHeaderClicked"   
                             MaximumWidthRequest="{Binding ImageButton_size}" MaximumHeightRequest="{Binding ImageButton_size}"  />
                     <ImageButton Source="share_icon.png" Command="{Binding Export_list_ClickedCommand}" 
                             MaximumWidthRequest="{Binding ImageButton_size}" MaximumHeightRequest="{Binding ImageButton_size}" />
+                    <ImageButton Source="send_icon.png" Command="{Binding Clipboard_list_ClickedCommand}"
+                            MaximumWidthRequest="{Binding ImageButton_size}" MaximumHeightRequest="{Binding ImageButton_size}" />
                 </StackLayout>
-                <Border  Stroke="Gray" StrokeThickness="1"  Padding="10"  >
+                <Border  Stroke="Gray" StrokeThickness="1"  Padding="10" >
                     <Border.StrokeShape>
                         <RoundRectangle CornerRadius="5" />
                     </Border.StrokeShape>
@@ -95,7 +98,7 @@
                 </CollectionView.ItemTemplate>
             </CollectionView>
         </Border>
-        
+
         <!-- Done -->
         <StackLayout Orientation="Horizontal" >
             <Label Text="{Binding Label_done}" FontAttributes="Bold"  HorizontalOptions="StartAndExpand" FontSize="Medium" VerticalOptions="Center"
