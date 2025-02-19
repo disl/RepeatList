@@ -19,14 +19,17 @@
                 <Label Text="{Binding LabelText}" VerticalOptions="CenterAndExpand"  HorizontalOptions="FillAndExpand" />
                 <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand" >
                     <Editor  Text="{Binding InputText, Mode=TwoWay }" AutoSize="TextChanges"   HorizontalOptions="FillAndExpand"  />
-                    <Button Text=",,"  Clicked="OnDoubleCommaButton_Clicked"    />
+                    <Button Text=",,"  Clicked="OnDoubleCommaButton_Clicked" TextColor="White"   />
                 </StackLayout>
+
+                <Button Text="{Binding Label_paste_from_clipboard}" Command="{Binding Paste_from_clipboardCommand}" TextColor="White" HorizontalOptions="FillAndExpand"  />
+                
                 <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand" >
                     <Label Text="{Binding LabelReplaceText}" VerticalOptions="CenterAndExpand"  HorizontalOptions="StartAndExpand" />
                     <Switch IsToggled="{Binding Replace_old_word_when_inserting, Mode=TwoWay}" HorizontalOptions="StartAndExpand" />
                 </StackLayout>
                 <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand" Spacing="20" >
-                    <Button Text="OK" Clicked="OkButton_Clicked" HorizontalOptions="FillAndExpand"  />
+                    <Button Text="OK" Clicked="OkButton_Clicked" HorizontalOptions="FillAndExpand" TextColor="White" />
                     <Button Text="{Binding Label_Cancel}" Clicked="OnCancel" BackgroundColor="Red"  TextColor="White" HorizontalOptions="FillAndExpand"/>
                 </StackLayout>
             </VerticalStackLayout>

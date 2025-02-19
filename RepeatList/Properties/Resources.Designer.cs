@@ -250,6 +250,15 @@ namespace RepeatList.Properties {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Paste from clipboard ähnelt.
+        /// </summary>
+        public static string Paste_from_clipboard {
+            get {
+                return ResourceManager.GetString("Paste_from_clipboard", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Positions ähnelt.
         /// </summary>
         public static string Positions {
@@ -309,6 +318,15 @@ namespace RepeatList.Properties {
         public static string sort_by_date {
             get {
                 return ResourceManager.GetString("sort_by_date", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die The clipboard is empty ähnelt.
+        /// </summary>
+        public static string The_clipboard_is_empty {
+            get {
+                return ResourceManager.GetString("The_clipboard_is_empty", resourceCulture);
             }
         }
         

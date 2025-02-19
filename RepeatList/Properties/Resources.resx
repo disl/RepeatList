@@ -180,6 +180,9 @@
   <data name="no" xml:space="preserve">
     <value>No</value>
   </data>
+  <data name="Paste_from_clipboard" xml:space="preserve">
+    <value>Paste from clipboard</value>
+  </data>
   <data name="Positions" xml:space="preserve">
     <value>Positions</value>
   </data>
@@ -203,6 +206,9 @@
   </data>
   <data name="theme" xml:space="preserve">
     <value>Thema</value>
+  </data>
+  <data name="The_clipboard_is_empty" xml:space="preserve">
+    <value>The clipboard is empty</value>
   </data>
   <data name="The_list_was_saved_as_a_string_in_the_clipboard" xml:space="preserve">
     <value>The list was saved as a string in the clipboard. This can now be sent via WatsApp, for example.</value>

@@ -13,7 +13,10 @@ public partial class InputTextWithMicrophone : ContentPage
     {
         InitializeComponent();
 
-        ViewModel = BindingContext as  InputTextWithMicrophoneViewModel;
+        ViewModel = new InputTextWithMicrophoneViewModel();
+        BindingContext = ViewModel;
+
+        //ViewModel = BindingContext as  InputTextWithMicrophoneViewModel;
         _completionSource = new TaskCompletionSource<string>();
     }
 

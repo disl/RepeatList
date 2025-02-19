@@ -6,8 +6,9 @@ using RepeatList.Models;
 using RepeatList.Services;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Text.Json;
 using Position = RepeatList.Models.Position;
-
+using System.Text.Json.Serialization;
 
 namespace RepeatList.ViewModels
 {
@@ -100,11 +101,12 @@ namespace RepeatList.ViewModels
         [ObservableProperty] private string label_Positions = Properties.Resources.Positions.ToUpper();
         [ObservableProperty] private string label_AddNewItem = Properties.Resources.AddNewItem;
         [ObservableProperty] private string label_ResetPositions = Properties.Resources.ResetPositions;
-        [ObservableProperty] private string _Label_Export_list = Properties.Resources.Export_list;
+        [ObservableProperty] private string _label_Export_list = Properties.Resources.Export_list;
         [ObservableProperty] private string label_copy_list_to_clipboard = Properties.Resources.Copy_list_to_clipboard;
-        [ObservableProperty] private string _Label_Reset_current_list = Properties.Resources.Reset_current_list;
-        [ObservableProperty] private string _Label_done = Properties.Resources.done;
-        [ObservableProperty] private string _Label_undone = Properties.Resources.undone;
+        [ObservableProperty] private string _label_Reset_current_list = Properties.Resources.Reset_current_list;
+        [ObservableProperty] private string _label_done = Properties.Resources.done;
+        [ObservableProperty] private string _label_undone = Properties.Resources.undone;
+        [ObservableProperty] private string label_paste_from_clipboard = Properties.Resources.Paste_from_clipboard;
 
         [ObservableProperty] private Header header_SelectedItem;
         [ObservableProperty] private ObservableCollection<Header>? headers = new ObservableCollection<Header>();
@@ -140,30 +142,21 @@ namespace RepeatList.ViewModels
         #endregion
 
 
-        #region COMMANDS
-
-        [RelayCommand]
-        public async Task Clipboard_list_Clicked() //string ExportedList, string Title)
-        {
-            if (Positions == null || Positions.Count == 0 || Header==null)
-                return;
-            var ExportedList = String.Join(",,", Positions.Select(x => x.Title).ToList());
-            await Clipboard.Default.SetTextAsync(ExportedList);
-            await Application.Current.MainPage.DisplaySnackbar(Properties.Resources.The_list_was_saved_as_a_string_in_the_clipboard, duration: new TimeSpan(0,0,7));
-                //.DisplayAlert("Info", Properties.Resources.The_list_was_saved_as_a_string_in_the_clipboard, "OK");
-        }
+        #region COMMANDS       
 
         [RelayCommand]
         public async Task Export_list_Clicked() //string ExportedList, string Title)
         {
             if (Positions == null || Positions.Count == 0 || Header==null)
                 return;
+            var json = JsonSerializer.Serialize(Positions);
+            await Utilities.ShareTextAsync(json);
 
-            var ExportedList = String.Join(",,", Positions.Select(x => x.Title).ToList());
-            var ExportedListTitle = "Export: " + Header_SelectedItem.ListName;
+            //var ExportedList = String.Join(",,", Positions.Select(x => x.Title).ToList());
+            //var ExportedListTitle = "Export: " + Header_SelectedItem.ListName;
 
-            var file_name = string.Format("repeat_list_export_{0}.txt", DateTime.Now.ToString("yyyyMMddHHmmss"));
-            await Utilities.ShareFileAsync(file_name, ExportedList, ExportedListTitle);
+            //var file_name = string.Format("repeat_list_export_{0}.txt", DateTime.Now.ToString("yyyyMMddHHmmss"));
+            //await Utilities.ShareFileAsync(file_name, ExportedList, ExportedListTitle);
         }
 
         [RelayCommand]
