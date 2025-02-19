@@ -8,13 +8,9 @@
     <ContentPage.BindingContext>
         <local:MainPageViewModel />
     </ContentPage.BindingContext>
-
-
-
     <ContentPage.ToolbarItems>
-
         <ToolbarItem  IconImageSource="kofi_symbol.png" Clicked="CoffeeButtonClicked" />
-
+        
         <ToolbarItem  StyleId="Item1" Order="Secondary" IconImageSource="send_icon.png" Text="{Binding Label_copy_list_to_clipboard}" Command="{Binding Clipboard_list_ClickedCommand}" />
         <ToolbarItem  StyleId="Item1" Order="Secondary"  IconImageSource="share_icon.png"  Text="{Binding Label_Export_list}" Command="{Binding Export_list_ClickedCommand}" />
         <!--<ToolbarItem  StyleId="Item2" Order="Secondary" Text="{Binding Label_Reset_current_list}" Command="{Binding Reset_current_list_ClickedCommand}" />-->
