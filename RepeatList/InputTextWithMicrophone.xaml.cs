@@ -1,4 +1,7 @@
+using Newtonsoft.Json;
+using RepeatList.Models;
 using RepeatList.ViewModels;
+
 
 namespace RepeatList;
 
@@ -22,7 +25,13 @@ public partial class InputTextWithMicrophone : ContentPage
 
     private async void OkButton_Clicked(object sender, EventArgs e)
     {
-        if (ViewModel.InputText.Contains(",") && !ViewModel.InputText.Contains(",,"))
+        var json = JsonConvert.DeserializeObject<List<Position>>(ViewModel.InputText);
+        
+        if (json != null)
+        {
+            _completionSource.SetResult(ViewModel.InputText);
+        }
+        else if (ViewModel.InputText.Contains(",") && !ViewModel.InputText.Contains(",,"))
         {
             var is_ok = await DisplayAlert(
                 Properties.Resources.Input, Properties.Resources.Do_you_want_to_use_commas_as_list_element_separators,

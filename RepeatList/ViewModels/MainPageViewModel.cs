@@ -245,16 +245,16 @@ namespace RepeatList.ViewModels
             PositionListViewVisible=true;
         }
 
-        public async Task AddPosition(string PositionEntryText)
+        public async Task AddPosition(Position position)
         {
-            if (Header_SelectedItem  == null || string.IsNullOrEmpty(PositionEntryText)) return;
+            if (Header_SelectedItem  == null || position == null) return;
 
             IsBusy = true;
 
             if (Replace_old_word_when_inserting)
-                await DeleteIfAvailable(PositionEntryText);
+                await DeleteIfAvailable(position.Title);
 
-            var newPosition = new Models.Position { HeaderId = Header_SelectedItem.Id, Title = PositionEntryText, IsCompleted = false, InsertedAt=DateTime.Now };
+            var newPosition = new Models.Position { HeaderId = Header_SelectedItem.Id, Title = position.Title, IsCompleted = position.IsCompleted, InsertedAt=DateTime.Now };
             await _databaseService.AddPositionAsync(newPosition);
             await LoadPositions();
 
@@ -280,7 +280,8 @@ namespace RepeatList.ViewModels
             var pos = Positions.FirstOrDefault(x => x.Title.ToLower().Contains(first_word.ToLower()));
             if (pos != null)
             {
-                await DeletePosition(pos);
+                if (!pos.IsCompleted)  // ??????????
+                    await DeletePosition(pos);
             }
         }
 
