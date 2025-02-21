@@ -1,11 +1,13 @@
 ﻿
 
+using Supabase.Postgrest.Attributes;
 using System.Text.Json.Serialization;
 
 namespace RepeatList.Models
 {
     public class Position
     {
+        [PrimaryKey]
         [JsonIgnore]
         public int Id { get; set; }
         [JsonIgnore]

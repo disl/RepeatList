@@ -1,6 +1,5 @@
 ﻿using Microsoft.Data.Sqlite;
 using RepeatList.Models;
-using System.Data.SQLite;
 
 
 namespace RepeatList.Services
