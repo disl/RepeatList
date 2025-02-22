@@ -38,12 +38,12 @@ namespace RepeatList.ViewModels
 
         private void InitSelectedItem_KindOfSorting()
         {
-            
+
             string _selectedItem_KindOfSorting = Preferences.Get(SelectedItem_KindOfSorting_key_name, "date");
             if (_selectedItem_KindOfSorting == null)
                 SelectedItem_KindOfSorting = new CMBType_String(Properties.Resources.sort_by, "date");
             else
-                SelectedItem_KindOfSorting =  ItemSource_KindOfSorting.FirstOrDefault(x=>x.Value == _selectedItem_KindOfSorting);  // new CMBType_String(Properties.Resources.sort_by, "date");
+                SelectedItem_KindOfSorting =  ItemSource_KindOfSorting.FirstOrDefault(x => x.Value == _selectedItem_KindOfSorting);  // new CMBType_String(Properties.Resources.sort_by, "date");
         }
 
         public void SetFirstItemForHeaders()
@@ -182,9 +182,9 @@ namespace RepeatList.ViewModels
             //}
         }
 
-        public async Task<int> AddHeader(string HeaderEntryText)
+        public async Task<string> AddHeader(string HeaderEntryText)
         {
-            var newHeader = new Header { ListName = HeaderEntryText, Date = DateTime.Now };
+            var newHeader = new Header { ListName = HeaderEntryText, UpdatedAt = DateTime.Now };
             var new_id = await _databaseService.AddHeaderAsync(newHeader);
 
             await LoadHeaders();
@@ -224,14 +224,14 @@ namespace RepeatList.ViewModels
             Positions = _pos_arr.OrderBy(x => x.IsCompleted).ThenBy(a => a.Title).ToObservableCollection();
             Positions_undone = _pos_arr.Where(a => a.IsCompleted== false).OrderBy(x => x.Title).ToObservableCollection();
 
-            if(SelectedItem_KindOfSorting == null)
+            if (SelectedItem_KindOfSorting == null)
             {
                 // ????????
                 SelectedItem_KindOfSorting = new CMBType_String(Properties.Resources.sort_by, "date");
             }
 
-            if(SelectedItem_KindOfSorting.Value=="date")
-                Positions_done = _pos_arr.Where(a => a.IsCompleted).OrderByDescending(x => x.InsertedAt).ToObservableCollection();
+            if (SelectedItem_KindOfSorting.Value=="date")
+                Positions_done = _pos_arr.Where(a => a.IsCompleted).OrderByDescending(x => x.UpdatedAt).ToObservableCollection();
             else if (SelectedItem_KindOfSorting.Value=="alpha")
                 Positions_done = _pos_arr.Where(a => a.IsCompleted).OrderBy(x => x.Title).ToObservableCollection();
 
@@ -251,7 +251,7 @@ namespace RepeatList.ViewModels
             if (Replace_old_word_when_inserting)
                 await DeleteIfAvailable(PositionEntryText);
 
-            var newPosition = new Models.Position { HeaderId = Header_SelectedItem.Id, Title = PositionEntryText, IsCompleted = false, InsertedAt=DateTime.Now };
+            var newPosition = new Models.Position { HeaderId = Header_SelectedItem.Id, Title = PositionEntryText, IsCompleted = false, UpdatedAt=DateTime.Now };
             await _databaseService.AddPositionAsync(newPosition);
             await LoadPositions();
 
@@ -311,7 +311,7 @@ namespace RepeatList.ViewModels
             IsBusy=true;
 
             Position_selectedItem = pos;
-            pos.InsertedAt = DateTime.Now;
+            pos.UpdatedAt = DateTime.Now;
             await _databaseService.UpdatePositionAsync(pos);
 
             await LoadPositions();
@@ -352,15 +352,15 @@ namespace RepeatList.ViewModels
             await LoadPositions();
         }
 
-        public async Task<int?> CopyHeader(Header header, string new_list_name)
+        public async Task<string?> CopyHeader(Header header, string new_list_name)
         {
             var positions = await _databaseService.GetPositionsAsync(header.Id);
 
             Header new_header = new Header();
-            new_header.Date = DateTime.Now;
+            new_header.UpdatedAt = DateTime.Now;
             new_header.ListName=new_list_name;
             var new_header_id = await _databaseService.AddHeaderAsync(new_header);
-            if (new_header_id > 0 && positions != null && positions.Count > 0)
+            if (new_header_id != Guid.Empty.ToString() && positions != null && positions.Count > 0)
             {
                 foreach (var pos in positions)
                 {

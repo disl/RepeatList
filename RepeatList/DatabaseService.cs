@@ -22,16 +22,16 @@ namespace RepeatList.Services
             var command = _connection.CreateCommand();
             command.CommandText = @"
             CREATE TABLE IF NOT EXISTS Header (
-                Id INTEGER PRIMARY KEY AUTOINCREMENT,
+                Id TEXT PRIMARY KEY,
                 ListName TEXT NOT NULL,
-                Date TEXT NOT NULL
+                UpdatedAt TEXT NOT NULL
             );
             CREATE TABLE IF NOT EXISTS Position (
-                Id INTEGER PRIMARY KEY AUTOINCREMENT,
-                HeaderId INTEGER NOT NULL,
+                Id TEXT PRIMARY KEY,
+                HeaderId TEXT NOT NULL,
                 Title TEXT NOT NULL,
                 IsCompleted INTEGER DEFAULT 0,
-                InsertedAt TEXT DEFAULT CURRENT_TIMESTAMP,
+                UpdatedAt TEXT DEFAULT CURRENT_TIMESTAMP,
                 FOREIGN KEY (HeaderId) REFERENCES Header(Id)
             );
             CREATE TABLE IF NOT EXISTS Setup(
@@ -45,7 +45,7 @@ namespace RepeatList.Services
             ;
             command.ExecuteNonQuery();
 
-            //AddColumnIfNotExists("Position", "InsertedAt", "TEXT", _connection, "DEFAULT CURRENT_TIMESTAMP");
+            //AddColumnIfNotExists("Position", "UpdatedAt", "TEXT", _connection, "DEFAULT CURRENT_TIMESTAMP");
 
         }
 
@@ -82,25 +82,40 @@ namespace RepeatList.Services
             var headers = new List<Header>();
 
             var command = _connection.CreateCommand();
-            command.CommandText = "SELECT * FROM Header ORDER BY ListName";  //Date DESC";
+            command.CommandText = "SELECT * FROM Header ORDER BY ListName";
 
-            using (var reader = await command.ExecuteReaderAsync())
+            try
             {
-                while (await reader.ReadAsync())
+                using (var reader = await command.ExecuteReaderAsync())
                 {
-                    headers.Add(new Header
+                    while (await reader.ReadAsync())
                     {
-                        Id = reader.GetInt32(0),
-                        ListName = reader.GetString(1),
-                        Date = DateTime.Parse(reader.GetString(2))
-                    });
-                }
-            }
+                        //if(reader.IsDBNull(0))
+                        //    continue;
 
-            return headers;
+                        var _id = reader.GetString(0);
+                        var _listName = reader.GetString(1);
+                        var _updatedAt = reader.GetString(2);
+
+                        headers.Add(new Header
+                        {
+                            Id = _id,
+                            ListName = _listName,
+                            UpdatedAt = DateTime.Parse(_updatedAt)
+                        });
+                    }
+                }
+
+                return headers;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return headers;
+            }
         }
 
-        public async Task<Header?> GetHeaderAsync(int Id)
+        public async Task<Header?> GetHeaderAsync(string Id)
         {
             var headers = new List<Header>();
             var header = new Header();
@@ -115,9 +130,9 @@ namespace RepeatList.Services
                 {
                     headers.Add(new Header
                     {
-                        Id = reader.GetInt32(0),
+                        Id = reader.GetString(0),
                         ListName = reader.GetString(1),
-                        Date = DateTime.Parse(reader.GetString(2))
+                        UpdatedAt = DateTime.Parse(reader.GetString(2))
                     });
                 }
             }
@@ -129,12 +144,15 @@ namespace RepeatList.Services
             return header;
         }
 
-        public async Task<int> AddHeaderAsync(Header header)
+        public async Task<string> AddHeaderAsync(Header header)
         {
+            var new_guid = Guid.NewGuid();
+
             var command = _connection.CreateCommand();
-            command.CommandText = "INSERT INTO Header (ListName, Date) VALUES (@ListName, @Date)";
+            command.CommandText = "INSERT INTO Header (Id, ListName, UpdatedAt) VALUES (@Id, @ListName, @UpdatedAt)";
+            command.Parameters.AddWithValue("@Id", new_guid.ToString());
             command.Parameters.AddWithValue("@ListName", header.ListName);
-            command.Parameters.AddWithValue("@Date", header.Date.ToString("u"));
+            command.Parameters.AddWithValue("@UpdatedAt", header.UpdatedAt.ToString("u"));
             await command.ExecuteNonQueryAsync();
 
             // Die letzte eingefügte ID abrufen
@@ -142,12 +160,12 @@ namespace RepeatList.Services
             idCommand.CommandText = "SELECT last_insert_rowid()";
             var newId_obj = await idCommand.ExecuteScalarAsync();
             if (newId_obj != DBNull.Value)
-                return Convert.ToInt32(newId_obj);
+                return new_guid.ToString();
             else
-                return -1;
+                return Guid.Empty.ToString();
         }
 
-        public async Task<int> DeleteHeaderAsync(int id)
+        public async Task<int> DeleteHeaderAsync(string id)
         {
             var command = _connection.CreateCommand();
             command.CommandText = "DELETE FROM Header WHERE Id = @Id";
@@ -157,9 +175,9 @@ namespace RepeatList.Services
         }
 
         // Position CRUD
-        public async Task<List<Position>> GetPositionsAsync(int headerId)
+        public async Task<List<Position>> GetPositionsAsync(string headerId)
         {
-            if (headerId == 0)
+            if (headerId == Guid.Empty.ToString())
                 return new List<Position>();
 
             var positions = new List<Position>();
@@ -174,11 +192,11 @@ namespace RepeatList.Services
                 {
                     positions.Add(new Position
                     {
-                        Id = reader.GetInt32(0),
-                        HeaderId = reader.GetInt32(1),
+                        Id = reader.GetString(0),
+                        HeaderId = reader.GetString(1),
                         Title = reader.GetString(2),
                         IsCompleted = reader.GetBoolean(3),
-                        InsertedAt = DateTime.Parse(reader.GetString(4))
+                        UpdatedAt = DateTime.Parse(reader.GetString(4))
                     });
                 }
             }
@@ -188,27 +206,30 @@ namespace RepeatList.Services
 
         public async Task<int> AddPositionAsync(Position position)
         {
+            var new_guid = Guid.NewGuid();
+
             var command = _connection.CreateCommand();
-            command.CommandText = "INSERT INTO Position (HeaderId, Title, IsCompleted, InsertedAt) VALUES (@HeaderId, @Title, @IsCompleted, @InsertedAt)";
+            command.CommandText = "INSERT INTO Position (Id, HeaderId, Title, IsCompleted, UpdatedAt) VALUES (@Id, @HeaderId, @Title, @IsCompleted, @UpdatedAt)";
+            command.Parameters.AddWithValue("@Id", new_guid.ToString());
             command.Parameters.AddWithValue("@HeaderId", position.HeaderId);
             command.Parameters.AddWithValue("@Title", position.Title);
             command.Parameters.AddWithValue("@IsCompleted", position.IsCompleted);
-            command.Parameters.AddWithValue("@InsertedAt", position.InsertedAt);
+            command.Parameters.AddWithValue("@UpdatedAt", position.UpdatedAt);
 
             return await command.ExecuteNonQueryAsync();
         }
 
         public async Task<int> UpdatePositionAsync(Position position)
         {
-            if (position == null || position.Id==0)
+            if (position == null || position.Id==Guid.Empty.ToString())
                 return 0;
 
             var command = _connection.CreateCommand();
-            command.CommandText = "UPDATE Position SET Title = @Title, IsCompleted = @IsCompleted, InsertedAt=@InsertedAt WHERE Id = @Id";
+            command.CommandText = "UPDATE Position SET Title = @Title, IsCompleted = @IsCompleted, UpdatedAt=@UpdatedAt WHERE Id = @Id";
             command.Parameters.AddWithValue("@Title", position.Title);
             command.Parameters.AddWithValue("@IsCompleted", position.IsCompleted);
             command.Parameters.AddWithValue("@Id", position.Id);
-            command.Parameters.AddWithValue("@InsertedAt", position.InsertedAt);
+            command.Parameters.AddWithValue("@UpdatedAt", position.UpdatedAt);
 
             var ret_val = await command.ExecuteNonQueryAsync();
 
@@ -217,7 +238,7 @@ namespace RepeatList.Services
             return ret_val;
         }
 
-        public async Task<int> DeletePositionAsync(int id)
+        public async Task<int> DeletePositionAsync(string id)
         {
             var command = _connection.CreateCommand();
             command.CommandText = "DELETE FROM Position WHERE Id = @Id";
@@ -226,7 +247,7 @@ namespace RepeatList.Services
             return await command.ExecuteNonQueryAsync();
         }
 
-        public async Task<int> DeletePositionsByHeaderIdAsync(int HeaderId)
+        public async Task<int> DeletePositionsByHeaderIdAsync(string HeaderId)
         {
             var command = _connection.CreateCommand();
             command.CommandText = "DELETE FROM Position WHERE  HeaderId = @HeaderId";
@@ -255,7 +276,7 @@ namespace RepeatList.Services
             return await command.ExecuteNonQueryAsync();
         }
 
-        public async Task<int> UpdateIsCompletedPositionsAsync(int HeaderId, bool IsCompleted)
+        public async Task<int> UpdateIsCompletedPositionsAsync(string HeaderId, bool IsCompleted)
         {
             var command = _connection.CreateCommand();
             command.CommandText = "UPDATE Position SET IsCompleted=@IsCompleted WHERE  HeaderId = @HeaderId";

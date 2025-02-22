@@ -5,11 +5,11 @@ namespace RepeatList.Models
     public class Position
     {
 
-        public int Id { get; set; }
-        public int HeaderId { get; set; } // Fremdschlüssel zum Header
+        public string Id { get; set; } 
+        public string HeaderId { get; set; }  
         public string? Title { get; set; }
 
-        public DateTime? InsertedAt { get; set; }
+        public DateTime? UpdatedAt { get; set; }
 
         public string PositionImageSource
         {
