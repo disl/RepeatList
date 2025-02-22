@@ -58,10 +58,17 @@ public partial class SetupPage : ContentPage
 
     private void SetCurrentCulture(string curr_culture)
     {
-        //CultureInfo ci = new CultureInfo("en");
-        var ci = new CultureInfo(_currLanguage);
-        Thread.CurrentThread.CurrentCulture = ci;
-        Thread.CurrentThread.CurrentUICulture = ci;
+        try
+        {
+            //CultureInfo ci = new CultureInfo("en");
+            var ci = new CultureInfo(curr_culture);
+            Thread.CurrentThread.CurrentCulture = ci;
+            Thread.CurrentThread.CurrentUICulture = ci;
+        }
+        catch(Exception ex)
+        {
+
+        }
     }
 
     private async void OnCancel(object sender, EventArgs e)

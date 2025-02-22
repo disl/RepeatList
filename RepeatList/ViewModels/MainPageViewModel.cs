@@ -170,6 +170,8 @@ namespace RepeatList.ViewModels
             await EditIsSynchronizedHeader(Header_SelectedItem, true);
 
             IsBusy = false;
+
+
         }
 
         [RelayCommand]
