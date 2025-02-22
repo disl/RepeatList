@@ -124,6 +124,15 @@ namespace RepeatList.Properties {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Copy list to clipboard ähnelt.
+        /// </summary>
+        public static string Copy_list_to_clipboard {
+            get {
+                return ResourceManager.GetString("Copy_list_to_clipboard", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Delete list ähnelt.
         /// </summary>
         public static string Delete_list {
@@ -241,6 +250,15 @@ namespace RepeatList.Properties {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Paste from clipboard ähnelt.
+        /// </summary>
+        public static string Paste_from_clipboard {
+            get {
+                return ResourceManager.GetString("Paste_from_clipboard", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Positions ähnelt.
         /// </summary>
         public static string Positions {
@@ -300,6 +318,24 @@ namespace RepeatList.Properties {
         public static string sort_by_date {
             get {
                 return ResourceManager.GetString("sort_by_date", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die The clipboard is empty ähnelt.
+        /// </summary>
+        public static string The_clipboard_is_empty {
+            get {
+                return ResourceManager.GetString("The_clipboard_is_empty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die The list was saved as a string in the clipboard. This can now be sent via WatsApp, for example. ähnelt.
+        /// </summary>
+        public static string The_list_was_saved_as_a_string_in_the_clipboard {
+            get {
+                return ResourceManager.GetString("The_list_was_saved_as_a_string_in_the_clipboard", resourceCulture);
             }
         }
         

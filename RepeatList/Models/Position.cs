@@ -1,5 +1,8 @@
 ﻿
 
+using Supabase.Postgrest.Attributes;
+using System.Text.Json.Serialization;
+
 namespace RepeatList.Models
 {
     public class Position
@@ -7,10 +10,15 @@ namespace RepeatList.Models
 
         public string Id { get; set; } 
         public string HeaderId { get; set; }  
+        [PrimaryKey]
+        [JsonIgnore]
+        public int Id { get; set; }
+        [JsonIgnore]
+        public int HeaderId { get; set; } // Fremdschlüssel zum Header
         public string? Title { get; set; }
-
-        public DateTime? UpdatedAt { get; set; }
-
+        [JsonIgnore]
+        public DateTime? InsertedAt { get; set; }
+        [JsonIgnore]
         public string PositionImageSource
         {
             get

@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Maui.Core.Extensions;
+using Newtonsoft.Json;
 using RepeatList.Models;
 using RepeatList.ViewModels;
 using System.Collections.ObjectModel;
@@ -169,25 +170,64 @@ namespace RepeatList
             await Navigation.PushModalAsync(promptPage);
 
             string new_item_name = await promptPage.Result;
-            //string new_item_name = await DisplayPromptAsync(Properties.Resources.Input, "Enter new item:", initialValue: result);
-            if (!string.IsNullOrWhiteSpace(new_item_name))
+
+            if (string.IsNullOrEmpty(new_item_name))
+                return;
+
+            var json = JsonConvert.DeserializeObject<List<Position>>(new_item_name);
+            if (json != null)
             {
-                if (new_item_name.Contains(",,"))
+                foreach (var item in json)
+                {
+                    item.HeaderId= ViewModel.Header_SelectedItem.Id;
+                    item.InsertedAt= DateTime.Now;
+                    await ViewModel.AddPosition(item);
+                }
+            }
+            else
+            {
+                var new_pos = new Position();
+                new_pos.HeaderId= ViewModel.Header_SelectedItem.Id;
+                new_pos.Title= new_item_name;
+                new_pos.InsertedAt= DateTime.Now;
+
+                if (new_item_name.Contains(",,"))  // && !ViewModel.Replace_old_word_when_inserting)
                 {
                     var items_list = new_item_name.Split(",,").ToList();
                     if (items_list.Count > 0)
                     {
                         foreach (var item in items_list)
                         {
-                            await ViewModel.AddPosition(item.Trim());
+                            new_pos.Title= item.Trim();
+                            await ViewModel.AddPosition(new_pos);
                         }
                     }
                     else
-                        await ViewModel.AddPosition(new_item_name);
+                        await ViewModel.AddPosition(new_pos);
                 }
                 else
-                    await ViewModel.AddPosition(new_item_name);
+                    await ViewModel.AddPosition(new_pos);
             }
+
+            ////string new_item_name = await DisplayPromptAsync(Properties.Resources.Input, "Enter new item:", initialValue: result);
+            //if (!string.IsNullOrWhiteSpace(new_item_name))
+            //{
+            //    if (new_item_name.Contains(",,"))
+            //    {
+            //        var items_list = new_item_name.Split(",,").ToList();
+            //        if (items_list.Count > 0)
+            //        {
+            //            foreach (var item in items_list)
+            //            {
+            //                await ViewModel.AddPosition(item.Trim());
+            //            }
+            //        }
+            //        else
+            //            await ViewModel.AddPosition(new_item_name);
+            //    }
+            //    else
+            //        await ViewModel.AddPosition(new_item_name);
+            //}
 
             expander.IsExpanded= !expander.IsExpanded;
             expander.IsExpanded= !expander.IsExpanded;
