@@ -4,8 +4,6 @@ using RepeatList.Models;
 
 namespace RepeatList.Services
 {
-
-
     public class DatabaseService
     {
         private SqliteConnection _connection;
@@ -23,7 +21,8 @@ namespace RepeatList.Services
             CREATE TABLE IF NOT EXISTS Header (
                 Id TEXT PRIMARY KEY,
                 ListName TEXT NOT NULL,
-                UpdatedAt TEXT NOT NULL
+                UpdatedAt TEXT NOT NULL,
+                IsSynchronized INTEGER DEFAULT 0
             );
             CREATE TABLE IF NOT EXISTS Position (
                 Id TEXT PRIMARY KEY,
@@ -35,16 +34,13 @@ namespace RepeatList.Services
             );
             CREATE TABLE IF NOT EXISTS Setup(
                 Id INTEGER PRIMARY KEY AUTOINCREMENT,
-                DefaultLanguage TEXT NOT NULL DEFAULT 'en-US',
+                DefaultLanguage TEXT NOT NULL DEFAULT 'en',
                 DefaultAppTheme TEXT NOT NULL DEFAULT 'Dark'
                 
-            );"
-
-
-            ;
+            );";
             command.ExecuteNonQuery();
 
-            //AddColumnIfNotExists("Position", "UpdatedAt", "TEXT", _connection, "DEFAULT CURRENT_TIMESTAMP");
+            //AddColumnIfNotExists("Header", "IsSynchronized", "INTEGER", _connection, "DEFAULT 0");
 
         }
 
@@ -95,12 +91,14 @@ namespace RepeatList.Services
                         var _id = reader.GetString(0);
                         var _listName = reader.GetString(1);
                         var _updatedAt = reader.GetString(2);
+                        var _IsSynchronized = reader.GetBoolean(3);
 
                         headers.Add(new Header
                         {
                             Id = _id,
                             ListName = _listName,
-                            UpdatedAt = DateTime.Parse(_updatedAt)
+                            UpdatedAt = DateTime.Parse(_updatedAt),
+                            IsSynchronized = _IsSynchronized 
                         });
                     }
                 }
@@ -131,7 +129,8 @@ namespace RepeatList.Services
                     {
                         Id = reader.GetString(0),
                         ListName = reader.GetString(1),
-                        UpdatedAt = DateTime.Parse(reader.GetString(2))
+                        UpdatedAt = DateTime.Parse(reader.GetString(2)),
+                        IsSynchronized = reader.GetBoolean(3)
                     });
                 }
             }
@@ -152,6 +151,7 @@ namespace RepeatList.Services
             command.Parameters.AddWithValue("@Id", new_guid.ToString());
             command.Parameters.AddWithValue("@ListName", header.ListName);
             command.Parameters.AddWithValue("@UpdatedAt", header.UpdatedAt.ToString("u"));
+            command.Parameters.AddWithValue("@IsSynchronized", header.IsSynchronized);
             await command.ExecuteNonQueryAsync();
 
             // Die letzte eingefügte ID abrufen
@@ -172,6 +172,28 @@ namespace RepeatList.Services
 
             return await command.ExecuteNonQueryAsync();
         }
+
+        public async Task<int> EditHeadersTitleAsync(Header header, string new_list_name)
+        {
+            var command = _connection.CreateCommand();
+            command.CommandText = "UPDATE Header SET ListName=@ListName WHERE Id=@Id";
+            command.Parameters.AddWithValue("@Id", header.Id);
+            command.Parameters.AddWithValue("@ListName", new_list_name);
+
+            return await command.ExecuteNonQueryAsync();
+        }
+
+        public async Task<int> EditHeadersIsSynchronizedAsync(Header header, bool IsSynchronized)
+        {
+            var command = _connection.CreateCommand();
+            command.CommandText = "UPDATE Header SET IsSynchronized=@IsSynchronized WHERE Id=@Id";
+            command.Parameters.AddWithValue("@Id", header.Id);
+            command.Parameters.AddWithValue("@IsSynchronized", IsSynchronized);
+
+            return await command.ExecuteNonQueryAsync();
+        }
+
+
 
         // Position CRUD
         public async Task<List<Position>> GetPositionsAsync(string headerId)
@@ -199,7 +221,6 @@ namespace RepeatList.Services
                     });
                 }
             }
-
             return positions;
         }
 
@@ -251,16 +272,6 @@ namespace RepeatList.Services
             var command = _connection.CreateCommand();
             command.CommandText = "DELETE FROM Position WHERE  HeaderId = @HeaderId";
             command.Parameters.AddWithValue("@HeaderId", HeaderId);
-
-            return await command.ExecuteNonQueryAsync();
-        }
-
-        public async Task<int> EditHeadersTitleAsync(Header header, string new_list_name)
-        {
-            var command = _connection.CreateCommand();
-            command.CommandText = "UPDATE Header SET ListName=@ListName WHERE Id=@Id";
-            command.Parameters.AddWithValue("@Id", header.Id);
-            command.Parameters.AddWithValue("@ListName", new_list_name);
 
             return await command.ExecuteNonQueryAsync();
         }

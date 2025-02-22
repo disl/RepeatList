@@ -1,5 +1,4 @@
-﻿using CommunityToolkit.Maui.Alerts;
-using CommunityToolkit.Maui.Core.Extensions;
+﻿using CommunityToolkit.Maui.Core.Extensions;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using RepeatList.Models;
@@ -8,23 +7,27 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Text.Json;
 using Position = RepeatList.Models.Position;
-using System.Text.Json.Serialization;
 
 namespace RepeatList.ViewModels
 {
     public partial class MainPageViewModel : ObservableObject   // INotifyPropertyChanged,
     {
         private DatabaseService _databaseService;
-        public event PropertyChangedEventHandler PropertyChanged;
-        private SetupPageViewModel? setupPageViewModel;
-        public string SelectedItem_KindOfSorting_key_name = "SelectedItem_KindOfSorting";
+        private SupabaseService _supabaseService;
 
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        private SetupPageViewModel? setupPageViewModel;
+
+        public string SelectedItem_KindOfSorting_key_name = "SelectedItem_KindOfSorting";
         public double ButtonsSize = 30;
 
         public MainPageViewModel()
         {
             _databaseService =  new DatabaseService();
-            setupPageViewModel=new SetupPageViewModel();
+            _supabaseService =  new SupabaseService();
+
+            setupPageViewModel =new SetupPageViewModel();
 
             _ = setupPageViewModel.Load();
             CurrentCulture= setupPageViewModel.SelectedItem.DefaultLanguage;
@@ -32,9 +35,6 @@ namespace RepeatList.ViewModels
             _ = LoadHeaders();
 
             SetFirstItemForHeaders();
-
-            //KindOfSortingPicker.ItemsSource = ItemSource_KindOfSorting.ToObservableCollection();
-
             InitSelectedItem_KindOfSorting();
         }
 
@@ -66,6 +66,7 @@ namespace RepeatList.ViewModels
             }
         }
 
+        [ObservableProperty] public bool isSynchronized = false;
         [ObservableProperty] public string title_sort_by = Properties.Resources.sort_by;
         [ObservableProperty] public string title_KindOfSorting = "Sort";
         [ObservableProperty] public CMBType_String selectedItem_KindOfSorting;
@@ -89,7 +90,19 @@ namespace RepeatList.ViewModels
         [ObservableProperty] public bool changePositionsCheckedState;
         partial void OnChangePositionsCheckedStateChanged(bool oldValue, bool newValue)
         {
-            PositionImageSource = newValue ? "check_box_check.png" : "check_box_blank.png";
+            //PositionImageSource = newValue ? "check_box_check.png" : "check_box_blank.png";
+
+            string image_source = "";
+            if (Application.Current.UserAppTheme == AppTheme.Dark)
+            {
+                image_source= newValue ? "check_box_check_white.png" : "check_box_blank_white.png";
+            }
+            else
+            {
+                image_source= newValue ? "check_box_check.png" : "check_box_blank.png";
+            }
+
+            PositionImageSource = image_source;
         }
 
 
@@ -145,12 +158,31 @@ namespace RepeatList.ViewModels
         #region COMMANDS       
 
         [RelayCommand]
+        public async Task Sync_list_Clicked() //string ExportedList, string Title)
+        {
+            if (Positions == null || Positions.Count == 0 || Header==null)
+                return;
+
+            IsBusy = true;
+
+            await _supabaseService.SyncHeaderWithDetailsAsync(Header_SelectedItem.Id);
+
+            await EditIsSynchronizedHeader(Header_SelectedItem, true);
+
+            IsBusy = false;
+        }
+
+        [RelayCommand]
         public async Task Export_list_Clicked() //string ExportedList, string Title)
         {
             if (Positions == null || Positions.Count == 0 || Header==null)
                 return;
+            IsBusy = true;
+
             var json = JsonSerializer.Serialize(Positions);
             await Utilities.ShareTextAsync(json);
+
+            IsBusy = false;
 
             //var ExportedList = String.Join(",,", Positions.Select(x => x.Title).ToList());
             //var ExportedListTitle = "Export: " + Header_SelectedItem.ListName;
@@ -254,7 +286,13 @@ namespace RepeatList.ViewModels
             if (Replace_old_word_when_inserting)
                 await DeleteIfAvailable(position.Title);
 
-            var newPosition = new Models.Position { HeaderId = Header_SelectedItem.Id, Title = PositionEntryText, IsCompleted = false, UpdatedAt=DateTime.Now };
+            var newPosition = new Models.Position
+            {
+                HeaderId = Header_SelectedItem.Id,
+                Title = position.Title,
+                IsCompleted = false,
+                UpdatedAt=DateTime.Now
+            };
             await _databaseService.AddPositionAsync(newPosition);
             await LoadPositions();
 
@@ -389,6 +427,14 @@ namespace RepeatList.ViewModels
         {
             Header_SelectedItem = header;
             await _databaseService.EditHeadersTitleAsync(header, new_list_name);
+            await LoadHeaders();
+            SetFirstItemForHeaders();
+        }
+
+        internal async Task EditIsSynchronizedHeader(Header header, bool new_IsSynchronized)
+        {
+            Header_SelectedItem = header;
+            await _databaseService.EditHeadersIsSynchronizedAsync(header, new_IsSynchronized);
             await LoadHeaders();
             SetFirstItemForHeaders();
         }

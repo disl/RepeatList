@@ -57,8 +57,7 @@ namespace RepeatList.ViewModels
                         Application.Current.UserAppTheme = AppTheme.Light;
 
                     // Language
-                    CultureInfo ci = new CultureInfo("en-US");
-                    //if (SelectedItem.DefaultLanguage == "de-DE")
+                    CultureInfo ci = new CultureInfo("en");
                     ci = new CultureInfo(SelectedItem.DefaultLanguage);
 
                     Thread.CurrentThread.CurrentCulture = ci;

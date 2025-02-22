@@ -1,24 +1,24 @@
-﻿
-
-using Supabase.Postgrest.Attributes;
+﻿using Supabase.Postgrest.Models;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Runtime.Serialization;
 using System.Text.Json.Serialization;
 
 namespace RepeatList.Models
 {
-    public class Position
+    public class Position : BaseModel
     {
-
-        public string Id { get; set; } 
+        [JsonIgnore]
+        public string Id { get; set; }
+        [JsonIgnore]
         public string HeaderId { get; set; }  
-        [PrimaryKey]
-        [JsonIgnore]
-        public int Id { get; set; }
-        [JsonIgnore]
-        public int HeaderId { get; set; } // Fremdschlüssel zum Header
+      
         public string? Title { get; set; }
         [JsonIgnore]
-        public DateTime? InsertedAt { get; set; }
+        public DateTime? UpdatedAt { get; set; }
+
         [JsonIgnore]
+        [NotMapped]
+        [IgnoreDataMember]
         public string PositionImageSource
         {
             get

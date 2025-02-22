@@ -9,8 +9,6 @@ namespace RepeatList
 {
     public partial class MainPage : ContentPage
     {
-        //private readonly ISpeechToText _speechToText;
-
         public SetupPageViewModel SetupPageViewModel { get; set; }
         public MainPageViewModel ViewModel { get; set; }
 
@@ -60,7 +58,7 @@ namespace RepeatList
 
         private void SetCurrentCulture(string curr_culture)
         {
-            //CultureInfo ci = new CultureInfo("en-US");
+            //CultureInfo ci = new CultureInfo("en");
             var ci = new CultureInfo(curr_culture);
             Thread.CurrentThread.CurrentCulture = ci;
             Thread.CurrentThread.CurrentUICulture = ci;
@@ -165,6 +163,7 @@ namespace RepeatList
             //var text = await SpeechToText.Default.ListenAsync(new CultureInfo().def, null, CancellationToken.None);
 
             ViewModel.IsBusy=true;
+            List<Position>? json= null;
 
             var promptPage = new InputTextWithMicrophone();  //_speechToText);
             await Navigation.PushModalAsync(promptPage);
@@ -174,13 +173,18 @@ namespace RepeatList
             if (string.IsNullOrEmpty(new_item_name))
                 return;
 
-            var json = JsonConvert.DeserializeObject<List<Position>>(new_item_name);
+            try
+            {
+                json = JsonConvert.DeserializeObject<List<Position>>(new_item_name);
+            }
+            catch { json=null; }
+
             if (json != null)
             {
                 foreach (var item in json)
                 {
                     item.HeaderId= ViewModel.Header_SelectedItem.Id;
-                    item.InsertedAt= DateTime.Now;
+                    item.UpdatedAt= DateTime.Now;
                     await ViewModel.AddPosition(item);
                 }
             }
@@ -189,7 +193,7 @@ namespace RepeatList
                 var new_pos = new Position();
                 new_pos.HeaderId= ViewModel.Header_SelectedItem.Id;
                 new_pos.Title= new_item_name;
-                new_pos.InsertedAt= DateTime.Now;
+                new_pos.UpdatedAt= DateTime.Now;
 
                 if (new_item_name.Contains(",,"))  // && !ViewModel.Replace_old_word_when_inserting)
                 {
@@ -376,6 +380,21 @@ namespace RepeatList
             var picker = sender as Picker;
             await ViewModel.LoadPositions();
             Preferences.Set(ViewModel.SelectedItem_KindOfSorting_key_name, ViewModel.SelectedItem_KindOfSorting.Value);
+        }
+
+        private async void OnIsSynchronizedClicked(object sender, EventArgs e)
+        {
+            var button = sender as ImageButton;
+            if (button?.CommandParameter is Header header)
+            {
+                bool answer = await DisplayAlert(Properties.Resources.Do_you_really_want_to_end_the_synchronising_of_this_list,
+                Properties.Resources.Are_you_sure, Properties.Resources.yes, Properties.Resources.no);
+                if (answer)
+                {
+                    await ViewModel.EditIsSynchronizedHeader(header, false);
+
+                }
+            }
         }
     }
 

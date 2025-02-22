@@ -147,6 +147,9 @@
   <data name="done" xml:space="preserve">
     <value>Erledigt</value>
   </data>
+  <data name="Do_you_really_want_to_end_the_synchronising_of_this_list" xml:space="preserve">
+    <value>Wollen Sie wirklich die Synchronisierung dieser Liste beenden?</value>
+  </data>
   <data name="Do_you_want_to_use_commas_as_list_element_separators" xml:space="preserve">
     <value>Wollen Sie Kommas (",") als Listenelementtrennzeichen verwenden?</value>
   </data>

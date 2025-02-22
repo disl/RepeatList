@@ -142,6 +142,15 @@ namespace RepeatList.Properties {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Do you really want to end the synconisation of this list ähnelt.
+        /// </summary>
+        public static string Do_you_really_want_to_end_the_synchronising_of_this_list {
+            get {
+                return ResourceManager.GetString("Do_you_really_want_to_end_the_synchronising_of_this_list", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Do you want to use commas (‘,’) as list element separators? ähnelt.
         /// </summary>
         public static string Do_you_want_to_use_commas_as_list_element_separators {

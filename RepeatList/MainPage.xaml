@@ -33,6 +33,8 @@
                             MaximumWidthRequest="{Binding ImageButton_size}" MaximumHeightRequest="{Binding ImageButton_size}"  />
                     <ImageButton Source="share_icon.png" Command="{Binding Export_list_ClickedCommand}" 
                             MaximumWidthRequest="{Binding ImageButton_size}" MaximumHeightRequest="{Binding ImageButton_size}" />
+                    <ImageButton Source="sync_icon.png" Command="{Binding Sync_list_ClickedCommand}" 
+                            MaximumWidthRequest="{Binding ImageButton_size}" MaximumHeightRequest="{Binding ImageButton_size}" />
                 </StackLayout>
                 <Border  Stroke="Gray" StrokeThickness="1"  Padding="10" >
                     <Border.StrokeShape>
@@ -43,12 +45,13 @@
                         <ListView.ItemTemplate TextColor="{AppThemeBinding Light={DynamicResource PrimaryTextColor}, Dark={DynamicResource PrimaryTextColorLight}}">
                             <DataTemplate>
                                 <ViewCell>
-                                    <Grid Padding="7" ColumnDefinitions="5*,1.3*, 1.3*, 1.3*">
+                                    <Grid Padding="7" ColumnDefinitions="4.5*,1.1*, 1.1*, 1.1*,1.1*">
                                         <Label Text="{Binding ListName}"  VerticalOptions="Center"   Grid.Column="0" 
                                                TextColor="{AppThemeBinding Light={DynamicResource PrimaryTextColor}, Dark={DynamicResource PrimaryTextColorLight}}"/>
                                         <ImageButton Source="edit_icon.png" Clicked="OnEditHeaderClicked" CommandParameter="{Binding}"  Grid.Column="1"/>
                                         <ImageButton Source="copy_icon.png" Clicked="OnCopyHeaderClicked" CommandParameter="{Binding}"  Grid.Column="2"/>
                                         <ImageButton Source="delete_icon.png" Clicked="OnDeleteHeaderClicked" CommandParameter="{Binding}"  Grid.Column="3"/>
+                                        <ImageButton Source="sync_icon.png" IsVisible="{Binding IsSynchronized}" Clicked="OnIsSynchronizedClicked" CommandParameter="{Binding}" Grid.Column="4"/>
                                     </Grid>
                                 </ViewCell>
                             </DataTemplate>

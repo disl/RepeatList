@@ -20,10 +20,22 @@ public partial class SetupPage : ContentPage
 
         ViewModel = BindingContext as  SetupPageViewModel;
 
+        //_oldThema = ViewModel.SelectedItem.DefaultAppTheme;
+        //_oldLanguage = ViewModel.SelectedItem.DefaultLanguage;
+        //_currLanguage=_oldLanguage;
+    }
+
+    protected override void OnAppearing()
+    {
+        base.OnAppearing();
+        _isStart = true;
+
         _oldThema = ViewModel.SelectedItem.DefaultAppTheme;
         _oldLanguage = ViewModel.SelectedItem.DefaultLanguage;
-        _currLanguage=_oldLanguage;
-    }
+        //_currLanguage=_oldLanguage;
+
+        _ = ViewModel.Load();
+    }   
 
     private async void OkButton_Clicked(object sender, EventArgs e)
     {
@@ -34,7 +46,7 @@ public partial class SetupPage : ContentPage
         if (_currLanguage != null)
             SetCurrentCulture(_currLanguage);
 
-        if (_oldLanguage != _currLanguage)
+        if (_oldLanguage != ViewModel.SelectedItem.DefaultLanguage)
         {
             // 
             await DisplayAlert("Information", Properties.Resources.Application_is_closed_to_update_changes, "OK");
@@ -46,7 +58,7 @@ public partial class SetupPage : ContentPage
 
     private void SetCurrentCulture(string curr_culture)
     {
-        //CultureInfo ci = new CultureInfo("en-US");
+        //CultureInfo ci = new CultureInfo("en");
         var ci = new CultureInfo(_currLanguage);
         Thread.CurrentThread.CurrentCulture = ci;
         Thread.CurrentThread.CurrentUICulture = ci;

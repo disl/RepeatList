@@ -147,6 +147,9 @@
   <data name="done" xml:space="preserve">
     <value>Done</value>
   </data>
+  <data name="Do_you_really_want_to_end_the_synchronising_of_this_list" xml:space="preserve">
+    <value>Do you really want to end the synconisation of this list</value>
+  </data>
   <data name="Do_you_want_to_use_commas_as_list_element_separators" xml:space="preserve">
     <value>Do you want to use commas (‘,’) as list element separators?</value>
   </data>

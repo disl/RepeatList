@@ -25,8 +25,14 @@ public partial class InputTextWithMicrophone : ContentPage
 
     private async void OkButton_Clicked(object sender, EventArgs e)
     {
-        var json = JsonConvert.DeserializeObject<List<Position>>(ViewModel.InputText);
-        
+        List<Position> json = null;
+
+        try
+        {
+            json = JsonConvert.DeserializeObject<List<Position>>(ViewModel.InputText);
+        }
+        catch { json=null; }
+
         if (json != null)
         {
             _completionSource.SetResult(ViewModel.InputText);
