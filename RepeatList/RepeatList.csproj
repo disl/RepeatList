@@ -194,7 +194,7 @@
 
 	<ItemGroup>
 	  <EmbeddedResource Update="Properties\Resources.de.resx">
-	    <Generator>PublicResXFileCodeGenerator</Generator>
+	    <Generator></Generator>
 	  </EmbeddedResource>
 	  <EmbeddedResource Update="Properties\Resources.resx">
 	    <Generator>PublicResXFileCodeGenerator</Generator>

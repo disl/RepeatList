@@ -1,4 +1,5 @@
-﻿using CommunityToolkit.Maui.Core.Extensions;
+﻿using CommunityToolkit.Maui.Alerts;
+using CommunityToolkit.Maui.Core.Extensions;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using RepeatList.Models;
@@ -169,6 +170,14 @@ namespace RepeatList.ViewModels
 
             await EditIsSynchronizedHeader(Header_SelectedItem, true);
 
+            bool answer = await Application.Current.MainPage.DisplayAlert(
+                Properties.Resources.Would_you_like_to_work_with_someone_on_a_current_list, Properties.Resources.Are_you_sure, Properties.Resources.yes, Properties.Resources.no);
+            if (answer)
+            {
+                var share_text = Properties.Resources.To_be_able_to_edit_the_list_please_use_the_following_key
+                    .Replace("%1", Header_SelectedItem.Id).Replace("%2", Header_SelectedItem.ListName);
+                await Utilities.ShareTextAsync(share_text);
+            }
             IsBusy = false;
         }
 
@@ -214,15 +223,17 @@ namespace RepeatList.ViewModels
             //}
         }
 
-        public async Task<string> AddHeader(string HeaderEntryText, string? Id = null)
+        public async Task<Header> AddHeader(string HeaderEntryText, string? Id = null)
         {
+            Header_SelectedItem=null;
             Header newHeader = new Header();
-            if (!string.IsNullOrEmpty(Id))
-                newHeader = new Header { Id= Id, ListName = HeaderEntryText, UpdatedAt = DateTime.Now };
-            else
-                newHeader = new Header { Id = Guid.NewGuid().ToString(), ListName = HeaderEntryText, UpdatedAt = DateTime.Now };
+            //if (!string.IsNullOrEmpty(Id))
+            newHeader = new Header { ListName = HeaderEntryText, UpdatedAt = DateTime.Now };
+            //else
+            //    newHeader = new Header { Id = Guid.NewGuid().ToString(), ListName = HeaderEntryText, UpdatedAt = DateTime.Now };
 
             var new_id = await _databaseService.AddHeaderAsync(newHeader);
+            newHeader.Id = new_id;
 
             await LoadHeaders();
 
@@ -232,7 +243,7 @@ namespace RepeatList.ViewModels
             //if (selectedItem != null)
             //    Header_SelectedItem = selectedItem;
 
-            return new_id;
+            return newHeader;
         }
 
         public async Task LoadPositions()
@@ -280,7 +291,7 @@ namespace RepeatList.ViewModels
             PositionListViewVisible=true;
         }
 
-        public async Task AddPosition(Position position)
+        public async Task AddPosition(Position position, bool generate_new_guid)
         {
             if (Header_SelectedItem  == null || position == null) return;
 
@@ -289,15 +300,15 @@ namespace RepeatList.ViewModels
             if (Replace_old_word_when_inserting)
                 await DeleteIfAvailable(position.Title);
 
-            var newPosition = new Models.Position
-            {
-                Id = position.Id == null ? Guid.NewGuid().ToString() : position.Id,
-                HeaderId = Header_SelectedItem.Id,
-                Title = position.Title,
-                IsCompleted = false,
-                UpdatedAt=DateTime.Now
-            };
-            await _databaseService.AddPositionAsync(newPosition);
+            //var newPosition = new Models.Position
+            //{
+            //    Id = position.Id == null ? Guid.NewGuid().ToString() : position.Id,
+            //    HeaderId = Header_SelectedItem.Id,
+            //    Title = position.Title,
+            //    IsCompleted = false,
+            //    UpdatedAt=DateTime.Now
+            //};
+            await _databaseService.AddPositionAsync(position, generate_new_guid);  // newPosition);
             await LoadPositions();
 
             //Positions.Clear();
@@ -414,7 +425,7 @@ namespace RepeatList.ViewModels
                     new_pos.HeaderId = new_header_id;
                     new_pos.Title = pos.Title;
                     new_pos.IsCompleted =false;
-                    await _databaseService.AddPositionAsync(new_pos);
+                    await _databaseService.AddPositionAsync(new_pos, false);
                 }
 
                 await LoadHeaders();
@@ -432,7 +443,7 @@ namespace RepeatList.ViewModels
             Header_SelectedItem = header;
             await _databaseService.EditHeadersTitleAsync(header, new_list_name);
             await LoadHeaders();
-            SetFirstItemForHeaders();
+            SetFirstItemForHeaders();       
         }
 
         internal async Task EditIsSynchronizedHeader(Header header, bool new_IsSynchronized)
@@ -441,6 +452,8 @@ namespace RepeatList.ViewModels
             await _databaseService.EditHeadersIsSynchronizedAsync(header, new_IsSynchronized);
             await LoadHeaders();
             SetFirstItemForHeaders();
+
+
         }
 
         internal async Task EditTitleOfPosition(Position position, string title)

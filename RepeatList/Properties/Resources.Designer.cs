@@ -358,6 +358,15 @@ namespace RepeatList.Properties {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die To be able to edit the list ‘%2’, please use the following key: %1 (confidential). ähnelt.
+        /// </summary>
+        public static string To_be_able_to_edit_the_list_please_use_the_following_key {
+            get {
+                return ResourceManager.GetString("To_be_able_to_edit_the_list_please_use_the_following_key", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Undone ähnelt.
         /// </summary>
         public static string undone {
@@ -372,6 +381,15 @@ namespace RepeatList.Properties {
         public static string Would_you_like_to_overwrite_the_existing_list_with_new_data {
             get {
                 return ResourceManager.GetString("Would_you_like_to_overwrite_the_existing_list_with_new_data", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Would you like to work with someone on a current list? ähnelt.
+        /// </summary>
+        public static string Would_you_like_to_work_with_someone_on_a_current_list {
+            get {
+                return ResourceManager.GetString("Would_you_like_to_work_with_someone_on_a_current_list", resourceCulture);
             }
         }
         

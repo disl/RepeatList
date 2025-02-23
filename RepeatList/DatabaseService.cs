@@ -104,7 +104,7 @@ namespace RepeatList.Services
                             Id = _id,
                             ListName = _listName,
                             UpdatedAt = DateTime.Parse(_updatedAt),
-                            IsSynchronized = _IsSynchronized 
+                            IsSynchronized = _IsSynchronized
                         });
                     }
                 }
@@ -230,13 +230,20 @@ namespace RepeatList.Services
             return positions;
         }
 
-        public async Task<int> AddPositionAsync(Position position)
+        public async Task<int> AddPositionAsync(Position position, bool generate_new_guid = true)
         {
-            var new_guid = Guid.NewGuid();
+            string? new_guid = null;
+
+            if (generate_new_guid)
+                new_guid = Guid.NewGuid().ToString();
+            else
+                new_guid = position.Id;
 
             var command = _connection.CreateCommand();
-            command.CommandText = "INSERT INTO Position (Id, HeaderId, Title, IsCompleted, UpdatedAt) VALUES (@Id, @HeaderId, @Title, @IsCompleted, @UpdatedAt)";
-            command.Parameters.AddWithValue("@Id", new_guid.ToString());
+            command.CommandText =
+                "INSERT INTO Position (Id,   HeaderId,  Title,  IsCompleted,  UpdatedAt) " +
+                "VALUES               (@Id, @HeaderId, @Title, @IsCompleted, @UpdatedAt)";
+            command.Parameters.AddWithValue("@Id", new_guid);
             command.Parameters.AddWithValue("@HeaderId", position.HeaderId);
             command.Parameters.AddWithValue("@Title", position.Title);
             command.Parameters.AddWithValue("@IsCompleted", position.IsCompleted);

@@ -216,11 +216,17 @@
   <data name="The_list_was_saved_as_a_string_in_the_clipboard" xml:space="preserve">
     <value>Die Liste wurde als Zeichenfolge in der Zwischenablage gespeichert. Diese kann nun z.B. per WatsApp verschickt werden.</value>
   </data>
+  <data name="To_be_able_to_edit_the_list_please_use_the_following_key" xml:space="preserve">
+    <value>Um die Liste "%2" bearbeiten zu können, verwenden Sie bitte folgenden Schlüssel: %1 (vertraulich).</value>
+  </data>
   <data name="undone" xml:space="preserve">
     <value>Nicht erledigt</value>
   </data>
   <data name="Would_you_like_to_overwrite_the_existing_list_with_new_data" xml:space="preserve">
     <value>Möchten Sie die bestehende Liste mit neuen Daten überschreiben?</value>
+  </data>
+  <data name="Would_you_like_to_work_with_someone_on_a_current_list" xml:space="preserve">
+    <value>Möchten Sie mit jemandem an einer aktuellen Liste arbeiten?</value>
   </data>
   <data name="yes" xml:space="preserve">
     <value>Ja</value>

@@ -10,12 +10,13 @@ namespace RepeatList.Models
     {
         //[JsonIgnore]
 
-        [System.ComponentModel.DataAnnotations.Key]
+        //[System.ComponentModel.DataAnnotations.Key]
         [PrimaryKey]
         public string Id { get; set; }
-        //[JsonIgnore]
-        public string HeaderId { get; set; }  
-      
+
+        [ForeignKey("HeaderId")]
+        public string HeaderId { get; set; }
+
         public string? Title { get; set; }
         //[JsonIgnore]
         public DateTime? UpdatedAt { get; set; }

@@ -186,35 +186,45 @@ namespace RepeatList
                     var header = ViewModel.Headers.FirstOrDefault(x => x.Id == json.Id);
                     if (header != null)
                     {
+                        ViewModel.Header_SelectedItem= header;
+
                         // Existing Header
                         header.UpdatedAt= DateTime.Now;
                         // Add to existing positions
                         foreach (var pos in json.Positions)
                         {
                             pos.Title= pos.Title.Trim() + " (+)";
-                            await ViewModel.AddPosition(pos);
+                            await ViewModel.AddPosition(pos, false);
                         }
                     }
                     else
                     {
                         // Add new header
                         json.UpdatedAt= DateTime.Now;
-                        await ViewModel.AddHeader(json.ListName, json.Id);
+                        var new_header =await ViewModel.AddHeader(json.ListName, json.Id);
+
+                        ViewModel.Header_SelectedItem= new_header;
+
                         // Add new positions
                         foreach (var pos in json.Positions)
                         {
-                            //pos.HeaderId= json.Id;
+                            pos.HeaderId= new_header.Id;
                             pos.Title= pos.Title.Trim() + " (+)";
-                            await ViewModel.AddPosition(pos);
+                            await ViewModel.AddPosition(pos, false);
                         }
                     }
                 }
 
-                //foreach (var item in json)
+                //if (ViewModel.Header_SelectedItem != null)
                 //{
-                //    item.HeaderId= ViewModel.Header_SelectedItem.Id;
-                //    item.UpdatedAt= DateTime.Now;
-                //    await ViewModel.AddPosition(item);
+                //    foreach (var pos in json.Positions)
+                //    {
+                //        pos.HeaderId= ViewModel.Header_SelectedItem.Id;
+                //        pos.Title= pos.Title.Trim() + " (+)";
+                //        pos.UpdatedAt= DateTime.Now;
+                //        pos.IsCompleted= false;
+                //        await ViewModel.AddPosition(pos, false);
+                //    }
                 //}
             }
             else
@@ -232,14 +242,14 @@ namespace RepeatList
                         foreach (var item in items_list)
                         {
                             new_pos.Title= item.Trim();
-                            await ViewModel.AddPosition(new_pos);
+                            await ViewModel.AddPosition(new_pos, true);
                         }
                     }
                     else
-                        await ViewModel.AddPosition(new_pos);
+                        await ViewModel.AddPosition(new_pos, true);
                 }
                 else
-                    await ViewModel.AddPosition(new_pos);
+                    await ViewModel.AddPosition(new_pos, true);
             }
 
             ////string new_item_name = await DisplayPromptAsync(Properties.Resources.Input, "Enter new item:", initialValue: result);

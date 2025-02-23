@@ -1,6 +1,7 @@
 ﻿using Supabase.Postgrest.Attributes;
 using Supabase.Postgrest.Models;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Runtime.Serialization;
 //using System.Runtime.Serialization;
 
 namespace RepeatList.Models
@@ -8,7 +9,7 @@ namespace RepeatList.Models
     public class Header : BaseModel
     {
         //[System.ComponentModel.DataAnnotations.Key]
-        //[PrimaryKey]
+        [PrimaryKey]
         //[JsonIgnore]
         public string Id { get; set; }
         public string ListName { get; set; }
@@ -16,9 +17,11 @@ namespace RepeatList.Models
 
         //[JsonIgnore]
         [NotMapped]
-        //[IgnoreDataMember]
+        [IgnoreDataMember]
         public bool IsSynchronized { get; set; } = false;
 
+        [NotMapped]
+        [IgnoreDataMember]
         public List<Position> Positions { get; set; } = new();
     }
 
