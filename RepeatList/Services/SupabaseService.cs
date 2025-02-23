@@ -38,11 +38,11 @@ namespace RepeatList.Services
 
         public async Task<(Header Header, List<Position> Details)> GetHeaderWithPositionsByIdAsync(Guid headerId)
         {
-            // Hole den Header aus Supabase
-            var headerResponse = await _supabase
-                .From<Header>()
-                .Where(x => x.Id == headerId.ToString())
-                .Single();
+           // Hole den Header aus Supabase
+           var headerResponse = await _supabase
+               .From<Header>()
+               .Where(x => x.Id == headerId.ToString())
+               .Single();
 
             //var header = headerResponse.Model;
 

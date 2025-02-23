@@ -1,24 +1,28 @@
-﻿using Supabase.Postgrest.Models;
+﻿using Newtonsoft.Json;
+using Supabase.Postgrest.Attributes;
+using Supabase.Postgrest.Models;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Runtime.Serialization;
-using System.Text.Json.Serialization;
+//using System.Runtime.Serialization;
 
 namespace RepeatList.Models
 {
     public class Position : BaseModel
     {
-        [JsonIgnore]
+        //[JsonIgnore]
+
+        [System.ComponentModel.DataAnnotations.Key]
+        [PrimaryKey]
         public string Id { get; set; }
-        [JsonIgnore]
+        //[JsonIgnore]
         public string HeaderId { get; set; }  
       
         public string? Title { get; set; }
-        [JsonIgnore]
+        //[JsonIgnore]
         public DateTime? UpdatedAt { get; set; }
 
         [JsonIgnore]
         [NotMapped]
-        [IgnoreDataMember]
+        //[IgnoreDataMember]
         public string PositionImageSource
         {
             get

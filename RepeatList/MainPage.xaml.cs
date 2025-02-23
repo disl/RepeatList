@@ -163,7 +163,7 @@ namespace RepeatList
             //var text = await SpeechToText.Default.ListenAsync(new CultureInfo().def, null, CancellationToken.None);
 
             ViewModel.IsBusy=true;
-            List<Position>? json= null;
+            Header? json = null;
 
             var promptPage = new InputTextWithMicrophone();  //_speechToText);
             await Navigation.PushModalAsync(promptPage);
@@ -175,18 +175,47 @@ namespace RepeatList
 
             try
             {
-                json = JsonConvert.DeserializeObject<List<Position>>(new_item_name);
+                json = JsonConvert.DeserializeObject<Header>(new_item_name);
             }
             catch { json=null; }
 
             if (json != null)
             {
-                foreach (var item in json)
+                if (ViewModel.Headers != null)
                 {
-                    item.HeaderId= ViewModel.Header_SelectedItem.Id;
-                    item.UpdatedAt= DateTime.Now;
-                    await ViewModel.AddPosition(item);
+                    var header = ViewModel.Headers.FirstOrDefault(x => x.Id == json.Id);
+                    if (header != null)
+                    {
+                        // Existing Header
+                        header.UpdatedAt= DateTime.Now;
+                        // Add to existing positions
+                        foreach (var pos in json.Positions)
+                        {
+                            pos.Title= pos.Title.Trim() + " (+)";
+                            await ViewModel.AddPosition(pos);
+                        }
+                    }
+                    else
+                    {
+                        // Add new header
+                        json.UpdatedAt= DateTime.Now;
+                        await ViewModel.AddHeader(json.ListName, json.Id);
+                        // Add new positions
+                        foreach (var pos in json.Positions)
+                        {
+                            //pos.HeaderId= json.Id;
+                            pos.Title= pos.Title.Trim() + " (+)";
+                            await ViewModel.AddPosition(pos);
+                        }
+                    }
                 }
+
+                //foreach (var item in json)
+                //{
+                //    item.HeaderId= ViewModel.Header_SelectedItem.Id;
+                //    item.UpdatedAt= DateTime.Now;
+                //    await ViewModel.AddPosition(item);
+                //}
             }
             else
             {

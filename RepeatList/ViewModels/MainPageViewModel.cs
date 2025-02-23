@@ -5,7 +5,7 @@ using RepeatList.Models;
 using RepeatList.Services;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Text.Json;
+//using System.Text.Json;
 using Position = RepeatList.Models.Position;
 
 namespace RepeatList.ViewModels
@@ -158,7 +158,7 @@ namespace RepeatList.ViewModels
         #region COMMANDS       
 
         [RelayCommand]
-        public async Task Sync_list_Clicked() //string ExportedList, string Title)
+        public async Task Sync_list_Clicked()
         {
             if (Positions == null || Positions.Count == 0 || Header==null)
                 return;
@@ -170,27 +170,22 @@ namespace RepeatList.ViewModels
             await EditIsSynchronizedHeader(Header_SelectedItem, true);
 
             IsBusy = false;
-
-
         }
 
         [RelayCommand]
-        public async Task Export_list_Clicked() //string ExportedList, string Title)
+        public async Task Export_list_Clicked()
         {
             if (Positions == null || Positions.Count == 0 || Header==null)
                 return;
             IsBusy = true;
 
-            var json = JsonSerializer.Serialize(Positions);
+            Header header = Header_SelectedItem;
+            header.Positions = Positions.ToList();
+
+            var json = Newtonsoft.Json.JsonConvert.SerializeObject(header);
             await Utilities.ShareTextAsync(json);
 
             IsBusy = false;
-
-            //var ExportedList = String.Join(",,", Positions.Select(x => x.Title).ToList());
-            //var ExportedListTitle = "Export: " + Header_SelectedItem.ListName;
-
-            //var file_name = string.Format("repeat_list_export_{0}.txt", DateTime.Now.ToString("yyyyMMddHHmmss"));
-            //await Utilities.ShareFileAsync(file_name, ExportedList, ExportedListTitle);
         }
 
         [RelayCommand]
@@ -219,13 +214,19 @@ namespace RepeatList.ViewModels
             //}
         }
 
-        public async Task<string> AddHeader(string HeaderEntryText)
+        public async Task<string> AddHeader(string HeaderEntryText, string? Id = null)
         {
-            var newHeader = new Header { ListName = HeaderEntryText, UpdatedAt = DateTime.Now };
+            Header newHeader = new Header();
+            if (!string.IsNullOrEmpty(Id))
+                newHeader = new Header { Id= Id, ListName = HeaderEntryText, UpdatedAt = DateTime.Now };
+            else
+                newHeader = new Header { Id = Guid.NewGuid().ToString(), ListName = HeaderEntryText, UpdatedAt = DateTime.Now };
+
             var new_id = await _databaseService.AddHeaderAsync(newHeader);
 
             await LoadHeaders();
 
+            Header_SelectedItem = newHeader;
 
             //var selectedItem = await _databaseService.GetHeaderAsync(new_id);
             //if (selectedItem != null)
@@ -290,6 +291,7 @@ namespace RepeatList.ViewModels
 
             var newPosition = new Models.Position
             {
+                Id = position.Id == null ? Guid.NewGuid().ToString() : position.Id,
                 HeaderId = Header_SelectedItem.Id,
                 Title = position.Title,
                 IsCompleted = false,

@@ -15,6 +15,12 @@ namespace RepeatList.Services
             _connection = new SqliteConnection(connectionString);
             _connection.Open();
 
+            //using (var _command = _connection.CreateCommand())
+            //{
+            //    _command.CommandText = "PRAGMA foreign_keys = ON;";
+            //    _command.ExecuteNonQuery();
+            //}
+
             // Tabellen erstellen, falls sie nicht existieren
             var command = _connection.CreateCommand();
             command.CommandText = @"
