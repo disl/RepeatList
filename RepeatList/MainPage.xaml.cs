@@ -171,7 +171,10 @@ namespace RepeatList
             string new_item_name = await promptPage.Result;
 
             if (string.IsNullOrEmpty(new_item_name))
+            {
+                ViewModel.IsBusy=false;
                 return;
+            }
 
             try
             {
@@ -229,10 +232,10 @@ namespace RepeatList
             }
             else
             {
-                var new_pos = new Position();
-                new_pos.HeaderId= ViewModel.Header_SelectedItem.Id;
-                new_pos.Title= new_item_name;
-                new_pos.UpdatedAt= DateTime.Now;
+                //var new_pos = new Position();
+                //new_pos.HeaderId= ViewModel.Header_SelectedItem.Id;
+                //new_pos.Title= new_item_name;
+                //new_pos.UpdatedAt= DateTime.Now;
 
                 if (new_item_name.Contains(",,"))  // && !ViewModel.Replace_old_word_when_inserting)
                 {
@@ -241,15 +244,30 @@ namespace RepeatList
                     {
                         foreach (var item in items_list)
                         {
+                            var new_pos = new Position();
+                            new_pos.HeaderId= ViewModel.Header_SelectedItem.Id;
+                            new_pos.UpdatedAt= DateTime.Now;
                             new_pos.Title= item.Trim();
                             await ViewModel.AddPosition(new_pos, true);
                         }
                     }
                     else
+                    {
+                        var new_pos = new Position();
+                        new_pos.HeaderId= ViewModel.Header_SelectedItem.Id;
+                        new_pos.Title= new_item_name;
+                        new_pos.UpdatedAt= DateTime.Now;
                         await ViewModel.AddPosition(new_pos, true);
+                    }
                 }
                 else
+                {
+                    var new_pos = new Position();
+                    new_pos.HeaderId= ViewModel.Header_SelectedItem.Id;
+                    new_pos.Title= new_item_name;
+                    new_pos.UpdatedAt= DateTime.Now;
                     await ViewModel.AddPosition(new_pos, true);
+                }
             }
 
             ////string new_item_name = await DisplayPromptAsync(Properties.Resources.Input, "Enter new item:", initialValue: result);

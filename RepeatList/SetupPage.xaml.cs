@@ -42,7 +42,7 @@ public partial class SetupPage : ContentPage
         // Save in DB
         await ViewModel.UpdateSetup();
 
-        Application.Current.UserAppTheme = _appTheme;
+        //Application.Current.UserAppTheme =  _appTheme;
         if (_currLanguage != null)
             SetCurrentCulture(_currLanguage);
 
@@ -107,8 +107,10 @@ public partial class SetupPage : ContentPage
         if (ViewModel == null)
             return;
         if (ViewModel.SelectedItem.DefaultAppTheme == "Dark")
-            _appTheme = AppTheme.Dark;
+            //_appTheme = AppTheme.Dark;
+            Application.Current.UserAppTheme =  AppTheme.Dark;
         else
-            _appTheme = AppTheme.Light;
+            //_appTheme = AppTheme.Light;
+            Application.Current.UserAppTheme =  AppTheme.Light;
     }
 }

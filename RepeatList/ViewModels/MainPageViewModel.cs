@@ -23,6 +23,8 @@ namespace RepeatList.ViewModels
         public string SelectedItem_KindOfSorting_key_name = "SelectedItem_KindOfSorting";
         public double ButtonsSize = 30;
 
+        [ObservableProperty] public string resetImageSource ;
+
         public MainPageViewModel()
         {
             _databaseService =  new DatabaseService();
@@ -37,6 +39,21 @@ namespace RepeatList.ViewModels
 
             SetFirstItemForHeaders();
             InitSelectedItem_KindOfSorting();
+            SetResetImageSource();
+        }
+
+        private void SetResetImageSource()
+        {
+            string image_source = "check_box_outline_blank.png";
+            //if (Application.Current.UserAppTheme == AppTheme.Dark)
+            //{
+            //    image_source = "check_box_blank_white.png";
+            //}
+            //else
+            //{
+            //    image_source = "check_box_blank.png";
+            //}
+            ResetImageSource = image_source;
         }
 
         private void InitSelectedItem_KindOfSorting()
@@ -139,8 +156,10 @@ namespace RepeatList.ViewModels
 
         [ObservableProperty] public bool isBusy;
         [ObservableProperty] private string expander_listsIcon = "collapse_icon.png";
+        [ObservableProperty] private string expander_positionsIcon = "collapse_icon.png";
 
         [ObservableProperty] public bool isExpander_listsExpended = true;
+        [ObservableProperty] public bool isExpander_positionsExpended = true;
 
         [ObservableProperty] public double positionsListHeight;
 
@@ -151,6 +170,15 @@ namespace RepeatList.ViewModels
         {
             Expander_listsIcon=newValue ? "collapse_icon.png" : "expand_icon.png";
             PositionsListHeight=newValue ? 400 : 600;
+
+            //IsExpander_positionsExpended = !newValue;
+        }
+
+        partial void OnIsExpander_positionsExpendedChanged(bool oldValue, bool newValue)
+        {
+            Expander_positionsIcon=newValue ?  "collapse_icon.png": "expand_icon.png";
+
+            //IsExpander_listsExpended = !newValue;
         }
 
         #endregion
