@@ -12,26 +12,12 @@ namespace RepeatList.Services
         {
             _databaseService =  new DatabaseService();
 
+            var supabaseKey =  AppSettings.Load().Result.ApiKeys.SupabaseKey; 
             _supabase = new Client(
                 "https://bzjdutgysaztuszpcdlw.supabase.co",
-                //"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ6amR1dGd5c2F6dHVzenBjZGx3Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc0MDE0Nzc1OSwiZXhwIjoyMDU1NzIzNzU5fQ.GGoBd_7eDfDuRD7Z7jfMhJFGbYj107DtRIxZGK0UsBM"
-                "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ6amR1dGd5c2F6dHVzenBjZGx3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDAxNDc3NTksImV4cCI6MjA1NTcyMzc1OX0.C4nfCqnKbAu9G35B3u_ljDG7qj_JVkKRhblsAWQ8eXc"
+                supabaseKey
                 );
             _supabase.InitializeAsync().Wait();
-
-           var session = _supabase.Auth.SignIn("dnepr65@gmail.com", "Haas1946");
-
-            //if (session.use != null)
-            //{
-            //    Console.WriteLine($"Benutzer-ID: {session.User.Id}");
-            //}
-            //else
-            //{
-            //    Console.WriteLine("Fehler: Anmeldung fehlgeschlagen!");
-            //}
-
-            //var user = _supabase.Auth.CurrentUser?.Id;
-
         }
 
         public async Task SyncHeaderWithDetailsAsync(string headerId)

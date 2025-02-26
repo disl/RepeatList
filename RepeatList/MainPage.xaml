@@ -125,8 +125,8 @@
                         <RoundRectangle CornerRadius="5" />
                     </Border.StrokeShape>
                     <CollectionView x:Name="PositionDoneListView"  ItemsSource="{Binding Positions_done}" SelectedItem="{Binding Position_selectedItem}"
-                MaximumHeightRequest="{Binding PositionsListHeight}" 
-                SelectionChanged="OnPositionSelected_new" ItemSizingStrategy="MeasureAllItems">
+                                    MaximumHeightRequest="{Binding PositionsListHeight}" 
+                                    SelectionChanged="OnPositionSelected_new" ItemSizingStrategy="MeasureAllItems">
                         <CollectionView.ItemTemplate>
                             <DataTemplate>
                                 <Grid Padding="10" ColumnDefinitions="5*, 1.3*,1.3*,1.3*" VerticalOptions="Center" MaximumHeightRequest="50">
@@ -141,10 +141,6 @@
                     </CollectionView>
                 </Border>
             </VerticalStackLayout>
-
-
-
         </toolkit:Expander>
     </StackLayout>
-
 </ContentPage>

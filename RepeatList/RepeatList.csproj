@@ -206,4 +206,10 @@
 	  <Folder Include="Resources\Splash\" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <None Update="Resources\Raw\appsettings.json">
+	    <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+	  </None>
+	</ItemGroup>
+
 </Project>
