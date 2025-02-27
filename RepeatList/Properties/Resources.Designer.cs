@@ -268,6 +268,15 @@ namespace RepeatList.Properties {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Please enter the ID of the list to be synchronised. You will receive this from your partner. ähnelt.
+        /// </summary>
+        public static string Please_enter_the_ID_of_the_list_to_be_synchronised {
+            get {
+                return ResourceManager.GetString("Please_enter_the_ID_of_the_list_to_be_synchronised", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Positions ähnelt.
         /// </summary>
         public static string Positions {
@@ -331,6 +340,24 @@ namespace RepeatList.Properties {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die String is not a valid List-ID ähnelt.
+        /// </summary>
+        public static string String_is_not_a_valid_List_ID {
+            get {
+                return ResourceManager.GetString("String_is_not_a_valid_List_ID", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Synchronisation ähnelt.
+        /// </summary>
+        public static string Synchronisation {
+            get {
+                return ResourceManager.GetString("Synchronisation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die The clipboard is empty ähnelt.
         /// </summary>
         public static string The_clipboard_is_empty {
@@ -381,6 +408,15 @@ namespace RepeatList.Properties {
         public static string Would_you_like_to_overwrite_the_existing_list_with_new_data {
             get {
                 return ResourceManager.GetString("Would_you_like_to_overwrite_the_existing_list_with_new_data", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Would you like to start synchronisation now? ähnelt.
+        /// </summary>
+        public static string Would_you_like_to_start_synchronisation_now {
+            get {
+                return ResourceManager.GetString("Would_you_like_to_start_synchronisation_now", resourceCulture);
             }
         }
         

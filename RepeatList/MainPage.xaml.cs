@@ -453,6 +453,40 @@ namespace RepeatList
                 }
             }
         }
+
+        private async void Sync_list_upClicked(object sender, EventArgs e)
+        {
+            var button = sender as ImageButton;
+            if (button?.CommandParameter is Header header)
+            {
+                bool answer = await DisplayAlert(Properties.Resources.Would_you_like_to_start_synchronisation_now,
+                Properties.Resources.Are_you_sure, Properties.Resources.yes, Properties.Resources.no);
+                if (answer)
+                {
+                    ViewModel.Header_SelectedItem = header;
+
+                    await ViewModel.Sync_list_upClicked();
+
+                }
+            }
+        }
+
+        private async void Sync_list_downClicked(object sender, EventArgs e)
+        {
+            var button = sender as ImageButton;
+            if (button?.CommandParameter is Header header)
+            {
+                bool answer = await DisplayAlert(Properties.Resources.Would_you_like_to_start_synchronisation_now,
+                Properties.Resources.Are_you_sure, Properties.Resources.yes, Properties.Resources.no);
+                if (answer)
+                {
+                    ViewModel.Header_SelectedItem = header;
+
+                    await ViewModel.Sync_list_downClicked(header);
+
+                }
+            }
+        }
     }
 
 }

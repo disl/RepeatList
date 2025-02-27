@@ -40,25 +40,35 @@ namespace RepeatList.Services
 
         public async Task<(Header Header, List<Position> Details)> GetHeaderWithPositionsByIdAsync(Guid headerId)
         {
-           // Hole den Header aus Supabase
-           var headerResponse = await _supabase
-               .From<Header>()
-               .Where(x => x.Id == headerId.ToString())
-               .Single();
+            //Header headerResponse_single = null;
 
-            //var header = headerResponse.Model;
+            // Hole den Header aus Supabase
+            //var headerResponse = await _supabase
+            //    .From<Header>()
+            //    .Where(x => x.Id == headerId.ToString())
+            //    .Get();
+            //    .Single();
+
+            Supabase.Postgrest.Responses.ModeledResponse<Header> headerResponse = await _supabase
+                .From<Header>()
+                .Filter("Id", Supabase.Postgrest.Constants.Operator.Equals, headerId.ToString())
+                .Get();
+
+            var header = headerResponse.Model;
 
             if (headerResponse != null)
             {
                 // Hole die zugehörigen Details aus Supabase
                 var detailsResponse = await _supabase
                     .From<Position>()
-                    .Where(x => x.HeaderId == headerId.ToString())
+                    .Filter("HeaderId", Supabase.Postgrest.Constants.Operator.Equals, headerId.ToString())
+                    //.Where(x => x.HeaderId == headerId.ToString())
                     .Get();
 
                 var details = detailsResponse.Models;
 
-                return (headerResponse, details);
+                
+                return (header, details);
             }
 
             return (null, null);
