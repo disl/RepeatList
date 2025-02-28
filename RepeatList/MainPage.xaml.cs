@@ -76,13 +76,13 @@ namespace RepeatList
             }
         }
 
-        private async void OnHeaderSelected(object sender, SelectedItemChangedEventArgs e)
+        private async void HeaderListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             ViewModel.IsBusy=true;
 
             ViewModel.HeaderSelected=true;
 
-            var _selectedHeader = e.SelectedItem as Header;
+            var _selectedHeader = e.CurrentSelection[0] as Header;
             if (_selectedHeader != null)
             {
                 ViewModel.Header_SelectedItem= _selectedHeader;
@@ -96,9 +96,36 @@ namespace RepeatList
             }
 
             ViewModel.IsBusy=false;
-
-            //ViewModel.HeaderSelected=false;
         }
+
+        private async void OnHeaderSelected(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+        //private async void OnHeaderSelected(object sender, SelectedItemChangedEventArgs e)
+        //{
+        //    ViewModel.IsBusy=true;
+
+        //    ViewModel.HeaderSelected=true;
+
+        //    var _selectedHeader = e.SelectedItem as Header;
+        //    if (_selectedHeader != null)
+        //    {
+        //        ViewModel.Header_SelectedItem= _selectedHeader;
+
+        //        await ViewModel.LoadPositions();
+
+        //        expander.IsExpanded= !expander.IsExpanded;
+        //        expander.IsExpanded= !expander.IsExpanded;
+
+        //        //PositionsListHeight=newValue ? 400 : 600;
+        //    }
+
+        //    ViewModel.IsBusy=false;
+
+        //    //ViewModel.HeaderSelected=false;
+        //}
 
         private async void OnDeleteHeaderClicked(object sender, EventArgs e)
         {
@@ -204,7 +231,7 @@ namespace RepeatList
                     {
                         // Add new header
                         json.UpdatedAt= DateTime.Now;
-                        var new_header =await ViewModel.AddHeader(json.ListName, json.Id);
+                        var new_header = await ViewModel.AddHeader(json.ListName, json.Id);
 
                         ViewModel.Header_SelectedItem= new_header;
 
@@ -487,6 +514,8 @@ namespace RepeatList
                 }
             }
         }
+
+
     }
 
 }

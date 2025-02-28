@@ -259,6 +259,15 @@ namespace RepeatList.Properties {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die No items to display ähnelt.
+        /// </summary>
+        public static string No_items_to_display {
+            get {
+                return ResourceManager.GetString("No_items_to_display", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Paste from clipboard ähnelt.
         /// </summary>
         public static string Paste_from_clipboard {

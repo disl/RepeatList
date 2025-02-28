@@ -84,7 +84,7 @@ namespace RepeatList.ViewModels
             }
             set { replace_old_word_when_inserting = value; }
         }
-
+        [ObservableProperty] public string no_items_to_display = Properties.Resources.No_items_to_display;
         [ObservableProperty] public bool isSynchronized = false;
         [ObservableProperty] public string title_sort_by = Properties.Resources.sort_by;
         [ObservableProperty] public string title_KindOfSorting = "Sort";
@@ -127,7 +127,7 @@ namespace RepeatList.ViewModels
 
         [ObservableProperty] private string currentCulture;
 
-        [ObservableProperty] private int imageButton_size = 35;
+        [ObservableProperty] private int imageButton_size = 40;
         [ObservableProperty] private string label_lists = Properties.Resources.Lists.ToUpper();
         [ObservableProperty] private string label_addNewList = Properties.Resources.AddNewList;
         [ObservableProperty] private string label_Positions = Properties.Resources.Positions.ToUpper();
@@ -163,6 +163,8 @@ namespace RepeatList.ViewModels
         [ObservableProperty] public bool isExpander_positionsExpended = true;
 
         [ObservableProperty] public double positionsListHeight;
+
+        [ObservableProperty] public double iconsHeightRequested = 35;
 
         //[ObservableProperty] public string exportedList;
         //[ObservableProperty] public string exportedListTitle;
@@ -212,7 +214,7 @@ namespace RepeatList.ViewModels
                 }
             }
 
-            if(sync_responce.Header == null || sync_responce.Header.Id == null)
+            if (sync_responce.Header == null || sync_responce.Header.Id == null)
             {
                 IsBusy = false;
                 return;

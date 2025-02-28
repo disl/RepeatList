@@ -183,6 +183,9 @@
   <data name="no" xml:space="preserve">
     <value>Nein</value>
   </data>
+  <data name="No_items_to_display" xml:space="preserve">
+    <value>Keine Elemente zum Anzeigen</value>
+  </data>
   <data name="Paste_from_clipboard" xml:space="preserve">
     <value>Aus Zwischenablage einfügen</value>
   </data>

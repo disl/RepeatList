@@ -183,6 +183,9 @@
   <data name="no" xml:space="preserve">
     <value>No</value>
   </data>
+  <data name="No_items_to_display" xml:space="preserve">
+    <value>No items to display</value>
+  </data>
   <data name="Paste_from_clipboard" xml:space="preserve">
     <value>Paste from clipboard</value>
   </data>
