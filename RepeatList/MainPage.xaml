@@ -21,12 +21,16 @@
         <!-- LISTS -->
         <toolkit:Expander x:Name="expander" IsExpanded="{Binding IsExpander_listsExpended, Mode=TwoWay}"  >
             <toolkit:Expander.Header>
-                <StackLayout Orientation="Horizontal" >
-                    <Label Text="{Binding Label_lists}" FontAttributes="Bold" FontSize="Large"  VerticalOptions="Center" HorizontalOptions="Start"
+                <StackLayout>
+                    <StackLayout Orientation="Horizontal" >
+                        <Label Text="{Binding Label_lists}" FontAttributes="Bold" FontSize="Large"  VerticalOptions="Center" HorizontalOptions="Start"
                         TextColor="{AppThemeBinding Light={DynamicResource PrimaryTextColor}, Dark={DynamicResource PrimaryTextColorLight}}"  />
-                    <Image Source="{Binding Expander_listsIcon}"   WidthRequest="40" HorizontalOptions="EndAndExpand" />
+                        <Image Source="{Binding Expander_listsIcon}"   WidthRequest="40" HorizontalOptions="EndAndExpand" />
+                    </StackLayout>
+                    <Border BackgroundColor="Red" HeightRequest="1" HorizontalOptions="Fill" />
                 </StackLayout>
             </toolkit:Expander.Header>
+
             <StackLayout Orientation="Vertical">
                 <StackLayout Orientation="Horizontal" Spacing="10" Margin="0,15,0,10" HorizontalOptions="End">
                     <ImageButton Source="add_icon.png" Clicked="OnAddHeaderClicked"   
@@ -65,16 +69,21 @@
             </StackLayout>
         </toolkit:Expander>
 
+
+
         <!-- POSITIONS -->
         <toolkit:Expander x:Name="expander_positions" IsExpanded="{Binding IsExpander_positionsExpended, Mode=TwoWay}"  >
             <toolkit:Expander.Header>
-                <StackLayout Orientation="Horizontal" >
-                    <Label Text="{Binding Label_Positions}" FontAttributes="Bold" FontSize="Large" HorizontalOptions="Start" VerticalOptions="Center"
+                <StackLayout>
+                    <StackLayout Orientation="Horizontal" >
+                        <Label Text="{Binding Label_Positions}" FontAttributes="Bold" FontSize="Large" HorizontalOptions="Start" VerticalOptions="Center"
                         TextColor="{AppThemeBinding Light={DynamicResource PrimaryTextColor}, Dark={DynamicResource PrimaryTextColorLight}}" />
-                    <Image Source="{Binding Expander_positionsIcon}"   WidthRequest="40" HorizontalOptions="EndAndExpand"   VerticalOptions="Center" />
-                    <!--<ImageButton Source="add_icon.png" Clicked="OnAddPositionClicked"   
+                        <Image Source="{Binding Expander_positionsIcon}"   WidthRequest="40" HorizontalOptions="EndAndExpand"   VerticalOptions="Center" />
+                        <!--<ImageButton Source="add_icon.png" Clicked="OnAddPositionClicked"   
                              MaximumWidthRequest="{Binding ImageButton_size}" MaximumHeightRequest="{Binding ImageButton_size}" HorizontalOptions="End" />-->
-
+                       
+                    </StackLayout>
+                    <Border BackgroundColor="Red" HeightRequest="1" HorizontalOptions="Fill" />
                 </StackLayout>
             </toolkit:Expander.Header>
             <!--</StackLayout>-->
