@@ -36,10 +36,8 @@
                             MaximumWidthRequest="{Binding ImageButton_size}" MaximumHeightRequest="{Binding ImageButton_size}"  />
                     <ImageButton Source="share_icon.png" Command="{Binding Export_list_ClickedCommand}" 
                             MaximumWidthRequest="{Binding ImageButton_size}" MaximumHeightRequest="{Binding ImageButton_size}" />
-                    <!--<ImageButton Source="sync_cloud_icon.png" Command="{Binding Sync_list_upClickedCommand}" 
+                    <ImageButton Source="sync_arrow_down_icon.png" Command="{Binding Import_listClickedCommand}" 
                             MaximumWidthRequest="{Binding ImageButton_size}" MaximumHeightRequest="{Binding ImageButton_size}" />
-                    <ImageButton Source="sync_arrow_down_icon.png" Command="{Binding Sync_list_downClickedCommand}" 
-                            MaximumWidthRequest="{Binding ImageButton_size}" MaximumHeightRequest="{Binding ImageButton_size}" />-->
                 </StackLayout>
                 <Border  Stroke="Gray" StrokeThickness="1"  Padding="10" >
                     <Border.StrokeShape>
@@ -72,32 +70,9 @@
                             </ContentView>
                         </CollectionView.EmptyView>
                     </CollectionView>
-
-
-                    <!--<ListView x:Name="HeaderListView" ItemsSource="{Binding Headers}"   MaximumHeightRequest="200" InputTransparent="True"
-                                      SelectedItem="{Binding Header_SelectedItem, Mode=OneWayToSource}" ItemSelected="OnHeaderSelected" SeparatorVisibility="None">
-                        <ListView.ItemTemplate TextColor="{AppThemeBinding Light={DynamicResource PrimaryTextColor}, Dark={DynamicResource PrimaryTextColorLight}}">
-                            <DataTemplate>
-                                <ViewCell>
-                                    <Grid Padding="7" ColumnDefinitions="4.5*,1.1*,1.1*,1.1*,1.1*">
-                                        <Label Text="{Binding ListName}"  VerticalOptions="Center"   Grid.Column="0" 
-                                               TextColor="{AppThemeBinding Light={DynamicResource PrimaryTextColor}, Dark={DynamicResource PrimaryTextColorLight}}"/>
-                                        <ImageButton Source="edit_icon.png" Clicked="OnEditHeaderClicked" CommandParameter="{Binding}"  Grid.Column="1"/>
-                                        <ImageButton Source="copy_icon.png" Clicked="OnCopyHeaderClicked" CommandParameter="{Binding}"  Grid.Column="2"/>
-                                        <ImageButton Source="delete_icon.png" Clicked="OnDeleteHeaderClicked" CommandParameter="{Binding}"  Grid.Column="2"/>
-                                        <ImageButton Source="sync_cloud_icon.png" Clicked="Sync_list_upClicked" CommandParameter="{Binding}"  Grid.Column="3" />
-                                        <ImageButton Source="sync_arrow_down_icon.png" IsVisible="{Binding IsSynchronized}" Clicked="Sync_list_downClicked" CommandParameter="{Binding}"  Grid.Column="4" />
-                                        <ImageButton Source="sync_disabled_icon.png" IsVisible="{Binding IsSynchronized}" Clicked="OnIsSynchronizedClicked" CommandParameter="{Binding}" Grid.Column="3"/>
-                                    </Grid>
-                                </ViewCell>
-                            </DataTemplate>
-                        </ListView.ItemTemplate>
-                    </ListView>-->
                 </Border>
             </StackLayout>
         </toolkit:Expander>
-
-
 
         <!-- POSITIONS -->
         <toolkit:Expander x:Name="expander_positions" IsExpanded="{Binding IsExpander_positionsExpended, Mode=TwoWay}" Padding="0,15,0,0"  >
@@ -122,9 +97,8 @@
                         TextColor="{AppThemeBinding Light={DynamicResource PrimaryTextColor}, Dark={DynamicResource PrimaryTextColorLight}}" />
                     <ImageButton Source="add_icon.png" Clicked="OnAddPositionClicked"   VerticalOptions="Center"
                         MaximumWidthRequest="{Binding ImageButton_size}" MaximumHeightRequest="{Binding ImageButton_size}" HorizontalOptions="End" />
-                    <ImageButton Source="{Binding ResetImageSource}" 
-                                 Clicked="OnResetPositionsClicked"
-                                 MaximumWidthRequest="{Binding ImageButton_size}" MaximumHeightRequest="{Binding ImageButton_size}"  HorizontalOptions="End"/>
+                    <ImageButton Source="{Binding ResetImageSource}" Clicked="OnResetPositionsClicked"
+                        MaximumWidthRequest="{Binding ImageButton_size}" MaximumHeightRequest="{Binding ImageButton_size}"  HorizontalOptions="End"/>
                 </StackLayout>
                 <Border   Stroke="Gray" StrokeThickness="1"  Padding="10"  VerticalOptions="FillAndExpand" >
                     <Border.StrokeShape>

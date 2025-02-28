@@ -168,6 +168,9 @@
   <data name="Export_list" xml:space="preserve">
     <value>Aktuelle Liste exportieren</value>
   </data>
+  <data name="import_liste" xml:space="preserve">
+    <value>Liste importieren</value>
+  </data>
   <data name="Input" xml:space="preserve">
     <value>Eingabe</value>
   </data>
@@ -179,6 +182,12 @@
   </data>
   <data name="Lists" xml:space="preserve">
     <value>Listen</value>
+  </data>
+  <data name="List_not_available_or_corrupt" xml:space="preserve">
+    <value>Liste nicht vorhanden oder beschädigt</value>
+  </data>
+  <data name="List_was_imported_successfully" xml:space="preserve">
+    <value>Liste wurde erfolgreich importiert</value>
   </data>
   <data name="no" xml:space="preserve">
     <value>Nein</value>

@@ -214,6 +214,15 @@ namespace RepeatList.Properties {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Import list ähnelt.
+        /// </summary>
+        public static string import_liste {
+            get {
+                return ResourceManager.GetString("import_liste", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Input ähnelt.
         /// </summary>
         public static string Input {
@@ -237,6 +246,24 @@ namespace RepeatList.Properties {
         public static string language {
             get {
                 return ResourceManager.GetString("language", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die List not available or corrupt ähnelt.
+        /// </summary>
+        public static string List_not_available_or_corrupt {
+            get {
+                return ResourceManager.GetString("List_not_available_or_corrupt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die List was imported successfully ähnelt.
+        /// </summary>
+        public static string List_was_imported_successfully {
+            get {
+                return ResourceManager.GetString("List_was_imported_successfully", resourceCulture);
             }
         }
         

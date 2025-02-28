@@ -6,7 +6,6 @@ using RepeatList.Models;
 using RepeatList.Services;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-//using System.Text.Json;
 using Position = RepeatList.Models.Position;
 
 namespace RepeatList.ViewModels
@@ -42,23 +41,31 @@ namespace RepeatList.ViewModels
             SetResetImageSource();
         }
 
+        public void InitLabels()
+        {
+            Label_Positions =  Properties.Resources.Positions.ToUpper();
+            No_items_to_display=Properties.Resources.No_items_to_display;
+            Label_lists = Properties.Resources.Lists.ToUpper();
+            Label_addNewList = Properties.Resources.AddNewList;
+            Label_Positions = Properties.Resources.Positions.ToUpper();
+            Label_AddNewItem = Properties.Resources.AddNewItem;
+            Label_ResetPositions = Properties.Resources.ResetPositions;
+            Label_Export_list = Properties.Resources.Export_list;
+            Label_copy_list_to_clipboard = Properties.Resources.Copy_list_to_clipboard;
+            Label_Reset_current_list = Properties.Resources.Reset_current_list;
+            Label_done = Properties.Resources.done;
+            Label_undone = Properties.Resources.undone;
+            Label_paste_from_clipboard = Properties.Resources.Paste_from_clipboard;
+        }
+
         private void SetResetImageSource()
         {
             string image_source = "check_box_outline_blank.png";
-            //if (Application.Current.UserAppTheme == AppTheme.Dark)
-            //{
-            //    image_source = "check_box_blank_white.png";
-            //}
-            //else
-            //{
-            //    image_source = "check_box_blank.png";
-            //}
             ResetImageSource = image_source;
         }
 
         private void InitSelectedItem_KindOfSorting()
         {
-
             string _selectedItem_KindOfSorting = Preferences.Get(SelectedItem_KindOfSorting_key_name, "date");
             if (_selectedItem_KindOfSorting == null)
                 SelectedItem_KindOfSorting = new CMBType_String(Properties.Resources.sort_by, "date");
@@ -89,28 +96,18 @@ namespace RepeatList.ViewModels
         [ObservableProperty] public string title_sort_by = Properties.Resources.sort_by;
         [ObservableProperty] public string title_KindOfSorting = "Sort";
         [ObservableProperty] public CMBType_String selectedItem_KindOfSorting;
-        //async void OnSelectedItem_KindOfSortingChanged(CMBType_String oldValue, CMBType_String newValue)
-        //{
-        //    await LoadPositions();
-        //}
-
         [ObservableProperty]
         public ObservableCollection<CMBType_String> itemSource_KindOfSorting = new ObservableCollection<CMBType_String>
         {
              new CMBType_String(Properties.Resources.sort_by_date, "date"),
              new CMBType_String(Properties.Resources.sort_by_alphabet, "alpha" )
         };
-
         [ObservableProperty] public bool positionListViewVisible;
         [ObservableProperty] public bool headerSelected;
         [ObservableProperty] public string positionImageSource = "check_box_blank.png";
-
-
         [ObservableProperty] public bool changePositionsCheckedState;
         partial void OnChangePositionsCheckedStateChanged(bool oldValue, bool newValue)
         {
-            //PositionImageSource = newValue ? "check_box_check.png" : "check_box_blank.png";
-
             string image_source = "";
             if (Application.Current.UserAppTheme == AppTheme.Dark)
             {
@@ -126,7 +123,6 @@ namespace RepeatList.ViewModels
 
 
         [ObservableProperty] private string currentCulture;
-
         [ObservableProperty] private int imageButton_size = 40;
         [ObservableProperty] private string label_lists = Properties.Resources.Lists.ToUpper();
         [ObservableProperty] private string label_addNewList = Properties.Resources.AddNewList;
@@ -159,35 +155,78 @@ namespace RepeatList.ViewModels
         [ObservableProperty] private string expander_listsIcon = "collapse_icon.png";
         [ObservableProperty] private string expander_positionsIcon = "collapse_icon.png";
 
-        [ObservableProperty] public bool isExpander_listsExpended = true;
+        [ObservableProperty] public bool isExpander_listsExpended = false;
         [ObservableProperty] public bool isExpander_positionsExpended = true;
 
         [ObservableProperty] public double positionsListHeight;
 
         [ObservableProperty] public double iconsHeightRequested = 35;
 
-        //[ObservableProperty] public string exportedList;
-        //[ObservableProperty] public string exportedListTitle;
-
         partial void OnIsExpander_listsExpendedChanged(bool oldValue, bool newValue)
         {
             Expander_listsIcon=newValue ? "collapse_icon.png" : "expand_icon.png";
             PositionsListHeight=newValue ? 400 : 600;
-
-            //IsExpander_positionsExpended = !newValue;
         }
 
         partial void OnIsExpander_positionsExpendedChanged(bool oldValue, bool newValue)
         {
             Expander_positionsIcon=newValue ? "collapse_icon.png" : "expand_icon.png";
-
-            //IsExpander_listsExpended = !newValue;
         }
 
         #endregion
 
 
         #region COMMANDS       
+
+        [RelayCommand]
+        public async Task Import_listClicked()
+        {
+            Guid tmp_guid = Guid.Empty;
+
+            string guid_str = await Application.Current.MainPage.DisplayPromptAsync(
+                 Properties.Resources.import_liste,
+                 Properties.Resources.Please_enter_the_ID_of_the_list_to_be_synchronised);
+            if (!string.IsNullOrEmpty(guid_str))
+            {
+                if (!Guid.TryParse(guid_str, out tmp_guid))
+                {
+                    await Application.Current.MainPage.DisplaySnackbar(Properties.Resources.String_is_not_a_valid_List_ID);
+                    IsBusy = false;
+                    return;
+                }
+            }
+            else
+                return;
+
+            IsBusy = true;
+
+            (Header Header, List<Position> Positions) sync_responce = await _supabaseService.GetHeaderWithPositionsByIdAsync(tmp_guid);
+
+            if (sync_responce.Header == null || sync_responce.Positions == null)
+            {
+                await Application.Current.MainPage.DisplaySnackbar(Properties.Resources.List_not_available_or_corrupt);
+                IsBusy = false;
+                return;
+            }
+
+            var _header = Headers.FirstOrDefault(x => x.Id == sync_responce.Header.Id);
+            if (_header != null)
+                Header = sync_responce.Header;
+            else
+                Header = await AddHeader(sync_responce.Header.ListName, sync_responce.Header.Id);
+
+            foreach (var pos in sync_responce.Positions)
+            {
+                await AddPosition(pos, false);
+            }
+
+            Header_SelectedItem= Header;
+            await EditIsSynchronizedHeader(Header_SelectedItem, true);
+
+            await Application.Current.MainPage.DisplaySnackbar(Properties.Resources.List_was_imported_successfully);
+
+            IsBusy = false;
+        }
 
         [RelayCommand]
         public async Task Sync_list_downClicked(Header header)
@@ -293,11 +332,13 @@ namespace RepeatList.ViewModels
 
         public async Task LoadHeaders()
         {
+            Headers=null;
+
             var headers = await _databaseService.GetHeadersAsync();
             if (headers == null)
                 return;
 
-            //Headers.Clear();
+            
             Headers = new ObservableCollection<Header>(headers);
             //foreach (var pos in headers)
             //{
@@ -314,7 +355,7 @@ namespace RepeatList.ViewModels
             //else
             //    newHeader = new Header { Id = Guid.NewGuid().ToString(), ListName = HeaderEntryText, UpdatedAt = DateTime.Now };
 
-            var new_id = await _databaseService.AddHeaderAsync(newHeader);
+            var new_id = await _databaseService.AddHeaderAsync(newHeader, Id);
             newHeader.Id = new_id;
 
             await LoadHeaders();
@@ -498,7 +539,7 @@ namespace RepeatList.ViewModels
             Header new_header = new Header();
             new_header.UpdatedAt = DateTime.Now;
             new_header.ListName=new_list_name;
-            var new_header_id = await _databaseService.AddHeaderAsync(new_header);
+            var new_header_id = await _databaseService.AddHeaderAsync(new_header, null);
             if (new_header_id != Guid.Empty.ToString() && positions != null && positions.Count > 0)
             {
                 foreach (var pos in positions)

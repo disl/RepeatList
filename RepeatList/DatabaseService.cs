@@ -148,9 +148,14 @@ namespace RepeatList.Services
             return header;
         }
 
-        public async Task<string> AddHeaderAsync(Header header)
+        public async Task<string> AddHeaderAsync(Header header, string? old_guid)
         {
-            var new_guid = Guid.NewGuid();
+            Guid new_guid;
+
+            if (old_guid == null || old_guid == Guid.Empty.ToString())
+                new_guid= Guid.NewGuid();
+            else
+                new_guid = Guid.Parse(old_guid);
 
             var command = _connection.CreateCommand();
             command.CommandText = "INSERT INTO Header (Id, ListName, UpdatedAt) VALUES (@Id, @ListName, @UpdatedAt)";

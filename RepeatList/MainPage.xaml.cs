@@ -16,10 +16,12 @@ namespace RepeatList
         {
             InitializeComponent();
 
-            //ViewModel = BindingContext as  MainPageViewModel;
             ViewModel = new MainPageViewModel();
             BindingContext = ViewModel;
+        }
 
+        protected override void OnAppearing()
+        {
             ViewModel.IsBusy=true;
 
             if (ViewModel != null && ViewModel.Headers != null && ViewModel.Headers.Count > 0)
@@ -46,14 +48,15 @@ namespace RepeatList
             KindOfSortingPicker.SelectedIndex = ViewModel.ItemSource_KindOfSorting.IndexOf(ViewModel.SelectedItem_KindOfSorting);
 
             ViewModel.IsBusy=false;
-        }
 
-        protected override void OnAppearing()
-        {
             string tmp_lists = Properties.Resources.Lists.ToUpper();
 
             ViewModel.Label_lists = tmp_lists;
-            ViewModel.Label_Positions =  Properties.Resources.Positions.ToUpper();
+
+            ViewModel.InitLabels();
+
+            ViewModel.IsExpander_listsExpended=false;
+            ViewModel.IsExpander_listsExpended=true;
         }
 
         private void SetCurrentCulture(string curr_culture)
@@ -188,6 +191,9 @@ namespace RepeatList
         private async void OnAddPositionClicked(object sender, EventArgs e)
         {
             //var text = await SpeechToText.Default.ListenAsync(new CultureInfo().def, null, CancellationToken.None);
+
+            if (ViewModel.Header_SelectedItem == null)
+                return;
 
             ViewModel.IsBusy=true;
             Header? json = null;
