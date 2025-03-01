@@ -36,8 +36,8 @@
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">12.4</SupportedOSPlatformVersion>
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'maccatalyst'">15.0</SupportedOSPlatformVersion>
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">21.0</SupportedOSPlatformVersion>
-		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</SupportedOSPlatformVersion>
-		<TargetPlatformMinVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</TargetPlatformMinVersion>
+		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.26100.0</SupportedOSPlatformVersion>
+		<TargetPlatformMinVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.26100.0</TargetPlatformMinVersion>
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'tizen'">6.5</SupportedOSPlatformVersion>
 		<PackageIcon>playstore_128.png</PackageIcon>
 		<DefaultLanguage>en</DefaultLanguage>
@@ -76,8 +76,9 @@
 	</PropertyGroup>
 
 	<PropertyGroup>
-	  <TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))">$(TargetFrameworks);net9.0-windows10.0.19041.0</TargetFrameworks>
+		<RunAOTCompilation>false</RunAOTCompilation>
 	</PropertyGroup>
+
 
 	<ItemGroup>
 		<!-- App Icon -->
@@ -100,27 +101,33 @@
 	<ItemGroup>
 		<AndroidResource Remove="Platforms\MacCatalyst\**" />
 		<AndroidResource Remove="Platforms\Tizen\**" />
+		<AndroidResource Remove="Platforms\Windows\**" />
 		<AndroidResource Remove="Resources\Images\backup\**" />
 		<AndroidResource Remove="Themes\**" />
 		<Compile Remove="Platforms\MacCatalyst\**" />
 		<Compile Remove="Platforms\Tizen\**" />
+		<Compile Remove="Platforms\Windows\**" />
 		<Compile Remove="Resources\Images\backup\**" />
 		<Compile Remove="Themes\**" />
 		<EmbeddedResource Remove="Platforms\MacCatalyst\**" />
 		<EmbeddedResource Remove="Platforms\Tizen\**" />
+		<EmbeddedResource Remove="Platforms\Windows\**" />
 		<EmbeddedResource Remove="Resources\Images\backup\**" />
 		<EmbeddedResource Remove="Themes\**" />
 		<MauiCss Remove="Platforms\MacCatalyst\**" />
 		<MauiCss Remove="Platforms\Tizen\**" />
+		<MauiCss Remove="Platforms\Windows\**" />
 		<MauiCss Remove="Resources\Images\backup\**" />
 		<MauiCss Remove="Themes\**" />
 		<MauiImage Remove="Resources\Images\backup\**" />
 		<MauiXaml Remove="Platforms\MacCatalyst\**" />
 		<MauiXaml Remove="Platforms\Tizen\**" />
+		<MauiXaml Remove="Platforms\Windows\**" />
 		<MauiXaml Remove="Resources\Images\backup\**" />
 		<MauiXaml Remove="Themes\**" />
 		<None Remove="Platforms\MacCatalyst\**" />
 		<None Remove="Platforms\Tizen\**" />
+		<None Remove="Platforms\Windows\**" />
 		<None Remove="Resources\Images\backup\**" />
 		<None Remove="Themes\**" />
 	</ItemGroup>
@@ -153,16 +160,17 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="CommunityToolkit.Maui" Version="11.0.0" />
+		<PackageReference Include="CommunityToolkit.Maui" Version="11.1.0" />
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
-		<PackageReference Include="Microsoft.Data.Sqlite.Core" Version="9.0.1" />
-		<PackageReference Include="Microsoft.Maui.Controls" Version="9.0.30" />
-		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="9.0.1" />
+		<PackageReference Include="Microsoft.Data.Sqlite.Core" Version="9.0.2" />
+		<PackageReference Include="Microsoft.Maui.Controls" Version="9.0.40" />
+		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="9.0.2" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
 		<PackageReference Include="SQLitePCLRaw.bundle_e_sqlite3" Version="2.1.10" />
 		<PackageReference Include="Supabase" Version="1.1.1" />
-		<PackageReference Include="Supabase.Postgrest" Version="4.0.3" />
-		<PackageReference Include="System.Data.SQLite.EF6" Version="1.0.119" />
+		<PackageReference Include="Supabase.Postgrest" Version="4.1.0" />
+		<PackageReference Include="System.Data.SqlClient" Version="4.9.0" />
+		<PackageReference Include="System.Drawing.Common" Version="9.0.2" />
 		<PackageReference Include="System.Private.Uri" Version="4.3.2" />
 		<PackageReference Include="System.Reflection" Version="4.3.0" />
 	</ItemGroup>
@@ -172,9 +180,6 @@
 		  <Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
 		<MauiXaml Update="InputTextWithMicrophone.xaml">
-		  <Generator>MSBuild:Compile</Generator>
-		</MauiXaml>
-		<MauiXaml Update="Platforms\Windows\App.xaml">
 		  <Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
 		<MauiXaml Update="SetupPage.xaml">
