@@ -6,13 +6,13 @@
     xmlns:local="clr-namespace:RepeatList"
     Shell.FlyoutBehavior="Flyout"
     xmlns:controls="clr-namespace:RepeatList.Controls"
-    Title="RepeatList">
+    Title="MiniList">
     <Shell.FlyoutHeader>
         <controls:FlyoutHeader />
     </Shell.FlyoutHeader>
     
 
-    <ShellContent  Title="Repeating lists"  ContentTemplate="{DataTemplate local:MainPage}"  Route="MainPage" />
+    <ShellContent  Title="MiniList"  ContentTemplate="{DataTemplate local:MainPage}"  Route="MainPage" />
     <ShellContent  Title="Setup"  ContentTemplate="{DataTemplate local:SetupPage}"  Route="SetupPage" />
 
 </Shell>

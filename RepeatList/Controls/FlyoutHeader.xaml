@@ -7,7 +7,7 @@
         <!--<Image Aspect="AspectFill"
                Source="repeat_list_300.jpg"
                Opacity="0.6" />-->
-        <Label Text="Repeating lists"
+        <Label Text="MiniList"
                TextColor="LightGray"
                FontAttributes="Bold"
                HorizontalTextAlignment="Center"
