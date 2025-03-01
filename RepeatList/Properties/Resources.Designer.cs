@@ -268,6 +268,15 @@ namespace RepeatList.Properties {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die List was successfully deleted ähnelt.
+        /// </summary>
+        public static string List_was_successfully_deleted {
+            get {
+                return ResourceManager.GetString("List_was_successfully_deleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Lists ähnelt.
         /// </summary>
         public static string Lists {

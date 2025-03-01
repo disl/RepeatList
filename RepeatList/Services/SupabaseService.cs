@@ -38,17 +38,21 @@ namespace RepeatList.Services
             }
         }
 
+        public async Task DeleteHeaderWithDetailsAsync(Header header)
+        {
+            if (header != null)
+            {
+                //var positions = await _databaseService.GetPositionsAsync(header.Id);
+                //foreach (var position in positions)
+                //{
+                //    await _supabase.From<Position>().Delete(position);
+                //}
+                await _supabase.From<Header>().Delete(header);
+            }
+        }
+
         public async Task<(Header Header, List<Position> Details)> GetHeaderWithPositionsByIdAsync(Guid headerId)
         {
-            //Header headerResponse_single = null;
-
-            // Hole den Header aus Supabase
-            //var headerResponse = await _supabase
-            //    .From<Header>()
-            //    .Where(x => x.Id == headerId.ToString())
-            //    .Get();
-            //    .Single();
-
             Supabase.Postgrest.Responses.ModeledResponse<Header> headerResponse = await _supabase
                 .From<Header>()
                 .Filter("Id", Supabase.Postgrest.Constants.Operator.Equals, headerId.ToString())

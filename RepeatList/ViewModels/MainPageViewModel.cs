@@ -20,7 +20,7 @@ namespace RepeatList.ViewModels
         private SetupPageViewModel? setupPageViewModel;
 
         public string SelectedItem_KindOfSorting_key_name = "SelectedItem_KindOfSorting";
-        public double ButtonsSize = 30;
+        public double ButtonsSize = 25;
 
         [ObservableProperty] public string resetImageSource;
 
@@ -123,7 +123,7 @@ namespace RepeatList.ViewModels
 
 
         [ObservableProperty] private string currentCulture;
-        [ObservableProperty] private int imageButton_size = 40;
+        [ObservableProperty] private int imageButton_size = 30;
         [ObservableProperty] private string label_lists = Properties.Resources.Lists.ToUpper();
         [ObservableProperty] private string label_addNewList = Properties.Resources.AddNewList;
         [ObservableProperty] private string label_Positions = Properties.Resources.Positions.ToUpper();
@@ -160,7 +160,7 @@ namespace RepeatList.ViewModels
 
         [ObservableProperty] public double positionsListHeight;
 
-        [ObservableProperty] public double iconsHeightRequested = 35;
+        public double IconsHeightRequested = 30;
 
         partial void OnIsExpander_listsExpendedChanged(bool oldValue, bool newValue)
         {
@@ -329,6 +329,12 @@ namespace RepeatList.ViewModels
 
         #region FUNCTIONS
 
+        public async Task DeleteHeaderInSupabase(Header header)
+        {
+            if (header == null) return;
+            await _supabaseService.DeleteHeaderWithDetailsAsync(header);
+        }
+
 
         public async Task LoadHeaders()
         {
@@ -338,12 +344,7 @@ namespace RepeatList.ViewModels
             if (headers == null)
                 return;
 
-            
             Headers = new ObservableCollection<Header>(headers);
-            //foreach (var pos in headers)
-            //{
-            //    Headers.Add(pos);
-            //}
         }
 
         public async Task<Header> AddHeader(string HeaderEntryText, string? Id = null)
@@ -362,10 +363,6 @@ namespace RepeatList.ViewModels
 
             Header_SelectedItem = newHeader;
 
-            //var selectedItem = await _databaseService.GetHeaderAsync(new_id);
-            //if (selectedItem != null)
-            //    Header_SelectedItem = selectedItem;
-
             return newHeader;
         }
 
@@ -373,12 +370,15 @@ namespace RepeatList.ViewModels
         {
             IsBusy = true;
 
-            if (Header_SelectedItem == null)
-                return;
-
             Positions.Clear();
             Positions_undone.Clear();
             Positions_done.Clear();
+
+            Label_done = string.Format("{0} ({1})", Properties.Resources.done, Positions_done.Count);
+            Label_undone = string.Format("{0} ({1})", Properties.Resources.undone, Positions_undone.Count);
+
+            if (Header_SelectedItem == null)
+                return;
 
             PositionListViewVisible =false;
 
@@ -388,11 +388,6 @@ namespace RepeatList.ViewModels
                 IsBusy = false;
                 return;
             }
-            //var sorted_list = _pos_arr.OrderBy(x => x.IsCompleted).ThenBy(a => a.Title).ToList();
-            //SetSortedPositionsList(sorted_list);
-
-
-
             Positions = _pos_arr.OrderBy(x => x.IsCompleted).ThenBy(a => a.Title).ToObservableCollection();
             Positions_undone = _pos_arr.Where(a => a.IsCompleted== false).OrderBy(x => x.Title).ToObservableCollection();
 
@@ -423,29 +418,12 @@ namespace RepeatList.ViewModels
             if (Replace_old_word_when_inserting)
                 await DeleteIfAvailable(position.Title);
 
-            //var newPosition = new Models.Position
-            //{
-            //    Id = position.Id == null ? Guid.NewGuid().ToString() : position.Id,
-            //    HeaderId = Header_SelectedItem.Id,
-            //    Title = position.Title,
-            //    IsCompleted = false,
-            //    UpdatedAt=DateTime.Now
-            //};
             await _databaseService.AddPositionAsync(position, generate_new_guid);  // newPosition);
             await LoadPositions();
 
             //Positions.Clear();
             var sort_pos_arr = Positions.OrderBy(x => x.IsCompleted).ThenBy(a => a.Title).ToList();
             Positions = new ObservableCollection<Position>(sort_pos_arr);
-
-            //var sorted_list = Positions.OrderBy(x => x.IsCompleted).ThenBy(a => a.Title).ToList();
-            ////SetSortedPositionsList(); // sorted_list);
-
-            //Positions = new ObservableCollection<Position>();  //.Clear();  //Positions.Clear();
-            //foreach (var item in sorted_list)  //sortedItems)
-            //{
-            //    Positions.Add(item);
-            //}
 
             IsBusy = false;
         }
@@ -474,9 +452,11 @@ namespace RepeatList.ViewModels
             return null;
         }
 
-        public async Task DeleteHeader(Models.Header header)
+        public async Task DeleteHeader(Header header)
         {
             if (header == null) return;
+
+            IsBusy=true;
 
             Header_SelectedItem = header;
             await DeletePositionsByHeaderIdAsync();
@@ -484,9 +464,10 @@ namespace RepeatList.ViewModels
             await LoadHeaders();
             await LoadPositions();
 
+            IsBusy=false;
         }
 
-        public async Task UpdatePosition(Models.Position pos)
+        public async Task UpdatePosition(Position pos)
         {
             IsBusy=true;
 
@@ -496,25 +477,7 @@ namespace RepeatList.ViewModels
 
             await LoadPositions();
 
-            //var sorted_list = Positions.OrderBy(x => x.IsCompleted).ThenBy(a => a.Title).ToList();
-            ////SetSortedPositionsList(sorted_list);
-            //Positions.Clear();  //Positions.Clear();
-            //foreach (var item in sorted_list)  //sortedItems)
-            //{
-            //    Positions.Add(item);
-            //}
-
             IsBusy =false;
-        }
-
-        private void SetSortedPositionsList(List<Position> sortedItems)
-        {
-            var sorted_list = sortedItems.OrderBy(x => x.IsCompleted).ThenBy(a => a.Title).ToList();
-            Positions.Clear();  //Positions.Clear();
-            foreach (var item in sorted_list)  //sortedItems)
-            {
-                Positions.Add(item);
-            }
         }
 
         public async Task DeletePosition(Models.Position pos)
@@ -526,7 +489,7 @@ namespace RepeatList.ViewModels
 
         public async Task DeletePositionsByHeaderIdAsync()
         {
-            if (Header_SelectedItem == null || IsBusy) return;
+            if (Header_SelectedItem == null ) return;
 
             await _databaseService.DeletePositionsByHeaderIdAsync(Header_SelectedItem.Id);
             await LoadPositions();

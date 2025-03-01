@@ -10,7 +10,6 @@
     </ContentPage.BindingContext>
     <ContentPage.ToolbarItems>
         <ToolbarItem  IconImageSource="kofi_symbol.png" Clicked="CoffeeButtonClicked" />
-
         <!--<ToolbarItem  StyleId="Item1" Order="Secondary"  IconImageSource="share_icon.png"  Text="{Binding Label_Export_list}" Command="{Binding Export_list_ClickedCommand}" />-->
         <!--<ToolbarItem  StyleId="Item2" Order="Secondary" Text="{Binding Label_Reset_current_list}" Command="{Binding Reset_current_list_ClickedCommand}" />-->
     </ContentPage.ToolbarItems>
@@ -27,7 +26,7 @@
                                TextColor="{AppThemeBinding Light={DynamicResource PrimaryTextColor}, Dark={DynamicResource PrimaryTextColorLight}}"  />
                         <Image Source="{Binding Expander_listsIcon}"   WidthRequest="23" HorizontalOptions="EndAndExpand" />
                     </StackLayout>
-                    <Border BackgroundColor="Red" HeightRequest="1" HorizontalOptions="Fill" />
+                    <Border BackgroundColor="Red" HeightRequest="3" HorizontalOptions="Fill" />
                 </StackLayout>
             </toolkit:Expander.Header>
             <StackLayout Orientation="Vertical">
@@ -44,20 +43,20 @@
                         <RoundRectangle CornerRadius="5" />
                     </Border.StrokeShape>
                     <CollectionView x:Name="HeaderListView"  ItemsSource="{Binding Headers}" SelectionMode="Single" SelectedItem="{Binding Header_SelectedItem, Mode=OneWayToSource}" 
-                                    MaximumHeightRequest="200" SelectionChanged="HeaderListView_SelectionChanged" ItemSizingStrategy="MeasureAllItems">
+                                    MaximumHeightRequest="200" SelectionChanged="HeaderListView_SelectionChanged" ItemSizingStrategy="MeasureFirstItem">
                         <CollectionView.ItemTemplate>
                             <DataTemplate>
-                                <Grid  ColumnDefinitions="4.5*,1.1*,1.1*,1.1*,1.1*"   VerticalOptions="Center" HeightRequest="37" >
+                                <Grid  ColumnDefinitions="4.5*,1*,1*,1*,1*"   VerticalOptions="Center" HeightRequest="45" >
                                     <Label Text="{Binding ListName}"  VerticalOptions="Center"   Grid.Column="0" 
                                            TextColor="{AppThemeBinding Light={DynamicResource PrimaryTextColor}, Dark={DynamicResource PrimaryTextColorLight}}"/>
-                                    <ImageButton Source="edit_icon.png" Clicked="OnEditHeaderClicked" HeightRequest="{Binding IconsHeightRequested}" CommandParameter="{Binding}"  Grid.Column="1"/>
+                                    <ImageButton Source="edit_icon.png" Clicked="OnEditHeaderClicked" HeightRequest="30" CommandParameter="{Binding}"  Grid.Column="1"/>
                                     <!--<ImageButton Source="copy_icon.png" Clicked="OnCopyHeaderClicked" CommandParameter="{Binding}"  Grid.Column="2"/>-->
                                     <ImageButton Source="delete_icon.png" Clicked="OnDeleteHeaderClicked" 
-                                                 HeightRequest="{Binding IconsHeightRequested}" CommandParameter="{Binding}"  Grid.Column="2"/>
+                                                 HeightRequest="30" CommandParameter="{Binding}"  Grid.Column="2"/>
                                     <ImageButton Source="sync_cloud_icon.png" Clicked="Sync_list_upClicked" 
-                                                 HeightRequest="{Binding IconsHeightRequested}" CommandParameter="{Binding}"  Grid.Column="3" />
+                                                 HeightRequest="30" CommandParameter="{Binding}"  Grid.Column="3" />
                                     <ImageButton Source="sync_arrow_down_icon.png" IsVisible="{Binding IsSynchronized}" 
-                                                 HeightRequest="{Binding IconsHeightRequested}" Clicked="Sync_list_downClicked" CommandParameter="{Binding}"  Grid.Column="4" />
+                                                 HeightRequest="30" Clicked="Sync_list_downClicked" CommandParameter="{Binding}"  Grid.Column="4" />
                                     <!--<ImageButton Source="sync_disabled_icon.png" IsVisible="{Binding IsSynchronized}" Clicked="OnIsSynchronizedClicked" CommandParameter="{Binding}" Grid.Column="3"/>-->
                                 </Grid>
                             </DataTemplate>
@@ -84,16 +83,15 @@
                         <Image Source="{Binding Expander_positionsIcon}"   WidthRequest="23" HorizontalOptions="EndAndExpand"   VerticalOptions="Center" />
                         <!--<ImageButton Source="add_icon.png" Clicked="OnAddPositionClicked"   
                              MaximumWidthRequest="{Binding ImageButton_size}" MaximumHeightRequest="{Binding ImageButton_size}" HorizontalOptions="End" />-->
-
                     </StackLayout>
-                    <Border BackgroundColor="Red" HeightRequest="1" HorizontalOptions="Fill" />
+                    <Border BackgroundColor="Red" HeightRequest="3" HorizontalOptions="Fill" />
                 </StackLayout>
             </toolkit:Expander.Header>
             <!--</StackLayout>-->
             <VerticalStackLayout>
                 <!-- Undone -->
                 <StackLayout Orientation="Horizontal"  Spacing="10" Margin="0,10,5,10">
-                    <Label Text="{Binding Label_undone}" FontAttributes="Bold" VerticalOptions="Center"  HorizontalOptions="StartAndExpand" Margin="0" FontSize="Medium"
+                    <Label Text="{Binding Label_undone}" FontAttributes="Bold" VerticalOptions="Center"  HorizontalOptions="StartAndExpand" Margin="0" FontSize="Large"
                         TextColor="{AppThemeBinding Light={DynamicResource PrimaryTextColor}, Dark={DynamicResource PrimaryTextColorLight}}" />
                     <ImageButton Source="add_icon.png" Clicked="OnAddPositionClicked"   VerticalOptions="Center"
                         MaximumWidthRequest="{Binding ImageButton_size}" MaximumHeightRequest="{Binding ImageButton_size}" HorizontalOptions="End" />
@@ -106,18 +104,18 @@
                     </Border.StrokeShape>
                     <CollectionView x:Name="PositionListView"  ItemsSource="{Binding Positions_undone}" SelectedItem="{Binding Position_selectedItem, Mode=OneWayToSource}" 
                             MaximumHeightRequest="{Binding PositionsListHeight}" SelectionMode="Single"
-                            SelectionChanged="OnPositionSelected_new" ItemSizingStrategy="MeasureAllItems">
+                            SelectionChanged="OnPositionSelected_new" ItemSizingStrategy="MeasureFirstItem">
                         <CollectionView.ItemTemplate>
                             <DataTemplate>
-                                <Grid  ColumnDefinitions="4.5*, 1*,1*,1*" VerticalOptions="Center" MaximumHeightRequest="35">
+                                <Grid  ColumnDefinitions="4.5*, 1*,1*,1*" VerticalOptions="Center" HeightRequest="45">
                                     <Label Text="{Binding Title}" VerticalOptions="Center" Grid.Column="0" 
                                    TextColor="{AppThemeBinding Light={DynamicResource PrimaryTextColor}, Dark={DynamicResource PrimaryTextColorLight}}"/>
                                     <ImageButton Source="{Binding PositionImageSource}" Clicked="OnCheckedButtonClicked" CommandParameter="{Binding}" 
-                                                 HeightRequest="{Binding IconsHeightRequested}" Grid.Column="1"/>
+                                                 HeightRequest="30" Grid.Column="1"/>
                                     <ImageButton Source="edit_icon.png" Clicked="OnEditPositionClicked" CommandParameter="{Binding}" 
-                                                 HeightRequest="{Binding IconsHeightRequested}" Grid.Column="2"/>
+                                                 HeightRequest="30" Grid.Column="2"/>
                                     <ImageButton Source="delete_icon.png" Clicked="OnDeletePositionClicked" CommandParameter="{Binding}" 
-                                                 HeightRequest="{Binding IconsHeightRequested}" Grid.Column="3"/>
+                                                 HeightRequest="30" Grid.Column="3"/>
                                 </Grid>
                             </DataTemplate>
                         </CollectionView.ItemTemplate>
@@ -133,7 +131,7 @@
 
                 <!-- Done -->
                 <StackLayout Orientation="Horizontal" Margin="0,10,5,10">
-                    <Label Text="{Binding Label_done}" FontAttributes="Bold"  HorizontalOptions="StartAndExpand" FontSize="Medium" VerticalOptions="Center"
+                    <Label Text="{Binding Label_done}" FontAttributes="Bold"  HorizontalOptions="StartAndExpand" FontSize="Large" VerticalOptions="Center"
                         TextColor="{AppThemeBinding Light={DynamicResource PrimaryTextColor}, Dark={DynamicResource PrimaryTextColorLight}}" />
                     <Picker x:Name="KindOfSortingPicker" Title="{Binding  Title_sort_by}"  HorizontalOptions="EndAndExpand" VerticalOptions="Center" Margin="0"
                         TextColor="{AppThemeBinding Light={DynamicResource PrimaryTextColor}, Dark={DynamicResource PrimaryTextColorLight}}"
@@ -151,18 +149,18 @@
                     </Border.StrokeShape>
                     <CollectionView x:Name="PositionDoneListView"  ItemsSource="{Binding Positions_done}" SelectedItem="{Binding Position_selectedItem, Mode=OneWayToSource}"
                                     MaximumHeightRequest="{Binding PositionsListHeight}" SelectionMode="Single"
-                                    SelectionChanged="OnPositionSelected_new" ItemSizingStrategy="MeasureAllItems">
+                                    SelectionChanged="OnPositionSelected_new" ItemSizingStrategy="MeasureFirstItem">
                         <CollectionView.ItemTemplate>
                             <DataTemplate>
-                                <Grid  ColumnDefinitions="4.5*, 1*,1*,1*" VerticalOptions="Center" MaximumHeightRequest="35">
-                                    <Label Text="{Binding Title}" VerticalOptions="Center" Grid.Column="0" 
+                                <Grid  ColumnDefinitions="4.5*, 1*,1*,1*" VerticalOptions="Center" HeightRequest="45">
+                                    <Label Text="{Binding Title}" VerticalOptions="Center" Grid.Column="0"  TextDecorations="Strikethrough" 
                                 TextColor="{AppThemeBinding Light={DynamicResource PrimaryTextColor}, Dark={DynamicResource PrimaryTextColorLight}}"/>
                                     <ImageButton Source="{Binding PositionImageSource}" Clicked="OnCheckedButtonClicked" 
-                                                 HeightRequest="{Binding IconsHeightRequested}" CommandParameter="{Binding}" Grid.Column="1"/>
+                                                 HeightRequest="30" CommandParameter="{Binding}" Grid.Column="1"/>
                                     <ImageButton Source="edit_icon.png" Clicked="OnEditPositionClicked" CommandParameter="{Binding}" 
-                                                 HeightRequest="{Binding IconsHeightRequested}" Grid.Column="2"/>
+                                                 HeightRequest="30" Grid.Column="2"/>
                                     <ImageButton Source="delete_icon.png" Clicked="OnDeletePositionClicked" 
-                                                 HeightRequest="{Binding IconsHeightRequested}" CommandParameter="{Binding}" Grid.Column="3"/>
+                                                 HeightRequest="30" CommandParameter="{Binding}" Grid.Column="3"/>
                                 </Grid>
                             </DataTemplate>
                         </CollectionView.ItemTemplate>

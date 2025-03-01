@@ -189,6 +189,9 @@
   <data name="List_was_imported_successfully" xml:space="preserve">
     <value>List was imported successfully</value>
   </data>
+  <data name="List_was_successfully_deleted" xml:space="preserve">
+    <value>List was successfully deleted</value>
+  </data>
   <data name="no" xml:space="preserve">
     <value>No</value>
   </data>
