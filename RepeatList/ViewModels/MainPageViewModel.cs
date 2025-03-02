@@ -60,7 +60,7 @@ namespace RepeatList.ViewModels
 
         private void SetResetImageSource()
         {
-            string image_source = "check_box_outline_blank.png";
+            string image_source = "disbale monetization in youtube channel.png";
             ResetImageSource = image_source;
         }
 
