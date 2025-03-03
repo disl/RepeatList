@@ -61,6 +61,15 @@ namespace RepeatList.Properties {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Add ähnelt.
+        /// </summary>
+        public static string add {
+            get {
+                return ResourceManager.GetString("add", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Add Items ähnelt.
         /// </summary>
         public static string AddNewItem {
@@ -232,7 +241,16 @@ namespace RepeatList.Properties {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die You can use a simple phrase, e.g. ‘milk 2 pcs’, or a list as a phrase with a double comma (‘,,’) as a separator, e.g. ‘milk 2 pcs,,meat 0.5 kg,,juice 1 pack,,barrels 1 p.’. Such a list could be sent via WatsApp, for example, and read in quickly. ähnelt.
+        ///   Sucht eine lokalisierte Zeichenfolge, die item1 or item1;item2;... ähnelt.
+        /// </summary>
+        public static string InputText_placeholder {
+            get {
+                return ResourceManager.GetString("InputText_placeholder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die You can use a simple phrase, e.g. ‘milk 2 pcs’, or a list as a phrase with a semicolon (‘;’) as a separator, e.g. ‘milk 2 pcs;meat 0.5 kg;juice 1 pack;barrels 1 p.’. Such a list could be sent via WatsApp, for example, and read in quickly. ähnelt.
         /// </summary>
         public static string InputTextWithMicrophoneViewModel_PlaceholderText {
             get {
@@ -300,6 +318,15 @@ namespace RepeatList.Properties {
         public static string No_items_to_display {
             get {
                 return ResourceManager.GetString("No_items_to_display", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Operation successfully completed ähnelt.
+        /// </summary>
+        public static string Operation_successfully_completed {
+            get {
+                return ResourceManager.GetString("Operation_successfully_completed", resourceCulture);
             }
         }
         

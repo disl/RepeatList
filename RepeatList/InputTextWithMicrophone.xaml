@@ -19,7 +19,7 @@
                 <Label Text="{Binding LabelText}" VerticalOptions="CenterAndExpand"  HorizontalOptions="FillAndExpand" />
                 <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand" >
                     <Editor  Text="{Binding InputText, Mode=TwoWay }" AutoSize="TextChanges"   HorizontalOptions="FillAndExpand"  />
-                    <Button Text=",,"  Clicked="OnDoubleCommaButton_Clicked" TextColor="White"   />
+                    <Button Text=";"  Clicked="OnDoubleCommaButton_Clicked" TextColor="White"   />
                 </StackLayout>
 
                 <Button Text="{Binding Label_paste_from_clipboard}" Command="{Binding Paste_from_clipboardCommand}" TextColor="White" HorizontalOptions="FillAndExpand"  />

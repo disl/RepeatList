@@ -41,7 +41,7 @@ namespace RepeatList
             };
             KindOfSortingPicker.ItemsSource = ViewModel.ItemSource_KindOfSorting.ToObservableCollection();
 
-            var _selectedItem_KindOfSorting_key_name = Preferences.Get(ViewModel.SelectedItem_KindOfSorting_key_name, "date");  
+            var _selectedItem_KindOfSorting_key_name = Preferences.Get(ViewModel.SelectedItem_KindOfSorting_key_name, "date");
             if (!string.IsNullOrEmpty(_selectedItem_KindOfSorting_key_name))
                 ViewModel.SelectedItem_KindOfSorting = ViewModel.ItemSource_KindOfSorting.FirstOrDefault(x => x.Value == _selectedItem_KindOfSorting_key_name);
             else
@@ -164,8 +164,6 @@ namespace RepeatList
             }
         }
 
-
-
         #endregion
 
 
@@ -177,14 +175,22 @@ namespace RepeatList
                 return;
 
             ViewModel.IsBusy=true;
-            Header? json = null;
 
-            var promptPage = new InputTextWithMicrophone(); 
+            var promptPage = new InputTextWithMicrophone();
             await Navigation.PushModalAsync(promptPage);
 
-            string new_item_name = await promptPage.Result;
+            string _input = await promptPage.Result;
 
-            if (string.IsNullOrEmpty(new_item_name))
+            await InputPositions(_input);
+        }
+
+        private async Task InputPositions(string _input)
+        {
+            Header? json = null;
+
+            ViewModel.IsBusy=true;
+
+            if (string.IsNullOrEmpty(_input) || ViewModel.Headers == null)
             {
                 ViewModel.IsBusy=false;
                 return;
@@ -192,7 +198,7 @@ namespace RepeatList
 
             try
             {
-                json = JsonConvert.DeserializeObject<Header>(new_item_name);
+                json = JsonConvert.DeserializeObject<Header>(_input);
             }
             catch { json=null; }
 
@@ -234,9 +240,15 @@ namespace RepeatList
             }
             else
             {
-                if (new_item_name.Contains(",,"))  // && !ViewModel.Replace_old_word_when_inserting)
+                if (ViewModel.Header_SelectedItem == null)
                 {
-                    var items_list = new_item_name.Split(",,").ToList();
+                    ViewModel.IsBusy=false;
+                    return;
+                }
+
+                if (_input.Contains(";"))  // && !ViewModel.Replace_old_word_when_inserting)
+                {
+                    var items_list = _input.Split(";").ToList();
                     if (items_list.Count > 0)
                     {
                         foreach (var item in items_list)
@@ -252,7 +264,7 @@ namespace RepeatList
                     {
                         var new_pos = new Position();
                         new_pos.HeaderId= ViewModel.Header_SelectedItem.Id;
-                        new_pos.Title= new_item_name;
+                        new_pos.Title= _input;
                         new_pos.UpdatedAt= DateTime.Now;
                         await ViewModel.AddPosition(new_pos, true);
                     }
@@ -261,7 +273,7 @@ namespace RepeatList
                 {
                     var new_pos = new Position();
                     new_pos.HeaderId= ViewModel.Header_SelectedItem.Id;
-                    new_pos.Title= new_item_name;
+                    new_pos.Title= _input;
                     new_pos.UpdatedAt= DateTime.Now;
                     await ViewModel.AddPosition(new_pos, true);
                 }
@@ -324,7 +336,6 @@ namespace RepeatList
             if (answer)
             {
                 await ViewModel.ResetPositionsAsync();
-
             }
         }
 
@@ -454,7 +465,36 @@ namespace RepeatList
             }
         }
 
+        private async void Positions_inputEntry_Completed(object sender, EventArgs e)
+        {
+            await ForPositions_input();
 
+            Positions_inputEntry.IsEnabled = false;
+            Positions_inputEntry.IsEnabled = true;
+        }
+
+        private async Task ForPositions_input()
+        {
+            ViewModel.IsBusy = true;
+
+            await InputPositions(ViewModel.InputText);
+
+            ViewModel.InputText = string.Empty;
+
+            await Application.Current.MainPage.DisplaySnackbar(Properties.Resources.Operation_successfully_completed);
+
+            ViewModel.IsBusy = false;
+        }
+
+        private void OnSemicolonButton_Clicked(object sender, EventArgs e)
+        {
+            ViewModel.InputText += ";";
+        }
+
+        private void Positions_inputEntry_Focused(object sender, FocusEventArgs e)
+        {
+            ViewModel.IsExpander_listsExpended = false;
+        }
     }
 
 }

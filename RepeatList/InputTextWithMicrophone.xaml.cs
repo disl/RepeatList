@@ -37,14 +37,14 @@ public partial class InputTextWithMicrophone : ContentPage
         {
             _completionSource.SetResult(ViewModel.InputText);
         }
-        else if (ViewModel.InputText.Contains(",") && !ViewModel.InputText.Contains(",,"))
+        else if (ViewModel.InputText.Contains(",") && !ViewModel.InputText.Contains(";"))
         {
             var is_ok = await DisplayAlert(
                 Properties.Resources.Input, Properties.Resources.Do_you_want_to_use_commas_as_list_element_separators,
                 Properties.Resources.yes, Properties.Resources.no);
             if (is_ok)
             {
-                _completionSource.SetResult(ViewModel.InputText.Replace(",", ",,"));
+                _completionSource.SetResult(ViewModel.InputText.Replace(",", ";"));
             }
             else
                 _completionSource.SetResult(ViewModel.InputText);
@@ -62,8 +62,8 @@ public partial class InputTextWithMicrophone : ContentPage
 
     private void OnDoubleCommaButton_Clicked(object sender, EventArgs e)
     {
-        ViewModel.InputText += ",,";
-    }
+        ViewModel.InputText += ";";
+    }       
 
     #region microphon_backup
 

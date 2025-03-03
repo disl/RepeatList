@@ -13,12 +13,13 @@
         <!--<ToolbarItem  StyleId="Item1" Order="Secondary"  IconImageSource="share_icon.png"  Text="{Binding Label_Export_list}" Command="{Binding Export_list_ClickedCommand}" />-->
         <!--<ToolbarItem  StyleId="Item2" Order="Secondary" Text="{Binding Label_Reset_current_list}" Command="{Binding Reset_current_list_ClickedCommand}" />-->
     </ContentPage.ToolbarItems>
-    <StackLayout Margin="15" VerticalOptions="FillAndExpand" Spacing="10" >
+    
+    <StackLayout Margin="10"  Spacing="10" >
 
         <ActivityIndicator IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}" />
 
         <!-- LISTS -->
-        <toolkit:Expander x:Name="expander" IsExpanded="{Binding IsExpander_listsExpended, Mode=TwoWay}" Padding="0,10,0,0" >
+        <toolkit:Expander x:Name="expander" IsExpanded="{Binding IsExpander_listsExpended, Mode=TwoWay}" Padding="0,10,0,0"  >
             <toolkit:Expander.Header>
                 <StackLayout>
                     <StackLayout Orientation="Horizontal" >
@@ -43,10 +44,10 @@
                         <RoundRectangle CornerRadius="5" />
                     </Border.StrokeShape>
                     <CollectionView x:Name="HeaderListView"  ItemsSource="{Binding Headers}" SelectionMode="Single" SelectedItem="{Binding Header_SelectedItem, Mode=OneWayToSource}" 
-                                    MaximumHeightRequest="200" SelectionChanged="HeaderListView_SelectionChanged" ItemSizingStrategy="MeasureFirstItem">
+                                    MaximumHeightRequest="140" SelectionChanged="HeaderListView_SelectionChanged" ItemSizingStrategy="MeasureFirstItem">
                         <CollectionView.ItemTemplate>
                             <DataTemplate>
-                                <Grid  ColumnDefinitions="4.5*,1*,1*,1*,1*"   VerticalOptions="Center" HeightRequest="45" >
+                                <Grid  ColumnDefinitions="4.5*,1*,1*,1*,1*"   VerticalOptions="Center" HeightRequest="45">
                                     <Label Text="{Binding ListName}"  VerticalOptions="Center"   Grid.Column="0" 
                                            TextColor="{AppThemeBinding Light={DynamicResource PrimaryTextColor}, Dark={DynamicResource PrimaryTextColorLight}}"/>
                                     <ImageButton Source="edit_icon.png" Clicked="OnEditHeaderClicked" HeightRequest="30" CommandParameter="{Binding}"  Grid.Column="1"/>
@@ -74,7 +75,7 @@
         </toolkit:Expander>
 
         <!-- POSITIONS -->
-        <toolkit:Expander x:Name="expander_positions" IsExpanded="{Binding IsExpander_positionsExpended, Mode=TwoWay}" Padding="0,15,0,0"  >
+        <toolkit:Expander x:Name="expander_positions" IsExpanded="{Binding IsExpander_positionsExpended, Mode=TwoWay}"    >
             <toolkit:Expander.Header>
                 <StackLayout>
                     <StackLayout Orientation="Horizontal" >
@@ -87,93 +88,112 @@
                     <Border BackgroundColor="Red" HeightRequest="3" HorizontalOptions="Fill" />
                 </StackLayout>
             </toolkit:Expander.Header>
-            <!--</StackLayout>-->
-            <VerticalStackLayout>
+
+            <!--<StackLayout VerticalOptions="FillAndExpand">-->
+
+            <Grid  RowDefinitions="5*,5*,1*" Margin="0,10,0,0">
+
                 <!-- Undone -->
-                <StackLayout Orientation="Horizontal"  Spacing="10" Margin="0,10,5,10">
-                    <Label Text="{Binding Label_undone}" FontAttributes="Bold" VerticalOptions="Center"  HorizontalOptions="StartAndExpand" Margin="0" FontSize="Large"
-                        TextColor="{AppThemeBinding Light={DynamicResource PrimaryTextColor}, Dark={DynamicResource PrimaryTextColorLight}}" />
-                    <ImageButton Source="add_icon.png" Clicked="OnAddPositionClicked"   VerticalOptions="Center"
-                        MaximumWidthRequest="{Binding ImageButton_size}" MaximumHeightRequest="{Binding ImageButton_size}" HorizontalOptions="End" />
-                    <ImageButton Source="{Binding ResetImageSource}" Clicked="OnResetPositionsClicked"
-                        MaximumWidthRequest="{Binding ImageButton_size}" MaximumHeightRequest="{Binding ImageButton_size}"  HorizontalOptions="End"/>
-                </StackLayout>
-                <Border   Stroke="Gray" StrokeThickness="1"  Padding="10"  VerticalOptions="FillAndExpand" >
-                    <Border.StrokeShape>
-                        <RoundRectangle CornerRadius="5" />
-                    </Border.StrokeShape>
-                    <CollectionView x:Name="PositionListView"  ItemsSource="{Binding Positions_undone}" SelectedItem="{Binding Position_selectedItem, Mode=OneWayToSource}" 
-                            MaximumHeightRequest="{Binding PositionsListHeight}" SelectionMode="Single"
-                            SelectionChanged="OnPositionSelected_new" ItemSizingStrategy="MeasureFirstItem">
-                        <CollectionView.ItemTemplate>
-                            <DataTemplate>
-                                <Grid  ColumnDefinitions="4.5*, 1*,1*,1*" VerticalOptions="Center" HeightRequest="45">
-                                    <Label Text="{Binding Title}" VerticalOptions="Center" Grid.Column="0" 
+                <StackLayout Grid.Row="0">
+                    <!--<StackLayout Orientation="Horizontal"  Spacing="10" Margin="0,10,5,10">
+                        <Label Text="{Binding Label_undone}" FontAttributes="Bold" VerticalOptions="Center"  HorizontalOptions="StartAndExpand" Margin="0" FontSize="Large"
+                            TextColor="{AppThemeBinding Light={DynamicResource PrimaryTextColor}, Dark={DynamicResource PrimaryTextColorLight}}" />
+                        <ImageButton Source="add_icon.png" Clicked="OnAddPositionClicked"   VerticalOptions="Center"
+                            MaximumWidthRequest="{Binding ImageButton_size}" MaximumHeightRequest="{Binding ImageButton_size}" HorizontalOptions="End" />
+                        <ImageButton Source="{Binding ResetImageSource}" Clicked="OnResetPositionsClicked"
+                            MaximumWidthRequest="{Binding ImageButton_size}" MaximumHeightRequest="{Binding ImageButton_size}"  HorizontalOptions="End"/>
+                    </StackLayout>-->
+                    <Border   Stroke="Gray" StrokeThickness="1"  Padding="10"  VerticalOptions="FillAndExpand" >
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="5" />
+                        </Border.StrokeShape>
+                        <CollectionView x:Name="PositionListView"  ItemsSource="{Binding Positions_undone}" SelectedItem="{Binding Position_selectedItem, Mode=OneWayToSource}" 
+                            MaximumHeightRequest="140" 
+                                    SelectionMode="Single" SelectionChanged="OnPositionSelected_new" ItemSizingStrategy="MeasureFirstItem">
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid  ColumnDefinitions="4.5*, 1*,1*,1*" VerticalOptions="Center" HeightRequest="45">
+                                        <Label Text="{Binding Title}" VerticalOptions="Center" Grid.Column="0" 
                                    TextColor="{AppThemeBinding Light={DynamicResource PrimaryTextColor}, Dark={DynamicResource PrimaryTextColorLight}}"/>
-                                    <ImageButton Source="{Binding PositionImageSource}" Clicked="OnCheckedButtonClicked" CommandParameter="{Binding}" 
+                                        <ImageButton Source="{Binding PositionImageSource}" Clicked="OnCheckedButtonClicked" CommandParameter="{Binding}" 
                                                  HeightRequest="30" Grid.Column="1"/>
-                                    <ImageButton Source="edit_icon.png" Clicked="OnEditPositionClicked" CommandParameter="{Binding}" 
+                                        <ImageButton Source="edit_icon.png" Clicked="OnEditPositionClicked" CommandParameter="{Binding}" 
                                                  HeightRequest="30" Grid.Column="2"/>
-                                    <ImageButton Source="delete_icon.png" Clicked="OnDeletePositionClicked" CommandParameter="{Binding}" 
+                                        <ImageButton Source="delete_icon.png" Clicked="OnDeletePositionClicked" CommandParameter="{Binding}" 
                                                  HeightRequest="30" Grid.Column="3"/>
-                                </Grid>
-                            </DataTemplate>
-                        </CollectionView.ItemTemplate>
-                        <CollectionView.EmptyView>
-                            <ContentView>
-                                <StackLayout HorizontalOptions="Center"  VerticalOptions="Center">
-                                    <Label Text="{Binding No_items_to_display}" HorizontalOptions="Fill" HorizontalTextAlignment="Center" />
-                                </StackLayout>
-                            </ContentView>
-                        </CollectionView.EmptyView>
-                    </CollectionView>
-                </Border>
+                                    </Grid>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                            <CollectionView.EmptyView>
+                                <ContentView>
+                                    <StackLayout HorizontalOptions="Center"  VerticalOptions="Center">
+                                        <Label Text="{Binding No_items_to_display}" HorizontalOptions="Fill" HorizontalTextAlignment="Center" />
+                                    </StackLayout>
+                                </ContentView>
+                            </CollectionView.EmptyView>
+                        </CollectionView>
+                    </Border>
+                </StackLayout>
 
                 <!-- Done -->
-                <StackLayout Orientation="Horizontal" Margin="0,10,5,10">
-                    <Label Text="{Binding Label_done}" FontAttributes="Bold"  HorizontalOptions="StartAndExpand" FontSize="Large" VerticalOptions="Center"
+                <StackLayout Grid.Row="1">
+                    <StackLayout Orientation="Horizontal" Margin="0,10,5,10">
+                        <Label Text="{Binding Label_done}" FontAttributes="Bold"  HorizontalOptions="StartAndExpand" FontSize="Large" VerticalOptions="Center"
                         TextColor="{AppThemeBinding Light={DynamicResource PrimaryTextColor}, Dark={DynamicResource PrimaryTextColorLight}}" />
-                    <Picker x:Name="KindOfSortingPicker" Title="{Binding  Title_sort_by}"  HorizontalOptions="EndAndExpand" VerticalOptions="Center" Margin="0"
+                        <Picker x:Name="KindOfSortingPicker" Title="{Binding  Title_sort_by}"  HorizontalOptions="EndAndExpand" VerticalOptions="Center" Margin="0"
                         TextColor="{AppThemeBinding Light={DynamicResource PrimaryTextColor}, Dark={DynamicResource PrimaryTextColorLight}}"
                         TitleColor="{AppThemeBinding Light={DynamicResource PrimaryTextColor}, Dark={DynamicResource PrimaryTextColorLight}}"
                         SelectedIndexChanged="SortingPicker_SelectedIndexChanged"           
                         SelectedItem="{Binding  SelectedItem_KindOfSorting, Mode=TwoWay}">
-                        <Picker.ItemDisplayBinding>
-                            <Binding Path="Name" />
-                        </Picker.ItemDisplayBinding>
-                    </Picker>
-                </StackLayout>
-                <Border   Stroke="Gray" StrokeThickness="1"  Padding="10"  VerticalOptions="FillAndExpand" >
-                    <Border.StrokeShape>
-                        <RoundRectangle CornerRadius="5" />
-                    </Border.StrokeShape>
-                    <CollectionView x:Name="PositionDoneListView"  ItemsSource="{Binding Positions_done}" SelectedItem="{Binding Position_selectedItem, Mode=OneWayToSource}"
-                                    MaximumHeightRequest="{Binding PositionsListHeight}" SelectionMode="Single"
+                            <Picker.ItemDisplayBinding>
+                                <Binding Path="Name" />
+                            </Picker.ItemDisplayBinding>
+                        </Picker>
+                    </StackLayout>
+                    <Border   Stroke="Gray" StrokeThickness="1"  Padding="10"  VerticalOptions="FillAndExpand" >
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="5" />
+                        </Border.StrokeShape>
+                        <CollectionView x:Name="PositionDoneListView"  ItemsSource="{Binding Positions_done}" SelectedItem="{Binding Position_selectedItem, Mode=OneWayToSource}"
+                                    MaximumHeightRequest="140" SelectionMode="Single"
                                     SelectionChanged="OnPositionSelected_new" ItemSizingStrategy="MeasureFirstItem">
-                        <CollectionView.ItemTemplate>
-                            <DataTemplate>
-                                <Grid  ColumnDefinitions="4.5*, 1*,1*,1*" VerticalOptions="Center" HeightRequest="45">
-                                    <Label Text="{Binding Title}" VerticalOptions="Center" Grid.Column="0"  TextDecorations="Strikethrough" 
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid  ColumnDefinitions="4.5*, 1*,1*,1*" VerticalOptions="Center" HeightRequest="45">
+                                        <Label Text="{Binding Title}" VerticalOptions="Center" Grid.Column="0"  TextDecorations="Strikethrough" 
                                 TextColor="{AppThemeBinding Light={DynamicResource PrimaryTextColor}, Dark={DynamicResource PrimaryTextColorLight}}"/>
-                                    <ImageButton Source="{Binding PositionImageSource}" Clicked="OnCheckedButtonClicked" 
+                                        <ImageButton Source="{Binding PositionImageSource}" Clicked="OnCheckedButtonClicked" 
                                                  HeightRequest="30" CommandParameter="{Binding}" Grid.Column="1"/>
-                                    <ImageButton Source="edit_icon.png" Clicked="OnEditPositionClicked" CommandParameter="{Binding}" 
+                                        <ImageButton Source="edit_icon.png" Clicked="OnEditPositionClicked" CommandParameter="{Binding}" 
                                                  HeightRequest="30" Grid.Column="2"/>
-                                    <ImageButton Source="delete_icon.png" Clicked="OnDeletePositionClicked" 
+                                        <ImageButton Source="delete_icon.png" Clicked="OnDeletePositionClicked" 
                                                  HeightRequest="30" CommandParameter="{Binding}" Grid.Column="3"/>
-                                </Grid>
-                            </DataTemplate>
-                        </CollectionView.ItemTemplate>
-                        <CollectionView.EmptyView>
-                            <ContentView>
-                                <StackLayout HorizontalOptions="Center"  VerticalOptions="Center">
-                                    <Label Text="{Binding No_items_to_display}" HorizontalOptions="Fill" HorizontalTextAlignment="Center" />
-                                </StackLayout>
-                            </ContentView>
-                        </CollectionView.EmptyView>
-                    </CollectionView>
-                </Border>
-            </VerticalStackLayout>
+                                    </Grid>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                            <CollectionView.EmptyView>
+                                <ContentView>
+                                    <StackLayout HorizontalOptions="Center"  VerticalOptions="Center">
+                                        <Label Text="{Binding No_items_to_display}" HorizontalOptions="Fill" HorizontalTextAlignment="Center" />
+                                    </StackLayout>
+                                </ContentView>
+                            </CollectionView.EmptyView>
+                        </CollectionView>
+                    </Border>
+                </StackLayout>
+
+                <!-- Input -->
+                <Grid ColumnDefinitions="Auto,*,Auto" Grid.Row="2" ColumnSpacing="5">
+                    <Button Text=";" Grid.Column="0"  Clicked="OnSemicolonButton_Clicked" TextColor="White" FontAttributes="Bold"  HorizontalOptions="EndAndExpand"  VerticalOptions="Center"  />
+                    <Entry x:Name="Positions_inputEntry" Grid.Column="1" Text="{Binding InputText}"  Placeholder="{Binding InputText_placeholder}" 
+                           Completed="Positions_inputEntry_Completed" VerticalOptions="Center" Focused="Positions_inputEntry_Focused" />
+                    <ImageButton Source="keyboard_return_icon.png" Grid.Column="2"  Clicked="Positions_inputEntry_Completed" WidthRequest="40"  VerticalOptions="Center"  />
+
+                </Grid>
+
+            </Grid>
         </toolkit:Expander>
+
+
     </StackLayout>
 </ContentPage>

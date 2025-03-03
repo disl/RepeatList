@@ -43,11 +43,10 @@ namespace RepeatList.ViewModels
 
         public void InitLabels()
         {
-            Label_Positions =  Properties.Resources.Positions.ToUpper();
+            Label_Positions =  Properties.Resources.Positions.ToUpper() + " (0)";
             No_items_to_display=Properties.Resources.No_items_to_display;
             Label_lists = Properties.Resources.Lists.ToUpper();
             Label_addNewList = Properties.Resources.AddNewList;
-            Label_Positions = Properties.Resources.Positions.ToUpper();
             Label_AddNewItem = Properties.Resources.AddNewItem;
             Label_ResetPositions = Properties.Resources.ResetPositions;
             Label_Export_list = Properties.Resources.Export_list;
@@ -56,6 +55,7 @@ namespace RepeatList.ViewModels
             Label_done = Properties.Resources.done;
             Label_undone = Properties.Resources.undone;
             Label_paste_from_clipboard = Properties.Resources.Paste_from_clipboard;
+            InputText_placeholder = Properties.Resources.InputText_placeholder;
         }
 
         private void SetResetImageSource()
@@ -91,6 +91,8 @@ namespace RepeatList.ViewModels
             }
             set { replace_old_word_when_inserting = value; }
         }
+
+
         [ObservableProperty] public string no_items_to_display = Properties.Resources.No_items_to_display;
         [ObservableProperty] public bool isSynchronized = false;
         [ObservableProperty] public string title_sort_by = Properties.Resources.sort_by;
@@ -126,7 +128,7 @@ namespace RepeatList.ViewModels
         [ObservableProperty] private int imageButton_size = 30;
         [ObservableProperty] private string label_lists = Properties.Resources.Lists.ToUpper();
         [ObservableProperty] private string label_addNewList = Properties.Resources.AddNewList;
-        [ObservableProperty] private string label_Positions = Properties.Resources.Positions.ToUpper();
+        [ObservableProperty] private string label_Positions = Properties.Resources.Positions.ToUpper() + " (0)";
         [ObservableProperty] private string label_AddNewItem = Properties.Resources.AddNewItem;
         [ObservableProperty] private string label_ResetPositions = Properties.Resources.ResetPositions;
         [ObservableProperty] private string _label_Export_list = Properties.Resources.Export_list;
@@ -161,6 +163,9 @@ namespace RepeatList.ViewModels
         [ObservableProperty] public double positionsListHeight;
 
         public double IconsHeightRequested = 30;
+
+        [ObservableProperty] private string inputText;
+        [ObservableProperty] private string inputText_placeholder;
 
         partial void OnIsExpander_listsExpendedChanged(bool oldValue, bool newValue)
         {
@@ -373,9 +378,10 @@ namespace RepeatList.ViewModels
             Positions.Clear();
             Positions_undone.Clear();
             Positions_done.Clear();
+            Label_Positions = Properties.Resources.Positions.ToUpper() + " (0)";
 
             Label_done = string.Format("{0} ({1})", Properties.Resources.done, Positions_done.Count);
-            Label_undone = string.Format("{0} ({1})", Properties.Resources.undone, Positions_undone.Count);
+            Label_undone = string.Format("{0} ({1})", Properties.Resources.undone, Positions_undone.Count);            
 
             if (Header_SelectedItem == null)
                 return;
@@ -404,8 +410,9 @@ namespace RepeatList.ViewModels
 
             Label_done = string.Format("{0} ({1})", Properties.Resources.done, Positions_done.Count);
             Label_undone = string.Format("{0} ({1})", Properties.Resources.undone, Positions_undone.Count);
+            Label_Positions = string.Format(Properties.Resources.Positions.ToUpper() + " ({0})", Positions_done.Count + Positions_undone.Count);
 
-            IsBusy=false;
+            IsBusy =false;
             PositionListViewVisible=true;
         }
 
