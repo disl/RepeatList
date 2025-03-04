@@ -8,7 +8,7 @@ namespace RepeatList
         {
             InitializeComponent();
 
-            Routing.RegisterRoute("MainPage", typeof(MainPage));
+            Routing.RegisterRoute("MainPage", typeof(Lists));
         }
     }
 }

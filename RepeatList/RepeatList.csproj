@@ -186,6 +186,12 @@
 		<MauiXaml Update="InputTextWithMicrophone.xaml">
 		  <Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
+		<MauiXaml Update="Lists.xaml">
+		  <Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
+		<MauiXaml Update="Positions.xaml">
+		  <Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
 		<MauiXaml Update="SetupPage.xaml">
 		  <Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
@@ -198,6 +204,15 @@
 
 
 	<ItemGroup>
+	  <Compile Update="Lists.xaml.cs">
+	    <DependentUpon>Lists.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="MainPage_old.xaml.cs">
+	    <DependentUpon>MainPage_old.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="Positions.xaml.cs">
+	    <DependentUpon>Positions.xaml</DependentUpon>
+	  </Compile>
 	  <Compile Update="Properties\Resources.Designer.cs">
 	    <DesignTime>True</DesignTime>
 	    <AutoGen>True</AutoGen>

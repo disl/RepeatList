@@ -12,7 +12,7 @@
     </Shell.FlyoutHeader>
     
 
-    <ShellContent  Title="MiniList"  ContentTemplate="{DataTemplate local:MainPage}"  Route="MainPage" />
+    <ShellContent  Title="MiniList"  ContentTemplate="{DataTemplate local:Lists}"  Route="Lists" />
     <ShellContent  Title="Setup"  ContentTemplate="{DataTemplate local:SetupPage}"  Route="SetupPage" />
 
 </Shell>

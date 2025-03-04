@@ -8,12 +8,12 @@ using System.Globalization;
 
 namespace RepeatList
 {
-    public partial class MainPage : ContentPage
+    public partial class Positions : ContentPage
     {
         public SetupPageViewModel SetupPageViewModel { get; set; }
         public MainPageViewModel ViewModel { get; set; }
 
-        public MainPage()  //ISpeechToText speechToText)
+        public Positions()  
         {
             InitializeComponent();
 
@@ -25,8 +25,8 @@ namespace RepeatList
         {
             ViewModel.IsBusy=true;
 
-            if (ViewModel != null && ViewModel.Headers != null && ViewModel.Headers.Count > 0)
-                HeaderListView.SelectedItem=ViewModel.Headers[0];
+            //if (ViewModel != null && ViewModel.Headers != null && ViewModel.Headers.Count > 0)
+            //    HeaderListView.SelectedItem=ViewModel.Headers[0];
 
             SetupPageViewModel = new SetupPageViewModel();
             if (SetupPageViewModel.SelectedItem != null)
@@ -68,121 +68,25 @@ namespace RepeatList
             Thread.CurrentThread.CurrentUICulture = ci;
         }
 
-        #region HEADER
-
-        private async void OnAddHeaderClicked(object sender, EventArgs e)
-        {
-            string new_list_name = await DisplayPromptAsync(Properties.Resources.Input, Properties.Resources.Enter_new_list_name, "OK", Properties.Resources.Cancel);
-            if (!string.IsNullOrWhiteSpace(new_list_name))
-            {
-                var new_id = await ViewModel.AddHeader(new_list_name);
-                ViewModel.SetFirstItemForHeaders();
-            }
-        }
-
-        private async void HeaderListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            ViewModel.IsBusy=true;
-
-            ViewModel.HeaderSelected=true;
-
-            var _selectedHeader = e.CurrentSelection[0] as Header;
-            if (_selectedHeader != null)
-            {
-                ViewModel.Header_SelectedItem= _selectedHeader;
-
-                await ViewModel.LoadPositions();
-
-                expander.IsExpanded= !expander.IsExpanded;
-                expander.IsExpanded= !expander.IsExpanded;
-            }
-
-            ViewModel.IsBusy=false;
-        }
-
-        private async void OnHeaderSelected(object sender, SelectionChangedEventArgs e)
-        {
-
-        }
-
-        private async void OnDeleteHeaderClicked(object sender, EventArgs e)
-        {
-            var button = sender as ImageButton;
-            if (button?.CommandParameter is Header header)
-            {
-                bool answer = await DisplayAlert(Properties.Resources.Delete_list, Properties.Resources.Are_you_sure, Properties.Resources.yes, Properties.Resources.no);
-                if (answer)
-                {
-
-                    ViewModel.IsBusy=true;
-
-                    await ViewModel.DeleteHeader(header);
-                    ViewModel.SetFirstItemForHeaders();
-
-                    await ViewModel.DeleteHeaderInSupabase(header);
-
-                    expander.IsExpanded= !expander.IsExpanded;
-                    expander.IsExpanded= !expander.IsExpanded;
-
-                    await Application.Current.MainPage.DisplaySnackbar(Properties.Resources.List_was_successfully_deleted);
-
-                    ViewModel.IsBusy=false;
-                }
-            }
-        }
-
-        private async void OnCopyHeaderClicked(object sender, EventArgs e)
-        {
-            var button = sender as ImageButton;
-            if (button?.CommandParameter is Header header)
-            {
-                string new_list_name = await DisplayPromptAsync(Properties.Resources.copy_list, Properties.Resources.Enter_list_name, "OK", Properties.Resources.Cancel);
-                if (!string.IsNullOrWhiteSpace(new_list_name))
-                {
-                    var new_int = await ViewModel.CopyHeader(header, new_list_name);
-                    ViewModel.SetFirstItemForHeaders();
-
-                    expander.IsExpanded= !expander.IsExpanded;
-                    expander.IsExpanded= !expander.IsExpanded;
-                }
-            }
-        }
-
-        private async void OnEditHeaderClicked(object sender, EventArgs e)
-        {
-            var button = sender as ImageButton;
-            if (button?.CommandParameter is Header header)
-            {
-                string new_list_name = await DisplayPromptAsync(Properties.Resources.Input, Properties.Resources.Enter_new_list_name, "OK", Properties.Resources.Cancel, initialValue: header.ListName);
-                if (!string.IsNullOrWhiteSpace(new_list_name))
-                {
-                    await ViewModel.EditNameHeader(header, new_list_name);
-
-                    expander.IsExpanded= !expander.IsExpanded;
-                    expander.IsExpanded= !expander.IsExpanded;
-                }
-            }
-        }
-
-        #endregion
+        
 
 
         #region POSITIONS
 
-        private async void OnAddPositionClicked(object sender, EventArgs e)
-        {
-            if (ViewModel.Header_SelectedItem == null)
-                return;
+        //private async void OnAddPositionClicked(object sender, EventArgs e)
+        //{
+        //    if (ViewModel.Header_SelectedItem == null)
+        //        return;
 
-            ViewModel.IsBusy=true;
+        //    ViewModel.IsBusy=true;
 
-            var promptPage = new InputTextWithMicrophone();
-            await Navigation.PushModalAsync(promptPage);
+        //    var promptPage = new InputTextWithMicrophone();
+        //    await Navigation.PushModalAsync(promptPage);
 
-            string _input = await promptPage.Result;
+        //    string _input = await promptPage.Result;
 
-            await InputPositions(_input);
-        }
+        //    await InputPositions(_input);
+        //}
 
         private async Task InputPositions(string _input)
         {
@@ -277,36 +181,10 @@ namespace RepeatList
                     new_pos.UpdatedAt= DateTime.Now;
                     await ViewModel.AddPosition(new_pos, true);
                 }
-            }
-
-            expander.IsExpanded= !expander.IsExpanded;
-            expander.IsExpanded= !expander.IsExpanded;
+            } 
 
             ViewModel.IsBusy=false;
-        }
-
-        private async void OnPositionToggled(object sender, ToggledEventArgs e)
-        {
-            if (ViewModel.IsBusy) return;
-            if (ViewModel.HeaderSelected)
-            {
-                ViewModel.HeaderSelected=false;
-                return;
-            }
-
-            if (sender is Switch switchControl &&
-                e !=null  &&
-                switchControl.BindingContext != null &&
-                switchControl.BindingContext is Position position)
-            {
-                ViewModel.IsBusy = true;
-
-                position.IsCompleted = e.Value;
-                await ViewModel.UpdatePosition(position);
-
-                ViewModel.IsBusy = false;
-            }
-        }
+        }       
 
         private async void OnDeletePositionClicked(object sender, EventArgs e)
         {
