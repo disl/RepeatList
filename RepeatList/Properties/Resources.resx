@@ -210,6 +210,9 @@
   <data name="Paste_from_clipboard" xml:space="preserve">
     <value>Paste from clipboard</value>
   </data>
+  <data name="Please_create_a_first_list" xml:space="preserve">
+    <value>Please create a first list</value>
+  </data>
   <data name="Please_enter_the_ID_of_the_list_to_be_synchronised" xml:space="preserve">
     <value>Please enter the ID of the list to be synchronised. You will receive this from your partner.</value>
   </data>

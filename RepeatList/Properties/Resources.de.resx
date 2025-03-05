@@ -204,6 +204,9 @@
   <data name="Paste_from_clipboard" xml:space="preserve">
     <value>Aus Zwischenablage einfügen</value>
   </data>
+  <data name="Please_create_a_first_list" xml:space="preserve">
+    <value>Bitte erstellen Sie eine erste Liste</value>
+  </data>
   <data name="Please_enter_the_ID_of_the_list_to_be_synchronised" xml:space="preserve">
     <value>Bitte geben Sie die ID der zu synchronisierenden Liste ein. Diese erhalten Sie von Ihrem Partner.</value>
   </data>

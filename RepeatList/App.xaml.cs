@@ -13,6 +13,7 @@
             Task.Run(async () => await DatabaseHelper.CopyDatabaseToAppData("todo.db3")).Wait();
 
             //MainPage = new MainPage();
+           // MainPage = new NavigationPage(new ListsPage());
         }
 
         protected override Window CreateWindow(IActivationState? activationState)

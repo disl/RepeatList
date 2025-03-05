@@ -147,6 +147,7 @@
 	<ItemGroup>
 		<None Remove="Platforms\Android\Resources\values\todo.db3" />
 		<None Remove="Platforms\Android\todo.db3" />
+		<None Remove="RepeatList.csproj.Backup.tmp" />
 		<None Remove="Resources\Splash\playstore.svg" />
 		<None Remove="Resources\Splash\spinner.json" />
 		<None Remove="Resources\Splash\splash - Kopie.svg" />

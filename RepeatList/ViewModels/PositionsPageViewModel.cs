@@ -22,6 +22,7 @@ namespace RepeatList.ViewModels
         public string SelectedItem_KindOfSorting_key_name = "SelectedItem_KindOfSorting";
         public double ButtonsSize = 25;
 
+        [ObservableProperty] private string title = Properties.Resources.Positions.ToUpper();
         [ObservableProperty] public string resetImageSource;
 
         public PositionsPageViewModel()

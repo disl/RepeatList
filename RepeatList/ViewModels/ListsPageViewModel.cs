@@ -44,7 +44,7 @@ namespace RepeatList.ViewModels
         public void InitLabels()
         {
             Label_Lists =  Properties.Resources.Lists.ToUpper() + " (0)";
-            No_items_to_display=Properties.Resources.No_items_to_display;
+            Please_create_a_first_list=Properties.Resources.Please_create_a_first_list;
             Label_lists = Properties.Resources.Lists.ToUpper();
             Label_addNewList = Properties.Resources.AddNewList;
             Label_AddNewItem = Properties.Resources.AddNewItem;
@@ -93,7 +93,7 @@ namespace RepeatList.ViewModels
         }
 
 
-        [ObservableProperty] public string no_items_to_display = Properties.Resources.No_items_to_display;
+        [ObservableProperty] public string please_create_a_first_list = Properties.Resources.Please_create_a_first_list;
         [ObservableProperty] public bool isSynchronized = false;
         [ObservableProperty] public string title_sort_by = Properties.Resources.sort_by;
         [ObservableProperty] public string title_KindOfSorting = "Sort";
@@ -123,7 +123,7 @@ namespace RepeatList.ViewModels
             PositionImageSource = image_source;
         }
 
-
+        [ObservableProperty] private string title = Properties.Resources.Lists.ToUpper();
         [ObservableProperty] private string currentCulture;
         [ObservableProperty] private int imageButton_size = 30;
         [ObservableProperty] private string label_lists = Properties.Resources.Lists.ToUpper();

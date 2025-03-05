@@ -340,6 +340,15 @@ namespace RepeatList.Properties {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Please create a first list ähnelt.
+        /// </summary>
+        public static string Please_create_a_first_list {
+            get {
+                return ResourceManager.GetString("Please_create_a_first_list", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Please enter the ID of the list to be synchronised. You will receive this from your partner. ähnelt.
         /// </summary>
         public static string Please_enter_the_ID_of_the_list_to_be_synchronised {

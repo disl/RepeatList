@@ -4,6 +4,7 @@
              x:Class="RepeatList.ListsPage"
              xmlns:local="clr-namespace:RepeatList.ViewModels"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             Title="{Binding Title}" 
              >
     <ContentPage.BindingContext>
         <local:ListsPageViewModel />
@@ -13,12 +14,10 @@
         <!--<ToolbarItem  StyleId="Item1" Order="Secondary"  IconImageSource="share_icon.png"  Text="{Binding Label_Export_list}" Command="{Binding Export_list_ClickedCommand}" />-->
         <!--<ToolbarItem  StyleId="Item2" Order="Secondary" Text="{Binding Label_Reset_current_list}" Command="{Binding Reset_current_list_ClickedCommand}" />-->
     </ContentPage.ToolbarItems>
-
     <Grid RowDefinitions="auto,auto,*">
 
         <ActivityIndicator IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}" Grid.Row="0" />
 
-        <!--<StackLayout Orientation="Vertical" >-->
         <StackLayout Orientation="Horizontal" Spacing="10" Margin="0,15,0,10" HorizontalOptions="End" Grid.Row="1">
             <ImageButton Source="add_icon.png" Clicked="OnAddHeaderClicked"   
                             MaximumWidthRequest="{Binding ImageButton_size}" MaximumHeightRequest="{Binding ImageButton_size}"  />
@@ -27,6 +26,7 @@
             <ImageButton Source="sync_arrow_down_icon.png" Command="{Binding Import_listClickedCommand}" 
                             MaximumWidthRequest="{Binding ImageButton_size}" MaximumHeightRequest="{Binding ImageButton_size}" />
         </StackLayout>
+        
         <CollectionView x:Name="HeaderListView"  ItemsSource="{Binding Headers}" Grid.Row="2"
                                 SelectionMode="Single" SelectedItem="{Binding Header_SelectedItem}" SelectionChanged="OnHeaderListViewSelected" VerticalScrollBarVisibility="Always" >
             <!--SelectionChanged="HeaderListView_SelectionChanged"-->
@@ -56,10 +56,11 @@
             <CollectionView.EmptyView>
                 <ContentView>
                     <StackLayout HorizontalOptions="Center"  VerticalOptions="Center">
-                        <Label Text="{Binding No_items_to_display}"  HorizontalOptions="Fill" HorizontalTextAlignment="Center" />
+                        <Label Text="{Binding Please_create_a_first_list}"  HorizontalOptions="Fill" HorizontalTextAlignment="Center" />
                     </StackLayout>
                 </ContentView>
             </CollectionView.EmptyView>
         </CollectionView>
+        
     </Grid>
 </ContentPage>

@@ -11,7 +11,7 @@ namespace RepeatList
         private SetupPageViewModel SetupPageViewModel { get; set; }
         private ListsPageViewModel ViewModel { get; set; }
 
-        public ListsPage()  
+        public ListsPage()
         {
             InitializeComponent();
 
@@ -19,7 +19,7 @@ namespace RepeatList
             BindingContext = ViewModel;
         }
 
-        protected override void OnAppearing()
+        protected async override void OnAppearing()
         {
             ViewModel.IsBusy=true;
 
@@ -34,17 +34,15 @@ namespace RepeatList
 
             ViewModel.ItemSource_KindOfSorting = new ObservableCollection<CMBType_String>
             {
-             new CMBType_String(Properties.Resources.sort_by_date, "date"),
-             new CMBType_String(Properties.Resources.sort_by_alphabet, "alpha" )
+                 new CMBType_String(Properties.Resources.sort_by_date, "date"),
+                 new CMBType_String(Properties.Resources.sort_by_alphabet, "alpha" )
             };
-            //KindOfSortingPicker.ItemsSource = ViewModel.ItemSource_KindOfSorting.ToObservableCollection();
 
             var _selectedItem_KindOfSorting_key_name = Preferences.Get(ViewModel.SelectedItem_KindOfSorting_key_name, "date");
             if (!string.IsNullOrEmpty(_selectedItem_KindOfSorting_key_name))
                 ViewModel.SelectedItem_KindOfSorting = ViewModel.ItemSource_KindOfSorting.FirstOrDefault(x => x.Value == _selectedItem_KindOfSorting_key_name);
             else
                 ViewModel.SelectedItem_KindOfSorting = ViewModel.ItemSource_KindOfSorting.FirstOrDefault(x => x.Value == "date");
-            //KindOfSortingPicker.SelectedIndex = ViewModel.ItemSource_KindOfSorting.IndexOf(ViewModel.SelectedItem_KindOfSorting);
 
             ViewModel.IsBusy=false;
 
@@ -54,8 +52,8 @@ namespace RepeatList
 
             ViewModel.InitLabels();
 
-            ViewModel.IsExpander_listsExpended=false;
-            ViewModel.IsExpander_listsExpended=true;
+            //ViewModel.IsExpander_listsExpended=false;
+            //ViewModel.IsExpander_listsExpended=true;
         }
 
         private void SetCurrentCulture(string curr_culture)
@@ -70,7 +68,13 @@ namespace RepeatList
 
         private async void OnAddHeaderClicked(object sender, EventArgs e)
         {
-            string new_list_name = await DisplayPromptAsync(Properties.Resources.Input, Properties.Resources.Enter_new_list_name, "OK", Properties.Resources.Cancel);
+            await ForOnAddHeaderClicked();
+        }
+
+        private async Task ForOnAddHeaderClicked()
+        {
+            string new_list_name = await DisplayPromptAsync(
+                Properties.Resources.Input, Properties.Resources.Enter_new_list_name, "OK", Properties.Resources.Cancel);
             if (!string.IsNullOrWhiteSpace(new_list_name))
             {
                 var new_id = await ViewModel.AddHeader(new_list_name);

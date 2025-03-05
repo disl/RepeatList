@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Maui.Alerts;
+using CommunityToolkit.Maui.Core.Extensions;
 using Newtonsoft.Json;
 using RepeatList.Models;
 using RepeatList.ViewModels;
@@ -14,11 +15,11 @@ namespace RepeatList
 
         public PositionsPage(Header selectedItem)
         {
+            InitializeComponent();
+
             ViewModel = new PositionsPageViewModel(selectedItem);
             BindingContext = ViewModel;
             SetupPageViewModel = new SetupPageViewModel();
-
-            
         }
 
         protected async override void OnAppearing()
@@ -43,17 +44,17 @@ namespace RepeatList
              new CMBType_String(Properties.Resources.sort_by_alphabet, "alpha" )
             };
 
-            //if (SortingPicker == null)
-            //    SortingPicker = new Picker();
+            if (SortingPicker == null)
+                SortingPicker = new Picker();
 
-            //SortingPicker.ItemsSource = ViewModel.ItemSource_KindOfSorting.ToObservableCollection();
-            //var _selectedItem_KindOfSorting_key_name = Preferences.Get(ViewModel.SelectedItem_KindOfSorting_key_name, "date");
-            //if (!string.IsNullOrEmpty(_selectedItem_KindOfSorting_key_name))
-            //    ViewModel.SelectedItem_KindOfSorting = ViewModel.ItemSource_KindOfSorting.FirstOrDefault(x => x.Value == _selectedItem_KindOfSorting_key_name);
-            //else
-            //    ViewModel.SelectedItem_KindOfSorting = ViewModel.ItemSource_KindOfSorting.FirstOrDefault(x => x.Value == "date");
-            //SortingPicker.SelectedIndex = ViewModel.ItemSource_KindOfSorting.IndexOf(ViewModel.SelectedItem_KindOfSorting);
-           
+            SortingPicker.ItemsSource = ViewModel.ItemSource_KindOfSorting.ToObservableCollection();
+            var _selectedItem_KindOfSorting_key_name = Preferences.Get(ViewModel.SelectedItem_KindOfSorting_key_name, "date");
+            if (!string.IsNullOrEmpty(_selectedItem_KindOfSorting_key_name))
+                ViewModel.SelectedItem_KindOfSorting = ViewModel.ItemSource_KindOfSorting.FirstOrDefault(x => x.Value == _selectedItem_KindOfSorting_key_name);
+            else
+                ViewModel.SelectedItem_KindOfSorting = ViewModel.ItemSource_KindOfSorting.FirstOrDefault(x => x.Value == "date");
+            SortingPicker.SelectedIndex = ViewModel.ItemSource_KindOfSorting.IndexOf(ViewModel.SelectedItem_KindOfSorting);
+
             string tmp_lists = Properties.Resources.Lists.ToUpper();
 
             ViewModel.Label_lists = tmp_lists;
@@ -85,6 +86,12 @@ namespace RepeatList
 
             var promptPage = new InputTextWithMicrophone();
             await Navigation.PushModalAsync(promptPage);
+
+            if(promptPage.Result == null)
+            {
+                ViewModel.IsBusy=false;
+                return;
+            }
 
             string _input = await promptPage.Result;
 
