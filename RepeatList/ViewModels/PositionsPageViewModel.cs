@@ -10,7 +10,7 @@ using Position = RepeatList.Models.Position;
 
 namespace RepeatList.ViewModels
 {
-    public partial class MainPageViewModel : ObservableObject   // INotifyPropertyChanged,
+    public partial class PositionsPageViewModel : ObservableObject   // INotifyPropertyChanged,
     {
         private DatabaseService _databaseService;
         private SupabaseService _supabaseService;
@@ -24,7 +24,26 @@ namespace RepeatList.ViewModels
 
         [ObservableProperty] public string resetImageSource;
 
-        public MainPageViewModel()
+        public PositionsPageViewModel()
+        {
+            //_databaseService =  new DatabaseService();
+            //_supabaseService =  new SupabaseService();
+
+            //setupPageViewModel =new SetupPageViewModel();
+
+            //_ = setupPageViewModel.Load();
+            //CurrentCulture= setupPageViewModel.SelectedItem.DefaultLanguage;
+
+            ////_ = LoadHeaders();
+
+            //_ = LoadPositions();
+
+            ////SetFirstItemForHeaders();
+            //InitSelectedItem_KindOfSorting();
+            ////SetResetImageSource();
+        }
+
+        public PositionsPageViewModel(Header selectedItem)
         {
             _databaseService =  new DatabaseService();
             _supabaseService =  new SupabaseService();
@@ -34,11 +53,13 @@ namespace RepeatList.ViewModels
             _ = setupPageViewModel.Load();
             CurrentCulture= setupPageViewModel.SelectedItem.DefaultLanguage;
 
-            _ = LoadHeaders();
+            Header_SelectedItem = selectedItem;
 
-            SetFirstItemForHeaders();
+            _ = LoadPositions();
+
+            //SetFirstItemForHeaders();
             InitSelectedItem_KindOfSorting();
-            SetResetImageSource();
+            //SetResetImageSource();
         }
 
         public void InitLabels()
@@ -371,7 +392,7 @@ namespace RepeatList.ViewModels
             return newHeader;
         }
 
-        public async Task LoadPositions()
+        internal async Task LoadPositions()
         {
             IsBusy = true;
 

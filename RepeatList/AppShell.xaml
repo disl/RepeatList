@@ -10,9 +10,9 @@
     <Shell.FlyoutHeader>
         <controls:FlyoutHeader />
     </Shell.FlyoutHeader>
-    
 
-    <ShellContent  Title="MiniList"  ContentTemplate="{DataTemplate local:Lists}"  Route="Lists" />
+
+    <ShellContent  Title="MiniList"  ContentTemplate="{DataTemplate local:ListsPage}"  Route="Lists" />
     <ShellContent  Title="Setup"  ContentTemplate="{DataTemplate local:SetupPage}"  Route="SetupPage" />
 
 </Shell>

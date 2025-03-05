@@ -13,6 +13,16 @@ namespace RepeatList.Models
         //[JsonIgnore]
         public string Id { get; set; }
         public string ListName { get; set; }
+
+        public string AvatarName
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(ListName)) return "";
+                else
+                    return ListName.Substring(0, 2).ToUpper();
+            }
+        }
         public DateTime UpdatedAt { get; set; }
 
         //[JsonIgnore]

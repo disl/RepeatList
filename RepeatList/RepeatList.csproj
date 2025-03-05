@@ -130,6 +130,7 @@
 
 	<ItemGroup>
 	  <Compile Remove="InputPromptPage.cs" />
+	  <Compile Remove="MainPage_old.xaml.cs" />
 	  <Compile Remove="Program.cs" />
 	  <Compile Remove="Services\SpeechService.cs" />
 	</ItemGroup>
@@ -137,6 +138,10 @@
 	<ItemGroup>
 	  <EmbeddedResource Remove="Properties\Resource.de.resx" />
 	  <EmbeddedResource Remove="Properties\Resource.resx" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <MauiXaml Remove="MainPage_old.xaml" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -186,10 +191,10 @@
 		<MauiXaml Update="InputTextWithMicrophone.xaml">
 		  <Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
-		<MauiXaml Update="Lists.xaml">
+		<MauiXaml Update="ListsPage.xaml">
 		  <Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
-		<MauiXaml Update="Positions.xaml">
+		<MauiXaml Update="PositionsPage.xaml">
 		  <Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
 		<MauiXaml Update="SetupPage.xaml">
@@ -204,14 +209,11 @@
 
 
 	<ItemGroup>
-	  <Compile Update="Lists.xaml.cs">
-	    <DependentUpon>Lists.xaml</DependentUpon>
+	  <Compile Update="ListsPage.xaml.cs">
+	    <DependentUpon>ListsPage.xaml</DependentUpon>
 	  </Compile>
-	  <Compile Update="MainPage_old.xaml.cs">
-	    <DependentUpon>MainPage_old.xaml</DependentUpon>
-	  </Compile>
-	  <Compile Update="Positions.xaml.cs">
-	    <DependentUpon>Positions.xaml</DependentUpon>
+	  <Compile Update="PositionsPage.xaml.cs">
+	    <DependentUpon>PositionsPage.xaml</DependentUpon>
 	  </Compile>
 	  <Compile Update="Properties\Resources.Designer.cs">
 	    <DesignTime>True</DesignTime>

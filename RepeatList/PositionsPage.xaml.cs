@@ -1,5 +1,4 @@
 ﻿using CommunityToolkit.Maui.Alerts;
-using CommunityToolkit.Maui.Core.Extensions;
 using Newtonsoft.Json;
 using RepeatList.Models;
 using RepeatList.ViewModels;
@@ -8,27 +7,31 @@ using System.Globalization;
 
 namespace RepeatList
 {
-    public partial class Positions : ContentPage
+    public partial class PositionsPage : ContentPage
     {
-        public SetupPageViewModel SetupPageViewModel { get; set; }
-        public MainPageViewModel ViewModel { get; set; }
+        private SetupPageViewModel SetupPageViewModel { get; set; }
+        private PositionsPageViewModel ViewModel { get; set; }
 
-        public Positions()  
+        public PositionsPage(Header selectedItem)
         {
-            InitializeComponent();
-
-            ViewModel = new MainPageViewModel();
+            ViewModel = new PositionsPageViewModel(selectedItem);
             BindingContext = ViewModel;
+            SetupPageViewModel = new SetupPageViewModel();
+
+            
         }
 
-        protected override void OnAppearing()
+        protected async override void OnAppearing()
         {
+            base.OnAppearing();
+
             ViewModel.IsBusy=true;
 
             //if (ViewModel != null && ViewModel.Headers != null && ViewModel.Headers.Count > 0)
             //    HeaderListView.SelectedItem=ViewModel.Headers[0];
 
-            SetupPageViewModel = new SetupPageViewModel();
+            await ViewModel.LoadPositions();
+
             if (SetupPageViewModel.SelectedItem != null)
             {
                 SetCurrentCulture(SetupPageViewModel.SelectedItem.DefaultLanguage);
@@ -39,25 +42,25 @@ namespace RepeatList
              new CMBType_String(Properties.Resources.sort_by_date, "date"),
              new CMBType_String(Properties.Resources.sort_by_alphabet, "alpha" )
             };
-            KindOfSortingPicker.ItemsSource = ViewModel.ItemSource_KindOfSorting.ToObservableCollection();
 
-            var _selectedItem_KindOfSorting_key_name = Preferences.Get(ViewModel.SelectedItem_KindOfSorting_key_name, "date");
-            if (!string.IsNullOrEmpty(_selectedItem_KindOfSorting_key_name))
-                ViewModel.SelectedItem_KindOfSorting = ViewModel.ItemSource_KindOfSorting.FirstOrDefault(x => x.Value == _selectedItem_KindOfSorting_key_name);
-            else
-                ViewModel.SelectedItem_KindOfSorting = ViewModel.ItemSource_KindOfSorting.FirstOrDefault(x => x.Value == "date");
-            KindOfSortingPicker.SelectedIndex = ViewModel.ItemSource_KindOfSorting.IndexOf(ViewModel.SelectedItem_KindOfSorting);
+            //if (SortingPicker == null)
+            //    SortingPicker = new Picker();
 
-            ViewModel.IsBusy=false;
-
+            //SortingPicker.ItemsSource = ViewModel.ItemSource_KindOfSorting.ToObservableCollection();
+            //var _selectedItem_KindOfSorting_key_name = Preferences.Get(ViewModel.SelectedItem_KindOfSorting_key_name, "date");
+            //if (!string.IsNullOrEmpty(_selectedItem_KindOfSorting_key_name))
+            //    ViewModel.SelectedItem_KindOfSorting = ViewModel.ItemSource_KindOfSorting.FirstOrDefault(x => x.Value == _selectedItem_KindOfSorting_key_name);
+            //else
+            //    ViewModel.SelectedItem_KindOfSorting = ViewModel.ItemSource_KindOfSorting.FirstOrDefault(x => x.Value == "date");
+            //SortingPicker.SelectedIndex = ViewModel.ItemSource_KindOfSorting.IndexOf(ViewModel.SelectedItem_KindOfSorting);
+           
             string tmp_lists = Properties.Resources.Lists.ToUpper();
 
             ViewModel.Label_lists = tmp_lists;
 
-            ViewModel.InitLabels();
+            ViewModel.InitLabels();          
 
-            ViewModel.IsExpander_listsExpended=false;
-            ViewModel.IsExpander_listsExpended=true;
+            ViewModel.IsBusy=false;
         }
 
         private void SetCurrentCulture(string curr_culture)
@@ -68,25 +71,25 @@ namespace RepeatList
             Thread.CurrentThread.CurrentUICulture = ci;
         }
 
-        
+
 
 
         #region POSITIONS
 
-        //private async void OnAddPositionClicked(object sender, EventArgs e)
-        //{
-        //    if (ViewModel.Header_SelectedItem == null)
-        //        return;
+        private async void OnAddPositionClicked(object sender, EventArgs e)
+        {
+            if (ViewModel.Header_SelectedItem == null)
+                return;
 
-        //    ViewModel.IsBusy=true;
+            ViewModel.IsBusy=true;
 
-        //    var promptPage = new InputTextWithMicrophone();
-        //    await Navigation.PushModalAsync(promptPage);
+            var promptPage = new InputTextWithMicrophone();
+            await Navigation.PushModalAsync(promptPage);
 
-        //    string _input = await promptPage.Result;
+            string _input = await promptPage.Result;
 
-        //    await InputPositions(_input);
-        //}
+            await InputPositions(_input);
+        }
 
         private async Task InputPositions(string _input)
         {
@@ -347,8 +350,8 @@ namespace RepeatList
         {
             await ForPositions_input();
 
-            Positions_inputEntry.IsEnabled = false;
-            Positions_inputEntry.IsEnabled = true;
+            //Positions_inputEntry.IsEnabled = false;
+            //Positions_inputEntry.IsEnabled = true;
         }
 
         private async Task ForPositions_input()

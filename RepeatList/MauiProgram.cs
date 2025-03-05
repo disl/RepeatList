@@ -24,8 +24,8 @@ namespace RepeatList
             // Services
             //builder.Services.AddSingleton<ISpeechToText>(SpeechToText.Default);
 
-            builder.Services.AddSingleton<Lists>();
-            builder.Services.AddSingleton<MainPageViewModel>();
+            builder.Services.AddSingleton<ListsPage>();
+            builder.Services.AddSingleton<PositionsPageViewModel>();
 
             builder.Services.AddSingleton<InputTextWithMicrophone>();
             builder.Services.AddSingleton<InputTextWithMicrophoneViewModel>();

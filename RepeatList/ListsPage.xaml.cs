@@ -1,6 +1,4 @@
 ﻿using CommunityToolkit.Maui.Alerts;
-using CommunityToolkit.Maui.Core.Extensions;
-using Newtonsoft.Json;
 using RepeatList.Models;
 using RepeatList.ViewModels;
 using System.Collections.ObjectModel;
@@ -8,16 +6,16 @@ using System.Globalization;
 
 namespace RepeatList
 {
-    public partial class Lists : ContentPage
+    public partial class ListsPage : ContentPage
     {
-        public SetupPageViewModel SetupPageViewModel { get; set; }
-        public MainPageViewModel ViewModel { get; set; }
+        private SetupPageViewModel SetupPageViewModel { get; set; }
+        private ListsPageViewModel ViewModel { get; set; }
 
-        public Lists()  //ISpeechToText speechToText)
+        public ListsPage()  
         {
             InitializeComponent();
 
-            ViewModel = new MainPageViewModel();
+            ViewModel = new ListsPageViewModel();
             BindingContext = ViewModel;
         }
 
@@ -80,27 +78,25 @@ namespace RepeatList
             }
         }
 
-        private async void HeaderListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            ViewModel.IsBusy=true;
+        //private async void HeaderListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        //{
+        //    ViewModel.IsBusy=true;
+        //    ViewModel.HeaderSelected=true;
 
-            ViewModel.HeaderSelected=true;
+        //    var _selectedHeader = e.CurrentSelection[0] as Header;
+        //    if (_selectedHeader != null)
+        //    {
+        //        ViewModel.Header_SelectedItem= _selectedHeader;
 
-            var _selectedHeader = e.CurrentSelection[0] as Header;
-            if (_selectedHeader != null)
-            {
-                ViewModel.Header_SelectedItem= _selectedHeader;
+        //        //await ViewModel.LoadPositions();
 
-                await ViewModel.LoadPositions();
-            }
+        //        await Navigation.PushAsync(new Positions(_selectedHeader));
 
-            ViewModel.IsBusy=false;
-        }
+        //        //await Shell.Current.GoToAsync("Positions");
+        //    }
+        //    ViewModel.IsBusy=false;
+        //}
 
-        private async void OnHeaderSelected(object sender, SelectionChangedEventArgs e)
-        {
-
-        }
 
         private async void OnDeleteHeaderClicked(object sender, EventArgs e)
         {
@@ -217,9 +213,31 @@ namespace RepeatList
             }
         }
 
+        private async void OnItemTapped(object sender, TappedEventArgs e)
+        {
+            //ViewModel.IsBusy=true;
 
+            //ViewModel.HeaderSelected=true;
 
+            //var _selectedHeader = e. CurrentSelection[0] as Header;
+            //if (_selectedHeader != null)
+            if (sender is Border border && border.BindingContext is Header selectedItem)
+            {
 
+                //ViewModel.Header_SelectedItem= selectedItem;
+
+                //await ViewModel.LoadPositions();
+
+                await Navigation.PushAsync(new PositionsPage(selectedItem));
+            }
+
+            //ViewModel.IsBusy=false;
+        }
+
+        private void OnHeaderListViewSelected(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
     }
 }
 

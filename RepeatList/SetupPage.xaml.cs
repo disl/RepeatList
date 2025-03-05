@@ -53,7 +53,7 @@ public partial class SetupPage : ContentPage
             Application.Current?.Quit();
         }
         else
-            await Shell.Current.GoToAsync("//MainPage");
+            await Shell.Current.GoToAsync("//Lists");
     }
 
     private void SetCurrentCulture(string curr_culture)
@@ -82,7 +82,7 @@ public partial class SetupPage : ContentPage
         // Language
         SetCurrentCulture(_oldLanguage);
 
-        await Shell.Current.GoToAsync("//MainPage");
+        await Shell.Current.GoToAsync("//Lists");
     }
 
     private void LanguagePicker_SelectedIndexChanged(object sender, EventArgs e)
