@@ -241,7 +241,7 @@ namespace RepeatList.Properties {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die item1 or item1;item2;... ähnelt.
+        ///   Sucht eine lokalisierte Zeichenfolge, die Insert element:&quot;Apple&quot; OR: &quot;Apple;Pear;Meet...&quot; ähnelt.
         /// </summary>
         public static string InputText_placeholder {
             get {

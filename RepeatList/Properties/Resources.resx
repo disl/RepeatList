@@ -181,7 +181,7 @@
     <value>You can use a simple phrase, e.g. ‘milk 2 pcs’, or a list as a phrase with a semicolon (‘;’) as a separator, e.g. ‘milk 2 pcs;meat 0.5 kg;juice 1 pack;barrels 1 p.’. Such a list could be sent via WatsApp, for example, and read in quickly.</value>
   </data>
   <data name="InputText_placeholder" xml:space="preserve">
-    <value>item1 or item1;item2;...</value>
+    <value>Insert element:"Apple" OR: "Apple;Pear;Meet..."</value>
   </data>
   <data name="language" xml:space="preserve">
     <value>Language</value>

@@ -178,7 +178,7 @@
     <value>Sie können eine einfache Phrase verwenden, z. B. "Milch 2 St.", oder eine Liste als Phrase mit einem Semikolon (";") als Trennzeichen, z. B. "Milch 2 St.;Fleisch 0,5 kg;Saft 1 Packung;Bonnen 1 S.". Eine solche Liste könnte z.B. per WatsApp verschickt und schnell eingelesen werden.</value>
   </data>
   <data name="InputText_placeholder" xml:space="preserve">
-    <value>Artikel1 oder Artikel1;Artikel2;...</value>
+    <value>Element einfügen: "Apfel" ODER: "Apfel;Birne;Fleisch"</value>
   </data>
   <data name="language" xml:space="preserve">
     <value>Sprache</value>
