@@ -6,6 +6,7 @@ using RepeatList.Models;
 using RepeatList.Services;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Reactive.Threading.Tasks;
 using Position = RepeatList.Models.Position;
 
 namespace RepeatList.ViewModels
@@ -283,8 +284,12 @@ namespace RepeatList.ViewModels
         [RelayCommand]
         public async Task Sync_list_upClicked()
         {
+            Lists = (await _databaseService.GetPositionsAsync(Header_SelectedItem.Id)).ToObservableCollection();
             if (Lists == null || Lists.Count == 0 || Header==null)
+            {
+                IsBusy = false;
                 return;
+            }
 
             IsBusy = true;
 

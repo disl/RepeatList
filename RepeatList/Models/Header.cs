@@ -14,6 +14,8 @@ namespace RepeatList.Models
         public string Id { get; set; }
         public string ListName { get; set; }
 
+        [NotMapped]
+        [IgnoreDataMember]
         public string AvatarName
         {
             get
