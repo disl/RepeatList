@@ -44,6 +44,7 @@ namespace RepeatList.ViewModels
 
         public void InitLabels()
         {
+            Search = Properties.Resources.search;
             Label_Lists =  Properties.Resources.Lists.ToUpper() + " (0)";
             Please_create_a_first_list=Properties.Resources.Please_create_a_first_list;
             Label_lists = Properties.Resources.Lists.ToUpper();
@@ -93,6 +94,7 @@ namespace RepeatList.ViewModels
             set { replace_old_word_when_inserting = value; }
         }
 
+        [ObservableProperty] public ObservableCollection<Header>? filteredList;
 
         [ObservableProperty] public string please_create_a_first_list = Properties.Resources.Please_create_a_first_list;
         [ObservableProperty] public bool isSynchronized = false;
@@ -124,6 +126,7 @@ namespace RepeatList.ViewModels
             PositionImageSource = image_source;
         }
 
+        [ObservableProperty] private string search = Properties.Resources.search;
         [ObservableProperty] private string title = Properties.Resources.Lists.ToUpper();
         [ObservableProperty] private string currentCulture;
         [ObservableProperty] private int imageButton_size = 30;
@@ -355,6 +358,8 @@ namespace RepeatList.ViewModels
                 return;
 
             Headers = new ObservableCollection<Header>(headers);
+
+            FilteredList = new ObservableCollection<Header>(Headers); 
         }
 
         public async Task<Header> AddHeader(string HeaderEntryText, string? Id = null)

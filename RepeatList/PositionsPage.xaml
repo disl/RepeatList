@@ -17,33 +17,35 @@
     
     </ContentPage.ToolbarItems>
 
-    <Grid  RowDefinitions="auto,auto,*,auto,*,auto" Padding="15">
+    <Grid  RowDefinitions="auto,auto,auto,*,auto,*,auto" Padding="15">
 
         <ActivityIndicator IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}" Grid.Row="0" />
 
         <!--Undone-->
-        <StackLayout Orientation="Horizontal"  Spacing="10" Margin="0,10,5,10" Grid.Row="1">
-            <Label Text="{Binding Label_undone}" FontAttributes="Bold" VerticalOptions="Center"  HorizontalOptions="StartAndExpand" Margin="0" FontSize="Large"
-                            TextColor="{AppThemeBinding Light={DynamicResource PrimaryTextColor}, Dark={DynamicResource PrimaryTextColorLight}}" />
+        <StackLayout Orientation="Horizontal"    Grid.Row="1">
+            <!--<Label Text="{Binding Label_undone}" FontAttributes="Bold" VerticalOptions="Center"  HorizontalOptions="StartAndExpand" Margin="0" FontSize="Large"
+                            TextColor="{AppThemeBinding Light={DynamicResource PrimaryTextColor}, Dark={DynamicResource PrimaryTextColorLight}}" />-->
             <!--<ImageButton Source="add_icon.png" Clicked="OnAddPositionClicked"   VerticalOptions="Center"
                             MaximumWidthRequest="{Binding ImageButton_size}" MaximumHeightRequest="{Binding ImageButton_size}" HorizontalOptions="End" />>-->
             <ImageButton Source="swap_vert_icon.png" Clicked="OnResetPositionsClicked"
-                            MaximumWidthRequest="{Binding ImageButton_size}" MaximumHeightRequest="{Binding ImageButton_size}"  HorizontalOptions="End"/>
+                            MaximumWidthRequest="{Binding ImageButton_size}" MaximumHeightRequest="{Binding ImageButton_size}"  HorizontalOptions="EndAndExpand"/>
         </StackLayout>
 
-        <Border   Stroke="Gray" StrokeThickness="1"  Padding="10"  Grid.Row="2" >
+        <SearchBar x:Name="searchBar"  Placeholder="{Binding Search}"  TextChanged="OnSearchTextChanged" SearchButtonPressed="OnSearchButtonPressed" Margin="0,0,0,10" Grid.Row="2" />
+
+        <Border   Stroke="Gray" StrokeThickness="1"  Padding="10"  Grid.Row="3" >
             <Border.StrokeShape>
                 <RoundRectangle CornerRadius="5" />
             </Border.StrokeShape>
             <CollectionView x:Name="PositionListView"  
-                                    ItemsSource="{Binding Positions_undone}" 
+                                    ItemsSource="{Binding Positions_undone_filterd}" 
                                     SelectedItem="{Binding Position_selectedItem, Mode=OneWayToSource}" 
                                
                                     SelectionMode="Single" 
                                     SelectionChanged="OnPositionSelected_new" >
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
-                        <Grid  ColumnDefinitions="4.5*, 1*,1*,1*" VerticalOptions="Center" HeightRequest="45">
+                        <Grid  ColumnDefinitions="5*, 1*,1*,1*" VerticalOptions="Center" HeightRequest="45">
                             <Label Text="{Binding Title}" VerticalOptions="Center" Grid.Column="0" 
                                    TextColor="{AppThemeBinding Light={DynamicResource PrimaryTextColor}, Dark={DynamicResource PrimaryTextColorLight}}"/>
                             <ImageButton Source="{Binding PositionImageSource}" Clicked="OnCheckedButtonClicked" CommandParameter="{Binding}" 
@@ -66,7 +68,7 @@
         </Border>
 
         <!--Done-->
-        <StackLayout Orientation="Horizontal" Margin="0,10,5,10" Grid.Row="3">
+        <StackLayout Orientation="Horizontal" Margin="0,10,5,10" Grid.Row="4">
             <Label Text="{Binding Label_done}" FontAttributes="Bold"  HorizontalOptions="StartAndExpand" FontSize="Large" VerticalOptions="Center"
                         TextColor="{AppThemeBinding Light={DynamicResource PrimaryTextColor}, Dark={DynamicResource PrimaryTextColorLight}}" />
             <Picker x:Name="SortingPicker" Title="{Binding  Title_sort_by}"  HorizontalOptions="EndAndExpand" VerticalOptions="Center" Margin="0"
@@ -80,16 +82,16 @@
             </Picker>
         </StackLayout>
 
-        <Border   Stroke="Gray" StrokeThickness="1"  Padding="10" Grid.Row="4">
+        <Border   Stroke="Gray" StrokeThickness="1"  Padding="10" Grid.Row="5">
             <Border.StrokeShape>
                 <RoundRectangle CornerRadius="5" />
             </Border.StrokeShape>
-            <CollectionView x:Name="PositionDoneListView"  ItemsSource="{Binding Positions_done}" SelectedItem="{Binding Position_selectedItem, Mode=OneWayToSource}"
+            <CollectionView x:Name="PositionDoneListView"  ItemsSource="{Binding Positions_done_filtered}" SelectedItem="{Binding Position_selectedItem, Mode=OneWayToSource}"
                                     SelectionMode="Single"
                                     SelectionChanged="OnPositionSelected_new" ItemSizingStrategy="MeasureFirstItem">
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
-                        <Grid  ColumnDefinitions="4.5*, 1*,1*,1*" 
+                        <Grid  ColumnDefinitions="5*, 1*,1*,1*" 
                                        VerticalOptions="Center" 
                                        HeightRequest="45">
                             <Label Text="{Binding Title}" VerticalOptions="Center" Grid.Column="0"  TextDecorations="Strikethrough" 
@@ -114,7 +116,7 @@
         </Border>
 
         <!--Input-->
-        <Grid ColumnDefinitions="*,Auto"  ColumnSpacing="5" Grid.Row="5" Margin="0,20,0,20">
+        <Grid ColumnDefinitions="*,Auto"  ColumnSpacing="5" Grid.Row="6" Margin="0,20,0,20">
             <Entry x:Name="Positions_inputEntry" Grid.Column="0" Text="{Binding InputText}"  Placeholder="{Binding InputText_placeholder}" 
                            Completed="Positions_inputEntry_Completed" VerticalOptions="Center" Focused="Positions_inputEntry_Focused" />
             <Button Text=";" Grid.Column="1"  Clicked="OnSemicolonButton_Clicked" TextColor="White" FontAttributes="Bold"  HorizontalOptions="EndAndExpand"  VerticalOptions="Center"  />

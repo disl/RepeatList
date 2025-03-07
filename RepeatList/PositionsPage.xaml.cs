@@ -26,7 +26,7 @@ namespace RepeatList
         {
             base.OnAppearing();
 
-            ViewModel.IsBusy=true;
+            ViewModel.IsBusy = true;
 
             //if (ViewModel != null && ViewModel.Headers != null && ViewModel.Headers.Count > 0)
             //    HeaderListView.SelectedItem=ViewModel.Headers[0];
@@ -59,9 +59,9 @@ namespace RepeatList
 
             ViewModel.Label_lists = tmp_lists;
 
-            ViewModel.InitLabels();          
+            ViewModel.InitLabels();
 
-            ViewModel.IsBusy=false;
+            ViewModel.IsBusy = false;
         }
 
         private void SetCurrentCulture(string curr_culture)
@@ -82,14 +82,14 @@ namespace RepeatList
             if (ViewModel.Header_SelectedItem == null)
                 return;
 
-            ViewModel.IsBusy=true;
+            ViewModel.IsBusy = true;
 
             var promptPage = new InputTextWithMicrophone();
             await Navigation.PushModalAsync(promptPage);
 
-            if(promptPage.Result == null)
+            if (promptPage.Result == null)
             {
-                ViewModel.IsBusy=false;
+                ViewModel.IsBusy = false;
                 return;
             }
 
@@ -102,11 +102,11 @@ namespace RepeatList
         {
             Header? json = null;
 
-            ViewModel.IsBusy=true;
+            ViewModel.IsBusy = true;
 
             if (string.IsNullOrEmpty(_input) || ViewModel.Headers == null)
             {
-                ViewModel.IsBusy=false;
+                ViewModel.IsBusy = false;
                 return;
             }
 
@@ -114,7 +114,7 @@ namespace RepeatList
             {
                 json = JsonConvert.DeserializeObject<Header>(_input);
             }
-            catch { json=null; }
+            catch { json = null; }
 
             if (json != null)
             {
@@ -123,30 +123,30 @@ namespace RepeatList
                     var header = ViewModel.Headers.FirstOrDefault(x => x.Id == json.Id);
                     if (header != null)
                     {
-                        ViewModel.Header_SelectedItem= header;
+                        ViewModel.Header_SelectedItem = header;
 
                         // Existing Header
-                        header.UpdatedAt= DateTime.Now;
+                        header.UpdatedAt = DateTime.Now;
                         // Add to existing positions
                         foreach (var pos in json.Positions)
                         {
-                            pos.Title= pos.Title.Trim() + " (+)";
+                            pos.Title = pos.Title.Trim() + " (+)";
                             await ViewModel.AddPosition(pos, false);
                         }
                     }
                     else
                     {
                         // Add new header
-                        json.UpdatedAt= DateTime.Now;
+                        json.UpdatedAt = DateTime.Now;
                         var new_header = await ViewModel.AddHeader(json.ListName, json.Id);
 
-                        ViewModel.Header_SelectedItem= new_header;
+                        ViewModel.Header_SelectedItem = new_header;
 
                         // Add new positions
                         foreach (var pos in json.Positions)
                         {
-                            pos.HeaderId= new_header.Id;
-                            pos.Title= pos.Title.Trim() + " (+)";
+                            pos.HeaderId = new_header.Id;
+                            pos.Title = pos.Title.Trim() + " (+)";
                             await ViewModel.AddPosition(pos, false);
                         }
                     }
@@ -156,7 +156,7 @@ namespace RepeatList
             {
                 if (ViewModel.Header_SelectedItem == null)
                 {
-                    ViewModel.IsBusy=false;
+                    ViewModel.IsBusy = false;
                     return;
                 }
 
@@ -167,34 +167,37 @@ namespace RepeatList
                     {
                         foreach (var item in items_list)
                         {
+                            if (string.IsNullOrEmpty(item))
+                                continue;
+
                             var new_pos = new Position();
-                            new_pos.HeaderId= ViewModel.Header_SelectedItem.Id;
-                            new_pos.UpdatedAt= DateTime.Now;
-                            new_pos.Title= item.Trim();
+                            new_pos.HeaderId = ViewModel.Header_SelectedItem.Id;
+                            new_pos.UpdatedAt = DateTime.Now;
+                            new_pos.Title = item.Trim();
                             await ViewModel.AddPosition(new_pos, true);
                         }
                     }
                     else
                     {
                         var new_pos = new Position();
-                        new_pos.HeaderId= ViewModel.Header_SelectedItem.Id;
-                        new_pos.Title= _input;
-                        new_pos.UpdatedAt= DateTime.Now;
+                        new_pos.HeaderId = ViewModel.Header_SelectedItem.Id;
+                        new_pos.Title = _input;
+                        new_pos.UpdatedAt = DateTime.Now;
                         await ViewModel.AddPosition(new_pos, true);
                     }
                 }
                 else
                 {
                     var new_pos = new Position();
-                    new_pos.HeaderId= ViewModel.Header_SelectedItem.Id;
-                    new_pos.Title= _input;
-                    new_pos.UpdatedAt= DateTime.Now;
+                    new_pos.HeaderId = ViewModel.Header_SelectedItem.Id;
+                    new_pos.Title = _input;
+                    new_pos.UpdatedAt = DateTime.Now;
                     await ViewModel.AddPosition(new_pos, true);
                 }
-            } 
+            }
 
-            ViewModel.IsBusy=false;
-        }       
+            ViewModel.IsBusy = false;
+        }
 
         private async void OnDeletePositionClicked(object sender, EventArgs e)
         {
@@ -247,21 +250,21 @@ namespace RepeatList
             if (ViewModel.IsBusy) return;
             if (ViewModel.HeaderSelected)
             {
-                ViewModel.HeaderSelected=false;
+                ViewModel.HeaderSelected = false;
                 return;
             }
 
             //ViewModel.IsBusy=true;
 
             if (sender is Microsoft.Maui.Controls.CheckBox switchControl &&
-                e !=null  &&
+                e != null &&
                 switchControl.BindingContext != null &&
                 switchControl.BindingContext is Position position)
             {
                 ViewModel.IsBusy = true;
 
                 position.IsCompleted = e.Value;
-                position.UpdatedAt= DateTime.Now;
+                position.UpdatedAt = DateTime.Now;
                 await ViewModel.UpdatePosition(position);
 
                 ViewModel.IsBusy = false;
@@ -279,15 +282,17 @@ namespace RepeatList
 
             //ViewModel.IsBusy=true;
 
+            searchBar.Text = "";
+
             if (sender is Microsoft.Maui.Controls.ImageButton switchControl &&
-                e !=null  &&
+                e != null &&
                 switchControl.BindingContext != null &&
                 switchControl.BindingContext is Position position)
             {
                 ViewModel.IsBusy = true;
 
                 position.IsCompleted = !position.IsCompleted;  // e.Value;
-                position.UpdatedAt= DateTime.Now;
+                position.UpdatedAt = DateTime.Now;
                 await ViewModel.UpdatePosition(position);
 
                 ViewModel.IsBusy = false;
@@ -382,6 +387,46 @@ namespace RepeatList
         private void Positions_inputEntry_Focused(object sender, FocusEventArgs e)
         {
             ViewModel.IsExpander_listsExpended = false;
+        }
+
+        private void OnSearchTextChanged(object sender, TextChangedEventArgs e)
+        {
+            string searchText = e.NewTextValue?.ToLower() ?? "";
+
+            //ViewModel.FilteredList.Clear();
+            ViewModel.Positions_undone_filterd.Clear();
+            ViewModel.Positions_done_filtered.Clear();
+
+            // Undone
+            if (string.IsNullOrEmpty(searchText))
+            {
+                ViewModel.Positions_undone_filterd = new ObservableCollection<Position>(ViewModel.Positions_undone);
+            }
+            else
+            {
+                foreach (var item in ViewModel.Positions_undone.Where(x => x.Title.ToLower().Contains(searchText.ToLower())))
+                {
+                    ViewModel.Positions_undone_filterd.Add(item);
+                }
+            }
+
+            // Done
+            if (string.IsNullOrEmpty(searchText))
+            {
+                ViewModel.Positions_done_filtered = new ObservableCollection<Position>(ViewModel.Positions_done);
+            }
+            else
+            {
+                foreach (var item in ViewModel.Positions_done.Where(x => x.Title.ToLower().Contains(searchText.ToLower())))
+                {
+                    ViewModel.Positions_done_filtered.Add(item);
+                }
+            }
+        }
+
+        private void OnSearchButtonPressed(object sender, EventArgs e)
+        {
+
         }
     }
 

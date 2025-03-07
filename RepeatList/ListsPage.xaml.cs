@@ -21,10 +21,10 @@ namespace RepeatList
 
         protected async override void OnAppearing()
         {
-            ViewModel.IsBusy=true;
+            ViewModel.IsBusy = true;
 
-            if (ViewModel != null && ViewModel.Headers != null && ViewModel.Headers.Count > 0)
-                HeaderListView.SelectedItem=ViewModel.Headers[0];
+            //if (ViewModel != null && ViewModel.Headers != null && ViewModel.Headers.Count > 0)
+            //    HeaderListView.SelectedItem=ViewModel.Headers[0];
 
             SetupPageViewModel = new SetupPageViewModel();
             if (SetupPageViewModel.SelectedItem != null)
@@ -44,7 +44,7 @@ namespace RepeatList
             else
                 ViewModel.SelectedItem_KindOfSorting = ViewModel.ItemSource_KindOfSorting.FirstOrDefault(x => x.Value == "date");
 
-            ViewModel.IsBusy=false;
+            ViewModel.IsBusy = false;
 
             string tmp_lists = Properties.Resources.Lists.ToUpper();
 
@@ -111,7 +111,7 @@ namespace RepeatList
                 if (answer)
                 {
 
-                    ViewModel.IsBusy=true;
+                    ViewModel.IsBusy = true;
 
                     await ViewModel.DeleteHeader(header);
                     ViewModel.SetFirstItemForHeaders();
@@ -120,7 +120,7 @@ namespace RepeatList
 
                     await Application.Current.MainPage.DisplaySnackbar(Properties.Resources.List_was_successfully_deleted);
 
-                    ViewModel.IsBusy=false;
+                    ViewModel.IsBusy = false;
                 }
             }
         }
@@ -228,7 +228,7 @@ namespace RepeatList
             if (sender is Border border && border.BindingContext is Header selectedItem)
             {
 
-                //ViewModel.Header_SelectedItem= selectedItem;
+                ViewModel.Header_SelectedItem = selectedItem;
 
                 //await ViewModel.LoadPositions();
 
@@ -241,6 +241,32 @@ namespace RepeatList
         private void OnHeaderListViewSelected(object sender, SelectionChangedEventArgs e)
         {
 
+        }
+
+        private void OnSearchTextChanged(object sender, TextChangedEventArgs e)
+        {
+            string searchText = e.NewTextValue?.ToLower() ?? "";
+
+            ViewModel.FilteredList.Clear();
+
+            if (string.IsNullOrEmpty(searchText))
+            {
+                ViewModel.FilteredList = new ObservableCollection<Header>(ViewModel.Headers);
+            }
+            else
+            {
+                foreach (var item in ViewModel.Headers.Where(x => x.ListName.ToLower().Contains(searchText.ToLower())))
+                {
+                    ViewModel.FilteredList.Add(item);
+                }
+            }
+        }
+
+        private void OnSearchButtonPressed(object sender, EventArgs e)
+        {
+            var searchBar = (SearchBar)sender;
+            string query = searchBar.Text;
+            // Suche ausführen
         }
     }
 }

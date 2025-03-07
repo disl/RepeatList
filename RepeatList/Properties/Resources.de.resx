@@ -222,6 +222,9 @@
   <data name="Reset_current_list" xml:space="preserve">
     <value>Aktuelle Liste zurücksetzen</value>
   </data>
+  <data name="search" xml:space="preserve">
+    <value>Suchen</value>
+  </data>
   <data name="sort_by" xml:space="preserve">
     <value>Sortieren nach</value>
   </data>

@@ -22,6 +22,7 @@ namespace RepeatList.ViewModels
         public string SelectedItem_KindOfSorting_key_name = "SelectedItem_KindOfSorting";
         public double ButtonsSize = 25;
 
+        [ObservableProperty] private string search = Properties.Resources.search;
         [ObservableProperty] private string title = Properties.Resources.Positions.ToUpper();
         [ObservableProperty] public string resetImageSource;
 
@@ -65,6 +66,7 @@ namespace RepeatList.ViewModels
 
         public void InitLabels()
         {
+            Search = Properties.Resources.search;
             Label_Positions =  Properties.Resources.Positions.ToUpper() + " (0)";
             No_items_to_display=Properties.Resources.No_items_to_display;
             Label_lists = Properties.Resources.Lists.ToUpper();
@@ -168,6 +170,8 @@ namespace RepeatList.ViewModels
         [ObservableProperty] private ObservableCollection<Position> positions = new ObservableCollection<Position>();
         [ObservableProperty] private ObservableCollection<Position> positions_undone = new ObservableCollection<Position>();
         [ObservableProperty] private ObservableCollection<Position> positions_done = new ObservableCollection<Position>();
+        [ObservableProperty] private ObservableCollection<Position> positions_undone_filterd = new ObservableCollection<Position>();
+        [ObservableProperty] private ObservableCollection<Position> positions_done_filtered = new ObservableCollection<Position>();
 
         public event PropertyChangedEventHandler _PropertyChanged;
         protected void OnPropertyChanged_(string propertyName)
@@ -188,6 +192,7 @@ namespace RepeatList.ViewModels
 
         [ObservableProperty] private string inputText;
         [ObservableProperty] private string inputText_placeholder;
+        [ObservableProperty] ObservableCollection<Position> filteredList=new();
 
         partial void OnIsExpander_listsExpendedChanged(bool oldValue, bool newValue)
         {
@@ -400,6 +405,9 @@ namespace RepeatList.ViewModels
             Positions.Clear();
             Positions_undone.Clear();
             Positions_done.Clear();
+            Positions_undone_filterd.Clear();
+            Positions_done_filtered.Clear();
+
             Label_Positions = Properties.Resources.Positions.ToUpper() + " (0)";
 
             Label_done = string.Format("{0} ({1})", Properties.Resources.done, Positions_done.Count);
@@ -433,6 +441,11 @@ namespace RepeatList.ViewModels
             Label_done = string.Format("{0} ({1})", Properties.Resources.done, Positions_done.Count);
             Label_undone = string.Format("{0} ({1})", Properties.Resources.undone, Positions_undone.Count);
             Label_Positions = string.Format(Properties.Resources.Positions.ToUpper() + " ({0})", Positions_done.Count + Positions_undone.Count);
+
+            FilteredList = new ObservableCollection<Position>(_pos_arr);
+
+            Positions_undone_filterd = new ObservableCollection<Position>(Positions_undone);
+            Positions_done_filtered = new ObservableCollection<Position>(Positions_done);
 
             IsBusy =false;
             PositionListViewVisible=true;
