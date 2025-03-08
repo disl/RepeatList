@@ -141,6 +141,9 @@
   <data name="Copy_list_to_clipboard" xml:space="preserve">
     <value>Liste in Zwischenablage kopieren</value>
   </data>
+  <data name="Create_new_article" xml:space="preserve">
+    <value>Neuen Artikel erfassen</value>
+  </data>
   <data name="Delete_list" xml:space="preserve">
     <value>Liste löschen</value>
   </data>
@@ -168,6 +171,9 @@
   <data name="Export_list" xml:space="preserve">
     <value>Aktuelle Liste exportieren</value>
   </data>
+  <data name="help" xml:space="preserve">
+    <value>Hilfe</value>
+  </data>
   <data name="import_liste" xml:space="preserve">
     <value>Liste importieren</value>
   </data>
@@ -175,10 +181,16 @@
     <value>Eingabe</value>
   </data>
   <data name="InputTextWithMicrophoneViewModel_PlaceholderText" xml:space="preserve">
-    <value>Sie können eine einfache Phrase verwenden, z. B. "Milch 2 St.", oder eine Liste als Phrase mit einem Semikolon (";") als Trennzeichen, z. B. "Milch 2 St.;Fleisch 0,5 kg;Saft 1 Packung;Bonnen 1 S.". Eine solche Liste könnte z.B. per WatsApp verschickt und schnell eingelesen werden.</value>
+    <value>1. Sie können einen einfachen Satz verwenden, z. B. "Milch 2 St.";
+
+2. eine Liste als Satz mit einem Semikolon (";") als Trennzeichen, z.B. "Milch 2 St.;Fleisch 0,5 kg;Saft 1 Packung;Bonnen 1 S.". Eine solche Liste kann z.B. per WatsApp verschickt und schnell eingelesen werden.
+
+3. Sie können eine verschickte Liste, siehe Punkt 2, aus der Zwischenablage einfügen.
+
+Am Ende bitte nicht vergessen, die Eingabetaste zu drücken :)</value>
   </data>
   <data name="InputText_placeholder" xml:space="preserve">
-    <value>Element einfügen: "Apfel" ODER: "Apfel;Birne;Fleisch"</value>
+    <value>Einfügen: "Apfel" oder: "Apfel;Birne;..." mehr s.?</value>
   </data>
   <data name="language" xml:space="preserve">
     <value>Sprache</value>

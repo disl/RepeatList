@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="RepeatList.HelpPage"
+             xmlns:local="clr-namespace:RepeatList.ViewModels"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             Title="{Binding Title}" >
+    <ContentPage.BindingContext>
+        <local:HelpPageViewModel />
+    </ContentPage.BindingContext>
+    <Shell.BackButtonBehavior>
+        <BackButtonBehavior Command="{Binding GoBackCommand}" />
+    </Shell.BackButtonBehavior>
+    <ScrollView >
+        <VerticalStackLayout Margin="20">
+            <HorizontalStackLayout Spacing="10">
+                <Image Source="help_icon.png" Aspect="AspectFit" HeightRequest="40" WidthRequest="40"  />
+                <Label Text="{Binding HelpTopic.Title}" FontAttributes="Bold" VerticalOptions="Center"  FontSize="Large"
+                            TextColor="{AppThemeBinding Light={DynamicResource PrimaryTextColor}, Dark={DynamicResource PrimaryTextColorLight}}" />
+            </HorizontalStackLayout>
+
+            <BoxView HeightRequest="1" BackgroundColor="Gray" HorizontalOptions="Fill" Grid.Row="2" Margin="0,0,0,10"/>
+
+            <Label FontSize="Medium" 
+                            TextColor="{AppThemeBinding Light={DynamicResource PrimaryTextColor}, Dark={DynamicResource PrimaryTextColorLight}}" >
+                <Label.FormattedText>
+                    <FormattedString>
+                        <Span Text="{Binding HelpTopic.Content}"  />
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

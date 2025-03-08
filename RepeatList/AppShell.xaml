@@ -14,5 +14,6 @@
 
     <ShellContent  Title="MiniList"  ContentTemplate="{DataTemplate local:ListsPage}"  Route="Lists" />
     <ShellContent  Title="Setup"  ContentTemplate="{DataTemplate local:SetupPage}"  Route="SetupPage" />
-
+    <ShellContent  Title="Positions"  ContentTemplate="{DataTemplate local:PositionsPage}"  Route="Positions" IsVisible="False" />
+    <ShellContent  Title="Lists/Positions"  ContentTemplate="{DataTemplate local:PositionsPage}"  Route="Lists/Positions" IsVisible="False" />
 </Shell>

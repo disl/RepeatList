@@ -11,6 +11,7 @@ namespace RepeatList
     public partial class PositionsPage : ContentPage
     {
         private SetupPageViewModel SetupPageViewModel { get; set; }
+        private HelpPageViewModel HelpPageViewModel { get; set; }
         private PositionsPageViewModel ViewModel { get; set; }
 
         public PositionsPage(Header selectedItem)
@@ -427,6 +428,11 @@ namespace RepeatList
         private void OnSearchButtonPressed(object sender, EventArgs e)
         {
 
+        }
+
+        private async void OnHelpButton_Clicked(object sender, EventArgs e)
+        {
+            await Navigation.PushAsync(new HelpPage( HelpPageViewModel.HelpTopicThemasEnum.InputTextBox, new CultureInfo(ViewModel.CurrentCulture)));
         }
     }
 

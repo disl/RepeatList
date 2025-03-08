@@ -6,6 +6,7 @@ using RepeatList.Models;
 using RepeatList.Services;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Globalization;
 using Position = RepeatList.Models.Position;
 
 namespace RepeatList.ViewModels
@@ -51,21 +52,21 @@ namespace RepeatList.ViewModels
             _supabaseService =  new SupabaseService();
 
             setupPageViewModel =new SetupPageViewModel();
-
             _ = setupPageViewModel.Load();
             CurrentCulture= setupPageViewModel.SelectedItem.DefaultLanguage;
 
-            Header_SelectedItem = selectedItem;
+            if(selectedItem.ListName != null)
+                Header_SelectedItem = selectedItem;
 
             _ = LoadPositions();
 
             //SetFirstItemForHeaders();
             InitSelectedItem_KindOfSorting();
-            //SetResetImageSource();
         }
 
         public void InitLabels()
         {
+            Title = Properties.Resources.Positions.ToUpper();
             Search = Properties.Resources.search;
             Label_Positions =  Properties.Resources.Positions.ToUpper() + " (0)";
             No_items_to_display=Properties.Resources.No_items_to_display;
@@ -162,7 +163,7 @@ namespace RepeatList.ViewModels
         [ObservableProperty] private string _label_undone = Properties.Resources.undone;
         [ObservableProperty] private string label_paste_from_clipboard = Properties.Resources.Paste_from_clipboard;
 
-        [ObservableProperty] private Header header_SelectedItem;
+        [ObservableProperty] private static Header header_SelectedItem;
         [ObservableProperty] private ObservableCollection<Header>? headers = new ObservableCollection<Header>();
         [ObservableProperty] private Header? header = new Header();
         [ObservableProperty] private Models.Position? position_selectedItem;

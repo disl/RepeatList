@@ -142,6 +142,15 @@ namespace RepeatList.Properties {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Create new article ähnelt.
+        /// </summary>
+        public static string Create_new_article {
+            get {
+                return ResourceManager.GetString("Create_new_article", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Delete list ähnelt.
         /// </summary>
         public static string Delete_list {
@@ -223,6 +232,15 @@ namespace RepeatList.Properties {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Help ähnelt.
+        /// </summary>
+        public static string help {
+            get {
+                return ResourceManager.GetString("help", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Import list ähnelt.
         /// </summary>
         public static string import_liste {
@@ -241,7 +259,7 @@ namespace RepeatList.Properties {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die Insert element:&quot;Apple&quot; OR: &quot;Apple;Pear;Meet...&quot; ähnelt.
+        ///   Sucht eine lokalisierte Zeichenfolge, die Insert: ‘apple’ or: ‘apple;pear;...’ more s.? ähnelt.
         /// </summary>
         public static string InputText_placeholder {
             get {
@@ -250,7 +268,13 @@ namespace RepeatList.Properties {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die You can use a simple phrase, e.g. ‘milk 2 pcs’, or a list as a phrase with a semicolon (‘;’) as a separator, e.g. ‘milk 2 pcs;meat 0.5 kg;juice 1 pack;barrels 1 p.’. Such a list could be sent via WatsApp, for example, and read in quickly. ähnelt.
+        ///   Sucht eine lokalisierte Zeichenfolge, die 1. you can use a simple sentence, e.g. ‘Milk 2 pcs’;
+        ///
+        ///2. a list as a sentence with a semicolon (‘;’) as a separator, e.g. ‘Milk 2 pcs;Meat 0.5 kg;Juice 1 pack;Bonnen 1 p.’. Such a list can be sent via WatsApp, for example, and read in quickly.
+        ///
+        ///3. you can paste a sent list, see point 2, from the clipboard.
+        ///
+        ///At the end, please do not forget to press the Enter key :) ähnelt.
         /// </summary>
         public static string InputTextWithMicrophoneViewModel_PlaceholderText {
             get {

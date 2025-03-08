@@ -2,21 +2,22 @@
 using CommunityToolkit.Maui.Core.Extensions;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Newtonsoft.Json;
 using RepeatList.Models;
 using RepeatList.Services;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Reactive.Threading.Tasks;
+using System.Globalization;
 using Position = RepeatList.Models.Position;
 
 namespace RepeatList.ViewModels
 {
-    public partial class ListsPageViewModel : ObservableObject   // INotifyPropertyChanged,
+    public partial class ListsPageViewModel : ObservableObject   
     {
         private DatabaseService _databaseService;
         private SupabaseService _supabaseService;
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        //public event PropertyChangedEventHandler PropertyChanged;
 
         private SetupPageViewModel? setupPageViewModel;
 
@@ -31,9 +32,11 @@ namespace RepeatList.ViewModels
             _supabaseService =  new SupabaseService();
 
             setupPageViewModel =new SetupPageViewModel();
-
             _ = setupPageViewModel.Load();
             CurrentCulture= setupPageViewModel.SelectedItem.DefaultLanguage;
+            CultureInfo culture = new CultureInfo(CurrentCulture);
+            CultureInfo.DefaultThreadCurrentCulture = culture;
+            CultureInfo.DefaultThreadCurrentUICulture = culture;
 
             _ = LoadHeaders();
 
@@ -44,6 +47,9 @@ namespace RepeatList.ViewModels
 
         public void InitLabels()
         {
+            Cultur = CultureInfo.CurrentCulture;
+
+            Title = Properties.Resources.Lists.ToUpper();
             Search = Properties.Resources.search;
             Label_Lists =  Properties.Resources.Lists.ToUpper() + " (0)";
             Please_create_a_first_list=Properties.Resources.Please_create_a_first_list;
@@ -93,6 +99,8 @@ namespace RepeatList.ViewModels
             }
             set { replace_old_word_when_inserting = value; }
         }
+
+        [ObservableProperty] public CultureInfo cultur;
 
         [ObservableProperty] public ObservableCollection<Header>? filteredList;
 
@@ -318,14 +326,21 @@ namespace RepeatList.ViewModels
         [RelayCommand]
         public async Task Export_list_Clicked()
         {
-            if (Lists == null || Lists.Count == 0 || Header==null)
+            Lists = (await _databaseService.GetPositionsAsync(Header_SelectedItem.Id)).ToObservableCollection();
+            if (Lists == null || Lists.Count == 0 || Header == null)
+            {
+                IsBusy = false;
                 return;
+            }
             IsBusy = true;
 
             Header header = Header_SelectedItem;
             header.Positions = Lists.ToList();
 
-            var json = Newtonsoft.Json.JsonConvert.SerializeObject(header);
+            var settings = new JsonSerializerSettings();
+            settings.Converters.Add(new OnlyPositionsJsonConverter());
+
+            var json = Newtonsoft.Json.JsonConvert.SerializeObject(header, settings);
             await Utilities.ShareTextAsync(json);
 
             IsBusy = false;

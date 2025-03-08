@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Maui;
 using Microsoft.Extensions.Logging;
+using RepeatList.Models;
 using RepeatList.ViewModels;
 using SQLitePCL;
 
@@ -11,7 +12,7 @@ namespace RepeatList
         {
             var builder = MauiApp.CreateBuilder();
             builder
-                .UseMauiApp<App>()// Initialize the .NET MAUI Community Toolkit MediaElement by adding the below line of code
+                .UseMauiApp<App>()
             //.UseMauiCommunityToolkitMediaElement()// After initializing the .NET MAUI Community Toolkit, optionally add additional fonts
             .UseMauiCommunityToolkit()
             .ConfigureFonts(fonts =>
@@ -25,6 +26,9 @@ namespace RepeatList
             //builder.Services.AddSingleton<ISpeechToText>(SpeechToText.Default);
 
             builder.Services.AddSingleton<ListsPage>();
+            builder.Services.AddSingleton<ListsPageViewModel>();
+
+            builder.Services.AddSingleton<PositionsPage>();
             builder.Services.AddSingleton<PositionsPageViewModel>();
 
             builder.Services.AddSingleton<InputTextWithMicrophone>();
@@ -33,17 +37,26 @@ namespace RepeatList
             builder.Services.AddSingleton<SetupPage>();
             builder.Services.AddSingleton<SetupPageViewModel>();
 
+            builder.Services.AddSingleton<HelpPage>();
+            builder.Services.AddSingleton<HelpPageViewModel>();
+
+            builder.Services.AddSingleton<Header>();  // Falls global
+            builder.Services.AddTransient<Header>();
+
+            //builder.Services.AddSingleton<Position>();  // Falls global
+            //builder.Services.AddTransient<Position>();
+
 #if DEBUG
             builder.Logging.AddDebug();
 #endif
             // **SQLite initialisieren**
             Batteries.Init();
 
-//#if ANDROID
-//        builder.Services.AddSingleton<ISpeechToText>(new Android.SpeechToTextImplementation());
-//#else
-//            builder.Services.AddSingleton<ISpeechToText>(SpeechToText.Default);
-//#endif
+            //#if ANDROID
+            //        builder.Services.AddSingleton<ISpeechToText>(new Android.SpeechToTextImplementation());
+            //#else
+            //            builder.Services.AddSingleton<ISpeechToText>(SpeechToText.Default);
+            //#endif
 
 
             return builder.Build();
