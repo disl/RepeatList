@@ -162,6 +162,9 @@
   <data name="edit" xml:space="preserve">
     <value>Edit</value>
   </data>
+  <data name="Enter_a_list_name_or_insert_a_ready_made" xml:space="preserve">
+    <value>Enter a list name or insert a ready-made list as a character string in JSON format that you have received from someone, e.g. via WatsApp.</value>
+  </data>
   <data name="Enter_list_name" xml:space="preserve">
     <value>Enter list name</value>
   </data>
@@ -179,6 +182,9 @@
   </data>
   <data name="help" xml:space="preserve">
     <value>Help</value>
+  </data>
+  <data name="Import_export_of_lists" xml:space="preserve">
+    <value>Import/export of lists</value>
   </data>
   <data name="import_liste" xml:space="preserve">
     <value>Import list</value>
@@ -203,6 +209,12 @@ At the end, please do not forget to press the Enter key :)</value>
   </data>
   <data name="Lists" xml:space="preserve">
     <value>Lists</value>
+  </data>
+  <data name="List_added_successfully" xml:space="preserve">
+    <value>List added successfully</value>
+  </data>
+  <data name="List_manipulation" xml:space="preserve">
+    <value>List manipulation</value>
   </data>
   <data name="List_not_available_or_corrupt" xml:space="preserve">
     <value>List not available or corrupt</value>
@@ -264,11 +276,17 @@ At the end, please do not forget to press the Enter key :)</value>
   <data name="sort_by_date" xml:space="preserve">
     <value>Sort by date</value>
   </data>
+  <data name="String_is_not_a_valid_list_description" xml:space="preserve">
+    <value>String is not a valid list description (JSON format)</value>
+  </data>
   <data name="String_is_not_a_valid_List_ID" xml:space="preserve">
     <value>String is not a valid List-ID</value>
   </data>
   <data name="Synchronisation" xml:space="preserve">
     <value>Synchronisation</value>
+  </data>
+  <data name="Synchronisation of lists" xml:space="preserve">
+    <value>Synchronisation of lists</value>
   </data>
   <data name="theme" xml:space="preserve">
     <value>Thema</value>

@@ -159,11 +159,14 @@
   <data name="edit" xml:space="preserve">
     <value>Bearbeiten</value>
   </data>
+  <data name="Enter_a_list_name_or_insert_a_ready_made" xml:space="preserve">
+    <value>Geben Sie einen Listennamen ein oder fügen Sie eine fertige Liste als Zeichenkette im JSON-Format ein, die Sie von jemandem erhalten haben, z. B. per WatsApp.</value>
+  </data>
   <data name="Enter_list_name" xml:space="preserve">
     <value>Listenname eingeben</value>
   </data>
   <data name="Enter_new_list_name" xml:space="preserve">
-    <value>Neuen Listennamen eingeben</value>
+    <value>Neuen Listennamen eingeben oder </value>
   </data>
   <data name="Enter_new_position_title" xml:space="preserve">
     <value>Neue Positionsname eingeben</value>
@@ -176,6 +179,9 @@
   </data>
   <data name="help" xml:space="preserve">
     <value>Hilfe</value>
+  </data>
+  <data name="Import_export_of_lists" xml:space="preserve">
+    <value>Import/Export der Liste</value>
   </data>
   <data name="import_liste" xml:space="preserve">
     <value>Liste importieren</value>
@@ -200,6 +206,12 @@ Am Ende bitte nicht vergessen, die Eingabetaste zu drücken :)</value>
   </data>
   <data name="Lists" xml:space="preserve">
     <value>Listen</value>
+  </data>
+  <data name="List_added_successfully" xml:space="preserve">
+    <value>Liste erfolgreich hinzugefügt</value>
+  </data>
+  <data name="List_manipulation" xml:space="preserve">
+    <value>Manipulation der Liste</value>
   </data>
   <data name="List_not_available_or_corrupt" xml:space="preserve">
     <value>Liste nicht vorhanden oder beschädigt</value>
@@ -258,11 +270,17 @@ Am Ende bitte nicht vergessen, die Eingabetaste zu drücken :)</value>
   <data name="sort_by_date" xml:space="preserve">
     <value>Sortierung nach Datum</value>
   </data>
+  <data name="String_is_not_a_valid_list_description" xml:space="preserve">
+    <value>Zeichenkette ist keine gültige Listenbeschreibung (JSON-Format)</value>
+  </data>
   <data name="String_is_not_a_valid_List_ID" xml:space="preserve">
     <value>String ist keine gültige List-ID</value>
   </data>
   <data name="Synchronisation" xml:space="preserve">
     <value>Synchronisierung</value>
+  </data>
+  <data name="Synchronisation of lists" xml:space="preserve">
+    <value>Synchronisierung der Liste</value>
   </data>
   <data name="theme" xml:space="preserve">
     <value>Thema</value>

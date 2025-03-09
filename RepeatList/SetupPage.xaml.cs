@@ -46,7 +46,7 @@ public partial class SetupPage : ContentPage
         if (_currLanguage != null)
             SetCurrentCulture(_currLanguage);
 
-        if (_oldLanguage != ViewModel.SelectedItem.DefaultLanguage)
+        if (_oldLanguage != ViewModel.SelectedItem.DefaultLanguage || _oldThema != ViewModel.SelectedItem.DefaultAppTheme)
         {
             // 
             await DisplayAlert("Information", Properties.Resources.Application_is_closed_to_update_changes, "OK");

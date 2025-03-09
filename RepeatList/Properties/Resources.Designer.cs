@@ -196,6 +196,15 @@ namespace RepeatList.Properties {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Enter a list name or insert a ready-made list as a character string in JSON format that you have received from someone, e.g. via WatsApp. ähnelt.
+        /// </summary>
+        public static string Enter_a_list_name_or_insert_a_ready_made {
+            get {
+                return ResourceManager.GetString("Enter_a_list_name_or_insert_a_ready_made", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Enter list name ähnelt.
         /// </summary>
         public static string Enter_list_name {
@@ -250,6 +259,15 @@ namespace RepeatList.Properties {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Import/export of lists ähnelt.
+        /// </summary>
+        public static string Import_export_of_lists {
+            get {
+                return ResourceManager.GetString("Import_export_of_lists", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Import list ähnelt.
         /// </summary>
         public static string import_liste {
@@ -297,6 +315,24 @@ namespace RepeatList.Properties {
         public static string language {
             get {
                 return ResourceManager.GetString("language", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die List added successfully ähnelt.
+        /// </summary>
+        public static string List_added_successfully {
+            get {
+                return ResourceManager.GetString("List_added_successfully", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die List manipulation ähnelt.
+        /// </summary>
+        public static string List_manipulation {
+            get {
+                return ResourceManager.GetString("List_manipulation", resourceCulture);
             }
         }
         
@@ -490,6 +526,15 @@ namespace RepeatList.Properties {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die String is not a valid list description (JSON format) ähnelt.
+        /// </summary>
+        public static string String_is_not_a_valid_list_description {
+            get {
+                return ResourceManager.GetString("String_is_not_a_valid_list_description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die String is not a valid List-ID ähnelt.
         /// </summary>
         public static string String_is_not_a_valid_List_ID {
@@ -504,6 +549,15 @@ namespace RepeatList.Properties {
         public static string Synchronisation {
             get {
                 return ResourceManager.GetString("Synchronisation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Synchronisation of lists ähnelt.
+        /// </summary>
+        public static string Synchronisation_of_lists {
+            get {
+                return ResourceManager.GetString("Synchronisation of lists", resourceCulture);
             }
         }
         

@@ -40,4 +40,19 @@ public partial class Lists_PopUpMenu : Popup
     {
         Close("SyncDown");
     }
+
+    private void CancelButtonClicked(object sender, EventArgs e)
+    {
+        Close();
+    }
+
+    private void Export_list_Clicked(object sender, EventArgs e)
+    {
+        Close("Export");
+    }
+
+    private void Import_list_Clicked(object sender, EventArgs e)
+    {
+        Close("Import");
+    }
 }

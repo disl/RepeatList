@@ -7,13 +7,30 @@
     x:Class="RepeatList.Lists_PopUpMenu">
     
     <VerticalStackLayout Padding="10"  Spacing="10" BackgroundColor="gray">
+        <Label Text="{x:Static properties:Resources.List_manipulation}"  FontSize="Medium" TextColor="White" />
+        
         <Button  Text="{x:Static properties:Resources.edit}" TextColor="White"
                 Clicked="OnEditHeaderClicked"  CommandParameter="{Binding}"  />
         <Button  Text="{x:Static properties:Resources.Delete_list}" TextColor="White" 
                 Clicked="OnDeleteHeaderClicked"  CommandParameter="{Binding}" />
+
+        
+        <Label Text="{x:Static properties:Resources.Import_export_of_lists}"  FontSize="Medium" TextColor="White" />
+        <Button  Text="{x:Static properties:Resources.Export_list}" TextColor="White" 
+                Clicked="Export_list_Clicked"  CommandParameter="{Binding}"  />
+        <Button  Text="{x:Static properties:Resources.import_liste}" TextColor="White" 
+                Clicked="Import_list_Clicked"  CommandParameter="{Binding}"  />
+        
+
+        <Label Text="{x:Static properties:Resources.Synchronisation_of_lists}"  FontSize="Medium" TextColor="White" />
         <Button  Text="{x:Static properties:Resources.Send_synchronisation}" TextColor="White" 
                 Clicked="Sync_list_upClicked"  CommandParameter="{Binding}"   />
         <Button x:Name="sync_arrow_downButton"    Text="{x:Static properties:Resources.Request_synchronisation}" TextColor="White" 
                 Clicked="Sync_list_downClicked"  CommandParameter="{Binding}"   />
+
+
+        <Button x:Name="CancelButton" BackgroundColor="Red" Margin="0,10,0,0"  Text="{x:Static properties:Resources.Cancel}" TextColor="White" 
+                Clicked="CancelButtonClicked"    />
+
     </VerticalStackLayout>
 </toolkit:Popup>

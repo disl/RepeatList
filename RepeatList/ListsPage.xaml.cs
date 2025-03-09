@@ -75,10 +75,15 @@ namespace RepeatList
         private async Task ForOnAddHeaderClicked()
         {
             string new_list_name = await DisplayPromptAsync(
-                Properties.Resources.Input, Properties.Resources.Enter_new_list_name, "OK", Properties.Resources.Cancel);
+                Properties.Resources.AddNewList, Properties.Resources.Enter_a_list_name_or_insert_a_ready_made, "OK", Properties.Resources.Cancel);
             if (!string.IsNullOrWhiteSpace(new_list_name))
             {
-                var new_id = await ViewModel.AddHeader(new_list_name);
+                if (!await ViewModel.InputHeaderWithPositions(new_list_name))
+                {
+                    var new_id = await ViewModel.AddHeader(new_list_name);
+                }
+                await Application.Current.MainPage.DisplaySnackbar(Properties.Resources.List_added_successfully);
+
                 ViewModel.SetFirstItemForHeaders();
             }
         }
@@ -108,7 +113,7 @@ namespace RepeatList
             var button = sender as ImageButton;
             if (button?.CommandParameter is Header header)
             {
-                bool answer = await DisplayAlert(Properties.Resources.Delete_list, Properties.Resources.Selected_list_and_list_synchronisations_will_now_be_deleted, 
+                bool answer = await DisplayAlert(Properties.Resources.Delete_list, Properties.Resources.Selected_list_and_list_synchronisations_will_now_be_deleted,
                     Properties.Resources.yes, Properties.Resources.no);
                 if (answer)
                 {
@@ -266,37 +271,33 @@ namespace RepeatList
             }
         }
 
-        private void OnSearchButtonPressed(object sender, EventArgs e)
-        {
-            var searchBar = (SearchBar)sender;
-            string query = searchBar.Text;
-            // Suche ausführen
-        }
-
         private async void OnBurgerMenuTapped(object sender, TappedEventArgs e)
         {
             if (sender is ImageButton button)
             {
                 var popup = new Lists_PopUpMenu((Header)button.CommandParameter);
-                var result =  await Shell.Current.ShowPopupAsync(popup);
-                if (result == "Edit")
+                var result = await Shell.Current.ShowPopupAsync(popup);
+                switch (result)
                 {
-                    await OnEditHeaderClicked(button, e);
+                    case "Edit":
+                        await OnEditHeaderClicked(button, e); break;
+                    case "Delete":
+                        await OnDeleteHeaderClicked(button, e); break;
+
+                    case "SyncUp":
+                        await Sync_list_upClicked(button, e); break;
+                    case "SyncDown":
+                        await Sync_list_downClicked(button, e); break;
+
+                    case "Import":
+                        await ForOnAddHeaderClicked(); break;
+                    case "Export":
+                        await ViewModel.Export_list_Clicked(); break;
                 }
-                else if (result == "Delete")
-                {
-                    await OnDeleteHeaderClicked(button, e);
-                }
-                else if (result == "SyncUp")
-                {
-                    await Sync_list_upClicked(button, e);
-                }
-                else if (result == "SyncDown")
-                {
-                    await Sync_list_downClicked(button, e);
-                }
+
             }
         }
+
     }
 }
 
