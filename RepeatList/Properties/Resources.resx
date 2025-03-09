@@ -159,6 +159,9 @@
   <data name="Do_you_want_to_use_commas_as_list_element_separators" xml:space="preserve">
     <value>Do you want to use commas (‘,’) as list element separators?</value>
   </data>
+  <data name="edit" xml:space="preserve">
+    <value>Edit</value>
+  </data>
   <data name="Enter_list_name" xml:space="preserve">
     <value>Enter list name</value>
   </data>
@@ -234,6 +237,9 @@ At the end, please do not forget to press the Enter key :)</value>
   <data name="Replace_old_list_element_when_inserting" xml:space="preserve">
     <value>Replace list element when inserting</value>
   </data>
+  <data name="Request_synchronisation" xml:space="preserve">
+    <value>Request synchronisation</value>
+  </data>
   <data name="ResetPositions" xml:space="preserve">
     <value>Reset</value>
   </data>
@@ -242,6 +248,12 @@ At the end, please do not forget to press the Enter key :)</value>
   </data>
   <data name="search" xml:space="preserve">
     <value>search</value>
+  </data>
+  <data name="Selected_list_and_list_synchronisations_will_now_be_deleted" xml:space="preserve">
+    <value>Selected list and list synchronisations will now be deleted, do you agree?</value>
+  </data>
+  <data name="Send_synchronisation" xml:space="preserve">
+    <value>Send synchronisation</value>
   </data>
   <data name="sort_by" xml:space="preserve">
     <value>Sort by</value>

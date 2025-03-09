@@ -12,9 +12,7 @@ namespace RepeatList
         {
             var builder = MauiApp.CreateBuilder();
             builder
-                .UseMauiApp<App>()
-            //.UseMauiCommunityToolkitMediaElement()// After initializing the .NET MAUI Community Toolkit, optionally add additional fonts
-            .UseMauiCommunityToolkit()
+                .UseMauiApp<App>().UseMauiCommunityToolkit()
             .ConfigureFonts(fonts =>
             {
                 fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");

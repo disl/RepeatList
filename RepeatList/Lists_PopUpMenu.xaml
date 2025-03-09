@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<toolkit:Popup 
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    xmlns:properties="clr-namespace:RepeatList.Properties"
+    x:Class="RepeatList.Lists_PopUpMenu">
+    
+    <VerticalStackLayout Padding="10"  Spacing="10" BackgroundColor="gray">
+        <Button  Text="{x:Static properties:Resources.edit}" TextColor="White"
+                Clicked="OnEditHeaderClicked"  CommandParameter="{Binding}"  />
+        <Button  Text="{x:Static properties:Resources.Delete_list}" TextColor="White" 
+                Clicked="OnDeleteHeaderClicked"  CommandParameter="{Binding}" />
+        <Button  Text="{x:Static properties:Resources.Send_synchronisation}" TextColor="White" 
+                Clicked="Sync_list_upClicked"  CommandParameter="{Binding}"   />
+        <Button x:Name="sync_arrow_downButton"    Text="{x:Static properties:Resources.Request_synchronisation}" TextColor="White" 
+                Clicked="Sync_list_downClicked"  CommandParameter="{Binding}"   />
+    </VerticalStackLayout>
+</toolkit:Popup>

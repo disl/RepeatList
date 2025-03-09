@@ -198,6 +198,9 @@
 		<MauiXaml Update="ListsPage.xaml">
 		  <Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
+		<MauiXaml Update="Lists_PopUpMenu.xaml">
+		  <Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
 		<MauiXaml Update="PositionsPage.xaml">
 		  <Generator>MSBuild:Compile</Generator>
 		</MauiXaml>

@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Maui.Alerts;
+using CommunityToolkit.Maui.Views;
 using RepeatList.Models;
 using RepeatList.ViewModels;
 using System.Collections.ObjectModel;
@@ -102,12 +103,13 @@ namespace RepeatList
         //}
 
 
-        private async void OnDeleteHeaderClicked(object sender, EventArgs e)
+        private async Task OnDeleteHeaderClicked(object sender, EventArgs e)
         {
             var button = sender as ImageButton;
             if (button?.CommandParameter is Header header)
             {
-                bool answer = await DisplayAlert(Properties.Resources.Delete_list, Properties.Resources.Are_you_sure, Properties.Resources.yes, Properties.Resources.no);
+                bool answer = await DisplayAlert(Properties.Resources.Delete_list, Properties.Resources.Selected_list_and_list_synchronisations_will_now_be_deleted, 
+                    Properties.Resources.yes, Properties.Resources.no);
                 if (answer)
                 {
 
@@ -116,7 +118,9 @@ namespace RepeatList
                     await ViewModel.DeleteHeader(header);
                     ViewModel.SetFirstItemForHeaders();
 
+
                     await ViewModel.DeleteHeaderInSupabase(header);
+
 
                     await Application.Current.MainPage.DisplaySnackbar(Properties.Resources.List_was_successfully_deleted);
 
@@ -139,7 +143,7 @@ namespace RepeatList
             }
         }
 
-        private async void OnEditHeaderClicked(object sender, EventArgs e)
+        private async Task OnEditHeaderClicked(object sender, EventArgs e)
         {
             var button = sender as ImageButton;
             if (button?.CommandParameter is Header header)
@@ -184,7 +188,7 @@ namespace RepeatList
             }
         }
 
-        private async void Sync_list_upClicked(object sender, EventArgs e)
+        private async Task Sync_list_upClicked(object sender, EventArgs e)
         {
             var button = sender as ImageButton;
             if (button?.CommandParameter is Header header)
@@ -200,7 +204,7 @@ namespace RepeatList
             }
         }
 
-        private async void Sync_list_downClicked(object sender, EventArgs e)
+        private async Task Sync_list_downClicked(object sender, EventArgs e)
         {
             var button = sender as ImageButton;
             if (button?.CommandParameter is Header header)
@@ -267,6 +271,31 @@ namespace RepeatList
             var searchBar = (SearchBar)sender;
             string query = searchBar.Text;
             // Suche ausführen
+        }
+
+        private async void OnBurgerMenuTapped(object sender, TappedEventArgs e)
+        {
+            if (sender is ImageButton button)
+            {
+                var popup = new Lists_PopUpMenu((Header)button.CommandParameter);
+                var result =  await Shell.Current.ShowPopupAsync(popup);
+                if (result == "Edit")
+                {
+                    await OnEditHeaderClicked(button, e);
+                }
+                else if (result == "Delete")
+                {
+                    await OnDeleteHeaderClicked(button, e);
+                }
+                else if (result == "SyncUp")
+                {
+                    await Sync_list_upClicked(button, e);
+                }
+                else if (result == "SyncDown")
+                {
+                    await Sync_list_downClicked(button, e);
+                }
+            }
         }
     }
 }

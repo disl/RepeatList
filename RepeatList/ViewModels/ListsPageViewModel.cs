@@ -304,7 +304,9 @@ namespace RepeatList.ViewModels
 
             IsBusy = true;
 
-            await _supabaseService.SyncHeaderWithDetailsAsync(Header_SelectedItem.Id);
+            Header_SelectedItem.Positions = Lists.ToList();
+
+            await _supabaseService.SyncHeaderWithDetailsAsync(Header_SelectedItem);
 
             await EditIsSynchronizedHeader(Header_SelectedItem, true);
 

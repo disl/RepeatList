@@ -187,6 +187,15 @@ namespace RepeatList.Properties {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Edit ähnelt.
+        /// </summary>
+        public static string edit {
+            get {
+                return ResourceManager.GetString("edit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Enter list name ähnelt.
         /// </summary>
         public static string Enter_list_name {
@@ -400,6 +409,15 @@ namespace RepeatList.Properties {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Request synchronisation ähnelt.
+        /// </summary>
+        public static string Request_synchronisation {
+            get {
+                return ResourceManager.GetString("Request_synchronisation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Reset current list ähnelt.
         /// </summary>
         public static string Reset_current_list {
@@ -423,6 +441,24 @@ namespace RepeatList.Properties {
         public static string search {
             get {
                 return ResourceManager.GetString("search", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Selected list and list synchronisations will now be deleted, do you agree? ähnelt.
+        /// </summary>
+        public static string Selected_list_and_list_synchronisations_will_now_be_deleted {
+            get {
+                return ResourceManager.GetString("Selected_list_and_list_synchronisations_will_now_be_deleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Send synchronisation ähnelt.
+        /// </summary>
+        public static string Send_synchronisation {
+            get {
+                return ResourceManager.GetString("Send_synchronisation", resourceCulture);
             }
         }
         

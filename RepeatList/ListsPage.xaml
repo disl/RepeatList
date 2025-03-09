@@ -21,15 +21,15 @@
         <StackLayout Orientation="Horizontal" Spacing="10" Margin="0,15,0,10" HorizontalOptions="End" Grid.Row="1">
             <ImageButton Source="add_icon.png" Clicked="OnAddHeaderClicked"   
                             MaximumWidthRequest="{Binding ImageButton_size}" MaximumHeightRequest="{Binding ImageButton_size}"  />
-            <ImageButton Source="share_icon.png" Command="{Binding Export_list_ClickedCommand}" 
-                            MaximumWidthRequest="{Binding ImageButton_size}" MaximumHeightRequest="{Binding ImageButton_size}" />
-            <ImageButton Source="sync_arrow_down_icon.png" Command="{Binding Import_listClickedCommand}" 
-                            MaximumWidthRequest="{Binding ImageButton_size}" MaximumHeightRequest="{Binding ImageButton_size}" />
+            <!--<ImageButton Source="upload_icon.png" Command="{Binding Export_list_ClickedCommand}" 
+                            MaximumWidthRequest="{Binding ImageButton_size}" MaximumHeightRequest="{Binding ImageButton_size}" />-->
+            <!--<ImageButton Source="sync_arrow_down_icon.png" Command="{Binding Import_listClickedCommand}" 
+                            MaximumWidthRequest="{Binding ImageButton_size}" MaximumHeightRequest="{Binding ImageButton_size}" />-->
         </StackLayout>
 
         <BoxView HeightRequest="1" BackgroundColor="Gray" HorizontalOptions="Fill" Grid.Row="2" Margin="0,0,0,10"/>
 
-        <SearchBar Placeholder="{Binding Search}"  TextChanged="OnSearchTextChanged" SearchButtonPressed="OnSearchButtonPressed" Margin="0,0,0,10" Grid.Row="3" />
+        <SearchBar Placeholder="{Binding Search}" TextChanged="OnSearchTextChanged" SearchButtonPressed="OnSearchButtonPressed" Margin="0,0,0,10" Grid.Row="3" />
 
         <CollectionView x:Name="HeaderListView"  ItemsSource="{Binding FilteredList}" Grid.Row="4"
                                 SelectionMode="Single" SelectedItem="{Binding Header_SelectedItem}" SelectionChanged="OnHeaderListViewSelected" VerticalScrollBarVisibility="Always" >
@@ -37,18 +37,31 @@
             <CollectionView.ItemTemplate>
                 <DataTemplate>
                     <Border Stroke="Black" StrokeThickness="0" Padding="3" >
-                        <Grid ColumnDefinitions="auto,5*,1*,1*,1*,1*" Padding="3" ColumnSpacing="7">
-                            <toolkit:AvatarView  HeightRequest="48" Text="{Binding AvatarName}" WidthRequest="48" BackgroundColor="Gray" TextColor="White" Grid.Column="0"  />
+                        <!--<Grid ColumnDefinitions="auto,5*,1*,1*,1*,1*" Padding="3" ColumnSpacing="7">-->
+                        <Grid ColumnDefinitions="auto,*,auto,auto" Padding="3" ColumnSpacing="10" >
+
+                            <toolkit:AvatarView Grid.Column="0" HeightRequest="48" Text="{Binding AvatarName}" WidthRequest="48" BackgroundColor="Gray" TextColor="White"  />
                             <!--StackLayout>-->
-                            <Label Text="{Binding ListName}"  VerticalOptions="Center" FontSize="Medium"   Grid.Column="1" 
+                            <Label Text="{Binding ListName}" Grid.Column="1" VerticalOptions="Center" FontSize="Medium"    
                                        TextColor="{AppThemeBinding Light={DynamicResource PrimaryTextColor}, Dark={DynamicResource PrimaryTextColorLight}}"/>
-                            <ImageButton Source="edit_icon.png" Clicked="OnEditHeaderClicked" HeightRequest="30" CommandParameter="{Binding}"  Grid.Column="2"/>
+
+                            <Image Source="sync_arrow_down_icon.png" IsVisible="{Binding IsSynchronized}" 
+                                                 HeightRequest="30" Grid.Column="2" />
+
+                            <!-- Menu-Button -->
+                            <ImageButton Grid.Column="3" Source="more_vert_icon.png"   HeightRequest="30" WidthRequest="30" CommandParameter="{Binding .}">
+                                <ImageButton.GestureRecognizers >
+                                    <TapGestureRecognizer Tapped="OnBurgerMenuTapped" NumberOfTapsRequired="1"  />
+                                </ImageButton.GestureRecognizers>
+                            </ImageButton>
+
+                            <!--<ImageButton Source="edit_icon.png" Clicked="OnEditHeaderClicked" HeightRequest="30" CommandParameter="{Binding}"  Grid.Column="2"/>
                             <ImageButton Source="delete_icon.png" Clicked="OnDeleteHeaderClicked" 
                                                  HeightRequest="30" CommandParameter="{Binding}"  Grid.Column="3"/>
                             <ImageButton Source="sync_cloud_icon.png" Clicked="Sync_list_upClicked" 
-                                                 HeightRequest="30" CommandParameter="{Binding}"  Grid.Column="4" />
-                            <ImageButton Source="sync_arrow_down_icon.png" IsVisible="{Binding IsSynchronized}" 
-                                                 HeightRequest="30" Clicked="Sync_list_downClicked" CommandParameter="{Binding}"  Grid.Column="5" />
+                                                 HeightRequest="30" CommandParameter="{Binding}"  Grid.Column="4" />-->
+
+
                             <!--<ImageButton Source="sync_disabled_icon.png" IsVisible="{Binding IsSynchronized}" Clicked="OnIsSynchronizedClicked" CommandParameter="{Binding}" Grid.Column="3"/>-->
                         </Grid>
                         <Border.GestureRecognizers>
