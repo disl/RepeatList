@@ -4,6 +4,13 @@ using RepeatList.Models;
 using RepeatList.ViewModels;
 using System.Collections.ObjectModel;
 using System.Globalization;
+// Remove the incorrect using directive
+// using Google.MobileAds;
+
+// Add the correct using directive for Google AdMob
+//using Google.Ads.Mediation;
+//using Android.Gms.Ads;
+
 
 
 namespace RepeatList
@@ -19,6 +26,9 @@ namespace RepeatList
 
             ViewModel = new ListsPageViewModel();
             BindingContext = ViewModel;
+
+            //var adRequest = new AdRequest.Builder().Build();
+            //adView.LoadAd(adRequest);
         }
 
         protected async override void OnAppearing()

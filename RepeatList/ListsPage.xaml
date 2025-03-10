@@ -4,6 +4,7 @@
              x:Class="RepeatList.ListsPage"
              xmlns:local="clr-namespace:RepeatList.ViewModels"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:ads="clr-namespace:Plugin.MauiMTAdmob.Controls;assembly=Plugin.MauiMtAdmob"
              Title="{Binding Title}" 
              >
     <ContentPage.BindingContext>
@@ -14,7 +15,7 @@
         <!--<ToolbarItem  StyleId="Item1" Order="Secondary"  IconImageSource="share_icon.png"  Text="{Binding Label_Export_list}" Command="{Binding Export_list_ClickedCommand}" />-->
         <!--<ToolbarItem  StyleId="Item2" Order="Secondary" Text="{Binding Label_Reset_current_list}" Command="{Binding Reset_current_list_ClickedCommand}" />-->
     </ContentPage.ToolbarItems>
-    <Grid RowDefinitions="auto,auto,auto,auto,*" Margin="15">
+    <Grid RowDefinitions="auto,auto,auto,auto,*,auto" Margin="15">
 
         <ActivityIndicator IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}" Grid.Row="0" />
 
@@ -76,5 +77,10 @@
             </CollectionView.EmptyView>
         </CollectionView>
 
+
+        <!-- Place the Admob controls here -->
+        <!--<ads:MTAdView Grid.Row="5"/>-->
+
+        <ads:MTAdView x:Name="myAds" Grid.Row="5"></ads:MTAdView>
     </Grid>
 </ContentPage>

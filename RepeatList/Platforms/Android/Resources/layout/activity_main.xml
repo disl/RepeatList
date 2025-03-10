@@ -11,7 +11,7 @@
 			android:id="@+id/adView"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			ads:adUnitId="ca-app-pub-3940256099942544/6300978111"
+			ads:adUnitId="ca-app-pub-3940256099942544~3347510173"
 			ads:adSize="BANNER"
 			/>
 

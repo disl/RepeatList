@@ -8,7 +8,7 @@
                Source="repeat_list_300.jpg"
                Opacity="0.6" />-->
         <Label Text="MiniList"
-               TextColor="LightGray"
+               TextColor="White"
                FontAttributes="Bold"
                HorizontalTextAlignment="Center"
                VerticalTextAlignment="Center" />

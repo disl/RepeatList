@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Maui;
 using Microsoft.Extensions.Logging;
+using Plugin.MauiMTAdmob;
 using RepeatList.Models;
 using RepeatList.ViewModels;
 using SQLitePCL;
@@ -13,6 +14,7 @@ namespace RepeatList
             var builder = MauiApp.CreateBuilder();
             builder
                 .UseMauiApp<App>().UseMauiCommunityToolkit()
+                .UseMauiMTAdmob()
             .ConfigureFonts(fonts =>
             {
                 fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
@@ -40,6 +42,9 @@ namespace RepeatList
 
             builder.Services.AddSingleton<Header>();  // Falls global
             builder.Services.AddTransient<Header>();
+
+
+
 
             //builder.Services.AddSingleton<Position>();  // Falls global
             //builder.Services.AddTransient<Position>();
