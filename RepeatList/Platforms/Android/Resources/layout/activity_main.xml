@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout   xmlns:android="http://schemas.android.com/apk/res/android"
+			    xmlns:ads="http://schemas.android.com/apk/res-auto"
+				android:orientation="vertical"
+				android:layout_height="match_parent"
+				android:layout_width="match_parent"
+				android:backgroundTint="@android:color/black">
+
+	<!-- Google Test-ID -->
+	<com.google.android.gms.ads.AdView
+			android:id="@+id/adView"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			ads:adUnitId="ca-app-pub-3940256099942544/6300978111"
+			ads:adSize="BANNER"
+			/>
+
+
+</LinearLayout>
+
+<!--android:adUnitId="ca-app-pub-8031660992924663~4922080228"-->
