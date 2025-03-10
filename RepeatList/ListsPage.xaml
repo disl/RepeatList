@@ -36,7 +36,6 @@
             <CollectionView.ItemTemplate>
                 <DataTemplate>
                     <Border Stroke="Black" StrokeThickness="0" Padding="3" >
-                        <!--<Grid ColumnDefinitions="auto,5*,1*,1*,1*,1*" Padding="3" ColumnSpacing="7">-->
                         <Grid ColumnDefinitions="auto,*,auto,auto" Padding="3" ColumnSpacing="10" >
 
                             <toolkit:AvatarView Grid.Column="0" HeightRequest="48" Text="{Binding AvatarName}" WidthRequest="48" BackgroundColor="Gray" TextColor="White"  />
@@ -44,11 +43,10 @@
                             <Label Text="{Binding ListName}" Grid.Column="1" VerticalOptions="Center" FontSize="Medium"    
                                        TextColor="{AppThemeBinding Light={DynamicResource PrimaryTextColor}, Dark={DynamicResource PrimaryTextColorLight}}"/>
 
-                            <Image Source="sync_arrow_down_icon.png" IsVisible="{Binding IsSynchronized}" 
-                                                 HeightRequest="30" Grid.Column="2" />
+                            <Image Source="sync_arrow_down_icon.png" IsVisible="{Binding IsSynchronized}" HeightRequest="30" Grid.Column="2" />
 
                             <!-- Menu-Button -->
-                            <ImageButton Grid.Column="3" Source="more_vert_icon.png"   HeightRequest="30" WidthRequest="30" CommandParameter="{Binding .}">
+                            <ImageButton Grid.Column="3" Source="more_vert_icon.png"   HeightRequest="30" WidthRequest="30" CommandParameter="{Binding}">
                                 <ImageButton.GestureRecognizers >
                                     <TapGestureRecognizer Tapped="OnBurgerMenuTapped" NumberOfTapsRequired="1"  />
                                 </ImageButton.GestureRecognizers>

@@ -84,7 +84,7 @@ namespace RepeatList.ViewModels
         public void SetFirstItemForHeaders()
         {
             //if (Headers != null && Headers.Count > 0)
-            if(Header_SelectedItem == null)
+            if(Header_SelectedItem == null && Headers != null && Headers.Count > 0)
                 Header_SelectedItem = Headers[0];
         }
 
