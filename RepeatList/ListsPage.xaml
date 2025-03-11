@@ -4,7 +4,7 @@
              x:Class="RepeatList.ListsPage"
              xmlns:local="clr-namespace:RepeatList.ViewModels"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
-             xmlns:ads="clr-namespace:Plugin.MauiMTAdmob.Controls;assembly=Plugin.MauiMtAdmob"
+        
              Title="{Binding Title}" 
              >
     <ContentPage.BindingContext>
@@ -81,6 +81,6 @@
         <!-- Place the Admob controls here -->
         <!--<ads:MTAdView Grid.Row="5"/>-->
 
-        <ads:MTAdView x:Name="myAds" Grid.Row="5"></ads:MTAdView>
+        <!--<ads:MTAdView x:Name="myAds" Grid.Row="5"></ads:MTAdView>-->
     </Grid>
 </ContentPage>

@@ -129,10 +129,16 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <AndroidResource Remove="Platforms\Android\Resources\layout\activity_main.xml" />
+	</ItemGroup>
+
+	<ItemGroup>
 	  <Compile Remove="InputPromptPage.cs" />
+	  <Compile Remove="InputTextWithMicrophone.xaml.cs" />
 	  <Compile Remove="MainPage_old.xaml.cs" />
 	  <Compile Remove="Program.cs" />
 	  <Compile Remove="Services\SpeechService.cs" />
+	  <Compile Remove="ViewModels\InputTextWithMicrophoneViewModel.cs" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -145,6 +151,8 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<None Remove="InputTextWithMicrophone.xaml" />
+		<None Remove="Platforms\Android\Resources\layout\activity_main.xml" />
 		<None Remove="Platforms\Android\Resources\values\todo.db3" />
 		<None Remove="Platforms\Android\todo.db3" />
 		<None Remove="RepeatList.csproj.Backup.tmp" />
@@ -168,7 +176,6 @@
 		<PackageReference Include="Microsoft.Maui.Controls" Version="9.0.40" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="9.0.2" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-		<PackageReference Include="Plugin.MauiMTAdmob" Version="2.0.0.5" />
 		<PackageReference Include="SQLitePCLRaw.bundle_e_sqlite3" Version="2.1.11" />
 		<PackageReference Include="Supabase" Version="1.1.1" />
 		<PackageReference Include="Supabase.Postgrest" Version="4.1.0" />
@@ -241,6 +248,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Folder Include="Platforms\Android\Resources\layout\" />
 	  <Folder Include="Resources\Splash\" />
 	</ItemGroup>
 

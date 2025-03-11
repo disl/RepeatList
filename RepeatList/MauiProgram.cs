@@ -1,6 +1,6 @@
 ﻿using CommunityToolkit.Maui;
 using Microsoft.Extensions.Logging;
-using Plugin.MauiMTAdmob;
+
 using RepeatList.Models;
 using RepeatList.ViewModels;
 using SQLitePCL;
@@ -13,8 +13,9 @@ namespace RepeatList
         {
             var builder = MauiApp.CreateBuilder();
             builder
-                .UseMauiApp<App>().UseMauiCommunityToolkit()
-                .UseMauiMTAdmob()
+                .UseMauiApp<App>()
+                .UseMauiCommunityToolkit()
+                //.UseMauiMTAdmob()
             .ConfigureFonts(fonts =>
             {
                 fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
@@ -31,8 +32,8 @@ namespace RepeatList
             builder.Services.AddSingleton<PositionsPage>();
             builder.Services.AddSingleton<PositionsPageViewModel>();
 
-            builder.Services.AddSingleton<InputTextWithMicrophone>();
-            builder.Services.AddSingleton<InputTextWithMicrophoneViewModel>();
+            //builder.Services.AddSingleton<InputTextWithMicrophone>();
+            //builder.Services.AddSingleton<InputTextWithMicrophoneViewModel>();
 
             builder.Services.AddSingleton<SetupPage>();
             builder.Services.AddSingleton<SetupPageViewModel>();

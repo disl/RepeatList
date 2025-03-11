@@ -78,26 +78,26 @@ namespace RepeatList
 
         #region POSITIONS
 
-        private async void OnAddPositionClicked(object sender, EventArgs e)
-        {
-            if (ViewModel.Header_SelectedItem == null)
-                return;
+        //private async void OnAddPositionClicked(object sender, EventArgs e)
+        //{
+        //    if (ViewModel.Header_SelectedItem == null)
+        //        return;
 
-            ViewModel.IsBusy = true;
+        //    ViewModel.IsBusy = true;
 
-            var promptPage = new InputTextWithMicrophone();
-            await Navigation.PushModalAsync(promptPage);
+        //    var promptPage = new InputTextWithMicrophone();
+        //    await Navigation.PushModalAsync(promptPage);
 
-            if (promptPage.Result == null)
-            {
-                ViewModel.IsBusy = false;
-                return;
-            }
+        //    if (promptPage.Result == null)
+        //    {
+        //        ViewModel.IsBusy = false;
+        //        return;
+        //    }
 
-            string _input = await promptPage.Result;
+        //    string _input = await promptPage.Result;
 
-            await InputPositions(_input);
-        }
+        //    await InputPositions(_input);
+        //}
 
         private async Task InputPositions(string _input)
         {

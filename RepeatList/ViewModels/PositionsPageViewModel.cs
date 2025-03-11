@@ -24,7 +24,7 @@ namespace RepeatList.ViewModels
         public double ButtonsSize = 25;
 
         [ObservableProperty] private string search = Properties.Resources.search;
-        [ObservableProperty] private string title = Properties.Resources.Positions.ToUpper();
+        [ObservableProperty] private string title;  // = Properties.Resources.Positions.ToUpper();
         [ObservableProperty] public string resetImageSource;
 
         public PositionsPageViewModel()
@@ -66,7 +66,7 @@ namespace RepeatList.ViewModels
 
         public void InitLabels()
         {
-            Title = Properties.Resources.Positions.ToUpper();
+            Title = Header_SelectedItem.ListName;
             Search = Properties.Resources.search;
             Label_Positions =  Properties.Resources.Positions.ToUpper() + " (0)";
             No_items_to_display=Properties.Resources.No_items_to_display;
