@@ -46,13 +46,14 @@
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net9.0-android|AnyCPU'">
 	  <EmbedAssembliesIntoApk>False</EmbedAssembliesIntoApk>
-	  <ApplicationDisplayVersion>1.0.7</ApplicationDisplayVersion>
-	  <ApplicationVersion>7</ApplicationVersion>
+	  <ApplicationDisplayVersion>1.0.8</ApplicationDisplayVersion>
+	  <ApplicationVersion>8</ApplicationVersion>
+	  <AndroidKeyStore>False</AndroidKeyStore>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net9.0-ios|AnyCPU'">
-	  <ApplicationDisplayVersion>1.0.7</ApplicationDisplayVersion>
-	  <ApplicationVersion>7</ApplicationVersion>
+	  <ApplicationDisplayVersion>1.0.8</ApplicationDisplayVersion>
+	  <ApplicationVersion>8</ApplicationVersion>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net9.0-windows10.0.19041.0|AnyCPU'">
@@ -61,14 +62,15 @@
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net9.0-android|AnyCPU'">
-	  <ApplicationDisplayVersion>1.0.7</ApplicationDisplayVersion>
-	  <ApplicationVersion>7</ApplicationVersion>
+	  <ApplicationDisplayVersion>1.0.8</ApplicationDisplayVersion>
+	  <ApplicationVersion>8</ApplicationVersion>
 	  <AndroidLinkTool>r8</AndroidLinkTool>
+	  <AndroidKeyStore>False</AndroidKeyStore>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net9.0-ios|AnyCPU'">
-	  <ApplicationDisplayVersion>1.0.7</ApplicationDisplayVersion>
-	  <ApplicationVersion>7</ApplicationVersion>
+	  <ApplicationDisplayVersion>1.0.8</ApplicationDisplayVersion>
+	  <ApplicationVersion>8</ApplicationVersion>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net9.0-windows10.0.19041.0|AnyCPU'">
@@ -137,6 +139,8 @@
 	  <Compile Remove="InputTextWithMicrophone.xaml.cs" />
 	  <Compile Remove="MainPage_old.xaml.cs" />
 	  <Compile Remove="Program.cs" />
+	  <Compile Remove="Properties\Resources.es.Designer.cs" />
+	  <Compile Remove="Properties\Resources.fr.Designer.cs" />
 	  <Compile Remove="Services\SpeechService.cs" />
 	  <Compile Remove="ViewModels\InputTextWithMicrophoneViewModel.cs" />
 	</ItemGroup>
@@ -239,6 +243,12 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <EmbeddedResource Update="Properties\Resources.fr.resx">
+	    <Generator></Generator>
+	  </EmbeddedResource>
+	  <EmbeddedResource Update="Properties\Resources.es.resx">
+	    <Generator></Generator>
+	  </EmbeddedResource>
 	  <EmbeddedResource Update="Properties\Resources.de.resx">
 	    <Generator></Generator>
 	  </EmbeddedResource>

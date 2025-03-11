@@ -20,6 +20,8 @@
                     <x:Array Type="{x:Type x:String}">
                         <x:String>en</x:String>
                         <x:String>de</x:String>
+                        <x:String>es</x:String>
+                        <x:String>fr</x:String>
                     </x:Array>
                 </Picker.ItemsSource>
             </Picker>

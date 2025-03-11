@@ -118,201 +118,201 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="add" xml:space="preserve">
-    <value>Hinzufügen</value>
+    <value>Añadir</value>
   </data>
   <data name="AddNewItem" xml:space="preserve">
-    <value>Positionen einfügen</value>
+    <value>Insertar posiciones</value>
   </data>
   <data name="AddNewList" xml:space="preserve">
-    <value>Neue Liste hinzufügen</value>
+    <value>Añadir nueva lista</value>
   </data>
   <data name="Application_is_closed_to_update_changes" xml:space="preserve">
-    <value>Anwendung wird geschlossen, um Änderungen zu aktualisieren</value>
+    <value>La aplicación está cerrada para actualizar los</value>
   </data>
   <data name="Are_you_sure" xml:space="preserve">
-    <value>Sind Sie sicher?</value>
+    <value>¿Está seguro?</value>
   </data>
   <data name="Cancel" xml:space="preserve">
-    <value>Abbruch</value>
+    <value>Cancelar</value>
   </data>
   <data name="collapse" xml:space="preserve">
-    <value>falten</value>
+    <value>Doblar</value>
   </data>
   <data name="copy_list" xml:space="preserve">
-    <value>List koperen</value>
+    <value>Copiar lista</value>
   </data>
   <data name="Copy_list_to_clipboard" xml:space="preserve">
-    <value>Liste in Zwischenablage kopieren</value>
+    <value>Copiar lista al portapapeles</value>
   </data>
   <data name="Create_new_article" xml:space="preserve">
-    <value>Neuen Artikel erfassen</value>
+    <value>Crear nuevo artículo</value>
   </data>
   <data name="Delete_list" xml:space="preserve">
-    <value>Liste löschen</value>
+    <value>Borrar lista</value>
   </data>
   <data name="done" xml:space="preserve">
-    <value>Erledigt</value>
+    <value>Hecho</value>
   </data>
   <data name="Do_you_really_want_to_end_the_synchronising_of_this_list" xml:space="preserve">
-    <value>Wollen Sie wirklich die Synchronisierung dieser Liste beenden?</value>
+    <value>¿Realmente desea dejar de sincronizar esta lista?</value>
   </data>
   <data name="Do_you_want_to_use_commas_as_list_element_separators" xml:space="preserve">
-    <value>Wollen Sie Kommas (",") als Listenelementtrennzeichen verwenden?</value>
+    <value>¿Desea utilizar comas («,») como separadores de elementos de la lista?</value>
   </data>
   <data name="edit" xml:space="preserve">
-    <value>Bearbeiten</value>
+    <value>Editar lista</value>
   </data>
   <data name="Enter_a_list_name_or_insert_a_ready_made" xml:space="preserve">
-    <value>Geben Sie einen Listennamen ein oder fügen Sie eine fertige Liste als Zeichenkette im JSON-Format ein, die Sie von jemandem erhalten haben, z. B. per WatsApp.</value>
+    <value>Introduzca un nombre de lista o inserte una lista ya hecha como cadena de caracteres en formato JSON que haya recibido de alguien, por ejemplo, a través de WatsApp.</value>
   </data>
   <data name="Enter_list_name" xml:space="preserve">
-    <value>Listenname eingeben</value>
+    <value>Introducir nombre de lista</value>
   </data>
   <data name="Enter_new_list_name" xml:space="preserve">
-    <value>Neuen Listennamen eingeben oder </value>
+    <value>Introduzca un nuevo nombre de lista o</value>
   </data>
   <data name="Enter_new_position_title" xml:space="preserve">
-    <value>Neue Positionsname eingeben</value>
+    <value>Introduzca un nuevo nombre de elemento</value>
   </data>
   <data name="expand" xml:space="preserve">
-    <value>expand</value>
+    <value>Ampliar</value>
   </data>
   <data name="Export_list" xml:space="preserve">
-    <value>Aktuelle Liste exportieren</value>
+    <value>Exportar la lista actual</value>
   </data>
   <data name="help" xml:space="preserve">
-    <value>Hilfe</value>
+    <value>Ayuda</value>
   </data>
   <data name="Import_export_of_lists" xml:space="preserve">
-    <value>Import/Export der Liste</value>
+    <value>Importar/Exportar la lista</value>
   </data>
   <data name="import_liste" xml:space="preserve">
-    <value>Liste importieren</value>
+    <value>Importar lista</value>
   </data>
   <data name="Input" xml:space="preserve">
-    <value>Eingabe</value>
+    <value>Introduzca</value>
   </data>
   <data name="InputTextWithMicrophoneViewModel_PlaceholderText" xml:space="preserve">
-    <value>1. Sie können einen einfachen Satz verwenden, z. B. "Milch 2 St.";
+    <value>1. puede utilizar una frase simple, por ejemplo «Leche 2 uds»;
 
-2. eine Liste als Satz mit einem Semikolon (";") als Trennzeichen, z.B. "Milch 2 St.;Fleisch 0,5 kg;Saft 1 Packung;Bonnen 1 S.". Eine solche Liste kann z.B. per WatsApp verschickt und schnell eingelesen werden.
+2. una lista en forma de frase con un punto y coma («;») como separador, p. ej. «leche 2 uds;carne 0,5 kg;zumo 1 paquete;peras 1 p.». Una lista así puede enviarse por WatsApp, por ejemplo, y leerse rápidamente.
 
-3. Sie können eine verschickte Liste, siehe Punkt 2, aus der Zwischenablage einfügen.
+3. puedes pegar una lista enviada, ver punto 2, desde el portapapeles.
 
-Am Ende bitte nicht vergessen, die Eingabetaste zu drücken :)</value>
+Al final, no olvide pulsar la tecla Intro :)</value>
   </data>
   <data name="InputText_placeholder" xml:space="preserve">
-    <value>Einfügen: "Apfel" oder: "Apfel;Birne;..." mehr s.?</value>
+    <value>Insertar: «Manzana» o: «Manzana;Pera;...» ¿más s.?</value>
   </data>
   <data name="language" xml:space="preserve">
-    <value>Sprache</value>
+    <value>Idioma</value>
   </data>
   <data name="Lists" xml:space="preserve">
-    <value>Listen</value>
+    <value>Listas</value>
   </data>
   <data name="List_added_successfully" xml:space="preserve">
-    <value>Liste erfolgreich hinzugefügt</value>
+    <value>Lista añadida con éxito</value>
   </data>
   <data name="List_manipulation" xml:space="preserve">
-    <value>Manipulation der Liste</value>
+    <value>Manipulación de la lista</value>
   </data>
   <data name="List_not_available_or_corrupt" xml:space="preserve">
-    <value>Liste nicht vorhanden oder beschädigt</value>
+    <value>Lista no disponible o dañada</value>
   </data>
   <data name="List_was_imported_successfully" xml:space="preserve">
-    <value>Liste wurde erfolgreich importiert</value>
+    <value>Lista importada correctamente</value>
   </data>
   <data name="List_was_successfully_deleted" xml:space="preserve">
-    <value>Liste wurde erfolgreich gelöscht</value>
+    <value>Lista eliminada correctamente</value>
   </data>
   <data name="no" xml:space="preserve">
-    <value>Nein</value>
+    <value>No</value>
   </data>
   <data name="No_items_to_display" xml:space="preserve">
-    <value>Keine Elemente zum Anzeigen</value>
+    <value>No hay elementos para mostrar</value>
   </data>
   <data name="Operation_successfully_completed" xml:space="preserve">
-    <value>Operation erfolgreich abgeschlossen</value>
+    <value>Operación completada con éxito</value>
   </data>
   <data name="Paste_from_clipboard" xml:space="preserve">
-    <value>Aus Zwischenablage einfügen</value>
+    <value>Pegar desde el portapapeles</value>
   </data>
   <data name="Please_create_a_first_list" xml:space="preserve">
-    <value>Bitte erstellen Sie eine erste Liste</value>
+    <value>Por favor, cree una primera lista</value>
   </data>
   <data name="Please_enter_the_ID_of_the_list_to_be_synchronised" xml:space="preserve">
-    <value>Bitte geben Sie die ID der zu synchronisierenden Liste ein. Diese erhalten Sie von Ihrem Partner.</value>
+    <value>Introduzca el ID de la lista que desea sincronizar. Lo recibirá de su socio.</value>
   </data>
   <data name="Positions" xml:space="preserve">
-    <value>Positionen</value>
+    <value>Posiciones</value>
   </data>
   <data name="Replace_old_list_element_when_inserting" xml:space="preserve">
-    <value>Listenelement beim Einfügen ersetzen</value>
+    <value>Sustituir elemento de lista al insertar</value>
   </data>
   <data name="Request_synchronisation" xml:space="preserve">
-    <value>Synchronisation anfordern</value>
+    <value>Solicitar sincronización</value>
   </data>
   <data name="ResetPositions" xml:space="preserve">
-    <value>Zurücksetzen</value>
+    <value>Restablecer</value>
   </data>
   <data name="Reset_current_list" xml:space="preserve">
-    <value>Aktuelle Liste zurücksetzen</value>
+    <value>Restablecer lista actual</value>
   </data>
   <data name="search" xml:space="preserve">
-    <value>Suchen</value>
+    <value>Buscar en</value>
   </data>
   <data name="Selected_list_and_list_synchronisations_will_now_be_deleted" xml:space="preserve">
-    <value>Ausgewählte Liste und Listensynchronisationen werden jetzt gelöscht, sind Sie damit einverstanden?</value>
+    <value>La lista seleccionada y las sincronizaciones de listas se eliminarán, ¿está de acuerdo?</value>
   </data>
   <data name="Send_synchronisation" xml:space="preserve">
-    <value>Synchronisation senden</value>
+    <value>Enviar sincronización</value>
   </data>
   <data name="sort_by" xml:space="preserve">
-    <value>Sortieren nach</value>
+    <value>Ordenar por</value>
   </data>
   <data name="sort_by_alphabet" xml:space="preserve">
-    <value>Sortierung nach Alphabet</value>
+    <value>Ordenar por alfabeto</value>
   </data>
   <data name="sort_by_date" xml:space="preserve">
-    <value>Sortierung nach Datum</value>
+    <value>Ordenar por fecha</value>
   </data>
   <data name="String_is_not_a_valid_list_description" xml:space="preserve">
-    <value>Zeichenkette ist keine gültige Listenbeschreibung (JSON-Format)</value>
+    <value>La cadena no es una descripción de lista válida (formato JSON)</value>
   </data>
   <data name="String_is_not_a_valid_List_ID" xml:space="preserve">
-    <value>String ist keine gültige List-ID</value>
+    <value>La cadena no es un ID de lista válido</value>
   </data>
   <data name="Synchronisation" xml:space="preserve">
-    <value>Synchronisierung</value>
+    <value>Sincronización</value>
   </data>
   <data name="Synchronisation of lists" xml:space="preserve">
-    <value>Synchronisierung der Liste</value>
+    <value>Sincronización de la lista</value>
   </data>
   <data name="theme" xml:space="preserve">
-    <value>Thema</value>
+    <value>Tema</value>
   </data>
   <data name="The_clipboard_is_empty" xml:space="preserve">
-    <value>Die Zwischenablage ist leer</value>
+    <value>El portapapeles está vacío</value>
   </data>
   <data name="The_list_was_saved_as_a_string_in_the_clipboard" xml:space="preserve">
-    <value>Die Liste wurde als Zeichenfolge in der Zwischenablage gespeichert. Diese kann nun z.B. per WatsApp verschickt werden.</value>
+    <value>La lista se ha guardado como una cadena en el portapapeles. Ahora se puede enviar a través de WatsApp, por ejemplo.</value>
   </data>
   <data name="To_be_able_to_edit_the_list_please_use_the_following_key" xml:space="preserve">
-    <value>Um die Liste "%2" bearbeiten zu können, verwenden Sie bitte folgenden Schlüssel: %1 (vertraulich).</value>
+    <value>Para poder editar la lista «%2», utilice la siguiente tecla: %1 (confidencial).</value>
   </data>
   <data name="undone" xml:space="preserve">
-    <value>Nicht erledigt</value>
+    <value>No hecho</value>
   </data>
   <data name="Would_you_like_to_overwrite_the_existing_list_with_new_data" xml:space="preserve">
-    <value>Möchten Sie die bestehende Liste mit neuen Daten überschreiben?</value>
+    <value>¿Desea sobrescribir la lista existente con nuevos datos?</value>
   </data>
   <data name="Would_you_like_to_start_synchronisation_now" xml:space="preserve">
-    <value>Möchten Sie die Synchronisierung jetzt starten?</value>
+    <value>¿Desea iniciar la sincronización ahora?</value>
   </data>
   <data name="Would_you_like_to_work_with_someone_on_a_current_list" xml:space="preserve">
-    <value>Möchten Sie mit jemandem an einer aktuellen Liste arbeiten?</value>
+    <value>¿Desea trabajar con alguien en una lista actual?</value>
   </data>
   <data name="yes" xml:space="preserve">
-    <value>Ja</value>
+    <value>Sí</value>
   </data>
 </root>
