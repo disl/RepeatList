@@ -235,6 +235,11 @@
 	  <Compile Update="PositionsPage.xaml.cs">
 	    <DependentUpon>PositionsPage.xaml</DependentUpon>
 	  </Compile>
+	  <Compile Update="Properties\Resources.it.Designer.cs">
+	    <DependentUpon>Resources.it.resx</DependentUpon>
+	    <DesignTime>True</DesignTime>
+	    <AutoGen>True</AutoGen>
+	  </Compile>
 	  <Compile Update="Properties\Resources.Designer.cs">
 	    <DesignTime>True</DesignTime>
 	    <AutoGen>True</AutoGen>
@@ -243,6 +248,10 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <EmbeddedResource Update="Properties\Resources.it.resx">
+	    <LastGenOutput>Resources.it.Designer.cs</LastGenOutput>
+	    <Generator>PublicResXFileCodeGenerator</Generator>
+	  </EmbeddedResource>
 	  <EmbeddedResource Update="Properties\Resources.fr.resx">
 	    <Generator></Generator>
 	  </EmbeddedResource>
