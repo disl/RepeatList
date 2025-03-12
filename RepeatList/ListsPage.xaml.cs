@@ -90,31 +90,23 @@ namespace RepeatList
                 Properties.Resources.AddNewList, Properties.Resources.Enter_a_list_name_or_insert_a_ready_made, "OK", Properties.Resources.Cancel);
             if (!string.IsNullOrWhiteSpace(new_list_name))
             {
-                // Check ">>>"
-                if (!new_list_name.Contains(">>>"))
+                // Check ">>>" (JSON-List)
+                if (new_list_name.Contains(">>>"))
                 {
-                    await Application.Current.MainPage.DisplaySnackbar(
-                        Properties.Resources.List_information_has_wrong_format, visualOptions: new SnackbarOptions
-                        {
-                            BackgroundColor = Color.FromArgb(Constantes.Color_Error),  
-                            TextColor = Colors.White
-                        });
-                    return;
+                    // Customise info 
+                    var ind = new_list_name.IndexOf(">>>");
+                    if (ind < 0)
+                    {
+                        await Application.Current.MainPage.DisplaySnackbar(
+                           Properties.Resources.List_information_has_wrong_format, visualOptions: new SnackbarOptions
+                           {
+                               BackgroundColor = Color.FromArgb(Constantes.Color_Error),
+                               TextColor = Colors.White
+                           });
+                        return;
+                    }
+                    new_list_name = new_list_name.Substring(ind, new_list_name.Length - ind).Replace(">>>", "");
                 }
-
-                // Customise info 
-                var ind = new_list_name.IndexOf(">>>");
-                if (ind < 0)
-                {
-                    await Application.Current.MainPage.DisplaySnackbar(
-                       Properties.Resources.List_information_has_wrong_format, visualOptions: new SnackbarOptions
-                       {
-                           BackgroundColor = Color.FromArgb(Constantes.Color_Error),
-                           TextColor = Colors.White
-                       });
-                    return;
-                }
-                new_list_name = new_list_name.Substring(ind, new_list_name.Length - ind).Replace(">>>","");
 
                 if (!await ViewModel.InputHeaderWithPositions(new_list_name))
                 {
