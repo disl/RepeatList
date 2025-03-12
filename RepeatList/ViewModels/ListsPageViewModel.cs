@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Maui.Alerts;
+using CommunityToolkit.Maui.Core;
 using CommunityToolkit.Maui.Core.Extensions;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -342,7 +343,14 @@ namespace RepeatList.ViewModels
                 {
                     if (!Guid.TryParse(guid_str, out tmp_guid))
                     {
-                        await Application.Current.MainPage.DisplaySnackbar(Properties.Resources.String_is_not_a_valid_List_ID);
+                        await Application.Current.MainPage.DisplaySnackbar(Properties.Resources.String_is_not_a_valid_List_ID,
+                            visualOptions: new SnackbarOptions
+                            {
+                                BackgroundColor = Color.FromArgb(Constantes.Color_Error),
+                                TextColor = Colors.White
+                            });
+                            
+                            
                         IsBusy = false;
                         return;
                     }
@@ -373,8 +381,6 @@ namespace RepeatList.ViewModels
         [RelayCommand]
         public async Task Sync_list_upClicked()
         {
-
-
             Lists = (await _databaseService.GetPositionsAsync(Header_SelectedItem.Id)).ToObservableCollection();
             if (Lists == null || Lists.Count == 0 || Header == null)
             {
@@ -422,7 +428,10 @@ namespace RepeatList.ViewModels
             var settings = new JsonSerializerSettings();
             settings.Converters.Add(new OnlyPositionsJsonConverter());
             var json = JsonConvert.SerializeObject(header, settings);
-            await Utilities.ShareTextAsync(json);
+
+            var send_text = Properties.Resources.Please_copy_this_text_to_the_clipboard_and_import_it_via_the_hamburger_menu.Replace("%1", json);
+
+            await Utilities.ShareTextAsync(send_text);
 
             IsBusy = false;
         }

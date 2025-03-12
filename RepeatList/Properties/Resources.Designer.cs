@@ -328,6 +328,15 @@ namespace RepeatList.Properties {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die List information has wrong format ähnelt.
+        /// </summary>
+        public static string List_information_has_wrong_format {
+            get {
+                return ResourceManager.GetString("List_information_has_wrong_format", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die List manipulation ähnelt.
         /// </summary>
         public static string List_manipulation {
@@ -405,6 +414,15 @@ namespace RepeatList.Properties {
         public static string Paste_from_clipboard {
             get {
                 return ResourceManager.GetString("Paste_from_clipboard", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Please copy this text to the clipboard and import it via the hamburger menu&gt;&gt;&gt;%1 ähnelt.
+        /// </summary>
+        public static string Please_copy_this_text_to_the_clipboard_and_import_it_via_the_hamburger_menu {
+            get {
+                return ResourceManager.GetString("Please_copy_this_text_to_the_clipboard_and_import_it_via_the_hamburger_menu", resourceCulture);
             }
         }
         

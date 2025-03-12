@@ -213,6 +213,9 @@ Alla fine, non dimenticate di premere il tasto Invio :)</value>
   <data name="List_added_successfully" xml:space="preserve">
     <value>Elenco aggiunto con successo</value>
   </data>
+  <data name="List_information_has_wrong_format" xml:space="preserve">
+    <value>Le informazioni dell'elenco hanno un formato sbagliato</value>
+  </data>
   <data name="List_manipulation" xml:space="preserve">
     <value>Manipolazione dell'elenco</value>
   </data>
@@ -236,6 +239,9 @@ Alla fine, non dimenticate di premere il tasto Invio :)</value>
   </data>
   <data name="Paste_from_clipboard" xml:space="preserve">
     <value>Incolla dagli appunti</value>
+  </data>
+  <data name="Please_copy_this_text_to_the_clipboard_and_import_it_via_the_hamburger_menu" xml:space="preserve">
+    <value>Copiare questo testo negli appunti e importarlo tramite il menu hamburger dell'elenco&gt;&gt;&gt;%1</value>
   </data>
   <data name="Please_create_a_first_list" xml:space="preserve">
     <value>Creare un primo elenco</value>

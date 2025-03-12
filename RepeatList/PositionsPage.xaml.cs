@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Maui.Alerts;
+using CommunityToolkit.Maui.Core;
 using CommunityToolkit.Maui.Core.Extensions;
 using Newtonsoft.Json;
 using RepeatList.Models;
@@ -375,7 +376,12 @@ namespace RepeatList
 
             ViewModel.InputText = string.Empty;
 
-            await Application.Current.MainPage.DisplaySnackbar(Properties.Resources.Operation_successfully_completed);
+            await Application.Current.MainPage.DisplaySnackbar(Properties.Resources.Operation_successfully_completed,
+                visualOptions: new SnackbarOptions
+                {
+                    BackgroundColor = Color.FromArgb(Constantes.Color_Success),
+                    TextColor = Colors.White
+                });
 
             ViewModel.IsBusy = false;
         }

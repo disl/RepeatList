@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Maui.Alerts;
+using CommunityToolkit.Maui.Core;
 using CommunityToolkit.Maui.Core.Extensions;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -223,7 +224,8 @@ namespace RepeatList.ViewModels
             {
                 if (!Guid.TryParse(guid_str, out tmp_guid))
                 {
-                    await Application.Current.MainPage.DisplaySnackbar(Properties.Resources.String_is_not_a_valid_List_ID);
+                    await Application.Current.MainPage.DisplaySnackbar(Properties.Resources.String_is_not_a_valid_List_ID, 
+                        visualOptions: new SnackbarOptions { BackgroundColor = Color.FromArgb(Constantes.Color_Error), TextColor = Colors.White });
                     IsBusy = false;
                     return;
                 }
@@ -237,7 +239,12 @@ namespace RepeatList.ViewModels
 
             if (sync_responce.Header == null || sync_responce.Positions == null)
             {
-                await Application.Current.MainPage.DisplaySnackbar(Properties.Resources.List_not_available_or_corrupt);
+                await Application.Current.MainPage.DisplaySnackbar(Properties.Resources.List_not_available_or_corrupt,
+                    visualOptions: new SnackbarOptions
+                    {
+                        BackgroundColor = Color.FromArgb(Constantes.Color_Error),
+                        TextColor = Colors.White
+                    });
                 IsBusy = false;
                 return;
             }
@@ -256,7 +263,8 @@ namespace RepeatList.ViewModels
             Header_SelectedItem= Header;
             await EditIsSynchronizedHeader(Header_SelectedItem, true);
 
-            await Application.Current.MainPage.DisplaySnackbar(Properties.Resources.List_was_imported_successfully);
+            await Application.Current.MainPage.DisplaySnackbar(Properties.Resources.List_was_imported_successfully, 
+                visualOptions: new SnackbarOptions { BackgroundColor = Color.FromArgb(Constantes.Color_Success), TextColor = Colors.White });
 
             IsBusy = false;
         }
@@ -279,7 +287,8 @@ namespace RepeatList.ViewModels
                 {
                     if (!Guid.TryParse(guid_str, out tmp_guid))
                     {
-                        await Application.Current.MainPage.DisplaySnackbar(Properties.Resources.String_is_not_a_valid_List_ID);
+                        await Application.Current.MainPage.DisplaySnackbar(Properties.Resources.String_is_not_a_valid_List_ID, 
+                            visualOptions: new SnackbarOptions { BackgroundColor = Color.FromArgb(Constantes.Color_Error), TextColor = Colors.White });
                         IsBusy = false;
                         return;
                     }

@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Maui.Alerts;
+using CommunityToolkit.Maui.Core;
 using CommunityToolkit.Maui.Views;
 using RepeatList.Models;
 using RepeatList.ViewModels;
@@ -89,11 +90,42 @@ namespace RepeatList
                 Properties.Resources.AddNewList, Properties.Resources.Enter_a_list_name_or_insert_a_ready_made, "OK", Properties.Resources.Cancel);
             if (!string.IsNullOrWhiteSpace(new_list_name))
             {
+                // Check ">>>"
+                if (!new_list_name.Contains(">>>"))
+                {
+                    await Application.Current.MainPage.DisplaySnackbar(
+                        Properties.Resources.List_information_has_wrong_format, visualOptions: new SnackbarOptions
+                        {
+                            BackgroundColor = Color.FromArgb(Constantes.Color_Error),  
+                            TextColor = Colors.White
+                        });
+                    return;
+                }
+
+                // Customise info 
+                var ind = new_list_name.IndexOf(">>>");
+                if (ind < 0)
+                {
+                    await Application.Current.MainPage.DisplaySnackbar(
+                       Properties.Resources.List_information_has_wrong_format, visualOptions: new SnackbarOptions
+                       {
+                           BackgroundColor = Color.FromArgb(Constantes.Color_Error),
+                           TextColor = Colors.White
+                       });
+                    return;
+                }
+                new_list_name = new_list_name.Substring(ind, new_list_name.Length - ind).Replace(">>>","");
+
                 if (!await ViewModel.InputHeaderWithPositions(new_list_name))
                 {
                     var new_id = await ViewModel.AddHeader(new_list_name);
                 }
-                await Application.Current.MainPage.DisplaySnackbar(Properties.Resources.List_added_successfully);
+                await Application.Current.MainPage.DisplaySnackbar(Properties.Resources.List_added_successfully,
+                    visualOptions: new SnackbarOptions
+                {
+                    BackgroundColor = Color.FromArgb(Constantes.Color_Success),
+                    TextColor = Colors.White
+                });
 
                 ViewModel.SetFirstItemForHeaders();
             }
@@ -138,7 +170,12 @@ namespace RepeatList
                     await ViewModel.DeleteHeaderInSupabase(header);
 
 
-                    await Application.Current.MainPage.DisplaySnackbar(Properties.Resources.List_was_successfully_deleted);
+                    await Application.Current.MainPage.DisplaySnackbar(Properties.Resources.List_was_successfully_deleted, 
+                        visualOptions: new SnackbarOptions
+                    {
+                        BackgroundColor = Color.FromArgb(Constantes.Color_Success),
+                        TextColor = Colors.White
+                    });
 
                     ViewModel.IsBusy = false;
                 }
