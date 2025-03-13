@@ -4,16 +4,23 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:RepeatList"
+    xmlns:viewModels="clr-namespace:RepeatList.ViewModels"
+    xmlns:properties="clr-namespace:RepeatList.Properties"
     Shell.FlyoutBehavior="Flyout"
-    xmlns:controls="clr-namespace:RepeatList.Controls"
+    FlyoutBackgroundColor="#121212"
+    xmlns:controls="clr-namespace:RepeatList.Controls"       
     Title="MiniList">
     <Shell.FlyoutHeader>
         <controls:FlyoutHeader />
     </Shell.FlyoutHeader>
+    <Shell.BindingContext>
+        <viewModels:ResourcesViewModel />
+    </Shell.BindingContext>
 
+    <ShellContent  Title="MiniList"  ContentTemplate="{DataTemplate local:ListsPage}"  Route="Lists"  />
+    <ShellContent x:Name="setupContetnt" Title="{Binding Setup}"  ContentTemplate="{DataTemplate local:SetupPage}"  Route="SetupPage" />
 
-    <ShellContent  Title="MiniList"  ContentTemplate="{DataTemplate local:ListsPage}"  Route="Lists" />
-    <ShellContent  Title="Setup"  ContentTemplate="{DataTemplate local:SetupPage}"  Route="SetupPage" />
+   
     <ShellContent  Title="Positions"  ContentTemplate="{DataTemplate local:PositionsPage}"  Route="Positions" IsVisible="False" />
     <ShellContent  Title="Lists/Positions"  ContentTemplate="{DataTemplate local:PositionsPage}"  Route="Lists/Positions" IsVisible="False" />
 </Shell>

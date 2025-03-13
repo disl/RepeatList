@@ -517,6 +517,15 @@ namespace RepeatList.Properties {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Setup ähnelt.
+        /// </summary>
+        public static string setup {
+            get {
+                return ResourceManager.GetString("setup", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Sort by ähnelt.
         /// </summary>
         public static string sort_by {

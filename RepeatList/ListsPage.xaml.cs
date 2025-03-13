@@ -20,6 +20,7 @@ namespace RepeatList
     {
         private SetupPageViewModel SetupPageViewModel { get; set; }
         private ListsPageViewModel ViewModel { get; set; }
+        private ResourcesViewModel ResourcesViewModel { get; set; }
 
         public ListsPage()
         {
@@ -64,6 +65,8 @@ namespace RepeatList
             ViewModel.Label_lists = tmp_lists;
 
             ViewModel.InitLabels();
+
+            ResourcesViewModel = new ResourcesViewModel();
 
             //ViewModel.IsExpander_listsExpended=false;
             //ViewModel.IsExpander_listsExpended=true;
@@ -114,10 +117,10 @@ namespace RepeatList
                 }
                 await Application.Current.MainPage.DisplaySnackbar(Properties.Resources.List_added_successfully,
                     visualOptions: new SnackbarOptions
-                {
-                    BackgroundColor = Color.FromArgb(Constantes.Color_Success),
-                    TextColor = Colors.White
-                });
+                    {
+                        BackgroundColor = Color.FromArgb(Constantes.Color_Success),
+                        TextColor = Colors.White
+                    });
 
                 ViewModel.SetFirstItemForHeaders();
             }
@@ -162,12 +165,12 @@ namespace RepeatList
                     await ViewModel.DeleteHeaderInSupabase(header);
 
 
-                    await Application.Current.MainPage.DisplaySnackbar(Properties.Resources.List_was_successfully_deleted, 
+                    await Application.Current.MainPage.DisplaySnackbar(Properties.Resources.List_was_successfully_deleted,
                         visualOptions: new SnackbarOptions
-                    {
-                        BackgroundColor = Color.FromArgb(Constantes.Color_Success),
-                        TextColor = Colors.White
-                    });
+                        {
+                            BackgroundColor = Color.FromArgb(Constantes.Color_Success),
+                            TextColor = Colors.White
+                        });
 
                     ViewModel.IsBusy = false;
                 }

@@ -273,6 +273,9 @@ Al final, no olvide pulsar la tecla Intro :)</value>
   <data name="Send_synchronisation" xml:space="preserve">
     <value>Enviar sincronización</value>
   </data>
+  <data name="setup" xml:space="preserve">
+    <value>Configurar</value>
+  </data>
   <data name="sort_by" xml:space="preserve">
     <value>Ordenar por</value>
   </data>

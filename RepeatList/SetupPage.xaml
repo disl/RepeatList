@@ -23,6 +23,7 @@
                         <x:String>es</x:String>
                         <x:String>fr</x:String>
                         <x:String>it</x:String>
+                        <x:String>ru</x:String>
                     </x:Array>
                 </Picker.ItemsSource>
             </Picker>
@@ -44,7 +45,7 @@
             </Picker>
         </StackLayout>
         <StackLayout Orientation="Horizontal" HorizontalOptions="StartAndExpand" Spacing="10" >
-            <Button Text="OK" Clicked="OkButton_Clicked" HorizontalOptions="FillAndExpand" WidthRequest="150" />
+            <Button Text="OK" Clicked="OkButton_Clicked" HorizontalOptions="FillAndExpand" TextColor="White" WidthRequest="150" />
             <Button Text="{Binding Label_cancel}" Clicked="OnCancel" BackgroundColor="Red"  TextColor="White" WidthRequest="150"/>
         </StackLayout>
     </StackLayout>

@@ -273,6 +273,9 @@ At the end, please do not forget to press the Enter key :)</value>
   <data name="Send_synchronisation" xml:space="preserve">
     <value>Send synchronisation</value>
   </data>
+  <data name="setup" xml:space="preserve">
+    <value>Setup</value>
+  </data>
   <data name="sort_by" xml:space="preserve">
     <value>Sort by</value>
   </data>

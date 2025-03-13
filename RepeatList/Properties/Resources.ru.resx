@@ -118,210 +118,210 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="add" xml:space="preserve">
-    <value>Ajouter</value>
+    <value>Добавить</value>
   </data>
   <data name="AddNewItem" xml:space="preserve">
-    <value>Insérer des positions</value>
+    <value>Добавить элементы</value>
   </data>
   <data name="AddNewList" xml:space="preserve">
-    <value>Ajouter une nouvelle liste</value>
+    <value>Добавить новый список</value>
   </data>
   <data name="Application_is_closed_to_update_changes" xml:space="preserve">
-    <value>L'application se ferme pour mettre à jour les modifications</value>
+    <value>Приложение будет закрыто для обновления изменений</value>
   </data>
   <data name="Are_you_sure" xml:space="preserve">
-    <value>Êtes-vous sûr ?</value>
+    <value>Вы уверены?</value>
   </data>
   <data name="Cancel" xml:space="preserve">
-    <value>Annuler</value>
+    <value>Отменить</value>
   </data>
   <data name="collapse" xml:space="preserve">
-    <value>plier</value>
+    <value>Свернуть</value>
   </data>
   <data name="copy_list" xml:space="preserve">
-    <value>Copier la liste</value>
+    <value>Скопировать список</value>
   </data>
   <data name="Copy_list_to_clipboard" xml:space="preserve">
-    <value>Copier la liste vers le tableau</value>
+    <value>Копировать список в буфер обмена</value>
   </data>
   <data name="Create_new_article" xml:space="preserve">
-    <value>Saisir un nouvel article</value>
+    <value>Создать новый артикул</value>
   </data>
   <data name="Delete_list" xml:space="preserve">
-    <value>Supprimer la liste</value>
+    <value>Удалить список</value>
   </data>
   <data name="done" xml:space="preserve">
-    <value>Fait</value>
+    <value>Готово</value>
   </data>
   <data name="Do_you_really_want_to_end_the_synchronising_of_this_list" xml:space="preserve">
-    <value>Voulez-vous vraiment arrêter la synchronisation de cette liste ?</value>
+    <value>Вы действительно хотите прекратить синхронизацию этого списка?</value>
   </data>
   <data name="Do_you_want_to_use_commas_as_list_element_separators" xml:space="preserve">
-    <value>Voulez-vous utiliser des virgules (« , ») comme séparateurs d'éléments de liste ?</value>
+    <value>Хотите ли вы использовать запятые («,») в качестве разделителей элементов списка?</value>
   </data>
   <data name="edit" xml:space="preserve">
-    <value>Modifier</value>
+    <value>Редактировать</value>
   </data>
   <data name="Enter_a_list_name_or_insert_a_ready_made" xml:space="preserve">
-    <value>Saisissez un nom de liste ou insérez une liste prête à l'emploi sous forme de chaîne de caractères au format JSON que vous avez reçue de quelqu'un, par exemple via WatsApp.</value>
+    <value>Введите имя списка или вставьте готовый список в виде строки символов в формате JSON, который вы получили от кого-то, например, через WatsApp.</value>
   </data>
   <data name="Enter_list_name" xml:space="preserve">
-    <value>Saisir un nom de liste</value>
+    <value>Ввести имя списка</value>
   </data>
   <data name="Enter_new_list_name" xml:space="preserve">
-    <value>Saisir un nouveau nom de liste ou </value>
+    <value>Введите новое имя списка</value>
   </data>
   <data name="Enter_new_position_title" xml:space="preserve">
-    <value>Saisir un nouveau nom de poste</value>
+    <value>Введите имя нового элемента</value>
   </data>
   <data name="expand" xml:space="preserve">
-    <value>expand</value>
+    <value>развернуть</value>
   </data>
   <data name="Export_list" xml:space="preserve">
-    <value>Exporter la liste actuelle</value>
+    <value>Экспорт текущего списка</value>
   </data>
   <data name="help" xml:space="preserve">
-    <value>Aide</value>
+    <value>Помощь</value>
   </data>
   <data name="Import_export_of_lists" xml:space="preserve">
-    <value>Importer/exporter la liste</value>
+    <value>Импорт/экспорт списка</value>
   </data>
   <data name="import_liste" xml:space="preserve">
-    <value>Importer la liste</value>
+    <value>Импорт списка</value>
   </data>
   <data name="Input" xml:space="preserve">
-    <value>Entrée</value>
+    <value>Ввод</value>
   </data>
   <data name="InputTextWithMicrophoneViewModel_PlaceholderText" xml:space="preserve">
-    <value>1. vous pouvez utiliser une phrase simple, par exemple « lait 2 p. » ;
+    <value>1. можно использовать простое предложение, например, «Молоко 2 шт.»;
 
-2. une liste sous forme de phrase avec un point-virgule («  ; ») comme séparateur, p. ex. « lait 2 pcs;viande 0,5 kg;jus 1 paquet;poires 1 p. ». Une telle liste peut par exemple être envoyée par WatsApp et être lue rapidement.
+2. список в виде предложения с точкой с запятой («;») в качестве разделителя, например, «молоко 2 шт;мясо 0,5 кг;сок 1 пакет;груши 1 шт.». Такой список можно отправить, например, через WatsApp и быстро прочитать.
 
-3. vous pouvez insérer une liste envoyée, voir point 2, à partir du presse-papiers.
+3. Вы можете вставить отправленный список, см. пункт 2, из буфера обмена.
 
-A la fin, n'oubliez pas d'appuyer sur la touche « Entrée » :)</value>
+В конце, пожалуйста, не забудьте нажать клавишу Enter :)</value>
   </data>
   <data name="InputText_placeholder" xml:space="preserve">
-    <value>Insérer : « pomme » ou : « pomme;poire ;... » plus s. ?</value>
+    <value>Вставить: «Яблоко» или: «Яблоко;груша;...» больше s.?</value>
   </data>
   <data name="language" xml:space="preserve">
-    <value>Langue</value>
+    <value>Язык</value>
   </data>
   <data name="Lists" xml:space="preserve">
-    <value>Listes</value>
+    <value>Списки</value>
   </data>
   <data name="List_added_successfully" xml:space="preserve">
-    <value>Liste ajoutée avec succès</value>
+    <value>Список успешно добавлен</value>
   </data>
   <data name="List_information_has_wrong_format" xml:space="preserve">
-    <value>Le format des informations de la liste est incorrect</value>
+    <value>Информация в списке имеет неправильный формат</value>
   </data>
   <data name="List_manipulation" xml:space="preserve">
-    <value>Manipulation de la liste</value>
+    <value>Манипуляция со списком</value>
   </data>
   <data name="List_not_available_or_corrupt" xml:space="preserve">
-    <value>Liste inexistante ou endommagée</value>
+    <value>Список не существует или поврежден</value>
   </data>
   <data name="List_was_imported_successfully" xml:space="preserve">
-    <value>La liste a été importée avec succès</value>
+    <value>Список успешно импортирован</value>
   </data>
   <data name="List_was_successfully_deleted" xml:space="preserve">
-    <value>La liste a été supprimée avec succès</value>
+    <value>Список успешно удален</value>
   </data>
   <data name="no" xml:space="preserve">
-    <value>Non</value>
+    <value>Нет</value>
   </data>
   <data name="No_items_to_display" xml:space="preserve">
-    <value>Aucun élément à afficher</value>
+    <value>Нет элементов для отображения</value>
   </data>
   <data name="Operation_successfully_completed" xml:space="preserve">
-    <value>Operation successfully completed</value>
+    <value>Операция успешно завершена</value>
   </data>
   <data name="Paste_from_clipboard" xml:space="preserve">
-    <value>Paste from clipboard</value>
+    <value>Вставить из буфера обмена</value>
   </data>
   <data name="Please_copy_this_text_to_the_clipboard_and_import_it_via_the_hamburger_menu" xml:space="preserve">
-    <value>Veuillez copier ce texte dans le presse-papiers et l'importer via le menu hamburger de la liste&gt;&gt;%1</value>
+    <value>Пожалуйста, скопируйте этот текст в буфер обмена и импортируйте его через гамбургер-меню списка&gt;&gt;&gt;%1</value>
   </data>
   <data name="Please_create_a_first_list" xml:space="preserve">
-    <value>Veuillez créer une première liste</value>
+    <value>Пожалуйста, создайте первый список</value>
   </data>
   <data name="Please_enter_the_ID_of_the_list_to_be_synchronised" xml:space="preserve">
-    <value>Veuillez saisir l'ID de la liste à synchroniser. Vous l'obtiendrez de votre partenaire.</value>
+    <value>Введите идентификатор списка, который необходимо синхронизировать. Вы получите его от вашего партнера.</value>
   </data>
   <data name="Positions" xml:space="preserve">
-    <value>Positions</value>
+    <value>Элементы</value>
   </data>
   <data name="Replace_old_list_element_when_inserting" xml:space="preserve">
-    <value>Remplacer l'élément de la liste lors de l'insertion</value>
+    <value>Заменить элементы списка при вставке</value>
   </data>
   <data name="Request_synchronisation" xml:space="preserve">
-    <value>Demander la synchronisation</value>
+    <value>Запросить синхронизацию</value>
   </data>
   <data name="ResetPositions" xml:space="preserve">
-    <value>Réinitialiser</value>
+    <value>Позиции списка деактивировать</value>
   </data>
   <data name="Reset_current_list" xml:space="preserve">
-    <value>Réinitialiser la liste actuelle</value>
+    <value>Позиции списка деактивировать</value>
   </data>
   <data name="search" xml:space="preserve">
-    <value>Rechercher</value>
+    <value>Поиск</value>
   </data>
   <data name="Selected_list_and_list_synchronisations_will_now_be_deleted" xml:space="preserve">
-    <value>La liste sélectionnée et les synchronisations de listes sont maintenant supprimées, êtes-vous d'accord ?</value>
+    <value>Выбранный список и синхронизация списков будут удалены, вы согласны?</value>
   </data>
   <data name="Send_synchronisation" xml:space="preserve">
-    <value>Envoyer la synchronisation</value>
+    <value>Отправить код для синхронизации</value>
   </data>
   <data name="setup" xml:space="preserve">
-    <value>Configuration</value>
+    <value>Настройки</value>
   </data>
   <data name="sort_by" xml:space="preserve">
-    <value>Trier par</value>
+    <value>Сортировать по</value>
   </data>
   <data name="sort_by_alphabet" xml:space="preserve">
-    <value>Trier par ordre alphabétique</value>
+    <value>Сортировать по алфавиту</value>
   </data>
   <data name="sort_by_date" xml:space="preserve">
-    <value>Tri par date</value>
+    <value>Сортировать по дате</value>
   </data>
   <data name="String_is_not_a_valid_list_description" xml:space="preserve">
-    <value>La chaîne de caractères n'est pas une description de liste valide (format JSON)</value>
+    <value>Строка не является правильным описанием списка (формат JSON)</value>
   </data>
   <data name="String_is_not_a_valid_List_ID" xml:space="preserve">
-    <value>Chaîne n'est pas un identifiant de liste valide</value>
+    <value>Строка не является действительным идентификатором списка</value>
   </data>
   <data name="Synchronisation" xml:space="preserve">
-    <value>Synchronisation</value>
+    <value>Синхронизация</value>
   </data>
   <data name="Synchronisation of lists" xml:space="preserve">
-    <value>Synchronisation de la liste</value>
+    <value>Синхронизация списка</value>
   </data>
   <data name="theme" xml:space="preserve">
-    <value>Sujet</value>
+    <value>Тема</value>
   </data>
   <data name="The_clipboard_is_empty" xml:space="preserve">
-    <value>Le presse-papiers est vide</value>
+    <value>Буфер обмена пуст</value>
   </data>
   <data name="The_list_was_saved_as_a_string_in_the_clipboard" xml:space="preserve">
-    <value>La liste a été enregistrée comme chaîne de caractères dans le presse-papiers. Celle-ci peut maintenant être envoyée par WatsApp, par exemple.</value>
+    <value>Список был сохранен в буфере обмена в виде строки. Теперь его можно отправить, например, через WatsApp.</value>
   </data>
   <data name="To_be_able_to_edit_the_list_please_use_the_following_key" xml:space="preserve">
-    <value>Pour pouvoir modifier la liste « %2 », veuillez utiliser la clé suivante : %1 (confidentiel).</value>
+    <value>Чтобы отредактировать список «%2», пожалуйста, используйте следующий ключ: %1 (конфиденциально).</value>
   </data>
   <data name="undone" xml:space="preserve">
-    <value>Non fait</value>
+    <value>Не выполнено</value>
   </data>
   <data name="Would_you_like_to_overwrite_the_existing_list_with_new_data" xml:space="preserve">
-    <value>Souhaitez-vous écraser la liste existante avec de nouvelles données ?</value>
+    <value>Хотите ли вы перезаписать существующий список новыми данными?</value>
   </data>
   <data name="Would_you_like_to_start_synchronisation_now" xml:space="preserve">
-    <value>Souhaitez-vous démarrer la synchronisation maintenant ?</value>
+    <value>Хотите ли вы начать синхронизацию прямо сейчас?</value>
   </data>
   <data name="Would_you_like_to_work_with_someone_on_a_current_list" xml:space="preserve">
-    <value>Souhaitez-vous travailler avec quelqu'un sur une liste actuelle ?</value>
+    <value>Хотите ли вы работать с кем-то над текущим списком?</value>
   </data>
   <data name="yes" xml:space="preserve">
-    <value>Oui</value>
+    <value>Да</value>
   </data>
 </root>

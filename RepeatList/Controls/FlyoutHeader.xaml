@@ -3,14 +3,17 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="RepeatList.Controls.FlyoutHeader"
              HeightRequest="50">
-    <Grid BackgroundColor="RoyalBlue">
+    <VerticalStackLayout BackgroundColor="RoyalBlue" Padding="5" >
         <!--<Image Aspect="AspectFill"
                Source="repeat_list_300.jpg"
                Opacity="0.6" />-->
         <Label Text="MiniList"
                TextColor="White"
                FontAttributes="Bold"
+               FontSize="Large"
                HorizontalTextAlignment="Center"
                VerticalTextAlignment="Center" />
-    </Grid>
+
+        <Label Text="{Binding AppVersion}" FontSize="Small" TextColor="White" />
+    </VerticalStackLayout>
 </ContentView>
