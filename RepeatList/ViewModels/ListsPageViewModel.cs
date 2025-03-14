@@ -219,7 +219,7 @@ namespace RepeatList.ViewModels
 
                 json = JsonConvert.DeserializeObject<Header>(_input, settings);
             }
-            catch
+            catch(Exception ex)
             {
                 //await Application.Current.MainPage.DisplaySnackbar(Properties.Resources.String_is_not_a_valid_list_description);
                 IsBusy = false;

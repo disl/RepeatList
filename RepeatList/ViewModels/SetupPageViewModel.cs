@@ -21,6 +21,14 @@ namespace RepeatList.ViewModels
         [ObservableProperty] public string title_thema = Properties.Resources.theme;
         [ObservableProperty] public string label_cancel = Properties.Resources.Cancel;
 
+        [ObservableProperty] public ObservableCollection<LanguageItem> languages;
+        [ObservableProperty] public LanguageItem selectedLanguage;
+        partial void OnSelectedLanguageChanged(LanguageItem oldValue, LanguageItem newValue)
+        {
+            SelectedItem.DefaultLanguage = newValue.Code;
+        }
+
+
         #endregion
 
         //public double ButtonsSize = 30;
@@ -29,12 +37,30 @@ namespace RepeatList.ViewModels
         {
             _databaseService = new DatabaseService();
             _= Load();
+
+            InitLanguagePicker();
+        }
+
+        private void InitLanguagePicker()
+        {
+            Languages = new ObservableCollection<LanguageItem>
+            {
+                new LanguageItem { Name = "English", Code = "en", Icon = "england_icon.png" },
+                new LanguageItem { Name = "Deutsch", Code = "de", Icon = "germany_icon.png" },
+                new LanguageItem { Name = "Español", Code = "es", Icon = "spain_icon.png" },
+                new LanguageItem { Name = "Français", Code = "fr", Icon = "france_icon.png" },
+                new LanguageItem { Name = "Italiano", Code = "it", Icon = "italy_icon.png" },
+                new LanguageItem { Name = "Українська", Code = "ua", Icon = "ukraine_icon.png" },
+                new LanguageItem { Name = "Русский", Code = "ru", Icon = "russia_icon.png" },
+            };
+
+            // SelectedLanguage = Languages[0];
         }
 
         public async Task Load()
         {
-            var _list = await _databaseService.GetSetupsAsync();
-            if (_list == null || _list.Count == 0)
+            var _setup_list = await _databaseService.GetSetupsAsync();
+            if (_setup_list == null || _setup_list.Count == 0)
             {
                 await Add(CultureInfo.CurrentCulture.TwoLetterISOLanguageName, "Dark");
             }
@@ -43,7 +69,7 @@ namespace RepeatList.ViewModels
                 if (List == null)
                     List = new ObservableCollection<Setup>();
                 List.Clear();
-                List = new ObservableCollection<Setup>(_list);
+                List = new ObservableCollection<Setup>(_setup_list);
 
 
                 if (List != null &&  List.Count > 0)
@@ -62,6 +88,8 @@ namespace RepeatList.ViewModels
 
                     Thread.CurrentThread.CurrentCulture = ci;
                     Thread.CurrentThread.CurrentUICulture = ci;
+
+                    SelectedLanguage = Languages.FirstOrDefault(x => x.Code.ToLower() == ci.TwoLetterISOLanguageName.ToLower());
                 }
             }
         }

@@ -28,7 +28,7 @@ namespace RepeatList.Models
                 Id = jsonObject["Id"]?.ToString(),
                 ListName = jsonObject["ListName"]?.ToString(),
                 UpdatedAt = jsonObject["UpdatedAt"] != null
-                    ? DateTime.Parse(jsonObject["UpdatedAt"].ToString(), CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind)
+                    ? DateTime.Parse(jsonObject["UpdatedAt"].ToString(), CultureInfo.CurrentCulture, DateTimeStyles.RoundtripKind)
                     : DateTime.MinValue,
                 Positions = jsonObject["Positions"]?.ToObject<List<Position>>() ?? new List<Position>()
             };

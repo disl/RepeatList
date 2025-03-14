@@ -8,16 +8,19 @@
         <local:SetupPageViewModel/>
     </ContentPage.BindingContext>
     <StackLayout  VerticalOptions="StartAndExpand" Margin="20" Spacing="20" >
-        <StackLayout Orientation="Horizontal">
-            <Label Text="{Binding Title_language}" VerticalOptions="CenterAndExpand"  WidthRequest="70"
+        <Border Stroke="Gray" Padding="5" Margin="0,10,0,0">
+            <StackLayout Orientation="Vertical">
+
+                <Label Text="{Binding Title_language}" VerticalOptions="CenterAndExpand"  WidthRequest="70"
                    TextColor="{AppThemeBinding Light={DynamicResource PrimaryTextColor}, Dark={DynamicResource PrimaryTextColorLight}}" />
-            <Picker x:Name="LanguagePicker"  Title="{Binding Title_language}" 
+                <!--<Picker x:Name="LanguagePicker"  Title="{Binding Title_language}" 
                     TextColor="{AppThemeBinding Light={DynamicResource PrimaryTextColor}, Dark={DynamicResource PrimaryTextColorLight}}"
                     TitleColor="{AppThemeBinding Light={DynamicResource PrimaryTextColor}, Dark={DynamicResource PrimaryTextColorLight}}"
                     SelectedIndexChanged="LanguagePicker_SelectedIndexChanged"
                     SelectedItem="{Binding SelectedItem.DefaultLanguage, Mode=TwoWay}">
                 <Picker.ItemsSource>
-                    <x:Array Type="{x:Type x:String}">
+                        <x:Array Type="{x:Type x:String}">
+                            
                         <x:String>en</x:String>
                         <x:String>de</x:String>
                         <x:String>es</x:String>
@@ -26,24 +29,41 @@
                         <x:String>ru</x:String>
                     </x:Array>
                 </Picker.ItemsSource>
-            </Picker>
-        </StackLayout>
-        <StackLayout Orientation="Horizontal">
-            <Label Text="{Binding Title_thema}" VerticalOptions="CenterAndExpand"  WidthRequest="70" 
+            </Picker>-->
+
+                <CollectionView ItemsSource="{Binding Languages}" SelectionMode="Single"
+                            SelectedItem="{Binding SelectedLanguage, Mode=TwoWay}">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <StackLayout Orientation="Horizontal" Padding="10">
+                                <Image Source="{Binding Icon}" WidthRequest="30" HeightRequest="30"/>
+                                <Label Text="{Binding Name}" VerticalOptions="Center" Margin="10,0,0,0"/>
+                            </StackLayout>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+
+            </StackLayout>
+        </Border>
+        <Border Stroke="Gray" Padding="5" Margin="0,10,0,0">
+            <StackLayout Orientation="Horizontal">
+
+                <Label Text="{Binding Title_thema}" VerticalOptions="CenterAndExpand"  WidthRequest="70" 
                    TextColor="{AppThemeBinding Light={DynamicResource PrimaryTextColor}, Dark={DynamicResource PrimaryTextColorLight}}" />
-            <Picker x:Name="ThemaPicker" Title="{Binding Title_thema}" 
+                <Picker x:Name="ThemaPicker" Title="{Binding Title_thema}" 
                     TextColor="{AppThemeBinding Light={DynamicResource PrimaryTextColor}, Dark={DynamicResource PrimaryTextColorLight}}"
                     TitleColor="{AppThemeBinding Light={DynamicResource PrimaryTextColor}, Dark={DynamicResource PrimaryTextColorLight}}"
                     SelectedIndexChanged="ThemaPicker_SelectedIndexChanged"
                     SelectedItem="{Binding SelectedItem.DefaultAppTheme, Mode=TwoWay}">
-                <Picker.ItemsSource>
-                    <x:Array Type="{x:Type x:String}">
-                        <x:String>Dark</x:String>
-                        <x:String>Light</x:String>
-                    </x:Array>
-                </Picker.ItemsSource>
-            </Picker>
-        </StackLayout>
+                    <Picker.ItemsSource>
+                        <x:Array Type="{x:Type x:String}">
+                            <x:String>Dark</x:String>
+                            <x:String>Light</x:String>
+                        </x:Array>
+                    </Picker.ItemsSource>
+                </Picker>
+            </StackLayout>
+        </Border>
         <StackLayout Orientation="Horizontal" HorizontalOptions="StartAndExpand" Spacing="10" >
             <Button Text="OK" Clicked="OkButton_Clicked" HorizontalOptions="FillAndExpand" TextColor="White" WidthRequest="150" />
             <Button Text="{Binding Label_cancel}" Clicked="OnCancel" BackgroundColor="Red"  TextColor="White" WidthRequest="150"/>
