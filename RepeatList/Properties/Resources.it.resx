@@ -265,7 +265,7 @@ Alla fine, non dimenticate di premere il tasto Invio :)</value>
     <value>Azzeramento dell'elenco corrente</value>
   </data>
   <data name="search" xml:space="preserve">
-    <value>ricerca</value>
+    <value>Ricerca</value>
   </data>
   <data name="Selected_list_and_list_synchronisations_will_now_be_deleted" xml:space="preserve">
     <value>L'elenco selezionato e le sincronizzazioni di elenchi saranno ora cancellati, siete d'accordo?</value>

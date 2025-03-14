@@ -264,9 +264,6 @@ At the end, please do not forget to press the Enter key :)</value>
   <data name="Reset_current_list" xml:space="preserve">
     <value>Reset current list</value>
   </data>
-  <data name="search" xml:space="preserve">
-    <value>search</value>
-  </data>
   <data name="Selected_list_and_list_synchronisations_will_now_be_deleted" xml:space="preserve">
     <value>Selected list and list synchronisations will now be deleted, do you agree?</value>
   </data>
@@ -323,5 +320,8 @@ At the end, please do not forget to press the Enter key :)</value>
   </data>
   <data name="yes" xml:space="preserve">
     <value>Yes</value>
+  </data>
+  <data name="search" xml:space="preserve">
+    <value>Search</value>
   </data>
 </root>

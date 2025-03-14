@@ -265,7 +265,7 @@ A la fin, n'oubliez pas d'appuyer sur la touche « Entrée » :)</value>
     <value>Réinitialiser la liste actuelle</value>
   </data>
   <data name="search" xml:space="preserve">
-    <value>Rechercher</value>
+    <value>Recherche</value>
   </data>
   <data name="Selected_list_and_list_synchronisations_will_now_be_deleted" xml:space="preserve">
     <value>La liste sélectionnée et les synchronisations de listes sont maintenant supprimées, êtes-vous d'accord ?</value>

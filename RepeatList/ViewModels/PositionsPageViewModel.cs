@@ -7,7 +7,6 @@ using RepeatList.Models;
 using RepeatList.Services;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Globalization;
 using Position = RepeatList.Models.Position;
 
 namespace RepeatList.ViewModels

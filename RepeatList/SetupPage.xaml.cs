@@ -35,6 +35,8 @@ public partial class SetupPage : ContentPage
         //_currLanguage=_oldLanguage;
 
         _ = ViewModel.Load();
+
+       
     }   
 
     private async void OkButton_Clicked(object sender, EventArgs e)
@@ -107,10 +109,35 @@ public partial class SetupPage : ContentPage
         if (ViewModel == null)
             return;
         if (ViewModel.SelectedItem.DefaultAppTheme == "Dark")
-            //_appTheme = AppTheme.Dark;
             Application.Current.UserAppTheme =  AppTheme.Dark;
         else
-            //_appTheme = AppTheme.Light;
             Application.Current.UserAppTheme =  AppTheme.Light;
+    }
+
+    private void ForRadioButtonCheckedChanged()
+    {
+        if (_isStart)
+        {
+            _isStart=false;
+            return;
+        }
+        if (ViewModel == null)
+            return;
+        if (ViewModel.SelectedItem.DefaultAppTheme == "Dark")
+            Application.Current.UserAppTheme =  AppTheme.Dark;
+        else
+            Application.Current.UserAppTheme =  AppTheme.Light;
+    }
+
+    private void RadioButtonCheckedChanged_dark(object sender, CheckedChangedEventArgs e)
+    {
+        //ViewModel.SelectedItem.DefaultAppTheme = "Dark";
+        //ForRadioButtonCheckedChanged();
+    }
+
+    private void RadioButtonCheckedChanged_light(object sender, CheckedChangedEventArgs e)
+    {
+        //ViewModel.SelectedItem.DefaultAppTheme = "Light";
+        //ForRadioButtonCheckedChanged();
     }
 }

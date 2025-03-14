@@ -45,12 +45,18 @@
 
             </StackLayout>
         </Border>
-        <Border Stroke="Gray" Padding="5" Margin="0,10,0,0">
-            <StackLayout Orientation="Horizontal">
+        <Border Stroke="Gray" Padding="10" Margin="0,10,0,0">
+            <HorizontalStackLayout Spacing="40"  RadioButtonGroup.SelectedValue="{Binding SelectedItem.DefaultAppTheme, Mode=TwoWay}">
 
                 <Label Text="{Binding Title_thema}" VerticalOptions="CenterAndExpand"  WidthRequest="70" 
                    TextColor="{AppThemeBinding Light={DynamicResource PrimaryTextColor}, Dark={DynamicResource PrimaryTextColorLight}}" />
-                <Picker x:Name="ThemaPicker" Title="{Binding Title_thema}" 
+
+                <RadioButton Value="Dark" Content="Dark"   CheckedChanged="RadioButtonCheckedChanged_dark" IsChecked="{Binding IsChecked_Dark, Mode=TwoWay}"
+                             TextColor="{AppThemeBinding Light={DynamicResource PrimaryTextColor}, Dark={DynamicResource PrimaryTextColorLight}}" />
+                <RadioButton Value="Light" Content="Light" CheckedChanged="RadioButtonCheckedChanged_light" IsChecked="{Binding IsChecked_Light, Mode=TwoWay}"
+                             TextColor="{AppThemeBinding Light={DynamicResource PrimaryTextColor}, Dark={DynamicResource PrimaryTextColorLight}}" />
+
+                <!--<Picker x:Name="ThemaPicker" Title="{Binding Title_thema}" 
                     TextColor="{AppThemeBinding Light={DynamicResource PrimaryTextColor}, Dark={DynamicResource PrimaryTextColorLight}}"
                     TitleColor="{AppThemeBinding Light={DynamicResource PrimaryTextColor}, Dark={DynamicResource PrimaryTextColorLight}}"
                     SelectedIndexChanged="ThemaPicker_SelectedIndexChanged"
@@ -61,8 +67,8 @@
                             <x:String>Light</x:String>
                         </x:Array>
                     </Picker.ItemsSource>
-                </Picker>
-            </StackLayout>
+                </Picker>-->
+            </HorizontalStackLayout>
         </Border>
         <StackLayout Orientation="Horizontal" HorizontalOptions="StartAndExpand" Spacing="10" >
             <Button Text="OK" Clicked="OkButton_Clicked" HorizontalOptions="FillAndExpand" TextColor="White" WidthRequest="150" />

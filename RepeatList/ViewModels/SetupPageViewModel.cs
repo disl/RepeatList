@@ -14,6 +14,17 @@ namespace RepeatList.ViewModels
         private DatabaseService _databaseService;
         public event PropertyChangedEventHandler PropertyChanged;
 
+        [ObservableProperty] public bool isChecked_Dark;
+        partial void OnIsChecked_DarkChanged(bool oldValue, bool newValue)
+        {
+            SelectedItem.DefaultAppTheme = newValue ? "Dark" : "Light";
+        }
+        [ObservableProperty] public bool isChecked_Light;
+        partial void OnIsChecked_LightChanged(bool oldValue, bool newValue)
+        {
+            SelectedItem.DefaultAppTheme = newValue ? "Light" : "Dark";
+        }
+
         [ObservableProperty] public ObservableCollection<Setup> list = new ObservableCollection<Setup>();
         [ObservableProperty] public Setup? selectedItem;
 
@@ -50,7 +61,7 @@ namespace RepeatList.ViewModels
                 new LanguageItem { Name = "Español", Code = "es", Icon = "spain_icon.png" },
                 new LanguageItem { Name = "Français", Code = "fr", Icon = "france_icon.png" },
                 new LanguageItem { Name = "Italiano", Code = "it", Icon = "italy_icon.png" },
-                new LanguageItem { Name = "Українська", Code = "ua", Icon = "ukraine_icon.png" },
+                new LanguageItem { Name = "Українська", Code = "uk", Icon = "ukraine_icon.png" },
                 new LanguageItem { Name = "Русский", Code = "ru", Icon = "russia_icon.png" },
             };
 
@@ -77,10 +88,13 @@ namespace RepeatList.ViewModels
                     SelectedItem = List.FirstOrDefault();
 
                     // Thema
-                    if (SelectedItem.DefaultAppTheme == "Dark")
+                    if (SelectedItem.DefaultAppTheme == "Dark")                    
                         Application.Current.UserAppTheme = AppTheme.Dark;
                     else
                         Application.Current.UserAppTheme = AppTheme.Light;
+
+                    IsChecked_Dark = Application.Current.UserAppTheme == AppTheme.Dark;
+                    IsChecked_Light = Application.Current.UserAppTheme == AppTheme.Light;
 
                     // Language
                     CultureInfo ci = new CultureInfo("en");
