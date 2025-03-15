@@ -196,7 +196,9 @@ namespace RepeatList.Properties {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die Enter a list name or insert a ready-made list as a character string in JSON format that you have received from someone, e.g. via WatsApp. ähnelt.
+        ///   Sucht eine lokalisierte Zeichenfolge, die 1. enter a list name or 
+        ///2. insert a ready-made list as a character string in JSON format that you have received from someone, e.g. via WatsApp, or
+        ///3. enter a synchronisation key that you have received from someone, e.g. via WatsApp. ähnelt.
         /// </summary>
         public static string Enter_a_list_name_or_insert_a_ready_made {
             get {

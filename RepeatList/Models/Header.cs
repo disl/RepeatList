@@ -29,8 +29,8 @@ namespace RepeatList.Models
         public DateTime UpdatedAt { get; set; }
 
         //[JsonIgnore]
-        [NotMapped]
-        [IgnoreDataMember]
+        //[NotMapped]
+        //[IgnoreDataMember]
         public bool IsSynchronized { get; set; } = false;
 
         [NotMapped]

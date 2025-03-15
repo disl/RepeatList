@@ -163,7 +163,9 @@
     <value>Edit</value>
   </data>
   <data name="Enter_a_list_name_or_insert_a_ready_made" xml:space="preserve">
-    <value>Enter a list name or insert a ready-made list as a character string in JSON format that you have received from someone, e.g. via WatsApp.</value>
+    <value>1. enter a list name or 
+2. insert a ready-made list as a character string in JSON format that you have received from someone, e.g. via WatsApp, or
+3. enter a synchronisation key that you have received from someone, e.g. via WatsApp.</value>
   </data>
   <data name="Enter_list_name" xml:space="preserve">
     <value>Enter list name</value>

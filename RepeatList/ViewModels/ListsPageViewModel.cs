@@ -85,7 +85,7 @@ namespace RepeatList.ViewModels
         public void SetFirstItemForHeaders()
         {
             //if (Headers != null && Headers.Count > 0)
-            if(Header_SelectedItem == null && Headers != null && Headers.Count > 0)
+            if (Header_SelectedItem == null && Headers != null && Headers.Count > 0)
                 Header_SelectedItem = Headers[0];
         }
 
@@ -219,7 +219,7 @@ namespace RepeatList.ViewModels
 
                 json = JsonConvert.DeserializeObject<Header>(_input, settings);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 //await Application.Current.MainPage.DisplaySnackbar(Properties.Resources.String_is_not_a_valid_list_description);
                 IsBusy = false;
@@ -248,7 +248,7 @@ namespace RepeatList.ViewModels
                     {
                         // Add new header
                         json.UpdatedAt = DateTime.Now;
-                        var new_header = await AddHeader(json.ListName, json.Id);
+                        var new_header = await AddHeader(json.ListName,false, json.Id);
 
                         Header_SelectedItem = new_header;
 
@@ -326,9 +326,10 @@ namespace RepeatList.ViewModels
         //}
 
         [RelayCommand]
-        public async Task Sync_list_downClicked(Header header)
+        public async Task Sync_list_downClicked(string guid_str_param)  //Header header)
         {
-            Guid tmp_guid = new Guid(header.Id);
+            //Guid tmp_guid = new Guid(header.Id);
+            Guid tmp_guid = new Guid(guid_str_param);
 
             IsBusy = true;
 
@@ -336,25 +337,23 @@ namespace RepeatList.ViewModels
 
             if (sync_responce.Header == null || sync_responce.Lists == null)
             {
-                string guid_str = await Application.Current.MainPage.DisplayPromptAsync(
-                  Properties.Resources.Would_you_like_to_work_with_someone_on_a_current_list,
-                  Properties.Resources.Please_enter_the_ID_of_the_list_to_be_synchronised);
-                if (!string.IsNullOrEmpty(guid_str))
-                {
-                    if (!Guid.TryParse(guid_str, out tmp_guid))
-                    {
+                //string guid_str = await Application.Current.MainPage.DisplayPromptAsync(
+                //  Properties.Resources.Would_you_like_to_work_with_someone_on_a_current_list,
+                //  Properties.Resources.Please_enter_the_ID_of_the_list_to_be_synchronised);
+                //if (!string.IsNullOrEmpty(guid_str))
+                //{
+                //    if (!Guid.TryParse(guid_str, out tmp_guid))
+                //    {
                         await Application.Current.MainPage.DisplaySnackbar(Properties.Resources.String_is_not_a_valid_List_ID,
                             visualOptions: new SnackbarOptions
                             {
                                 BackgroundColor = Color.FromArgb(Constantes.Color_Error),
                                 TextColor = Colors.White
                             });
-                            
-                            
                         IsBusy = false;
                         return;
-                    }
-                }
+                    //}
+                //}
             }
 
             if (sync_responce.Header == null || sync_responce.Header.Id == null)
@@ -366,6 +365,10 @@ namespace RepeatList.ViewModels
             var _header = Headers.FirstOrDefault(x => x.Id == sync_responce.Header.Id);
             if (_header != null)
             {
+                await EditNameHeader(_header, sync_responce.Header.ListName);
+
+                Lists = (await _databaseService.GetPositionsAsync(_header.Id)).ToObservableCollection();
+
                 foreach (var pos in sync_responce.Lists)
                 {
                     var old_pos = Lists.FirstOrDefault(p => p.Id == pos.Id);
@@ -373,6 +376,14 @@ namespace RepeatList.ViewModels
                         await AddPosition(pos, false, true);
                     else
                         await UpdatePosition(pos);
+                }
+            }
+            else
+            {
+                Header = await AddHeader(sync_responce.Header.ListName, true, sync_responce.Header.Id);
+                foreach (var pos in sync_responce.Lists)
+                {
+                    await AddPosition(pos, false, true);
                 }
             }
             IsBusy = false;
@@ -467,14 +478,14 @@ namespace RepeatList.ViewModels
             FilteredList = new ObservableCollection<Header>(Headers);
         }
 
-        public async Task<Header> AddHeader(string HeaderEntryText, string? Id = null)
+        public async Task<Header> AddHeader(string HeaderEntryText, bool IsSynchronized, string? Id = null)
         {
             IsBusy = true;
 
             Header_SelectedItem = null;
             Header newHeader = new Header();
             //if (!string.IsNullOrEmpty(Id))
-            newHeader = new Header { ListName = HeaderEntryText, UpdatedAt = DateTime.Now };
+            newHeader = new Header { ListName = HeaderEntryText, UpdatedAt = DateTime.Now, IsSynchronized= IsSynchronized };
             //else
             //    newHeader = new Header { Id = Guid.NewGuid().ToString(), ListName = HeaderEntryText, UpdatedAt = DateTime.Now };
 

@@ -163,7 +163,9 @@
     <value>Modifica</value>
   </data>
   <data name="Enter_a_list_name_or_insert_a_ready_made" xml:space="preserve">
-    <value>Inserite il nome di un elenco o inserite un elenco già pronto come stringa di caratteri in formato JSON che avete ricevuto da qualcuno, ad esempio tramite WatsApp.</value>
+    <value>1. inserire il nome di un elenco oppure 
+2. inserire un elenco già pronto come stringa di caratteri in formato JSON ricevuto da qualcuno, ad esempio tramite WatsApp, oppure
+3. inserire una chiave di sincronizzazione ricevuta da qualcuno, ad esempio tramite WatsApp.</value>
   </data>
   <data name="Enter_list_name" xml:space="preserve">
     <value>Inserire il nome dell'elenco</value>

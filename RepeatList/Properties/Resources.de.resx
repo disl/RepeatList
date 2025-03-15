@@ -163,7 +163,9 @@
     <value>Bearbeiten</value>
   </data>
   <data name="Enter_a_list_name_or_insert_a_ready_made" xml:space="preserve">
-    <value>Geben Sie einen Listennamen ein oder fügen Sie eine fertige Liste als Zeichenkette im JSON-Format ein, die Sie von jemandem erhalten haben, z. B. per WatsApp.</value>
+    <value>1. einen Listennamen eingeben oder 
+2. eine fertige Liste als Zeichenkette im JSON-Format einfügen, die Sie von jemandem erhalten haben, z. B. über WatsApp, oder
+3. Geben Sie einen Synchronisationsschlüssel ein, den Sie von jemandem erhalten haben, z. B. über WatsApp.</value>
   </data>
   <data name="Enter_list_name" xml:space="preserve">
     <value>Listenname eingeben</value>

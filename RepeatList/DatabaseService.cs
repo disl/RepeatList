@@ -158,7 +158,7 @@ namespace RepeatList.Services
                 new_guid = Guid.Parse(old_guid);
 
             var command = _connection.CreateCommand();
-            command.CommandText = "INSERT INTO Header (Id, ListName, UpdatedAt) VALUES (@Id, @ListName, @UpdatedAt)";
+            command.CommandText = "INSERT INTO Header (Id, ListName, UpdatedAt,IsSynchronized) VALUES (@Id, @ListName, @UpdatedAt,@IsSynchronized)";
             command.Parameters.AddWithValue("@Id", new_guid.ToString());
             command.Parameters.AddWithValue("@ListName", header.ListName);
             command.Parameters.AddWithValue("@UpdatedAt", header.UpdatedAt.ToString("u"));

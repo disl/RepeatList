@@ -5,6 +5,7 @@ using RepeatList.Models;
 using RepeatList.ViewModels;
 using System.Collections.ObjectModel;
 using System.Globalization;
+using Header = RepeatList.Models.Header;
 // Remove the incorrect using directive
 // using Google.MobileAds;
 
@@ -89,14 +90,21 @@ namespace RepeatList
 
         private async Task ForOnAddHeaderClicked()
         {
+            Guid tmp_guid = Guid.Empty;
+
             string new_list_name = await DisplayPromptAsync(
                 Properties.Resources.AddNewList, Properties.Resources.Enter_a_list_name_or_insert_a_ready_made, "OK", Properties.Resources.Cancel);
             if (!string.IsNullOrWhiteSpace(new_list_name))
             {
-                // Check ">>>" (JSON-List)
-                if (new_list_name.Contains(">>>"))
+                if (Guid.TryParse(new_list_name, out tmp_guid))
                 {
-                    // Customise info 
+                    await ViewModel.Sync_list_downClicked(new_list_name);
+                    return;
+                }
+
+                // Check ">>>" (JSON-List)
+                else if (new_list_name.Contains(">>>"))
+                {
                     var ind = new_list_name.IndexOf(">>>");
                     if (ind < 0)
                     {
@@ -113,7 +121,7 @@ namespace RepeatList
 
                 if (!await ViewModel.InputHeaderWithPositions(new_list_name))
                 {
-                    var new_id = await ViewModel.AddHeader(new_list_name);
+                    var new_id = await ViewModel.AddHeader(new_list_name, false);
                 }
                 await Application.Current.MainPage.DisplaySnackbar(Properties.Resources.List_added_successfully,
                     visualOptions: new SnackbarOptions
@@ -161,8 +169,8 @@ namespace RepeatList
                     await ViewModel.DeleteHeader(header);
                     ViewModel.SetFirstItemForHeaders();
 
-
-                    await ViewModel.DeleteHeaderInSupabase(header);
+                    // Delete linkd to Supabase 
+                    //await ViewModel.DeleteHeaderInSupabase(header);
 
 
                     await Application.Current.MainPage.DisplaySnackbar(Properties.Resources.List_was_successfully_deleted,
@@ -262,9 +270,7 @@ namespace RepeatList
                 if (answer)
                 {
                     ViewModel.Header_SelectedItem = header;
-
-                    await ViewModel.Sync_list_downClicked(header);
-
+                    await ViewModel.Sync_list_downClicked(header.Id);
                 }
             }
         }
