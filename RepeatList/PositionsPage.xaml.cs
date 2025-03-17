@@ -15,6 +15,8 @@ namespace RepeatList
         private HelpPageViewModel HelpPageViewModel { get; set; }
         private PositionsPageViewModel ViewModel { get; set; }
 
+        private IDispatcherTimer _timer;
+
         public PositionsPage(Header selectedItem)
         {
             InitializeComponent();
@@ -63,7 +65,31 @@ namespace RepeatList
 
             ViewModel.InitLabels();
 
+            _timer = Dispatcher.CreateTimer();
+            _timer.Interval = TimeSpan.FromSeconds(10);
+            _timer.Tick +=_timer_Tick;
+            _timer.Start();
+
             ViewModel.IsBusy = false;
+        }
+
+        private async void _timer_Tick(object? sender, EventArgs e)
+        {
+            //ViewModel.IsBusy = true;
+
+            if (!ViewModel.Header_SelectedItem.IsSynchronized)
+                return;
+
+            await ViewModel.Sync_list_downClicked(ViewModel.Header_SelectedItem);
+
+            await ViewModel.LoadPositions();
+            //ViewModel.IsBusy = false;
+        }
+
+        protected override void OnDisappearing()
+        {
+            base.OnDisappearing();
+            _timer.Stop(); // Timer anhalten, wenn die Seite nicht mehr sichtbar ist
         }
 
         private void SetCurrentCulture(string curr_culture)
@@ -128,7 +154,7 @@ namespace RepeatList
                         ViewModel.Header_SelectedItem = header;
 
                         // Existing Header
-                        header.UpdatedAt = DateTime.Now;
+                        header.UpdatedAt = DateTime.Now.ToUniversalTime();
                         // Add to existing positions
                         foreach (var pos in json.Positions)
                         {
@@ -139,7 +165,7 @@ namespace RepeatList
                     else
                     {
                         // Add new header
-                        json.UpdatedAt = DateTime.Now;
+                        json.UpdatedAt = DateTime.Now.ToUniversalTime();
                         var new_header = await ViewModel.AddHeader(json.ListName, json.Id);
 
                         ViewModel.Header_SelectedItem = new_header;
@@ -174,7 +200,7 @@ namespace RepeatList
 
                             var new_pos = new Position();
                             new_pos.HeaderId = ViewModel.Header_SelectedItem.Id;
-                            new_pos.UpdatedAt = DateTime.Now;
+                            new_pos.UpdatedAt = DateTime.Now.ToUniversalTime();
                             new_pos.Title = item.Trim();
                             await ViewModel.AddPosition(new_pos, true);
                         }
@@ -184,7 +210,7 @@ namespace RepeatList
                         var new_pos = new Position();
                         new_pos.HeaderId = ViewModel.Header_SelectedItem.Id;
                         new_pos.Title = _input;
-                        new_pos.UpdatedAt = DateTime.Now;
+                        new_pos.UpdatedAt = DateTime.Now.ToUniversalTime();
                         await ViewModel.AddPosition(new_pos, true);
                     }
                 }
@@ -193,7 +219,7 @@ namespace RepeatList
                     var new_pos = new Position();
                     new_pos.HeaderId = ViewModel.Header_SelectedItem.Id;
                     new_pos.Title = _input;
-                    new_pos.UpdatedAt = DateTime.Now;
+                    new_pos.UpdatedAt = DateTime.Now.ToUniversalTime();
                     await ViewModel.AddPosition(new_pos, true);
                 }
             }
@@ -266,7 +292,7 @@ namespace RepeatList
                 ViewModel.IsBusy = true;
 
                 position.IsCompleted = e.Value;
-                position.UpdatedAt = DateTime.Now;
+                position.UpdatedAt = DateTime.Now.ToUniversalTime();
                 await ViewModel.UpdatePosition(position);
 
                 ViewModel.IsBusy = false;
@@ -294,7 +320,7 @@ namespace RepeatList
                 ViewModel.IsBusy = true;
 
                 position.IsCompleted = !position.IsCompleted;  // e.Value;
-                position.UpdatedAt = DateTime.Now;
+                position.UpdatedAt = DateTime.Now.ToUniversalTime();
                 await ViewModel.UpdatePosition(position);
 
                 ViewModel.IsBusy = false;
@@ -438,7 +464,7 @@ namespace RepeatList
 
         private async void OnHelpButton_Clicked(object sender, EventArgs e)
         {
-            await Navigation.PushAsync(new HelpPage( HelpPageViewModel.HelpTopicThemasEnum.InputTextBox, new CultureInfo(ViewModel.CurrentCulture)));
+            await Navigation.PushAsync(new HelpPage(HelpPageViewModel.HelpTopicThemasEnum.InputTextBox, new CultureInfo(ViewModel.CurrentCulture)));
         }
     }
 

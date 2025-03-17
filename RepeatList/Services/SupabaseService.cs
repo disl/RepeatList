@@ -12,7 +12,7 @@ namespace RepeatList.Services
         {
             _databaseService =  new DatabaseService();
 
-            var supabaseKey =  AppSettings.Load().Result.ApiKeys.SupabaseKey; 
+            var supabaseKey = AppSettings.Load().Result.ApiKeys.SupabaseKey;
             _supabase = new Client(
                 "https://bzjdutgysaztuszpcdlw.supabase.co",
                 supabaseKey
@@ -38,6 +38,12 @@ namespace RepeatList.Services
             }
         }
 
+        public async Task SyncPositionAsync(Position? position)
+        {
+            await _supabase.From<Position>().Upsert(position);
+        }
+        
+
         public async Task DeleteHeaderWithDetailsAsync(Header header)
         {
             if (header != null)
@@ -51,31 +57,45 @@ namespace RepeatList.Services
             }
         }
 
-        public async Task<(Header Header, List<Position> Details)> GetHeaderWithPositionsByIdAsync(Guid headerId)
+        public async Task DeletePositionAsync(Position position)
         {
-            Supabase.Postgrest.Responses.ModeledResponse<Header> headerResponse = await _supabase
-                .From<Header>()
-                .Filter("Id", Supabase.Postgrest.Constants.Operator.Equals, headerId.ToString())
-                .Get();
-
-            var header = headerResponse.Model;
-
-            if (headerResponse != null)
+            if (position != null)
             {
-                // Hole die zugehörigen Details aus Supabase
-                var detailsResponse = await _supabase
-                    .From<Position>()
-                    .Filter("HeaderId", Supabase.Postgrest.Constants.Operator.Equals, headerId.ToString())
-                    //.Where(x => x.HeaderId == headerId.ToString())
+                await _supabase.From<Position>().Delete(position);
+            }
+        }
+
+        public async Task<(Header header, List<Position> position)> GetHeaderWithPositionsByIdAsync(Guid headerId)
+        {
+            try
+            {
+                Supabase.Postgrest.Responses.ModeledResponse<Header> headerResponse = await _supabase
+                    .From<Header>()
+                    .Filter("Id", Supabase.Postgrest.Constants.Operator.Equals, headerId.ToString())
                     .Get();
 
-                var details = detailsResponse.Models;
+                var _header = headerResponse.Model;
 
-                
-                return (header, details);
+                if (headerResponse != null)
+                {
+                    // Hole die zugehörigen Details aus Supabase
+                    var detailsResponse = await _supabase
+                        .From<Position>()
+                        .Filter("HeaderId", Supabase.Postgrest.Constants.Operator.Equals, headerId.ToString())
+                        //.Where(x => x.HeaderId == headerId.ToString())
+                        .Get();
+
+                    var _position = detailsResponse.Models;
+
+                    return (_header, _position);
+                }
+
+                return (null, null);
             }
-
-            return (null, null);
+            catch (Exception ex)
+            {
+                return (null, null);
+            }
         }
     }
 }

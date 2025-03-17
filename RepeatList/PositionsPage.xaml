@@ -39,8 +39,7 @@
             </Border.StrokeShape>
             <CollectionView x:Name="PositionListView"  
                                     ItemsSource="{Binding Positions_undone_filterd}" 
-                                    SelectedItem="{Binding Position_selectedItem, Mode=OneWayToSource}" 
-                               
+                                    SelectedItem="{Binding Position_selectedItem, Mode=OneWayToSource}"                                
                                     SelectionMode="Single" 
                                     SelectionChanged="OnPositionSelected_new" >
                 <CollectionView.ItemTemplate>

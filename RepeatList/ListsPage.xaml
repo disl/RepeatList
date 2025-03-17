@@ -44,7 +44,7 @@
                             <Label Text="{Binding ListName}" Grid.Column="1" VerticalOptions="Center" FontSize="Medium"    
                                        TextColor="{AppThemeBinding Light={DynamicResource PrimaryTextColor}, Dark={DynamicResource PrimaryTextColorLight}}"/>
 
-                            <Image Source="sync_arrow_down_icon.png" IsVisible="{Binding IsSynchronized}" HeightRequest="30" Grid.Column="2" />
+                            <Image Source="{Binding Sync_arrow_down_icon}" IsVisible="{Binding IsSynchronized}" HeightRequest="30" Grid.Column="2" />
 
                             <!-- Menu-Button -->
                             <ImageButton Grid.Column="3" Source="more_vert_icon.png"   HeightRequest="30" WidthRequest="30" CommandParameter="{Binding}">

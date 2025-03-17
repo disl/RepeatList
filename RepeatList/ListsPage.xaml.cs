@@ -14,7 +14,6 @@ using Header = RepeatList.Models.Header;
 //using Android.Gms.Ads;
 
 
-
 namespace RepeatList
 {
     public partial class ListsPage : ContentPage
@@ -23,15 +22,14 @@ namespace RepeatList
         private ListsPageViewModel ViewModel { get; set; }
         private ResourcesViewModel ResourcesViewModel { get; set; }
 
+        private IDispatcherTimer _timer;
+
         public ListsPage()
         {
             InitializeComponent();
 
             ViewModel = new ListsPageViewModel();
             BindingContext = ViewModel;
-
-            //var adRequest = new AdRequest.Builder().Build();
-            //adView.LoadAd(adRequest);
         }
 
         protected async override void OnAppearing()
@@ -69,8 +67,43 @@ namespace RepeatList
 
             ResourcesViewModel = new ResourcesViewModel();
 
-            //ViewModel.IsExpander_listsExpended=false;
-            //ViewModel.IsExpander_listsExpended=true;
+            _timer = Dispatcher.CreateTimer();
+            _timer.Interval = TimeSpan.FromSeconds(10);
+            _timer.Tick +=_timer_Tick;
+            _timer.Start();
+        }
+
+        private async void _timer_Tick(object? sender, EventArgs e)
+        {
+            //ViewModel.IsBusy = true;
+
+            if (ViewModel.FilteredList == null || ViewModel.FilteredList.Count == 0)
+                return;
+
+            try
+            {
+                foreach (var header in ViewModel.FilteredList)
+                {
+                    if (header.IsSynchronized)
+                    {
+                        await ViewModel.Sync_list_downClicked(header.Id);
+
+                        Header.IsSupabaseOk=true;
+                    }
+                }
+            }
+            catch
+            {
+                Header.IsSupabaseOk = false;
+            }
+
+            //ViewModel.IsBusy = false;
+        }
+
+        protected override void OnDisappearing()
+        {
+            base.OnDisappearing();
+            _timer.Stop(); // Timer anhalten, wenn die Seite nicht mehr sichtbar ist
         }
 
         private void SetCurrentCulture(string curr_culture)

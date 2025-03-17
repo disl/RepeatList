@@ -2,7 +2,6 @@
 using Supabase.Postgrest.Models;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Runtime.Serialization;
-using System.Text.Json.Serialization;
 //using System.Runtime.Serialization;
 
 namespace RepeatList.Models
@@ -32,6 +31,25 @@ namespace RepeatList.Models
         //[NotMapped]
         //[IgnoreDataMember]
         public bool IsSynchronized { get; set; } = false;
+
+        [NotMapped]
+        [IgnoreDataMember]
+        public string Sync_arrow_down_icon
+        {
+            get
+            {
+                if (!IsSynchronized)
+                    return "";
+                else
+                {
+                    return IsSupabaseOk ? "sync_arrow_down_icon_green.png" : "sync_arrow_down_icon_red.png";
+                }
+            }
+        }
+
+        [NotMapped]
+        [IgnoreDataMember]
+        public static bool IsSupabaseOk { get; set; }
 
         [NotMapped]
         [IgnoreDataMember]
