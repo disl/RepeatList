@@ -42,7 +42,7 @@ namespace RepeatList.Models
                     return "";
                 else
                 {
-                    return IsSupabaseOk ? "sync_arrow_down_icon_green.png" : "sync_arrow_down_icon_red.png";
+                    return IsSupabaseOk ? "icon_sync_green.png" : "icon_sync_red.png"; 
                 }
             }
         }

@@ -1,7 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="RepeatList.PositionsPage"
+             x:Class="RepeatList.PositionsPage"             
+             xmlns:controls="clr-namespace:RepeatList.Controls"
              xmlns:local="clr-namespace:RepeatList.ViewModels"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              Title="{Binding Title}" 
@@ -17,9 +18,11 @@
     
     </ContentPage.ToolbarItems>
 
-    <Grid  RowDefinitions="auto,auto,auto,*,auto,*,auto" Padding="15">
+    <Grid  RowDefinitions="10,auto,auto,*,auto,*,auto" Padding="15">
 
-        <ActivityIndicator IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}" Grid.Row="0" />
+        <!--<ActivityIndicator IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}" Grid.Row="0" />-->
+        <controls:ActivityProgressBar IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}" Grid.Row="0" />
+        
 
         <!--Undone-->
         <StackLayout Orientation="Horizontal"    Grid.Row="1">

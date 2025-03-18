@@ -214,14 +214,13 @@ namespace RepeatList.ViewModels
                 settings.Converters.Add(new OnlyPositionsJsonConverter());
                 //var json = JsonConvert.SerializeObject(header, settings);
 
-
                 json = JsonConvert.DeserializeObject<Header>(_input, settings);
             }
             catch (Exception ex)
             {
                 //await Application.Current.MainPage.DisplaySnackbar(Properties.Resources.String_is_not_a_valid_list_description);
-                IsBusy = false;
-                return false;
+                //IsBusy = false;
+                //return false;
             }
 
             if (json != null)
@@ -345,7 +344,7 @@ namespace RepeatList.ViewModels
                 await Application.Current.MainPage.DisplaySnackbar(Properties.Resources.String_is_not_a_valid_List_ID,
                     visualOptions: new SnackbarOptions
                     {
-                        BackgroundColor = Color.FromArgb(Constantes.Color_Error),
+                        BackgroundColor = Color.FromArgb(Constantes.Color_Error_string),
                         TextColor = Colors.White
                     });
                 IsBusy = false;

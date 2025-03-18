@@ -18,7 +18,7 @@ public partial class Lists_PopUpMenu : Popup
 
         SelectedItem = item;
 
-        sync_arrow_downButton.IsVisible = item.IsSynchronized;
+        //sync_arrow_downButton.IsVisible = item.IsSynchronized;
     }
 
     private void OnEditHeaderClicked(object sender, EventArgs e)

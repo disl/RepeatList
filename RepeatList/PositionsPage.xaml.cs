@@ -30,52 +30,63 @@ namespace RepeatList
         {
             base.OnAppearing();
 
-            ViewModel.IsBusy = true;
-
-            //if (ViewModel != null && ViewModel.Headers != null && ViewModel.Headers.Count > 0)
-            //    HeaderListView.SelectedItem=ViewModel.Headers[0];
-
-            await ViewModel.LoadPositions();
-
-            if (SetupPageViewModel.SelectedItem != null)
+            try
             {
-                SetCurrentCulture(SetupPageViewModel.SelectedItem.DefaultLanguage);
-            }
+                ViewModel.IsBusy = true;
 
-            ViewModel.ItemSource_KindOfSorting = new ObservableCollection<CMBType_String>
+                //if (ViewModel != null && ViewModel.Headers != null && ViewModel.Headers.Count > 0)
+                //    HeaderListView.SelectedItem=ViewModel.Headers[0];
+
+                await ViewModel.LoadPositions();
+
+                if (SetupPageViewModel.SelectedItem != null)
+                {
+                    SetCurrentCulture(SetupPageViewModel.SelectedItem.DefaultLanguage);
+                }
+
+                ViewModel.ItemSource_KindOfSorting = new ObservableCollection<CMBType_String>
             {
              new CMBType_String(Properties.Resources.sort_by_date, "date"),
              new CMBType_String(Properties.Resources.sort_by_alphabet, "alpha" )
             };
 
-            if (SortingPicker == null)
-                SortingPicker = new Picker();
+                if (SortingPicker == null)
+                    SortingPicker = new Picker();
 
-            SortingPicker.ItemsSource = ViewModel.ItemSource_KindOfSorting.ToObservableCollection();
-            var _selectedItem_KindOfSorting_key_name = Preferences.Get(ViewModel.SelectedItem_KindOfSorting_key_name, "date");
-            if (!string.IsNullOrEmpty(_selectedItem_KindOfSorting_key_name))
-                ViewModel.SelectedItem_KindOfSorting = ViewModel.ItemSource_KindOfSorting.FirstOrDefault(x => x.Value == _selectedItem_KindOfSorting_key_name);
-            else
-                ViewModel.SelectedItem_KindOfSorting = ViewModel.ItemSource_KindOfSorting.FirstOrDefault(x => x.Value == "date");
-            SortingPicker.SelectedIndex = ViewModel.ItemSource_KindOfSorting.IndexOf(ViewModel.SelectedItem_KindOfSorting);
+                SortingPicker.ItemsSource = ViewModel.ItemSource_KindOfSorting.ToObservableCollection();
+                var _selectedItem_KindOfSorting_key_name = Preferences.Get(ViewModel.SelectedItem_KindOfSorting_key_name, "date");
+                if (!string.IsNullOrEmpty(_selectedItem_KindOfSorting_key_name))
+                    ViewModel.SelectedItem_KindOfSorting = ViewModel.ItemSource_KindOfSorting.FirstOrDefault(x => x.Value == _selectedItem_KindOfSorting_key_name);
+                else
+                    ViewModel.SelectedItem_KindOfSorting = ViewModel.ItemSource_KindOfSorting.FirstOrDefault(x => x.Value == "date");
+                SortingPicker.SelectedIndex = ViewModel.ItemSource_KindOfSorting.IndexOf(ViewModel.SelectedItem_KindOfSorting);
 
-            string tmp_lists = Properties.Resources.Lists.ToUpper();
+                string tmp_lists = Properties.Resources.Lists.ToUpper();
 
-            ViewModel.Label_lists = tmp_lists;
+                ViewModel.Label_lists = tmp_lists;
 
-            ViewModel.InitLabels();
+                ViewModel.InitLabels();
 
-            _timer = Dispatcher.CreateTimer();
-            _timer.Interval = TimeSpan.FromSeconds(10);
-            _timer.Tick +=_timer_Tick;
-            _timer.Start();
-
-            ViewModel.IsBusy = false;
+                if (ViewModel.Header_SelectedItem.IsSynchronized)
+                {
+                    _timer = Dispatcher.CreateTimer();
+                    _timer.Interval = TimeSpan.FromSeconds(30);
+                    _timer.Tick +=_timer_Tick;
+                    _timer.Start();
+                }               
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+            finally { ViewModel.IsBusy = false; }
         }
 
         private async void _timer_Tick(object? sender, EventArgs e)
         {
-            //ViewModel.IsBusy = true;
+            if (ViewModel.IsBusy) return;
+
+            ViewModel.IsBusy = true;
 
             if (!ViewModel.Header_SelectedItem.IsSynchronized)
                 return;
@@ -83,13 +94,15 @@ namespace RepeatList
             await ViewModel.Sync_list_downClicked(ViewModel.Header_SelectedItem);
 
             await ViewModel.LoadPositions();
-            //ViewModel.IsBusy = false;
+
+            ViewModel.IsBusy = false;
         }
 
         protected override void OnDisappearing()
         {
             base.OnDisappearing();
-            _timer.Stop(); // Timer anhalten, wenn die Seite nicht mehr sichtbar ist
+            if (_timer != null)
+                _timer.Stop();
         }
 
         private void SetCurrentCulture(string curr_culture)
@@ -99,8 +112,6 @@ namespace RepeatList
             Thread.CurrentThread.CurrentCulture = ci;
             Thread.CurrentThread.CurrentUICulture = ci;
         }
-
-
 
 
         #region POSITIONS
@@ -128,6 +139,8 @@ namespace RepeatList
 
         private async Task InputPositions(string _input)
         {
+            if (ViewModel.IsBusy) return;
+
             Header? json = null;
 
             ViewModel.IsBusy = true;
@@ -229,11 +242,17 @@ namespace RepeatList
 
         private async void OnDeletePositionClicked(object sender, EventArgs e)
         {
+            if (ViewModel.IsBusy) return;
+
+            ViewModel.IsBusy = true;
+
             var button = sender as ImageButton;
             if (button?.CommandParameter is Position pos)
             {
                 await ViewModel.DeletePosition(pos);
             }
+
+            ViewModel.IsBusy = false;
         }
 
         private async void OnEditPositionClicked(object sender, EventArgs e)
@@ -276,13 +295,12 @@ namespace RepeatList
         private async void OnPositionChecked(object sender, CheckedChangedEventArgs e)
         {
             if (ViewModel.IsBusy) return;
+
             if (ViewModel.HeaderSelected)
             {
                 ViewModel.HeaderSelected = false;
                 return;
             }
-
-            //ViewModel.IsBusy=true;
 
             if (sender is Microsoft.Maui.Controls.CheckBox switchControl &&
                 e != null &&
@@ -292,7 +310,7 @@ namespace RepeatList
                 ViewModel.IsBusy = true;
 
                 position.IsCompleted = e.Value;
-                position.UpdatedAt = DateTime.Now.ToUniversalTime();
+                //position.UpdatedAt = DateTime.Now.ToUniversalTime();
                 await ViewModel.UpdatePosition(position);
 
                 ViewModel.IsBusy = false;
@@ -320,7 +338,7 @@ namespace RepeatList
                 ViewModel.IsBusy = true;
 
                 position.IsCompleted = !position.IsCompleted;  // e.Value;
-                position.UpdatedAt = DateTime.Now.ToUniversalTime();
+               // position.UpdatedAt = DateTime.Now.ToUniversalTime();
                 await ViewModel.UpdatePosition(position);
 
                 ViewModel.IsBusy = false;
@@ -405,7 +423,7 @@ namespace RepeatList
             await Application.Current.MainPage.DisplaySnackbar(Properties.Resources.Operation_successfully_completed,
                 visualOptions: new SnackbarOptions
                 {
-                    BackgroundColor = Color.FromArgb(Constantes.Color_Success),
+                    BackgroundColor = Color.FromArgb(Constantes.Color_Success_string),
                     TextColor = Colors.White
                 });
 

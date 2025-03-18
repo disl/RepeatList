@@ -36,46 +36,61 @@ namespace RepeatList
         {
             ViewModel.IsBusy = true;
 
-            //if (ViewModel != null && ViewModel.Headers != null && ViewModel.Headers.Count > 0)
-            //    HeaderListView.SelectedItem=ViewModel.Headers[0];
-
-            SetupPageViewModel = new SetupPageViewModel();
-            if (SetupPageViewModel.SelectedItem != null)
+            try
             {
-                SetCurrentCulture(SetupPageViewModel.SelectedItem.DefaultLanguage);
-            }
+                //if (ViewModel != null && ViewModel.Headers != null && ViewModel.Headers.Count > 0)
+                //    HeaderListView.SelectedItem=ViewModel.Headers[0];
 
-            ViewModel.ItemSource_KindOfSorting = new ObservableCollection<CMBType_String>
+                SetupPageViewModel = new SetupPageViewModel();
+                if (SetupPageViewModel.SelectedItem != null)
+                {
+                    SetCurrentCulture(SetupPageViewModel.SelectedItem.DefaultLanguage);
+                }
+
+                ViewModel.ItemSource_KindOfSorting = new ObservableCollection<CMBType_String>
             {
                  new CMBType_String(Properties.Resources.sort_by_date, "date"),
                  new CMBType_String(Properties.Resources.sort_by_alphabet, "alpha" )
             };
 
-            var _selectedItem_KindOfSorting_key_name = Preferences.Get(ViewModel.SelectedItem_KindOfSorting_key_name, "date");
-            if (!string.IsNullOrEmpty(_selectedItem_KindOfSorting_key_name))
-                ViewModel.SelectedItem_KindOfSorting = ViewModel.ItemSource_KindOfSorting.FirstOrDefault(x => x.Value == _selectedItem_KindOfSorting_key_name);
-            else
-                ViewModel.SelectedItem_KindOfSorting = ViewModel.ItemSource_KindOfSorting.FirstOrDefault(x => x.Value == "date");
+                var _selectedItem_KindOfSorting_key_name = Preferences.Get(ViewModel.SelectedItem_KindOfSorting_key_name, "date");
+                if (!string.IsNullOrEmpty(_selectedItem_KindOfSorting_key_name))
+                    ViewModel.SelectedItem_KindOfSorting = ViewModel.ItemSource_KindOfSorting.FirstOrDefault(x => x.Value == _selectedItem_KindOfSorting_key_name);
+                else
+                    ViewModel.SelectedItem_KindOfSorting = ViewModel.ItemSource_KindOfSorting.FirstOrDefault(x => x.Value == "date");
 
-            ViewModel.IsBusy = false;
+                string tmp_lists = Properties.Resources.Lists.ToUpper();
 
-            string tmp_lists = Properties.Resources.Lists.ToUpper();
+                ViewModel.Label_lists = tmp_lists;
 
-            ViewModel.Label_lists = tmp_lists;
+                ViewModel.InitLabels();
 
-            ViewModel.InitLabels();
+                ResourcesViewModel = new ResourcesViewModel();
 
-            ResourcesViewModel = new ResourcesViewModel();
-
-            _timer = Dispatcher.CreateTimer();
-            _timer.Interval = TimeSpan.FromSeconds(10);
-            _timer.Tick +=_timer_Tick;
-            _timer.Start();
+                await ForTimer_Tick();
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+            finally
+            {
+                ViewModel.IsBusy = false;
+            }
+            //_timer = Dispatcher.CreateTimer();
+            //_timer.Interval = TimeSpan.FromSeconds(10);
+            //_timer.Tick +=_timer_Tick;
+            //_timer.Start();
         }
 
         private async void _timer_Tick(object? sender, EventArgs e)
         {
-            //ViewModel.IsBusy = true;
+            await ForTimer_Tick();
+        }
+
+        private async Task ForTimer_Tick()
+        {
+            ViewModel.IsBusy = true;
 
             if (ViewModel.FilteredList == null || ViewModel.FilteredList.Count == 0)
                 return;
@@ -97,13 +112,14 @@ namespace RepeatList
                 Header.IsSupabaseOk = false;
             }
 
-            //ViewModel.IsBusy = false;
+            ViewModel.IsBusy = false;
         }
 
         protected override void OnDisappearing()
         {
             base.OnDisappearing();
-            _timer.Stop(); // Timer anhalten, wenn die Seite nicht mehr sichtbar ist
+            if (_timer != null)
+                _timer.Stop(); // Timer anhalten, wenn die Seite nicht mehr sichtbar ist
         }
 
         private void SetCurrentCulture(string curr_culture)
@@ -144,7 +160,7 @@ namespace RepeatList
                         await Application.Current.MainPage.DisplaySnackbar(
                            Properties.Resources.List_information_has_wrong_format, visualOptions: new SnackbarOptions
                            {
-                               BackgroundColor = Color.FromArgb(Constantes.Color_Error),
+                               BackgroundColor = Color.FromArgb(Constantes.Color_Error_string),
                                TextColor = Colors.White
                            });
                         return;
@@ -159,7 +175,7 @@ namespace RepeatList
                 await Application.Current.MainPage.DisplaySnackbar(Properties.Resources.List_added_successfully,
                     visualOptions: new SnackbarOptions
                     {
-                        BackgroundColor = Color.FromArgb(Constantes.Color_Success),
+                        BackgroundColor = Color.FromArgb(Constantes.Color_Success_string),
                         TextColor = Colors.White
                     });
 
@@ -203,13 +219,12 @@ namespace RepeatList
                     ViewModel.SetFirstItemForHeaders();
 
                     // Delete linkd to Supabase 
-                    //await ViewModel.DeleteHeaderInSupabase(header);
-
+                    await ViewModel.DeleteHeaderInSupabase(header);
 
                     await Application.Current.MainPage.DisplaySnackbar(Properties.Resources.List_was_successfully_deleted,
                         visualOptions: new SnackbarOptions
                         {
-                            BackgroundColor = Color.FromArgb(Constantes.Color_Success),
+                            BackgroundColor = Color.FromArgb(Constantes.Color_Success_string),
                             TextColor = Colors.White
                         });
 
@@ -368,8 +383,8 @@ namespace RepeatList
 
                     case "SyncUp":
                         await Sync_list_upClicked(button, e); break;
-                    case "SyncDown":
-                        await Sync_list_downClicked(button, e); break;
+                    //case "SyncDown":
+                    //    await Sync_list_downClicked(button, e); break;
 
                     case "Import":
                         await ForOnAddHeaderClicked(); break;

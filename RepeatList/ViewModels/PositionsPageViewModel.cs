@@ -224,7 +224,7 @@ namespace RepeatList.ViewModels
                 if (!Guid.TryParse(guid_str, out tmp_guid))
                 {
                     await Application.Current.MainPage.DisplaySnackbar(Properties.Resources.String_is_not_a_valid_List_ID,
-                        visualOptions: new SnackbarOptions { BackgroundColor = Color.FromArgb(Constantes.Color_Error), TextColor = Colors.White });
+                        visualOptions: new SnackbarOptions { BackgroundColor = Color.FromArgb(Constantes.Color_Error_string), TextColor = Colors.White });
                     IsBusy = false;
                     return;
                 }
@@ -241,7 +241,7 @@ namespace RepeatList.ViewModels
                 await Application.Current.MainPage.DisplaySnackbar(Properties.Resources.List_not_available_or_corrupt,
                     visualOptions: new SnackbarOptions
                     {
-                        BackgroundColor = Color.FromArgb(Constantes.Color_Error),
+                        BackgroundColor = Color.FromArgb(Constantes.Color_Error_string),
                         TextColor = Colors.White
                     });
                 IsBusy = false;
@@ -263,7 +263,7 @@ namespace RepeatList.ViewModels
             await EditIsSynchronizedHeader(Header_SelectedItem, true);
 
             await Application.Current.MainPage.DisplaySnackbar(Properties.Resources.List_was_imported_successfully,
-                visualOptions: new SnackbarOptions { BackgroundColor = Color.FromArgb(Constantes.Color_Success), TextColor = Colors.White });
+                visualOptions: new SnackbarOptions { BackgroundColor = Color.FromArgb(Constantes.Color_Success_string), TextColor = Colors.White });
 
             IsBusy = false;
         }
@@ -275,7 +275,7 @@ namespace RepeatList.ViewModels
 
             try
             {
-                IsBusy = true;
+                //IsBusy = true;
 
                 (Header header, List<Position> position) sync_responce = await _supabaseService.GetHeaderWithPositionsByIdAsync(tmp_guid);
 
@@ -289,7 +289,7 @@ namespace RepeatList.ViewModels
                         if (!Guid.TryParse(guid_str, out tmp_guid))
                         {
                             await Application.Current.MainPage.DisplaySnackbar(Properties.Resources.String_is_not_a_valid_List_ID,
-                                visualOptions: new SnackbarOptions { BackgroundColor = Color.FromArgb(Constantes.Color_Error), TextColor = Colors.White });
+                                visualOptions: new SnackbarOptions { BackgroundColor = Color.FromArgb(Constantes.Color_Error_string), TextColor = Colors.White });
                             IsBusy = false;
                             return;
                         }
@@ -327,7 +327,7 @@ namespace RepeatList.ViewModels
             }
             finally
             {
-                IsBusy = false;
+                //IsBusy = false;
             }
         }
 
@@ -538,13 +538,15 @@ namespace RepeatList.ViewModels
         {
             IsBusy=true;
 
+            pos.UpdatedAt = DateTime.Now.ToUniversalTime();
+
             if (Header_SelectedItem.IsSynchronized)
             {
                 await _supabaseService.SyncPositionAsync(pos);
             }
 
             Position_selectedItem = pos;
-            pos.UpdatedAt = DateTime.Now.ToUniversalTime();
+            
             await _databaseService.UpdatePositionAsync(pos);
 
             await LoadPositions();
@@ -632,20 +634,29 @@ namespace RepeatList.ViewModels
 
         public async Task ResetPositionsAsync()
         {
+            if(IsBusy) return;
+
+            IsBusy = true;
+
             if (Header_SelectedItem == null) return;
 
             await _databaseService.UpdateIsCompletedPositionsAsync(Header_SelectedItem.Id, false);
 
             if (Header_SelectedItem.IsSynchronized)
             {
+                Header_SelectedItem.Positions = await _databaseService.GetPositionsAsync(Header_SelectedItem.Id);
+
                 foreach (var pos in Header_SelectedItem.Positions)
                 {
                     pos.IsCompleted = false;
+                    pos.UpdatedAt = DateTime.Now.ToUniversalTime();
                     await _supabaseService.SyncPositionAsync(pos);
                 }
             }
 
             await LoadPositions();
+
+            IsBusy = false;
         }
 
 

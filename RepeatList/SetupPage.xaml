@@ -2,6 +2,7 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="RepeatList.SetupPage"
+             xmlns:models="clr-namespace:RepeatList.Models"
              xmlns:local="clr-namespace:RepeatList.ViewModels"
              >
     <ContentPage.BindingContext>
@@ -72,7 +73,8 @@
         </Border>
         <StackLayout Orientation="Horizontal" HorizontalOptions="StartAndExpand" Spacing="10" >
             <Button Text="OK" Clicked="OkButton_Clicked" HorizontalOptions="FillAndExpand" TextColor="White" WidthRequest="150" />
-            <Button Text="{Binding Label_cancel}" Clicked="OnCancel" BackgroundColor="Red"  TextColor="White" WidthRequest="150"/>
+            <Button Text="{Binding Label_cancel}" Clicked="OnCancel" BackgroundColor="{x:Static models:Constantes.Color_Error}"
+                    TextColor="White" WidthRequest="150"/>
         </StackLayout>
     </StackLayout>
 </ContentPage>
