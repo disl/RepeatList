@@ -139,8 +139,6 @@ namespace RepeatList
 
         private async Task InputPositions(string _input)
         {
-            if (ViewModel.IsBusy) return;
-
             Header? json = null;
 
             ViewModel.IsBusy = true;
@@ -237,7 +235,7 @@ namespace RepeatList
                 }
             }
 
-            ViewModel.IsBusy = false;
+           
         }
 
         private async void OnDeletePositionClicked(object sender, EventArgs e)
