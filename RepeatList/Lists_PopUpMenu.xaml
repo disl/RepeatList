@@ -30,7 +30,9 @@
                 Clicked="Sync_list_downClicked"  CommandParameter="{Binding}"   />-->
 
 
-        <Button x:Name="CancelButton" BackgroundColor="{x:Static models:Constantes.Color_Error}" Margin="0,10,0,0"  Text="{x:Static properties:Resources.Cancel}" TextColor="White" 
+        <Button x:Name="CancelButton" 
+                BackgroundColor="{x:Static models:Constantes.Color_Error}" Margin="0,10,0,0"  
+                Text="{x:Static properties:Resources.Cancel}" TextColor="White" 
                 Clicked="CancelButtonClicked"    />
 
     </VerticalStackLayout>

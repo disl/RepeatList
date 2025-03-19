@@ -11,6 +11,7 @@
         <local:PositionsPageViewModel />
     </ContentPage.BindingContext>
     <ContentPage.ToolbarItems>
+        <ToolbarItem  IconImageSource="swap_vert_icon_white.png" Clicked="OnResetPositionsClicked" />
         <ToolbarItem  IconImageSource="kofi_symbol.png" Clicked="CoffeeButtonClicked" />
         
     <!--<ToolbarItem  StyleId="Item1" Order="Secondary"  IconImageSource="share_icon.png"  Text="{Binding Label_Export_list}" Command="{Binding Export_list_ClickedCommand}" />
@@ -18,25 +19,25 @@
     
     </ContentPage.ToolbarItems>
 
-    <Grid  RowDefinitions="10,auto,auto,*,auto,*,auto" Padding="15">
+    <Grid  RowDefinitions="10,auto,*,auto,*,auto" Margin="15,5,15,15">
 
         <!--<ActivityIndicator IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}" Grid.Row="0" />-->
         <controls:ActivityProgressBar IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}" Grid.Row="0" />
         
 
         <!--Undone-->
-        <StackLayout Orientation="Horizontal"    Grid.Row="1">
-            <!--<Label Text="{Binding Label_undone}" FontAttributes="Bold" VerticalOptions="Center"  HorizontalOptions="StartAndExpand" Margin="0" FontSize="Large"
+        <!--<StackLayout Orientation="Horizontal"    Grid.Row="1">
+            --><!--<Label Text="{Binding Label_undone}" FontAttributes="Bold" VerticalOptions="Center"  HorizontalOptions="StartAndExpand" Margin="0" FontSize="Large"
                             TextColor="{AppThemeBinding Light={DynamicResource PrimaryTextColor}, Dark={DynamicResource PrimaryTextColorLight}}" />-->
             <!--<ImageButton Source="add_icon.png" Clicked="OnAddPositionClicked"   VerticalOptions="Center"
-                            MaximumWidthRequest="{Binding ImageButton_size}" MaximumHeightRequest="{Binding ImageButton_size}" HorizontalOptions="End" />>-->
+                            MaximumWidthRequest="{Binding ImageButton_size}" MaximumHeightRequest="{Binding ImageButton_size}" HorizontalOptions="End" />>--><!--
             <ImageButton Source="swap_vert_icon.png" Clicked="OnResetPositionsClicked"
                             MaximumWidthRequest="{Binding ImageButton_size}" MaximumHeightRequest="{Binding ImageButton_size}"  HorizontalOptions="EndAndExpand"/>
-        </StackLayout>
+        </StackLayout>-->
 
-        <SearchBar x:Name="searchBar"  Placeholder="{Binding Search}"  TextChanged="OnSearchTextChanged" SearchButtonPressed="OnSearchButtonPressed" Margin="0,0,0,10" Grid.Row="2" />
+        <SearchBar x:Name="searchBar"  Placeholder="{Binding Search}"  TextChanged="OnSearchTextChanged" SearchButtonPressed="OnSearchButtonPressed" Margin="0,0,0,10" Grid.Row="1" />
 
-        <Border   Stroke="Gray" StrokeThickness="1"  Padding="10"  Grid.Row="3" >
+        <Border   Stroke="Gray" StrokeThickness="1"  Padding="10"  Grid.Row="2" >
             <Border.StrokeShape>
                 <RoundRectangle CornerRadius="5" />
             </Border.StrokeShape>
@@ -70,7 +71,7 @@
         </Border>
 
         <!--Done-->
-        <StackLayout Orientation="Horizontal" Margin="0,10,5,10" Grid.Row="4">
+        <StackLayout Orientation="Horizontal" Margin="0,10,5,10" Grid.Row="3">
             <Label Text="{Binding Label_done}" FontAttributes="Bold"  HorizontalOptions="StartAndExpand" FontSize="Large" VerticalOptions="Center"
                         TextColor="{AppThemeBinding Light={DynamicResource PrimaryTextColor}, Dark={DynamicResource PrimaryTextColorLight}}" />
             <Picker x:Name="SortingPicker" Title="{Binding  Title_sort_by}"  HorizontalOptions="EndAndExpand" VerticalOptions="Center" Margin="0"
@@ -84,7 +85,7 @@
             </Picker>
         </StackLayout>
 
-        <Border   Stroke="Gray" StrokeThickness="1"  Padding="10" Grid.Row="5">
+        <Border   Stroke="Gray" StrokeThickness="1"  Padding="10" Grid.Row="4">
             <Border.StrokeShape>
                 <RoundRectangle CornerRadius="5" />
             </Border.StrokeShape>
@@ -118,7 +119,7 @@
         </Border>
 
         <!--Input-->
-        <Grid ColumnDefinitions="Auto,*,Auto"   Grid.Row="6" Margin="0,20,0,20">
+        <Grid ColumnDefinitions="Auto,*,Auto"   Grid.Row="5" Margin="0,20,0,20">
             <ImageButton Source="help_icon.png" Grid.Column="0"  Clicked="OnHelpButton_Clicked" HeightRequest="30" WidthRequest="30"  VerticalOptions="Center"  />
             <Entry x:Name="Positions_inputEntry" Grid.Column="1" Text="{Binding InputText}"  Placeholder="{Binding InputText_placeholder}" 
                            Completed="Positions_inputEntry_Completed" VerticalOptions="Center" Focused="Positions_inputEntry_Focused" />
