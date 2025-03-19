@@ -1,6 +1,6 @@
 ﻿using CommunityToolkit.Maui;
 using Microsoft.Extensions.Logging;
-
+using Plugin.AdMob;
 using RepeatList.Models;
 using RepeatList.ViewModels;
 using SQLitePCL;
@@ -45,7 +45,7 @@ namespace RepeatList
             builder.Services.AddTransient<Header>();
 
 
-
+            builder.UseAdMob();
 
             //builder.Services.AddSingleton<Position>();  // Falls global
             //builder.Services.AddTransient<Position>();
