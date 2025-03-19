@@ -261,7 +261,7 @@ namespace RepeatList.Properties {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die Import/export of lists ähnelt.
+        ///   Sucht eine lokalisierte Zeichenfolge, die Import/export ähnelt.
         /// </summary>
         public static string Import_export_of_lists {
             get {
@@ -339,7 +339,7 @@ namespace RepeatList.Properties {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die List manipulation ähnelt.
+        ///   Sucht eine lokalisierte Zeichenfolge, die List ähnelt.
         /// </summary>
         public static string List_manipulation {
             get {
@@ -582,11 +582,11 @@ namespace RepeatList.Properties {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die Synchronisation of lists ähnelt.
+        ///   Sucht eine lokalisierte Zeichenfolge, die Synchronisation ähnelt.
         /// </summary>
         public static string Synchronisation_of_lists {
             get {
-                return ResourceManager.GetString("Synchronisation of lists", resourceCulture);
+                return ResourceManager.GetString("Synchronisation_of_lists", resourceCulture);
             }
         }
         

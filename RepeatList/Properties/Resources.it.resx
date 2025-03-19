@@ -186,7 +186,7 @@
     <value>Aiuto</value>
   </data>
   <data name="Import_export_of_lists" xml:space="preserve">
-    <value>Importazione/esportazione di elenchi</value>
+    <value>Importazione/Esportazione</value>
   </data>
   <data name="import_liste" xml:space="preserve">
     <value>Importazione di un elenco</value>
@@ -219,7 +219,7 @@ Alla fine, non dimenticate di premere il tasto Invio :)</value>
     <value>Le informazioni dell'elenco hanno un formato sbagliato</value>
   </data>
   <data name="List_manipulation" xml:space="preserve">
-    <value>Manipolazione dell'elenco</value>
+    <value>Elenco</value>
   </data>
   <data name="List_not_available_or_corrupt" xml:space="preserve">
     <value>Elenco non disponibile o corrotto</value>
@@ -298,6 +298,9 @@ Alla fine, non dimenticate di premere il tasto Invio :)</value>
   </data>
   <data name="Synchronisation of lists" xml:space="preserve">
     <value>Sincronizzazione degli elenchi</value>
+  </data>
+  <data name="Synchronisation_of_lists" xml:space="preserve">
+    <value>Sincronizzazione</value>
   </data>
   <data name="theme" xml:space="preserve">
     <value>Tema</value>

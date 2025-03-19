@@ -186,7 +186,7 @@
     <value>Aide</value>
   </data>
   <data name="Import_export_of_lists" xml:space="preserve">
-    <value>Importer/exporter la liste</value>
+    <value>Importation/exportation</value>
   </data>
   <data name="import_liste" xml:space="preserve">
     <value>Importer la liste</value>
@@ -219,7 +219,7 @@ A la fin, n'oubliez pas d'appuyer sur la touche « Entrée » :)</value>
     <value>Le format des informations de la liste est incorrect</value>
   </data>
   <data name="List_manipulation" xml:space="preserve">
-    <value>Manipulation de la liste</value>
+    <value>Liste</value>
   </data>
   <data name="List_not_available_or_corrupt" xml:space="preserve">
     <value>Liste inexistante ou endommagée</value>
@@ -296,8 +296,8 @@ A la fin, n'oubliez pas d'appuyer sur la touche « Entrée » :)</value>
   <data name="Synchronisation" xml:space="preserve">
     <value>Synchronisation</value>
   </data>
-  <data name="Synchronisation of lists" xml:space="preserve">
-    <value>Synchronisation de la liste</value>
+  <data name="Synchronisation_of_lists" xml:space="preserve">
+    <value>Synchronisation</value>
   </data>
   <data name="theme" xml:space="preserve">
     <value>Sujet</value>

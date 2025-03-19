@@ -186,7 +186,7 @@
     <value>Помощь</value>
   </data>
   <data name="Import_export_of_lists" xml:space="preserve">
-    <value>Импорт/экспорт списка</value>
+    <value>Импорт/экспорт</value>
   </data>
   <data name="import_liste" xml:space="preserve">
     <value>Импорт списка</value>
@@ -219,7 +219,7 @@
     <value>Информация в списке имеет неправильный формат</value>
   </data>
   <data name="List_manipulation" xml:space="preserve">
-    <value>Манипуляция со списком</value>
+    <value>Список</value>
   </data>
   <data name="List_not_available_or_corrupt" xml:space="preserve">
     <value>Список не существует или поврежден</value>
@@ -296,8 +296,8 @@
   <data name="Synchronisation" xml:space="preserve">
     <value>Синхронизация</value>
   </data>
-  <data name="Synchronisation of lists" xml:space="preserve">
-    <value>Синхронизация списка</value>
+  <data name="Synchronisation_of_lists" xml:space="preserve">
+    <value>Синхронизация</value>
   </data>
   <data name="theme" xml:space="preserve">
     <value>Тема</value>
