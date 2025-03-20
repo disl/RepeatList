@@ -62,7 +62,7 @@
                 </CollectionView.ItemTemplate>
                 <CollectionView.EmptyView>
                     <ContentView>
-                        <StackLayout HorizontalOptions="Center"  VerticalOptions="Center">
+                        <StackLayout HorizontalOptions="Center" Margin="0,100,0,0">
                             <Label Text="{Binding No_items_to_display}" HorizontalOptions="Fill" HorizontalTextAlignment="Center" />
                         </StackLayout>
                     </ContentView>
@@ -110,7 +110,7 @@
                 </CollectionView.ItemTemplate>
                 <CollectionView.EmptyView>
                     <ContentView>
-                        <StackLayout HorizontalOptions="Center"  VerticalOptions="Center">
+                        <StackLayout HorizontalOptions="Center" Margin="0,100,0,0">
                             <Label Text="{Binding No_items_to_display}" HorizontalOptions="Fill" HorizontalTextAlignment="Center" />
                         </StackLayout>
                     </ContentView>
