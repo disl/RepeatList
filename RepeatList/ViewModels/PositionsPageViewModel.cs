@@ -3,6 +3,7 @@ using CommunityToolkit.Maui.Core;
 using CommunityToolkit.Maui.Core.Extensions;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Microsoft.Maui.Controls.PlatformConfiguration;
 using RepeatList.Models;
 using RepeatList.Services;
 using System.Collections.ObjectModel;
@@ -485,12 +486,19 @@ namespace RepeatList.ViewModels
             if (Replace_old_word_when_inserting)
                 await DeleteIfAvailable(position.Title);
 
-            await _databaseService.AddPositionAsync(position, generate_new_guid);  // newPosition);
+            var new_guid = await _databaseService.AddPositionAsync(position, generate_new_guid);
+            position.Id = new_guid;
+
             await LoadPositions();
 
             //Positions.Clear();
             var sort_pos_arr = Positions.OrderBy(x => x.IsCompleted).ThenBy(a => a.Title).ToList();
             Positions = new ObservableCollection<Position>(sort_pos_arr);
+
+            if (Header_SelectedItem.IsSynchronized)
+            {
+                await _supabaseService.SyncPositionAsync(position);
+            }
 
             IsBusy = false;
         }
@@ -546,7 +554,7 @@ namespace RepeatList.ViewModels
             }
 
             Position_selectedItem = pos;
-            
+
             await _databaseService.UpdatePositionAsync(pos);
 
             await LoadPositions();
@@ -634,7 +642,7 @@ namespace RepeatList.ViewModels
 
         public async Task ResetPositionsAsync()
         {
-            if(IsBusy) return;
+            if (IsBusy) return;
 
             IsBusy = true;
 

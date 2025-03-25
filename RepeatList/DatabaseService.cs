@@ -235,7 +235,7 @@ namespace RepeatList.Services
             return positions;
         }
 
-        public async Task<int> AddPositionAsync(Position position, bool generate_new_guid = true)
+        public async Task<string> AddPositionAsync(Position position, bool generate_new_guid = true)
         {
             string? new_guid = null;
 
@@ -254,7 +254,8 @@ namespace RepeatList.Services
             command.Parameters.AddWithValue("@IsCompleted", position.IsCompleted);
             command.Parameters.AddWithValue("@UpdatedAt", position.UpdatedAt);
 
-            return await command.ExecuteNonQueryAsync();
+            await command.ExecuteNonQueryAsync();
+            return new_guid;
         }
 
         public async Task<int> UpdatePositionAsync(Position position)
