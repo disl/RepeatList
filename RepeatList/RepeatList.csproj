@@ -48,14 +48,14 @@
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net9.0-android|AnyCPU'">
 	  <EmbedAssembliesIntoApk>False</EmbedAssembliesIntoApk>
-	  <ApplicationDisplayVersion>1.0.29</ApplicationDisplayVersion>
-	  <ApplicationVersion>29</ApplicationVersion>
+	  <ApplicationDisplayVersion>1.0.30</ApplicationDisplayVersion>
+	  <ApplicationVersion>30</ApplicationVersion>
 	  <AndroidKeyStore>False</AndroidKeyStore>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net9.0-ios|AnyCPU'">
-	  <ApplicationDisplayVersion>1.0.29</ApplicationDisplayVersion>
-	  <ApplicationVersion>29</ApplicationVersion>
+	  <ApplicationDisplayVersion>1.0.30</ApplicationDisplayVersion>
+	  <ApplicationVersion>30</ApplicationVersion>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net9.0-windows10.0.19041.0|AnyCPU'">
@@ -64,15 +64,15 @@
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net9.0-android|AnyCPU'">
-	  <ApplicationDisplayVersion>1.0.29</ApplicationDisplayVersion>
-	  <ApplicationVersion>29</ApplicationVersion>
+	  <ApplicationDisplayVersion>1.0.30</ApplicationDisplayVersion>
+	  <ApplicationVersion>30</ApplicationVersion>
 	  <AndroidLinkTool>r8</AndroidLinkTool>
 	  <AndroidKeyStore>False</AndroidKeyStore>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net9.0-ios|AnyCPU'">
-	  <ApplicationDisplayVersion>1.0.29</ApplicationDisplayVersion>
-	  <ApplicationVersion>29</ApplicationVersion>
+	  <ApplicationDisplayVersion>1.0.30</ApplicationDisplayVersion>
+	  <ApplicationVersion>30</ApplicationVersion>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net9.0-windows10.0.19041.0|AnyCPU'">
@@ -183,7 +183,7 @@
 		<PackageReference Include="Microsoft.Maui.Controls" Version="9.0.30" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="9.0.3" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-		<PackageReference Include="Plugin.AdMob" Version="2.1.0" />
+		<PackageReference Include="Plugin.AdMob" Version="2.3.1" />
 		<PackageReference Include="SQLitePCLRaw.bundle_e_sqlite3" Version="2.1.11" />
 		<PackageReference Include="Supabase" Version="1.1.1" />
 		<PackageReference Include="Supabase.Postgrest" Version="4.1.0" />

@@ -80,7 +80,7 @@
             <CollectionView.EmptyView>
                 <ContentView  HorizontalOptions="Center" VerticalOptions="Center" >
                     <VerticalStackLayout HorizontalOptions="Center">
-                        <Button Clicked="OnAddHeaderClicked" Margin="0,200,0,0"
+                        <Button Clicked="OnAddHeaderClicked" VerticalOptions="Center"
                                 BackgroundColor="{x:Static models:Constantes.Color_Primary}"
                                 Text="{Binding Please_create_a_first_list}"  />
                     </VerticalStackLayout>
