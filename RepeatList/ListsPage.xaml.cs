@@ -250,9 +250,6 @@ namespace RepeatList
         #endregion
 
 
-
-
-
         #region Coffee
 
         private async void CoffeeButtonClicked(object sender, EventArgs e)

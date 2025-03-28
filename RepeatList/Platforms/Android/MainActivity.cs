@@ -9,6 +9,8 @@ namespace RepeatList
     {
         protected override void OnCreate(Bundle savedInstanceState)
         {
+            //Android.Util.Log.Debug("MAUI_DEBUG", "App started in Release mode");
+
             base.OnCreate(savedInstanceState);
 
             //SetContentView(Resource.Layout.activity_main); // Verknüpfung mit XML
