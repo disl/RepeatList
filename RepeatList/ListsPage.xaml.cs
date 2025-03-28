@@ -6,12 +6,6 @@ using RepeatList.ViewModels;
 using System.Collections.ObjectModel;
 using System.Globalization;
 using Header = RepeatList.Models.Header;
-// Remove the incorrect using directive
-// using Google.MobileAds;
-
-// Add the correct using directive for Google AdMob
-//using Google.Ads.Mediation;
-//using Android.Gms.Ads;
 
 
 namespace RepeatList
@@ -38,9 +32,6 @@ namespace RepeatList
 
             try
             {
-                //if (ViewModel != null && ViewModel.Headers != null && ViewModel.Headers.Count > 0)
-                //    HeaderListView.SelectedItem=ViewModel.Headers[0];
-
                 SetupPageViewModel = new SetupPageViewModel();
                 if (SetupPageViewModel.SelectedItem != null)
                 {
@@ -77,10 +68,6 @@ namespace RepeatList
             {
                 ViewModel.IsBusy = false;
             }
-            //_timer = Dispatcher.CreateTimer();
-            //_timer.Interval = TimeSpan.FromSeconds(10);
-            //_timer.Tick +=_timer_Tick;
-            //_timer.Start();
         }
 
         private async void _timer_Tick(object? sender, EventArgs e)
@@ -103,7 +90,7 @@ namespace RepeatList
                     {
                         await ViewModel.Sync_list_downClicked(header.Id);
 
-                        Header.IsSupabaseOk=true;
+                        Header.IsSupabaseOk = true;
                     }
                 }
             }
@@ -297,13 +284,38 @@ namespace RepeatList
             var button = sender as ImageButton;
             if (button?.CommandParameter is Header header)
             {
+                var count_of_sync_lists = ViewModel.Headers.Count(x => x.IsSynchronized);
+
+                if (count_of_sync_lists == 3)
+                {
+                    await DisplayAlert(Properties.Resources.A_maximum_of_3_synchronised_lists_are_permitted,
+                        Properties.Resources.Are_you_sure, Properties.Resources.yes);
+                    return;
+                }
+
                 bool answer = await DisplayAlert(Properties.Resources.Would_you_like_to_start_synchronisation_now,
-                Properties.Resources.Are_you_sure, Properties.Resources.yes, Properties.Resources.no);
+                    Properties.Resources.Are_you_sure, Properties.Resources.yes, Properties.Resources.no);
                 if (answer)
                 {
                     ViewModel.Header_SelectedItem = header;
 
                     await ViewModel.Sync_list_upClicked();
+                }
+            }
+        }
+
+        private async Task Sync_deleteClicked(object sender, EventArgs e)
+        {
+            var button = sender as ImageButton;
+            if (button?.CommandParameter is Header header)
+            {
+                bool answer = await DisplayAlert(Properties.Resources.Delete_Synchronisation,
+                Properties.Resources.Are_you_sure, Properties.Resources.yes, Properties.Resources.no);
+                if (answer)
+                {
+                    ViewModel.Header_SelectedItem = header;
+
+                    await ViewModel.Sync_deleteClicked();
                 }
             }
         }
@@ -383,8 +395,8 @@ namespace RepeatList
 
                     case "SyncUp":
                         await Sync_list_upClicked(button, e); break;
-                    //case "SyncDown":
-                    //    await Sync_list_downClicked(button, e); break;
+                    case "SyncDelete":
+                        await Sync_deleteClicked(button, e); break;
 
                     case "Import":
                         await ForOnAddHeaderClicked(); break;

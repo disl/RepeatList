@@ -315,6 +315,16 @@ namespace RepeatList.Services
             return await command.ExecuteNonQueryAsync();
         }
 
+        public async Task<int> UpdateIsSynchronizedHeaderAsync(string HeaderId, bool IsSynchronized)
+        {
+            var command = _connection.CreateCommand();
+            command.CommandText = "UPDATE Header SET IsSynchronized=@IsSynchronized WHERE  Id = @HeaderId";
+            command.Parameters.AddWithValue("@HeaderId", HeaderId);
+            command.Parameters.AddWithValue("@IsSynchronized", IsSynchronized);
+
+            return await command.ExecuteNonQueryAsync();
+        }
+
         #region SETUP
 
 

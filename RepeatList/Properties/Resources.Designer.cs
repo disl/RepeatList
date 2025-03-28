@@ -61,6 +61,15 @@ namespace RepeatList.Properties {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die A maximum of 3 synchronised lists are permitted ähnelt.
+        /// </summary>
+        public static string A_maximum_of_3_synchronised_lists_are_permitted {
+            get {
+                return ResourceManager.GetString("A_maximum_of_3_synchronised_lists_are_permitted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Add ähnelt.
         /// </summary>
         public static string add {
@@ -156,6 +165,15 @@ namespace RepeatList.Properties {
         public static string Delete_list {
             get {
                 return ResourceManager.GetString("Delete_list", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Delete synchronisation ähnelt.
+        /// </summary>
+        public static string Delete_Synchronisation {
+            get {
+                return ResourceManager.GetString("Delete_Synchronisation", resourceCulture);
             }
         }
         
@@ -537,7 +555,7 @@ namespace RepeatList.Properties {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die Sort by alphabet ähnelt.
+        ///   Sucht eine lokalisierte Zeichenfolge, die By alphabet ähnelt.
         /// </summary>
         public static string sort_by_alphabet {
             get {
@@ -546,7 +564,7 @@ namespace RepeatList.Properties {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die Sort by date ähnelt.
+        ///   Sucht eine lokalisierte Zeichenfolge, die By date ähnelt.
         /// </summary>
         public static string sort_by_date {
             get {

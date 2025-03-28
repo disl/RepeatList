@@ -24,10 +24,12 @@
         
 
         <Label Text="{x:Static properties:Resources.Synchronisation_of_lists}"  FontSize="Medium" TextColor="White" />
-        <Button  Text="{x:Static properties:Resources.Send_synchronisation}" TextColor="White" 
+        <Button Text="{x:Static properties:Resources.Send_synchronisation}" TextColor="White" 
                 Clicked="Sync_list_upClicked"  CommandParameter="{Binding}"   />
-        <!--<Button x:Name="sync_arrow_downButton"    Text="{x:Static properties:Resources.Request_synchronisation}" TextColor="White" 
-                Clicked="Sync_list_downClicked"  CommandParameter="{Binding}"   />-->
+        <Button x:Name="Sync_removeButton"  Text="{x:Static properties:Resources.Delete_Synchronisation}"  
+                BackgroundColor="{x:Static models:Constantes.Color_Warning}"
+                TextColor="White" 
+                Clicked="Sync_removeClicked"  CommandParameter="{Binding}"   />
 
 
         <Button x:Name="CancelButton" 

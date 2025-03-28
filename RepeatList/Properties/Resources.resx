@@ -279,10 +279,10 @@ At the end, please do not forget to press the Enter key :)</value>
     <value>Sort by</value>
   </data>
   <data name="sort_by_alphabet" xml:space="preserve">
-    <value>Sort by alphabet</value>
+    <value>By alphabet</value>
   </data>
   <data name="sort_by_date" xml:space="preserve">
-    <value>Sort by date</value>
+    <value>By date</value>
   </data>
   <data name="String_is_not_a_valid_list_description" xml:space="preserve">
     <value>String is not a valid list description (JSON format)</value>
@@ -325,5 +325,11 @@ At the end, please do not forget to press the Enter key :)</value>
   </data>
   <data name="search" xml:space="preserve">
     <value>Search</value>
+  </data>
+  <data name="Delete_Synchronisation" xml:space="preserve">
+    <value>Delete synchronisation</value>
+  </data>
+  <data name="A_maximum_of_3_synchronised_lists_are_permitted" xml:space="preserve">
+    <value>A maximum of 3 synchronised lists are permitted</value>
   </data>
 </root>

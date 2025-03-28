@@ -18,7 +18,7 @@ public partial class Lists_PopUpMenu : Popup
 
         SelectedItem = item;
 
-        //sync_arrow_downButton.IsVisible = item.IsSynchronized;
+        Sync_removeButton.IsVisible = item.IsSynchronized;
     }
 
     private void OnEditHeaderClicked(object sender, EventArgs e)
@@ -36,9 +36,9 @@ public partial class Lists_PopUpMenu : Popup
         Close("SyncUp");
     }
 
-    private void Sync_list_downClicked(object sender, EventArgs e)
+    private void Sync_removeClicked(object sender, EventArgs e)
     {
-        Close("SyncDown");
+        Close("SyncDelete");
     }
 
     private void CancelButtonClicked(object sender, EventArgs e)

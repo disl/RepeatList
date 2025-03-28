@@ -132,6 +132,9 @@
   <data name="Are_you_sure" xml:space="preserve">
     <value>Sind Sie sicher?</value>
   </data>
+  <data name="A_maximum_of_3_synchronised_lists_are_permitted" xml:space="preserve">
+    <value>Maximal 3 synchronisierte Listen sind zulässig</value>
+  </data>
   <data name="Cancel" xml:space="preserve">
     <value>Abbruch</value>
   </data>
@@ -149,6 +152,9 @@
   </data>
   <data name="Delete_list" xml:space="preserve">
     <value>Liste löschen</value>
+  </data>
+  <data name="Delete_Synchronisation" xml:space="preserve">
+    <value>Synchronisation löschen</value>
   </data>
   <data name="done" xml:space="preserve">
     <value>Erledigt</value>
@@ -282,10 +288,10 @@ Am Ende bitte nicht vergessen, die Eingabetaste zu drücken :)</value>
     <value>Sortieren nach</value>
   </data>
   <data name="sort_by_alphabet" xml:space="preserve">
-    <value>Sortierung nach Alphabet</value>
+    <value>Nach Alphabet</value>
   </data>
   <data name="sort_by_date" xml:space="preserve">
-    <value>Sortierung nach Datum</value>
+    <value>Nach Datum</value>
   </data>
   <data name="String_is_not_a_valid_list_description" xml:space="preserve">
     <value>Zeichenkette ist keine gültige Listenbeschreibung (JSON-Format)</value>

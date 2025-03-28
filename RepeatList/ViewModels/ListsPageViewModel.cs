@@ -404,6 +404,8 @@ namespace RepeatList.ViewModels
 
             await EditIsSynchronizedHeader(Header_SelectedItem, true);
 
+            await Sync_list_downClicked(Header_SelectedItem.Id);
+
             bool answer = await Application.Current.MainPage.DisplayAlert(
                 Properties.Resources.Would_you_like_to_work_with_someone_on_a_current_list + Environment.NewLine +
                 Properties.Resources.To_be_able_to_edit_the_list_please_use_the_following_key
@@ -416,6 +418,9 @@ namespace RepeatList.ViewModels
                 //.Replace("%1", Header_SelectedItem.Id).Replace("%2", Header_SelectedItem.ListName);
                 await Utilities.ShareTextAsync(share_text);
             }
+
+           
+
             IsBusy = false;
         }
 
@@ -681,12 +686,27 @@ namespace RepeatList.ViewModels
             await LoadLists();
         }
 
-        public async Task ResetListsAsync()
+        internal async Task Sync_deleteClicked()
         {
             if (Header_SelectedItem == null) return;
 
-            await _databaseService.UpdateIsCompletedPositionsAsync(Header_SelectedItem.Id, false);
-            await LoadLists();
+            IsBusy = true;
+
+            // Delete linkd to Supabase 
+            await DeleteHeaderInSupabase(Header_SelectedItem);
+
+            await Application.Current.MainPage.DisplaySnackbar(Properties.Resources.Operation_successfully_completed,
+                visualOptions: new SnackbarOptions
+                {
+                    BackgroundColor = Color.FromArgb(Constantes.Color_Success_string),
+                    TextColor = Colors.White
+                });
+
+            await _databaseService.UpdateIsSynchronizedHeaderAsync(Header_SelectedItem.Id, false);
+
+            await LoadHeaders();
+
+            IsBusy = false;
         }
 
 

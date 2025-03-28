@@ -132,6 +132,9 @@
   <data name="Are_you_sure" xml:space="preserve">
     <value>Sei sicuro?</value>
   </data>
+  <data name="A_maximum_of_3_synchronised_lists_are_permitted" xml:space="preserve">
+    <value>Sono consentiti al massimo 3 elenchi sincronizzati</value>
+  </data>
   <data name="Cancel" xml:space="preserve">
     <value>Annulla</value>
   </data>
@@ -149,6 +152,9 @@
   </data>
   <data name="Delete_list" xml:space="preserve">
     <value>Cancellare l'elenco</value>
+  </data>
+  <data name="Delete_Synchronisation" xml:space="preserve">
+    <value>Cancellare la sincronizzazione</value>
   </data>
   <data name="done" xml:space="preserve">
     <value>Fatto</value>
@@ -282,10 +288,10 @@ Alla fine, non dimenticate di premere il tasto Invio :)</value>
     <value>Ordina per</value>
   </data>
   <data name="sort_by_alphabet" xml:space="preserve">
-    <value>Ordina per alfabeto</value>
+    <value>Per alfabeto</value>
   </data>
   <data name="sort_by_date" xml:space="preserve">
-    <value>Ordina per data</value>
+    <value>Per data</value>
   </data>
   <data name="String_is_not_a_valid_list_description" xml:space="preserve">
     <value>Stringa non è una descrizione di elenco valida (formato JSON)</value>

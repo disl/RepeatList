@@ -132,6 +132,9 @@
   <data name="Are_you_sure" xml:space="preserve">
     <value>Вы уверены?</value>
   </data>
+  <data name="A_maximum_of_3_synchronised_lists_are_permitted" xml:space="preserve">
+    <value>Разрешается использовать не более 3 синхронизированных списков</value>
+  </data>
   <data name="Cancel" xml:space="preserve">
     <value>Отменить</value>
   </data>
@@ -149,6 +152,9 @@
   </data>
   <data name="Delete_list" xml:space="preserve">
     <value>Удалить список</value>
+  </data>
+  <data name="Delete_Synchronisation" xml:space="preserve">
+    <value>Удалить синхронизацию</value>
   </data>
   <data name="done" xml:space="preserve">
     <value>Готово</value>
@@ -282,10 +288,10 @@
     <value>Сортировать по</value>
   </data>
   <data name="sort_by_alphabet" xml:space="preserve">
-    <value>Сортировать по алфавиту</value>
+    <value>По алфавиту</value>
   </data>
   <data name="sort_by_date" xml:space="preserve">
-    <value>Сортировать по дате</value>
+    <value>По дате</value>
   </data>
   <data name="String_is_not_a_valid_list_description" xml:space="preserve">
     <value>Строка не является правильным описанием списка (формат JSON)</value>
