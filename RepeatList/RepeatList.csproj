@@ -50,14 +50,14 @@
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net9.0-android|AnyCPU'">
 	  <EmbedAssembliesIntoApk>False</EmbedAssembliesIntoApk>
-	  <ApplicationDisplayVersion>1.0.33</ApplicationDisplayVersion>
-	  <ApplicationVersion>33</ApplicationVersion>
+	  <ApplicationDisplayVersion>1.0.34</ApplicationDisplayVersion>
+	  <ApplicationVersion>34</ApplicationVersion>
 	  <AndroidKeyStore>False</AndroidKeyStore>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net9.0-ios|AnyCPU'">
-	  <ApplicationDisplayVersion>1.0.33</ApplicationDisplayVersion>
-	  <ApplicationVersion>33</ApplicationVersion>
+	  <ApplicationDisplayVersion>1.0.34</ApplicationDisplayVersion>
+	  <ApplicationVersion>34</ApplicationVersion>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net9.0-windows10.0.19041.0|AnyCPU'">
@@ -66,16 +66,16 @@
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net9.0-android|AnyCPU'">
-	  <ApplicationDisplayVersion>1.0.33</ApplicationDisplayVersion>
-	  <ApplicationVersion>33</ApplicationVersion>
+	  <ApplicationDisplayVersion>1.0.34</ApplicationDisplayVersion>
+	  <ApplicationVersion>34</ApplicationVersion>
 	  <AndroidLinkTool>r8</AndroidLinkTool>
 	  <AndroidKeyStore>False</AndroidKeyStore>
 	  <RunAOTCompilation>True</RunAOTCompilation>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net9.0-ios|AnyCPU'">
-	  <ApplicationDisplayVersion>1.0.33</ApplicationDisplayVersion>
-	  <ApplicationVersion>33</ApplicationVersion>
+	  <ApplicationDisplayVersion>1.0.34</ApplicationDisplayVersion>
+	  <ApplicationVersion>34</ApplicationVersion>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net9.0-windows10.0.19041.0|AnyCPU'">

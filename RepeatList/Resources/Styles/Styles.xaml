@@ -448,4 +448,18 @@
         <Setter Property="SelectedTabColor" Value="{AppThemeBinding Light={StaticResource Gray950}, Dark={StaticResource Gray200}}" />
     </Style>
 
+
+    <!-- Farben für Light und Dark Theme -->
+    <Color x:Key="EntryUnderlineColorLight">Blue</Color>
+    <Color x:Key="EntryUnderlineColorDark">Red</Color>
+
+    <!-- Border Style für die Unterstreichung -->
+    <!--<Style x:Key="UnderlineBorderStyle" TargetType="Border">
+        <Setter Property="StrokeThickness" Value="2"/>
+        <Setter Property="Padding" Value="0"/>
+        <Setter Property="Stroke" 
+                Value="{AppThemeBinding Light={StaticResource EntryUnderlineColorLight}, Dark={StaticResource EntryUnderlineColorDark}}" />
+        <Setter Property="BackgroundColor" Value="Transparent"/>
+    </Style>-->
+
 </ResourceDictionary>
