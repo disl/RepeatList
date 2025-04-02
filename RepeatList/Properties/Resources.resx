@@ -332,4 +332,7 @@ At the end, please do not forget to press the Enter key :)</value>
   <data name="A_maximum_of_3_synchronised_lists_are_permitted" xml:space="preserve">
     <value>A maximum of 3 synchronised lists are permitted</value>
   </data>
+  <data name="Export_not_completed_as_a_text_list" xml:space="preserve">
+    <value>‘Not completed items’ as a text list</value>
+  </data>
 </root>

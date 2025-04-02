@@ -50,14 +50,14 @@
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net9.0-android|AnyCPU'">
 	  <EmbedAssembliesIntoApk>False</EmbedAssembliesIntoApk>
-	  <ApplicationDisplayVersion>1.0.34</ApplicationDisplayVersion>
-	  <ApplicationVersion>34</ApplicationVersion>
+	  <ApplicationDisplayVersion>1.0.35</ApplicationDisplayVersion>
+	  <ApplicationVersion>35</ApplicationVersion>
 	  <AndroidKeyStore>False</AndroidKeyStore>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net9.0-ios|AnyCPU'">
-	  <ApplicationDisplayVersion>1.0.34</ApplicationDisplayVersion>
-	  <ApplicationVersion>34</ApplicationVersion>
+	  <ApplicationDisplayVersion>1.0.35</ApplicationDisplayVersion>
+	  <ApplicationVersion>35</ApplicationVersion>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net9.0-windows10.0.19041.0|AnyCPU'">
@@ -66,16 +66,16 @@
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net9.0-android|AnyCPU'">
-	  <ApplicationDisplayVersion>1.0.34</ApplicationDisplayVersion>
-	  <ApplicationVersion>34</ApplicationVersion>
+	  <ApplicationDisplayVersion>1.0.35</ApplicationDisplayVersion>
+	  <ApplicationVersion>35</ApplicationVersion>
 	  <AndroidLinkTool>r8</AndroidLinkTool>
 	  <AndroidKeyStore>False</AndroidKeyStore>
 	  <RunAOTCompilation>True</RunAOTCompilation>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net9.0-ios|AnyCPU'">
-	  <ApplicationDisplayVersion>1.0.34</ApplicationDisplayVersion>
-	  <ApplicationVersion>34</ApplicationVersion>
+	  <ApplicationDisplayVersion>1.0.35</ApplicationDisplayVersion>
+	  <ApplicationVersion>35</ApplicationVersion>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net9.0-windows10.0.19041.0|AnyCPU'">
@@ -220,6 +220,9 @@
 		<MauiXaml Update="ListsPage.xaml">
 		  <Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
+		<MauiXaml Update="Positions_PopUpMenu.xaml">
+		  <Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
 		<MauiXaml Update="Lists_PopUpMenu.xaml">
 		  <Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
@@ -240,6 +243,9 @@
 	<ItemGroup>
 	  <Compile Update="ListsPage.xaml.cs">
 	    <DependentUpon>ListsPage.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="Positions_PopUpMenu.xaml.cs">
+	    <DependentUpon>Positions_PopUpMenu.xaml</DependentUpon>
 	  </Compile>
 	  <Compile Update="PositionsPage.xaml.cs">
 	    <DependentUpon>PositionsPage.xaml</DependentUpon>

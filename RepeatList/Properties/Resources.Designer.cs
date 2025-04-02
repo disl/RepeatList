@@ -270,6 +270,15 @@ namespace RepeatList.Properties {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die ‘Not completed items’ as a text list ähnelt.
+        /// </summary>
+        public static string Export_not_completed_as_a_text_list {
+            get {
+                return ResourceManager.GetString("Export_not_completed_as_a_text_list", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Help ähnelt.
         /// </summary>
         public static string help {

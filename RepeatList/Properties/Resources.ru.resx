@@ -188,6 +188,9 @@
   <data name="Export_list" xml:space="preserve">
     <value>Экспорт текущего списка</value>
   </data>
+  <data name="Export_not_completed_as_a_text_list" xml:space="preserve">
+    <value>'Невыполненные пункты' в виде текстового списка</value>
+  </data>
   <data name="help" xml:space="preserve">
     <value>Помощь</value>
   </data>

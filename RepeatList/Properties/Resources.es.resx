@@ -188,6 +188,9 @@
   <data name="Export_list" xml:space="preserve">
     <value>Exportar la lista actual</value>
   </data>
+  <data name="Export_not_completed_as_a_text_list" xml:space="preserve">
+    <value>Elementos no completados» como lista de texto</value>
+  </data>
   <data name="help" xml:space="preserve">
     <value>Ayuda</value>
   </data>

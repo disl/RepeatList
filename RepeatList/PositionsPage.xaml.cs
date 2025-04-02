@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Maui.Core;
 using CommunityToolkit.Maui.Core.Extensions;
+using CommunityToolkit.Maui.Views;
 using Newtonsoft.Json;
 using RepeatList.Models;
 using RepeatList.ViewModels;
@@ -482,6 +483,26 @@ namespace RepeatList
         {
             await Navigation.PushAsync(new HelpPage(HelpPageViewModel.HelpTopicThemasEnum.InputTextBox, new CultureInfo(ViewModel.CurrentCulture)));
         }
+
+        private async void OpenMenu(object sender, EventArgs e)
+        {
+            if (sender is ImageButton button)
+            {
+                var popup = new Positions_PopUpMenu( );
+                var result = await Shell.Current.ShowPopupAsync(popup);
+                switch (result)
+                {
+                    case "Export_not_completed_as_a_text_list":
+                        await ViewModel.Export_list_textClicked(); break;
+
+                }
+
+            }
+        }
+
+
+
+
     }
 
 }

@@ -216,7 +216,7 @@ namespace RepeatList.ViewModels
         {
             IsBusy = true;
 
-            string send_text = "";
+            string send_text = Header_SelectedItem.ListName + ": " + Environment.NewLine ;
             for (int i = 0; i< Positions_undone.Count; i++)
             {
                 send_text += (i+1) + ". " + Positions_undone[i].Title + Environment.NewLine;
