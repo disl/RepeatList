@@ -39,7 +39,7 @@
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.26100.0</SupportedOSPlatformVersion>
 		<TargetPlatformMinVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.26100.0</TargetPlatformMinVersion>
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'tizen'">6.5</SupportedOSPlatformVersion>
-		<PackageIcon>playstore_128.png</PackageIcon>
+		<PackageIcon>minilist_icon_128.png</PackageIcon>
 		<DefaultLanguage>en</DefaultLanguage>
 		<NeutralLanguage>en</NeutralLanguage>
 		<IncludeSymbols>False</IncludeSymbols>
@@ -234,10 +234,6 @@
 		</MauiXaml>
 	</ItemGroup>
 
-	<ItemGroup>
-	  <MauiIcon Include="Resources\AppIcon\appicon.png" />
-	</ItemGroup>
-
 
 
 	<ItemGroup>
@@ -287,6 +283,17 @@
 	<ItemGroup>
 	  <Folder Include="Platforms\Android\Resources\layout\" />
 	  <Folder Include="Resources\Splash\" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <MauiIcon Include="Resources\AppIcon\appicon.png" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Include="..\..\..\..\Downloads\minilist_icon_128.png">
+	    <Pack>True</Pack>
+	    <PackagePath>\</PackagePath>
+	  </None>
 	</ItemGroup>
 
 	<ItemGroup>
