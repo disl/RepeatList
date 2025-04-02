@@ -11,6 +11,7 @@
         <local:PositionsPageViewModel />
     </ContentPage.BindingContext>
     <ContentPage.ToolbarItems>
+        <ToolbarItem  IconImageSource="swap_vert_icon_white.png" Command="{Binding Export_list_textClickedCommand}" />
         <ToolbarItem  IconImageSource="swap_vert_icon_white.png" Clicked="OnResetPositionsClicked" />
         <ToolbarItem  IconImageSource="kofi_symbol.png" Clicked="CoffeeButtonClicked" />
 

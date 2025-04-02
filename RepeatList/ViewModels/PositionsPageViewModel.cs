@@ -3,7 +3,6 @@ using CommunityToolkit.Maui.Core;
 using CommunityToolkit.Maui.Core.Extensions;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Microsoft.Maui.Controls.PlatformConfiguration;
 using RepeatList.Models;
 using RepeatList.Services;
 using System.Collections.ObjectModel;
@@ -211,6 +210,21 @@ namespace RepeatList.ViewModels
 
 
         #region COMMANDS       
+
+        [RelayCommand]
+        public async Task Export_list_textClicked()
+        {
+            IsBusy = true;
+
+            string send_text = "";
+            for (int i = 0; i< Positions_undone.Count; i++)
+            {
+                send_text += (i+1) + ". " + Positions_undone[i].Title + Environment.NewLine;
+            }
+            await Utilities.ShareTextAsync(send_text);
+
+            IsBusy = false;
+        }
 
         [RelayCommand]
         public async Task Import_listClicked()
