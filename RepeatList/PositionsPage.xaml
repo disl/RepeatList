@@ -41,7 +41,11 @@
             <SearchBar x:Name="searchBar"  Placeholder="{Binding Search}"  Grid.Column="0" VerticalOptions="End" Margin="0,0,0,7"
                        TextChanged="OnSearchTextChanged" SearchButtonPressed="OnSearchButtonPressed"  />
 
-            <ImageButton Grid.Column="1" Source="more_vert_icon.png"  Clicked="OpenMenu"  HeightRequest="30" WidthRequest="30" />
+            <ImageButton Grid.Column="1"  Clicked="OpenMenu"  HeightRequest="30" WidthRequest="30" >
+                <ImageButton.Source>
+                    <AppThemeBinding Light="more_vert_black.png"  Dark="more_vert_white.png" />
+                </ImageButton.Source>
+            </ImageButton>
 
 
 
@@ -93,7 +97,11 @@
             <Label Text="{Binding Label_done}" FontAttributes="Bold"  HorizontalOptions="StartAndExpand" FontSize="Large" VerticalOptions="Center"
                         TextColor="{AppThemeBinding Light={DynamicResource PrimaryTextColor}, Dark={DynamicResource PrimaryTextColorLight}}" />
 
-            <ImageButton Source="swap_vert_icon_white.png"  Clicked="OnResetPositionsClicked" VerticalOptions="Center" HeightRequest="35" WidthRequest="35" />
+            <ImageButton   Clicked="OnResetPositionsClicked" VerticalOptions="Center" HeightRequest="35" WidthRequest="35"                            >
+                <ImageButton.Source>
+                    <AppThemeBinding Light="swap_vert_icon.png"  Dark="swap_vert_icon_white.png" />
+                </ImageButton.Source>
+            </ImageButton>
 
             <Picker x:Name="SortingPicker" Title="{Binding  Title_sort_by}"  HorizontalOptions="EndAndExpand" VerticalOptions="Center" Margin="0"
                         TextColor="{AppThemeBinding Light={DynamicResource PrimaryTextColor}, Dark={DynamicResource PrimaryTextColorLight}}"

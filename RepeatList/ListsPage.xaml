@@ -56,10 +56,13 @@
                             <Image Source="{Binding Sync_arrow_down_icon}" IsVisible="{Binding IsSynchronized}" HeightRequest="30" Grid.Column="2" />
 
                             <!-- Menu-Button -->
-                            <ImageButton Grid.Column="3" Source="more_vert_icon.png"   HeightRequest="30" WidthRequest="30" CommandParameter="{Binding .}">
+                            <ImageButton Grid.Column="3"   HeightRequest="30" WidthRequest="30" CommandParameter="{Binding .}">
                                 <ImageButton.GestureRecognizers >
                                     <TapGestureRecognizer Tapped="OnBurgerMenuTapped" NumberOfTapsRequired="1"  />
                                 </ImageButton.GestureRecognizers>
+                                <ImageButton.Source>
+                                    <AppThemeBinding Light="more_vert_black.png"  Dark="more_vert_white.png" />
+                                </ImageButton.Source>
                             </ImageButton>
 
                             <!--<ImageButton Source="edit_icon.png" Clicked="OnEditHeaderClicked" HeightRequest="30" CommandParameter="{Binding}"  Grid.Column="2"/>
