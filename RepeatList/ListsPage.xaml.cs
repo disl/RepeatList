@@ -12,6 +12,8 @@ namespace RepeatList
 {
     public partial class ListsPage : ContentPage
     {
+        int m_max_count_of_sync_lists = 2;
+
         private SetupPageViewModel SetupPageViewModel { get; set; }
         private ListsPageViewModel ViewModel { get; set; }
         private ResourcesViewModel ResourcesViewModel { get; set; }
@@ -283,9 +285,9 @@ namespace RepeatList
             {
                 var count_of_sync_lists = ViewModel.Headers.Count(x => x.IsSynchronized);
 
-                if (count_of_sync_lists == 3)
+                if (count_of_sync_lists == m_max_count_of_sync_lists)
                 {
-                    await DisplayAlert(Properties.Resources.A_maximum_of_3_synchronised_lists_are_permitted,
+                    await DisplayAlert(Properties.Resources.A_maximum_of_3_synchronised_lists_are_permitted.Replace("%1", m_max_count_of_sync_lists.ToString()),
                         Properties.Resources.Are_you_sure, Properties.Resources.yes);
                     return;
                 }

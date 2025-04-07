@@ -133,7 +133,7 @@
     <value>Sind Sie sicher?</value>
   </data>
   <data name="A_maximum_of_3_synchronised_lists_are_permitted" xml:space="preserve">
-    <value>Maximal 3 synchronisierte Listen sind zulässig</value>
+    <value>Maximal %1 synchronisierte Listen sind zulässig</value>
   </data>
   <data name="Cancel" xml:space="preserve">
     <value>Abbruch</value>
@@ -170,8 +170,8 @@
   </data>
   <data name="Enter_a_list_name_or_insert_a_ready_made" xml:space="preserve">
     <value>1. einen Listennamen eingeben oder 
-2. eine fertige Liste als Zeichenkette im JSON-Format einfügen, die Sie von jemandem erhalten haben, z. B. über WatsApp, oder
-3. Geben Sie einen Synchronisationsschlüssel ein, den Sie von jemandem erhalten haben, z. B. über WatsApp.</value>
+2. eine fertige Liste als Zeichenkette im JSON-Format einfügen, die Sie von jemandem erhalten haben, z. B. über WhatsApp, oder
+3. Geben Sie einen Synchronisationsschlüssel ein, den Sie von jemandem erhalten haben, z. B. über WhatsApp.</value>
   </data>
   <data name="Enter_list_name" xml:space="preserve">
     <value>Listenname eingeben</value>
@@ -206,7 +206,7 @@
   <data name="InputTextWithMicrophoneViewModel_PlaceholderText" xml:space="preserve">
     <value>1. Sie können einen einfachen Satz verwenden, z. B. "Milch 2 St.";
 
-2. eine Liste als Satz mit einem Semikolon (";") als Trennzeichen, z.B. "Milch 2 St.;Fleisch 0,5 kg;Saft 1 Packung;Bonnen 1 S.". Eine solche Liste kann z.B. per WatsApp verschickt und schnell eingelesen werden.
+2. eine Liste als Satz mit einem Semikolon (";") als Trennzeichen, z.B. "Milch 2 St.;Fleisch 0,5 kg;Saft 1 Packung;Bonnen 1 S.". Eine solche Liste kann z.B. per WhatsApp verschickt und schnell eingelesen werden.
 
 3. Sie können eine verschickte Liste, siehe Punkt 2, aus der Zwischenablage einfügen.
 
@@ -315,7 +315,7 @@ Am Ende bitte nicht vergessen, die Eingabetaste zu drücken :)</value>
     <value>Die Zwischenablage ist leer</value>
   </data>
   <data name="The_list_was_saved_as_a_string_in_the_clipboard" xml:space="preserve">
-    <value>Die Liste wurde als Zeichenfolge in der Zwischenablage gespeichert. Diese kann nun z.B. per WatsApp verschickt werden.</value>
+    <value>Die Liste wurde als Zeichenfolge in der Zwischenablage gespeichert. Diese kann nun z.B. per WhatsApp verschickt werden.</value>
   </data>
   <data name="To_be_able_to_edit_the_list_please_use_the_following_key" xml:space="preserve">
     <value>Um die Liste "%2" bearbeiten zu können, verwenden Sie bitte folgenden Schlüssel: %1 (vertraulich).</value>

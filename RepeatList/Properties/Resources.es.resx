@@ -133,7 +133,7 @@
     <value>¿Está seguro?</value>
   </data>
   <data name="A_maximum_of_3_synchronised_lists_are_permitted" xml:space="preserve">
-    <value>Se permite un máximo de 3 listas sincronizadas</value>
+    <value>Se permite un máximo de %1 listas sincronizadas</value>
   </data>
   <data name="Cancel" xml:space="preserve">
     <value>Cancelar</value>
@@ -170,8 +170,8 @@
   </data>
   <data name="Enter_a_list_name_or_insert_a_ready_made" xml:space="preserve">
     <value>1. introduzca un nombre de lista o 
-2. introduzca una lista ya preparada como cadena de caracteres en formato JSON que haya recibido de alguien, por ejemplo, a través de WatsApp, o bien
-3. introduzca una clave de sincronización que haya recibido de alguien, por ejemplo, a través de WatsApp.</value>
+2. introduzca una lista ya preparada como cadena de caracteres en formato JSON que haya recibido de alguien, por ejemplo, a través de WhatsApp, o bien
+3. introduzca una clave de sincronización que haya recibido de alguien, por ejemplo, a través de WhatsApp.</value>
   </data>
   <data name="Enter_list_name" xml:space="preserve">
     <value>Introducir nombre de lista</value>
@@ -206,7 +206,7 @@
   <data name="InputTextWithMicrophoneViewModel_PlaceholderText" xml:space="preserve">
     <value>1. puede utilizar una frase simple, por ejemplo «Leche 2 uds»;
 
-2. una lista en forma de frase con un punto y coma («;») como separador, p. ej. «leche 2 uds;carne 0,5 kg;zumo 1 paquete;peras 1 p.». Una lista así puede enviarse por WatsApp, por ejemplo, y leerse rápidamente.
+2. una lista en forma de frase con un punto y coma («;») como separador, p. ej. «leche 2 uds;carne 0,5 kg;zumo 1 paquete;peras 1 p.». Una lista así puede enviarse por WhatsApp, por ejemplo, y leerse rápidamente.
 
 3. puedes pegar una lista enviada, ver punto 2, desde el portapapeles.
 
@@ -315,7 +315,7 @@ Al final, no olvide pulsar la tecla Intro :)</value>
     <value>El portapapeles está vacío</value>
   </data>
   <data name="The_list_was_saved_as_a_string_in_the_clipboard" xml:space="preserve">
-    <value>La lista se ha guardado como una cadena en el portapapeles. Ahora se puede enviar a través de WatsApp, por ejemplo.</value>
+    <value>La lista se ha guardado como una cadena en el portapapeles. Ahora se puede enviar a través de WhatsApp, por ejemplo.</value>
   </data>
   <data name="To_be_able_to_edit_the_list_please_use_the_following_key" xml:space="preserve">
     <value>Para poder editar la lista «%2», utilice la siguiente tecla: %1 (confidencial).</value>

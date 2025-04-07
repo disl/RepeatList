@@ -61,7 +61,7 @@ namespace RepeatList.Properties {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die A maximum of 3 synchronised lists are permitted ähnelt.
+        ///   Sucht eine lokalisierte Zeichenfolge, die A maximum of %1 synchronised lists are permitted ähnelt.
         /// </summary>
         public static string A_maximum_of_3_synchronised_lists_are_permitted {
             get {
@@ -215,8 +215,8 @@ namespace RepeatList.Properties {
         
         /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die 1. enter a list name or 
-        ///2. insert a ready-made list as a character string in JSON format that you have received from someone, e.g. via WatsApp, or
-        ///3. enter a synchronisation key that you have received from someone, e.g. via WatsApp. ähnelt.
+        ///2. insert a ready-made list as a character string in JSON format that you have received from someone, e.g. via WhatsApp, or
+        ///3. enter a synchronisation key that you have received from someone, e.g. via WhatsApp. ähnelt.
         /// </summary>
         public static string Enter_a_list_name_or_insert_a_ready_made {
             get {
@@ -326,7 +326,7 @@ namespace RepeatList.Properties {
         /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die 1. you can use a simple sentence, e.g. ‘Milk 2 pcs’;
         ///
-        ///2. a list as a sentence with a semicolon (‘;’) as a separator, e.g. ‘Milk 2 pcs;Meat 0.5 kg;Juice 1 pack;Bonnen 1 p.’. Such a list can be sent via WatsApp, for example, and read in quickly.
+        ///2. a list as a sentence with a semicolon (‘;’) as a separator, e.g. ‘Milk 2 pcs;Meat 0.5 kg;Juice 1 pack;Bonnen 1 p.’. Such a list can be sent via WhatsApp, for example, and read in quickly.
         ///
         ///3. you can paste a sent list, see point 2, from the clipboard.
         ///
@@ -627,7 +627,7 @@ namespace RepeatList.Properties {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die The list was saved as a string in the clipboard. This can now be sent via WatsApp, for example. ähnelt.
+        ///   Sucht eine lokalisierte Zeichenfolge, die The list was saved as a string in the clipboard. This can now be sent via WhatsApp, for example. ähnelt.
         /// </summary>
         public static string The_list_was_saved_as_a_string_in_the_clipboard {
             get {

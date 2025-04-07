@@ -133,7 +133,7 @@
     <value>Êtes-vous sûr ?</value>
   </data>
   <data name="A_maximum_of_3_synchronised_lists_are_permitted" xml:space="preserve">
-    <value>Un maximum de 3 listes synchronisées est autorisé</value>
+    <value>Un maximum de %1 listes synchronisées est autorisé</value>
   </data>
   <data name="Cancel" xml:space="preserve">
     <value>Annuler</value>
@@ -170,8 +170,8 @@
   </data>
   <data name="Enter_a_list_name_or_insert_a_ready_made" xml:space="preserve">
     <value>1. saisir un nom de liste ou 
-2. insérer une liste prête à l'emploi en tant que chaîne de caractères au format JSON que vous avez reçue de quelqu'un, par exemple via WatsApp, ou
-3. saisir une clé de synchronisation que vous avez reçue de quelqu'un, par exemple via WatsApp.</value>
+2. insérer une liste prête à l'emploi en tant que chaîne de caractères au format JSON que vous avez reçue de quelqu'un, par exemple via WhatsApp, ou
+3. saisir une clé de synchronisation que vous avez reçue de quelqu'un, par exemple via WhatsApp.</value>
   </data>
   <data name="Enter_list_name" xml:space="preserve">
     <value>Saisir un nom de liste</value>
@@ -206,7 +206,7 @@
   <data name="InputTextWithMicrophoneViewModel_PlaceholderText" xml:space="preserve">
     <value>1. vous pouvez utiliser une phrase simple, par exemple « lait 2 p. » ;
 
-2. une liste sous forme de phrase avec un point-virgule («  ; ») comme séparateur, p. ex. « lait 2 pcs;viande 0,5 kg;jus 1 paquet;poires 1 p. ». Une telle liste peut par exemple être envoyée par WatsApp et être lue rapidement.
+2. une liste sous forme de phrase avec un point-virgule («  ; ») comme séparateur, p. ex. « lait 2 pcs;viande 0,5 kg;jus 1 paquet;poires 1 p. ». Une telle liste peut par exemple être envoyée par WhatsApp et être lue rapidement.
 
 3. vous pouvez insérer une liste envoyée, voir point 2, à partir du presse-papiers.
 
@@ -315,7 +315,7 @@ A la fin, n'oubliez pas d'appuyer sur la touche « Entrée » :)</value>
     <value>Le presse-papiers est vide</value>
   </data>
   <data name="The_list_was_saved_as_a_string_in_the_clipboard" xml:space="preserve">
-    <value>La liste a été enregistrée comme chaîne de caractères dans le presse-papiers. Celle-ci peut maintenant être envoyée par WatsApp, par exemple.</value>
+    <value>La liste a été enregistrée comme chaîne de caractères dans le presse-papiers. Celle-ci peut maintenant être envoyée par WhatsApp, par exemple.</value>
   </data>
   <data name="To_be_able_to_edit_the_list_please_use_the_following_key" xml:space="preserve">
     <value>Pour pouvoir modifier la liste « %2 », veuillez utiliser la clé suivante : %1 (confidentiel).</value>

@@ -133,7 +133,7 @@
     <value>Sei sicuro?</value>
   </data>
   <data name="A_maximum_of_3_synchronised_lists_are_permitted" xml:space="preserve">
-    <value>Sono consentiti al massimo 3 elenchi sincronizzati</value>
+    <value>Sono consentiti al massimo %1 elenchi sincronizzati</value>
   </data>
   <data name="Cancel" xml:space="preserve">
     <value>Annulla</value>
@@ -170,8 +170,8 @@
   </data>
   <data name="Enter_a_list_name_or_insert_a_ready_made" xml:space="preserve">
     <value>1. inserire il nome di un elenco oppure 
-2. inserire un elenco già pronto come stringa di caratteri in formato JSON ricevuto da qualcuno, ad esempio tramite WatsApp, oppure
-3. inserire una chiave di sincronizzazione ricevuta da qualcuno, ad esempio tramite WatsApp.</value>
+2. inserire un elenco già pronto come stringa di caratteri in formato JSON ricevuto da qualcuno, ad esempio tramite WhatsApp, oppure
+3. inserire una chiave di sincronizzazione ricevuta da qualcuno, ad esempio tramite WhatsApp.</value>
   </data>
   <data name="Enter_list_name" xml:space="preserve">
     <value>Inserire il nome dell'elenco</value>
@@ -206,7 +206,7 @@
   <data name="InputTextWithMicrophoneViewModel_PlaceholderText" xml:space="preserve">
     <value>1. è possibile utilizzare una frase semplice, ad esempio “Latte 2 pz”;
 
-2. un elenco come frase con un punto e virgola (';') come separatore, ad esempio “Latte 2 pz;Carne 0,5 kg;Succo 1 confezione;Bonnen 1 p.”. Un elenco di questo tipo può essere inviato, ad esempio, tramite WatsApp e letto rapidamente.
+2. un elenco come frase con un punto e virgola (';') come separatore, ad esempio “Latte 2 pz;Carne 0,5 kg;Succo 1 confezione;Bonnen 1 p.”. Un elenco di questo tipo può essere inviato, ad esempio, tramite WhatsApp e letto rapidamente.
 
 3. è possibile incollare un elenco inviato, vedi punto 2, dagli appunti.
 
@@ -318,7 +318,7 @@ Alla fine, non dimenticate di premere il tasto Invio :)</value>
     <value>Gli appunti sono vuoti</value>
   </data>
   <data name="The_list_was_saved_as_a_string_in_the_clipboard" xml:space="preserve">
-    <value>L'elenco è stato salvato come stringa negli appunti. Questa può ora essere inviata, ad esempio, tramite WatsApp.</value>
+    <value>L'elenco è stato salvato come stringa negli appunti. Questa può ora essere inviata, ad esempio, tramite WhatsApp.</value>
   </data>
   <data name="To_be_able_to_edit_the_list_please_use_the_following_key" xml:space="preserve">
     <value>Per poter modificare l'elenco '%2', utilizzare il seguente tasto: %1 (riservato).</value>

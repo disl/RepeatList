@@ -164,8 +164,8 @@
   </data>
   <data name="Enter_a_list_name_or_insert_a_ready_made" xml:space="preserve">
     <value>1. enter a list name or 
-2. insert a ready-made list as a character string in JSON format that you have received from someone, e.g. via WatsApp, or
-3. enter a synchronisation key that you have received from someone, e.g. via WatsApp.</value>
+2. insert a ready-made list as a character string in JSON format that you have received from someone, e.g. via WhatsApp, or
+3. enter a synchronisation key that you have received from someone, e.g. via WhatsApp.</value>
   </data>
   <data name="Enter_list_name" xml:space="preserve">
     <value>Enter list name</value>
@@ -197,7 +197,7 @@
   <data name="InputTextWithMicrophoneViewModel_PlaceholderText" xml:space="preserve">
     <value>1. you can use a simple sentence, e.g. ‘Milk 2 pcs’;
 
-2. a list as a sentence with a semicolon (‘;’) as a separator, e.g. ‘Milk 2 pcs;Meat 0.5 kg;Juice 1 pack;Bonnen 1 p.’. Such a list can be sent via WatsApp, for example, and read in quickly.
+2. a list as a sentence with a semicolon (‘;’) as a separator, e.g. ‘Milk 2 pcs;Meat 0.5 kg;Juice 1 pack;Bonnen 1 p.’. Such a list can be sent via WhatsApp, for example, and read in quickly.
 
 3. you can paste a sent list, see point 2, from the clipboard.
 
@@ -303,7 +303,7 @@ At the end, please do not forget to press the Enter key :)</value>
     <value>The clipboard is empty</value>
   </data>
   <data name="The_list_was_saved_as_a_string_in_the_clipboard" xml:space="preserve">
-    <value>The list was saved as a string in the clipboard. This can now be sent via WatsApp, for example.</value>
+    <value>The list was saved as a string in the clipboard. This can now be sent via WhatsApp, for example.</value>
   </data>
   <data name="To_be_able_to_edit_the_list_please_use_the_following_key" xml:space="preserve">
     <value>To be able to edit the list ‘%2’, please use the following key: %1 (confidential).</value>
@@ -330,7 +330,7 @@ At the end, please do not forget to press the Enter key :)</value>
     <value>Delete synchronisation</value>
   </data>
   <data name="A_maximum_of_3_synchronised_lists_are_permitted" xml:space="preserve">
-    <value>A maximum of 3 synchronised lists are permitted</value>
+    <value>A maximum of %1 synchronised lists are permitted</value>
   </data>
   <data name="Export_not_completed_as_a_text_list" xml:space="preserve">
     <value>‘Not completed items’ as a text list</value>
