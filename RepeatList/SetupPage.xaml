@@ -14,23 +14,6 @@
 
                 <Label Text="{Binding Title_language}" VerticalOptions="CenterAndExpand"  WidthRequest="70"
                    TextColor="{AppThemeBinding Light={DynamicResource PrimaryTextColor}, Dark={DynamicResource PrimaryTextColorLight}}" />
-                <!--<Picker x:Name="LanguagePicker"  Title="{Binding Title_language}" 
-                    TextColor="{AppThemeBinding Light={DynamicResource PrimaryTextColor}, Dark={DynamicResource PrimaryTextColorLight}}"
-                    TitleColor="{AppThemeBinding Light={DynamicResource PrimaryTextColor}, Dark={DynamicResource PrimaryTextColorLight}}"
-                    SelectedIndexChanged="LanguagePicker_SelectedIndexChanged"
-                    SelectedItem="{Binding SelectedItem.DefaultLanguage, Mode=TwoWay}">
-                <Picker.ItemsSource>
-                        <x:Array Type="{x:Type x:String}">
-                            
-                        <x:String>en</x:String>
-                        <x:String>de</x:String>
-                        <x:String>es</x:String>
-                        <x:String>fr</x:String>
-                        <x:String>it</x:String>
-                        <x:String>ru</x:String>
-                    </x:Array>
-                </Picker.ItemsSource>
-            </Picker>-->
 
                 <CollectionView ItemsSource="{Binding Languages}" SelectionMode="Single"
                             SelectedItem="{Binding SelectedLanguage, Mode=TwoWay}">
@@ -50,25 +33,13 @@
             <HorizontalStackLayout Spacing="40"  RadioButtonGroup.SelectedValue="{Binding SelectedItem.DefaultAppTheme, Mode=TwoWay}">
 
                 <Label Text="{Binding Title_thema}" VerticalOptions="CenterAndExpand"  WidthRequest="70" 
-                   TextColor="{AppThemeBinding Light={DynamicResource PrimaryTextColor}, Dark={DynamicResource PrimaryTextColorLight}}" />
+                   TextColor="{AppThemeBinding Light=Black, Dark=White}" />
 
                 <RadioButton Value="Dark" Content="Dark"   CheckedChanged="RadioButtonCheckedChanged_dark" IsChecked="{Binding IsChecked_Dark, Mode=TwoWay}"
-                             TextColor="{AppThemeBinding Light={DynamicResource PrimaryTextColor}, Dark={DynamicResource PrimaryTextColorLight}}" />
+                             TextColor="{AppThemeBinding Light=Black, Dark=White}" />
                 <RadioButton Value="Light" Content="Light" CheckedChanged="RadioButtonCheckedChanged_light" IsChecked="{Binding IsChecked_Light, Mode=TwoWay}"
-                             TextColor="{AppThemeBinding Light={DynamicResource PrimaryTextColor}, Dark={DynamicResource PrimaryTextColorLight}}" />
+                             TextColor="{AppThemeBinding Light=Black, Dark=White}" />
 
-                <!--<Picker x:Name="ThemaPicker" Title="{Binding Title_thema}" 
-                    TextColor="{AppThemeBinding Light={DynamicResource PrimaryTextColor}, Dark={DynamicResource PrimaryTextColorLight}}"
-                    TitleColor="{AppThemeBinding Light={DynamicResource PrimaryTextColor}, Dark={DynamicResource PrimaryTextColorLight}}"
-                    SelectedIndexChanged="ThemaPicker_SelectedIndexChanged"
-                    SelectedItem="{Binding SelectedItem.DefaultAppTheme, Mode=TwoWay}">
-                    <Picker.ItemsSource>
-                        <x:Array Type="{x:Type x:String}">
-                            <x:String>Dark</x:String>
-                            <x:String>Light</x:String>
-                        </x:Array>
-                    </Picker.ItemsSource>
-                </Picker>-->
             </HorizontalStackLayout>
         </Border>
         <StackLayout Orientation="Horizontal" HorizontalOptions="StartAndExpand" Spacing="10" >
