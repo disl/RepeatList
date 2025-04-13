@@ -494,9 +494,7 @@ namespace RepeatList
                 {
                     case "Export_not_completed_as_a_text_list":
                         await ViewModel.Export_list_textClicked(); break;
-
                 }
-
             }
         }
 

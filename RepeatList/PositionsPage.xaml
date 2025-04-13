@@ -13,6 +13,7 @@
     <ContentPage.ToolbarItems>
         <!--<ToolbarItem  IconImageSource="swap_vert_icon_white.png" Command="{Binding Export_list_textClickedCommand}" />-->
         <!--<ToolbarItem  IconImageSource="swap_vert_icon_white.png" Clicked="OnResetPositionsClicked" />-->
+        <ToolbarItem  IconImageSource="help_icon.png" Clicked="OnHelpButton_Clicked" />
         <ToolbarItem  IconImageSource="kofi_symbol.png" Clicked="CoffeeButtonClicked" />
 
         <!--<ToolbarItem  StyleId="Item1" Order="Secondary"  IconImageSource="share_icon.png"  Text="{Binding Label_Export_list}" Command="{Binding Export_list_ClickedCommand}" />
@@ -148,8 +149,9 @@
         </Border>
 
         <!--Input-->
-        <Grid ColumnDefinitions="Auto,*,Auto"   Grid.Row="5" Margin="0,20,0,20" ColumnSpacing="5">
-            <ImageButton Source="help_icon.png" Grid.Column="0"  Clicked="OnHelpButton_Clicked" HeightRequest="35" WidthRequest="35"  VerticalOptions="Center"  />
+        <Grid ColumnDefinitions="*,Auto"   Grid.Row="5" Margin="0,20,0,20" ColumnSpacing="5">
+            <!--<ImageButton Source="help_icon.png" Grid.Column="0"  Clicked="OnHelpButton_Clicked" HeightRequest="35" WidthRequest="35"  VerticalOptions="Center"  />-->
+            <!--<Border Style="{StaticResource UnderlineBorderStyle}" >-->
             <!--<Entry x:Name="Positions_inputEntry"  
                    Text="{Binding InputText}"  
                    Placeholder="{Binding InputText_placeholder}" Grid.Column="1" 
@@ -158,16 +160,15 @@
                    BackgroundColor="{AppThemeBinding Light=White, Dark=#282828}"
                    Completed="Positions_inputEntry_Completed" VerticalOptions="Center" Focused="Positions_inputEntry_Focused" />-->
 
-            <Border
-                Grid.Column="1"
+            <Border Grid.Column="0"
                 Stroke="{AppThemeBinding Light=#DDDDDD, Dark=#444444}"
                 StrokeThickness="1"
                 BackgroundColor="{AppThemeBinding Light=#FFF5F5F5, Dark=#1E1E1E}"
-                Padding="12"
-                StrokeShape="RoundRectangle 10">            
+                Padding="7"
+                StrokeShape="RoundRectangle 10">
 
-                <Entry
-                        Text="{Binding InputText}"
+                <Entry  x:Name="Positions_inputEntry"  
+                        Text="{Binding InputText, Mode=TwoWay}"
                         Placeholder="{Binding InputText_placeholder}"
                         TextColor="{AppThemeBinding Light=Black, Dark=White}"
                         PlaceholderColor="{AppThemeBinding Light=#99000000, Dark=#99FFFFFF}"
@@ -177,7 +178,7 @@
             </Border>
 
             <!--</Border>-->
-            <Button Text=";" Grid.Column="2"  Clicked="OnSemicolonButton_Clicked" TextColor="White" FontAttributes="Bold" FontSize="Title" VerticalOptions="Center"  />
+            <Button Text=";" Grid.Column="1"  Clicked="OnSemicolonButton_Clicked" TextColor="White" FontAttributes="Bold" FontSize="Title" VerticalOptions="Center"  />
         </Grid>
 
         <!--</Grid>-->

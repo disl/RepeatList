@@ -50,14 +50,14 @@
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net9.0-android|AnyCPU'">
 	  <EmbedAssembliesIntoApk>False</EmbedAssembliesIntoApk>
-	  <ApplicationDisplayVersion>1.0.38</ApplicationDisplayVersion>
-	  <ApplicationVersion>38</ApplicationVersion>
+	  <ApplicationDisplayVersion>1.0.39</ApplicationDisplayVersion>
+	  <ApplicationVersion>39</ApplicationVersion>
 	  <AndroidKeyStore>False</AndroidKeyStore>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net9.0-ios|AnyCPU'">
-	  <ApplicationDisplayVersion>1.0.38</ApplicationDisplayVersion>
-	  <ApplicationVersion>38</ApplicationVersion>
+	  <ApplicationDisplayVersion>1.0.39</ApplicationDisplayVersion>
+	  <ApplicationVersion>39</ApplicationVersion>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net9.0-windows10.0.19041.0|AnyCPU'">
@@ -66,16 +66,16 @@
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net9.0-android|AnyCPU'">
-	  <ApplicationDisplayVersion>1.0.38</ApplicationDisplayVersion>
-	  <ApplicationVersion>38</ApplicationVersion>
+	  <ApplicationDisplayVersion>1.0.39</ApplicationDisplayVersion>
+	  <ApplicationVersion>39</ApplicationVersion>
 	  <AndroidLinkTool>r8</AndroidLinkTool>
 	  <AndroidKeyStore>False</AndroidKeyStore>
 	  <RunAOTCompilation>True</RunAOTCompilation>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net9.0-ios|AnyCPU'">
-	  <ApplicationDisplayVersion>1.0.38</ApplicationDisplayVersion>
-	  <ApplicationVersion>38</ApplicationVersion>
+	  <ApplicationDisplayVersion>1.0.39</ApplicationDisplayVersion>
+	  <ApplicationVersion>39</ApplicationVersion>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net9.0-windows10.0.19041.0|AnyCPU'">
@@ -92,7 +92,6 @@
 
 		<!-- Images -->
 		<MauiImage Include="Resources\Images\*" />
-		<MauiImage Update="Resources\Images\dotnet_bot.png" Resize="True" BaseSize="300,185" />
 
 		<!-- Custom Fonts -->
 		<MauiFont Include="Resources\Fonts\*" />
@@ -156,6 +155,12 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <MauiImage Remove="Resources\Images\dotnet_bot.png" />
+	  <MauiImage Remove="Resources\Images\repeat_list_1024_500.jpeg" />
+	  <MauiImage Remove="Resources\Images\repeat_list_300.jpeg" />
+	</ItemGroup>
+
+	<ItemGroup>
 	  <MauiXaml Remove="MainPage_old.xaml" />
 	</ItemGroup>
 
@@ -167,6 +172,9 @@
 		<None Remove="RepeatList.csproj.Backup.tmp" />
 		<None Remove="RepeatList.csproj.user.Backup.tmp" />
 		<None Remove="Resources\AppIcon\appicon.png" />
+		<None Remove="Resources\Images\dotnet_bot.png" />
+		<None Remove="Resources\Images\repeat_list_1024_500.jpeg" />
+		<None Remove="Resources\Images\repeat_list_300.jpeg" />
 		<None Remove="Resources\Splash\playstore.svg" />
 		<None Remove="Resources\Splash\spinner.json" />
 		<None Remove="Resources\Splash\splash - Kopie.svg" />
@@ -183,9 +191,9 @@
 	<ItemGroup>
 		<PackageReference Include="CommunityToolkit.Maui" Version="11.1.0" />
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
-		<PackageReference Include="Microsoft.Data.Sqlite.Core" Version="9.0.3" />
+		<PackageReference Include="Microsoft.Data.Sqlite.Core" Version="9.0.4" />
 		<PackageReference Include="Microsoft.Maui.Controls" Version="9.0.30" />
-		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="9.0.3" />
+		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="9.0.4" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
 		<PackageReference Include="Plugin.AdMob" Version="2.3.1" />
 		<PackageReference Include="SQLitePCLRaw.bundle_e_sqlite3" Version="2.1.11" />
