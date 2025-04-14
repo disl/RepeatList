@@ -39,10 +39,13 @@
 
         <SearchBar Placeholder="{Binding Search}" TextChanged="OnSearchTextChanged" Margin="0,0,0,10" Grid.Row="1" />
 
-        <CollectionView x:Name="HeaderListView"  ItemsSource="{Binding FilteredList}" Grid.Row="2"                                
-                        SelectionMode="Single" SelectedItem="{Binding Header_SelectedItem}" 
+        <CollectionView x:Name="HeaderListView"  
+                        ItemsSource="{Binding FilteredList}" Grid.Row="2"                                
+                        SelectionMode="Single" 
+                        SelectedItem="{Binding Header_SelectedItem}" 
+                        ItemSizingStrategy="MeasureAllItems"
                         SelectionChanged="OnHeaderListViewSelected" 
-                        VerticalScrollBarVisibility="Always" >
+                       >
             <CollectionView.ItemTemplate>
                 <DataTemplate>
                     <Border Stroke="Black" StrokeThickness="0" Padding="3" >
@@ -50,9 +53,10 @@
 
                             <toolkit:AvatarView Grid.Column="0" HeightRequest="48" Text="{Binding AvatarName}" WidthRequest="48" BackgroundColor="Gray" TextColor="White"  />
                             <!--StackLayout>-->
-                            <Label Text="{Binding ListName}" Grid.Column="1" VerticalOptions="Center" FontSize="Medium"    
+                            <!--<ScrollView Orientation="Horizontal"   VerticalOptions="Center" >-->
+                                <Label Text="{Binding ListName}"  VerticalOptions="Center" FontSize="Medium"   Grid.Column="1" 
                                        TextColor="{AppThemeBinding Light={DynamicResource PrimaryTextColor}, Dark={DynamicResource PrimaryTextColorLight}}"/>
-
+                            <!--</ScrollView>-->
                             <Image Source="{Binding Sync_arrow_down_icon}" IsVisible="{Binding IsSynchronized}" HeightRequest="30" Grid.Column="2" />
 
                             <!-- Menu-Button -->

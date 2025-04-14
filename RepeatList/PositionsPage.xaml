@@ -66,14 +66,18 @@
             </Border.StrokeShape>
             <CollectionView x:Name="PositionListView"  
                                     ItemsSource="{Binding Positions_undone_filterd}" 
-                                    SelectedItem="{Binding Position_selectedItem, Mode=OneWayToSource}"                                
+                                    SelectedItem="{Binding Position_selectedItem, Mode=OneWayToSource}"  
+                                    
                                     SelectionMode="Single" 
                                     SelectionChanged="OnPositionSelected_new" >
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
                         <Grid  ColumnDefinitions="5*, 1*,1*,1*" VerticalOptions="Center" HeightRequest="45">
-                            <Label Text="{Binding Title}" VerticalOptions="Center" Grid.Column="0" 
-                                   TextColor="{AppThemeBinding Light={DynamicResource PrimaryTextColor}, Dark={DynamicResource PrimaryTextColorLight}}"/>
+                            <ScrollView Orientation="Horizontal"  Grid.Column="0" VerticalOptions="Center" >
+                                <Label Text="{Binding Title}"     
+                                       VerticalTextAlignment="Center"
+                                       TextColor="{AppThemeBinding Light={DynamicResource PrimaryTextColor}, Dark={DynamicResource PrimaryTextColorLight}}"/>
+                            </ScrollView>
                             <ImageButton Source="{Binding PositionImageSource}" Clicked="OnCheckedButtonClicked" CommandParameter="{Binding}" 
                                                  HeightRequest="30" Grid.Column="1"/>
                             <ImageButton Source="edit_icon.png" Clicked="OnEditPositionClicked" CommandParameter="{Binding}" 
@@ -119,16 +123,24 @@
             <Border.StrokeShape>
                 <RoundRectangle CornerRadius="5" />
             </Border.StrokeShape>
-            <CollectionView x:Name="PositionDoneListView"  ItemsSource="{Binding Positions_done_filtered}" SelectedItem="{Binding Position_selectedItem, Mode=OneWayToSource}"
-                                    SelectionMode="Single"
-                                    SelectionChanged="OnPositionSelected_new" ItemSizingStrategy="MeasureFirstItem">
+            <CollectionView x:Name="PositionDoneListView"  ItemsSource="{Binding Positions_done_filtered}" 
+                            SelectedItem="{Binding Position_selectedItem, Mode=OneWayToSource}"
+                            SelectionMode="Single"
+                            SelectionChanged="OnPositionSelected_new" 
+                           
+                            >
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
                         <Grid  ColumnDefinitions="5*, 1*,1*,1*" 
                                        VerticalOptions="Center" 
                                        HeightRequest="45">
-                            <Label Text="{Binding Title}" VerticalOptions="Center" Grid.Column="0"  TextDecorations="Strikethrough" 
-                                                 TextColor="{AppThemeBinding Light={DynamicResource PrimaryTextColor}, Dark={DynamicResource PrimaryTextColorLight}}"/>
+                            <ScrollView Orientation="Horizontal" VerticalOptions="Center" Grid.Column="0">
+                                <Label Text="{Binding Title}" 
+                                   VerticalOptions="Center" 
+                                     
+                                   TextDecorations="Strikethrough"                                                 
+                                   TextColor="{AppThemeBinding Light={DynamicResource PrimaryTextColor}, Dark={DynamicResource PrimaryTextColorLight}}"/>
+                            </ScrollView >
                             <ImageButton Source="{Binding PositionImageSource}" Clicked="OnCheckedButtonClicked" 
                                                  HeightRequest="30" CommandParameter="{Binding}" Grid.Column="1"/>
                             <ImageButton Source="edit_icon.png" Clicked="OnEditPositionClicked" CommandParameter="{Binding}" 
