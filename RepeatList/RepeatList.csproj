@@ -50,14 +50,14 @@
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net9.0-android|AnyCPU'">
 	  <EmbedAssembliesIntoApk>False</EmbedAssembliesIntoApk>
-	  <ApplicationDisplayVersion>1.0.40</ApplicationDisplayVersion>
-	  <ApplicationVersion>40</ApplicationVersion>
+	  <ApplicationDisplayVersion>1.0.41</ApplicationDisplayVersion>
+	  <ApplicationVersion>41</ApplicationVersion>
 	  <AndroidKeyStore>False</AndroidKeyStore>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net9.0-ios|AnyCPU'">
-	  <ApplicationDisplayVersion>1.0.40</ApplicationDisplayVersion>
-	  <ApplicationVersion>40</ApplicationVersion>
+	  <ApplicationDisplayVersion>1.0.41</ApplicationDisplayVersion>
+	  <ApplicationVersion>41</ApplicationVersion>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net9.0-windows10.0.19041.0|AnyCPU'">
@@ -66,16 +66,16 @@
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net9.0-android|AnyCPU'">
-	  <ApplicationDisplayVersion>1.0.40</ApplicationDisplayVersion>
-	  <ApplicationVersion>40</ApplicationVersion>
+	  <ApplicationDisplayVersion>1.0.41</ApplicationDisplayVersion>
+	  <ApplicationVersion>41</ApplicationVersion>
 	  <AndroidLinkTool>r8</AndroidLinkTool>
 	  <AndroidKeyStore>False</AndroidKeyStore>
 	  <RunAOTCompilation>True</RunAOTCompilation>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net9.0-ios|AnyCPU'">
-	  <ApplicationDisplayVersion>1.0.40</ApplicationDisplayVersion>
-	  <ApplicationVersion>40</ApplicationVersion>
+	  <ApplicationDisplayVersion>1.0.41</ApplicationDisplayVersion>
+	  <ApplicationVersion>41</ApplicationVersion>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net9.0-windows10.0.19041.0|AnyCPU'">
@@ -176,6 +176,7 @@
 		<None Remove="Resources\Images\dotnet_bot.png" />
 		<None Remove="Resources\Images\repeat_list_1024_500.jpeg" />
 		<None Remove="Resources\Images\repeat_list_300.jpeg" />
+		<None Remove="Resources\Splash\appicon - Kopie.png" />
 		<None Remove="Resources\Splash\appicon.png" />
 		<None Remove="Resources\Splash\playstore.svg" />
 		<None Remove="Resources\Splash\spinner.json" />
@@ -300,7 +301,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <MauiSplashScreen Include="Resources\Splash\appicon.png" Color="#F0EFED" />
+	  <MauiSplashScreen Include="Resources\Splash\appicon.png" Color="#1C989C" />
 	</ItemGroup>
 
 	<ItemGroup>
