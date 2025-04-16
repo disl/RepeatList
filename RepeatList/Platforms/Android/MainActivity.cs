@@ -13,6 +13,9 @@ namespace RepeatList
 
             base.OnCreate(savedInstanceState);
 
+            // Aktivieren von EdgeToEdge
+            //Microsoft.Maui.ApplicationModel.Platform.CurrentActivity?.Window?.SetDecorFitsSystemWindows(false);
+
             //SetContentView(Resource.Layout.activity_main); // Verknüpfung mit XML
             //MobileAds.Initialize(this, this);
 

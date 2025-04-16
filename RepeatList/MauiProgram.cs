@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Maui;
 using Microsoft.Extensions.Logging;
+using Microsoft.Maui.LifecycleEvents;
 using Plugin.AdMob;
 using RepeatList.Models;
 using RepeatList.ViewModels;
@@ -20,8 +21,27 @@ namespace RepeatList
             {
                 fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                 fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
-            })
-            ;
+            })          ;
+
+
+            builder.ConfigureLifecycleEvents(events =>
+            {
+#if ANDROID
+    events.AddAndroid(android => android
+        .OnCreate((activity, bundle) => 
+        {
+            // Enable edge-to-edge
+            activity.Window?.SetDecorFitsSystemWindows(false);
+            
+            //// Optional: Set status/navigation bar colors
+            //if (activity.Window != null)
+            //{
+            //    activity.Window.StatusBarColor = Android.Graphics.Color.Transparent;
+            //    activity.Window.NavigationBarColor = Android.Graphics.Color.Transparent;
+            //}
+        }));
+#endif
+            });
 
             // Services
             //builder.Services.AddSingleton<ISpeechToText>(SpeechToText.Default);

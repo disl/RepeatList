@@ -497,8 +497,8 @@ namespace RepeatList.ViewModels
 
             IsBusy = true;
 
-            if (Replace_old_word_when_inserting)
-                await DeleteIfAvailable(position.Title);
+            //if (Replace_old_word_when_inserting)
+            //    await DeleteIfAvailable(position.Title);
 
             var new_guid = await _databaseService.AddPositionAsync(position, generate_new_guid);
             position.Id = new_guid;
@@ -517,29 +517,29 @@ namespace RepeatList.ViewModels
             IsBusy = false;
         }
 
-        private async Task DeleteIfAvailable(string positionEntryText)
-        {
-            var first_word = GetFirstWordFromString(positionEntryText);
-            var pos = Positions.FirstOrDefault(x => x.Title.ToLower().Contains(first_word.ToLower()));
-            if (pos != null)
-            {
-                if (!pos.IsCompleted)  // ??????????
-                    await DeletePosition(pos);
-            }
-        }
+        //private async Task DeleteIfAvailable(string positionEntryText)
+        //{
+        //    var first_word = GetFirstWordFromString(positionEntryText);
+        //    var pos = Positions.FirstOrDefault(x => x.Title.ToLower().Contains(first_word.ToLower()));
+        //    if (pos != null)
+        //    {
+        //        if (!pos.IsCompleted)  // ??????????
+        //            await DeletePosition(pos);
+        //    }
+        //}
 
-        private string? GetFirstWordFromString(string positionEntryText)
-        {
-            if (!string.IsNullOrEmpty(positionEntryText))
-            {
-                var arr = positionEntryText.Split(' ');
-                if (arr != null && arr.Length > 0)
-                    return arr[0];
-                else
-                    return null;
-            }
-            return null;
-        }
+        //private string? GetFirstWordFromString(string positionEntryText)
+        //{
+        //    if (!string.IsNullOrEmpty(positionEntryText))
+        //    {
+        //        var arr = positionEntryText.Split(' ');
+        //        if (arr != null && arr.Length > 0)
+        //            return arr[0];
+        //        else
+        //            return null;
+        //    }
+        //    return null;
+        //}
 
         public async Task DeleteHeader(Header header)
         {
