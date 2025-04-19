@@ -165,6 +165,9 @@
   <data name="Do_you_want_to_use_commas_as_list_element_separators" xml:space="preserve">
     <value>Si desidera utilizzare le virgole (',') come separatori degli elementi dell'elenco?</value>
   </data>
+  <data name="Duplicate_entries" xml:space="preserve">
+    <value>Voci duplicate</value>
+  </data>
   <data name="edit" xml:space="preserve">
     <value>Modifica</value>
   </data>
@@ -262,6 +265,9 @@ Alla fine, non dimenticate di premere il tasto Invio :)</value>
   </data>
   <data name="Positions" xml:space="preserve">
     <value>Posizioni</value>
+  </data>
+  <data name="replace" xml:space="preserve">
+    <value>Sostituire</value>
   </data>
   <data name="Replace_old_list_element_when_inserting" xml:space="preserve">
     <value>Sostituire l'elemento dell'elenco durante l'inserimento</value>

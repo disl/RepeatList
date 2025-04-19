@@ -6,13 +6,33 @@
     xmlns:models="clr-namespace:RepeatList.Models"
     xmlns:properties="clr-namespace:RepeatList.Properties"
     x:Class="RepeatList.Positions_PopUpMenu">
-    
     <VerticalStackLayout Padding="10"  Spacing="10" BackgroundColor="gray">
         <Label Text="{x:Static properties:Resources.Export_list}"  FontSize="Medium" TextColor="White" />
-
         <Button x:Name="Export_not_completed_as_a_text_list_Button"  Text="{x:Static properties:Resources.Export_not_completed_as_a_text_list}" TextColor="White" 
                VerticalOptions="FillAndExpand"
                 Clicked="OnExport_not_completed_as_a_text_listClicked"  CommandParameter="{Binding}"  />
+
+        <StackLayout >
+            <Label Text="{x:Static properties:Resources.Duplicate_entries}"  FontSize="Medium" TextColor="White" />
+            <RadioButton x:Name="rbDuplicate_entries_replace" 
+                         Content="{x:Static properties:Resources.replace}" 
+                         CheckedChanged="Duplicate_entries_replace" 
+                         BackgroundColor="gray"
+                         TextColor="{AppThemeBinding Light=Black, Dark=White}"
+                         />
+            <RadioButton x:Name="rbDuplicate_entries_add"
+                         Content="{x:Static properties:Resources.add}" IsChecked="true" 
+                         CheckedChanged="Duplicate_entries_add" 
+                         BackgroundColor="gray"
+                         TextColor="{AppThemeBinding Light=Black, Dark=White}"
+                         />
+        </StackLayout>
+
+        <Button x:Name="CancelButton" 
+          BackgroundColor="{x:Static models:Constantes.Color_Warning}" Margin="0,10,0,0"  
+          Text="{x:Static properties:Resources.Cancel}" TextColor="White" 
+          Clicked="CancelButtonClicked"    />
+
         <!--<Button  Text="{x:Static properties:Resources.Delete_list}" TextColor="White" 
                 Clicked="OnDeleteHeaderClicked"  CommandParameter="{Binding}" />-->
 

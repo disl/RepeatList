@@ -35,6 +35,8 @@ namespace RepeatList
             {
                 ViewModel.IsBusy = true;
 
+                ViewModel.Duplicate_entries_add = Preferences.Get("duplicate_entries_add", false);
+
                 //if (ViewModel != null && ViewModel.Headers != null && ViewModel.Headers.Count > 0)
                 //    HeaderListView.SelectedItem=ViewModel.Headers[0];
 
@@ -46,10 +48,10 @@ namespace RepeatList
                 }
 
                 ViewModel.ItemSource_KindOfSorting = new ObservableCollection<CMBType_String>
-            {
-             new CMBType_String(Properties.Resources.sort_by_date, "date"),
-             new CMBType_String(Properties.Resources.sort_by_alphabet, "alpha" )
-            };
+                {
+                 new CMBType_String(Properties.Resources.sort_by_date, "date"),
+                 new CMBType_String(Properties.Resources.sort_by_alphabet, "alpha" )
+                };
 
                 if (SortingPicker == null)
                     SortingPicker = new Picker();
@@ -72,9 +74,9 @@ namespace RepeatList
                 {
                     _timer = Dispatcher.CreateTimer();
                     _timer.Interval = TimeSpan.FromSeconds(30);
-                    _timer.Tick +=_timer_Tick;
+                    _timer.Tick += _timer_Tick;
                     _timer.Start();
-                }               
+                }
             }
             catch (Exception ex)
             {
@@ -236,7 +238,7 @@ namespace RepeatList
                 }
             }
 
-           
+
         }
 
         private async void OnDeletePositionClicked(object sender, EventArgs e)
@@ -337,7 +339,7 @@ namespace RepeatList
                 ViewModel.IsBusy = true;
 
                 position.IsCompleted = !position.IsCompleted;  // e.Value;
-               // position.UpdatedAt = DateTime.Now.ToUniversalTime();
+                                                               // position.UpdatedAt = DateTime.Now.ToUniversalTime();
                 await ViewModel.UpdatePosition(position);
 
                 ViewModel.IsBusy = false;
@@ -488,13 +490,14 @@ namespace RepeatList
         {
             if (sender is ImageButton button)
             {
-                var popup = new Positions_PopUpMenu( );
+                var popup = new Positions_PopUpMenu();
                 var result = await Shell.Current.ShowPopupAsync(popup);
                 switch (result)
                 {
                     case "Export_not_completed_as_a_text_list":
                         await ViewModel.Export_list_textClicked(); break;
                 }
+                ViewModel.Duplicate_entries_add = Preferences.Get("duplicate_entries_add", false);
             }
         }
 

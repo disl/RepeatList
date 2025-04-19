@@ -205,6 +205,15 @@ namespace RepeatList.Properties {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Duplicate entries ähnelt.
+        /// </summary>
+        public static string Duplicate_entries {
+            get {
+                return ResourceManager.GetString("Duplicate_entries", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Edit ähnelt.
         /// </summary>
         public static string edit {
@@ -479,6 +488,15 @@ namespace RepeatList.Properties {
         public static string Positions {
             get {
                 return ResourceManager.GetString("Positions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Replace ähnelt.
+        /// </summary>
+        public static string replace {
+            get {
+                return ResourceManager.GetString("replace", resourceCulture);
             }
         }
         

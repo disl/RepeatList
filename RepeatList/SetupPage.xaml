@@ -35,9 +35,13 @@
                 <Label Text="{Binding Title_thema}" VerticalOptions="CenterAndExpand"  WidthRequest="70" 
                    TextColor="{AppThemeBinding Light=Black, Dark=White}" />
 
-                <RadioButton Value="Dark" Content="Dark"   CheckedChanged="RadioButtonCheckedChanged_dark" IsChecked="{Binding IsChecked_Dark, Mode=TwoWay}"
+                <RadioButton Value="Dark" Content="Dark"   
+                             CheckedChanged="RadioButtonCheckedChanged_dark" 
+                             IsChecked="{Binding IsChecked_Dark, Mode=TwoWay}"
                              TextColor="{AppThemeBinding Light=Black, Dark=White}" />
-                <RadioButton Value="Light" Content="Light" CheckedChanged="RadioButtonCheckedChanged_light" IsChecked="{Binding IsChecked_Light, Mode=TwoWay}"
+                <RadioButton Value="Light" Content="Light" 
+                             CheckedChanged="RadioButtonCheckedChanged_light" 
+                             IsChecked="{Binding IsChecked_Light, Mode=TwoWay}"
                              TextColor="{AppThemeBinding Light=Black, Dark=White}" />
 
             </HorizontalStackLayout>

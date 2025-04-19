@@ -335,4 +335,10 @@ At the end, please do not forget to press the Enter key :)</value>
   <data name="Export_not_completed_as_a_text_list" xml:space="preserve">
     <value>‘Not completed items’ as a text list</value>
   </data>
+  <data name="Duplicate_entries" xml:space="preserve">
+    <value>Duplicate entries</value>
+  </data>
+  <data name="replace" xml:space="preserve">
+    <value>Replace</value>
+  </data>
 </root>
