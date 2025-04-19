@@ -36,19 +36,23 @@
                    TextColor="{AppThemeBinding Light=Black, Dark=White}" />
 
                 <RadioButton Value="Dark" Content="Dark"   
+                             BackgroundColor="{AppThemeBinding Light=White, Dark=Black}"
+                             TextColor="{AppThemeBinding Light=Black, Dark=White}"
                              CheckedChanged="RadioButtonCheckedChanged_dark" 
                              IsChecked="{Binding IsChecked_Dark, Mode=TwoWay}"
-                             TextColor="{AppThemeBinding Light=Black, Dark=White}" />
+                              />
                 <RadioButton Value="Light" Content="Light" 
+                             BackgroundColor="{AppThemeBinding Light=White, Dark=Black}"
+                             TextColor="{AppThemeBinding Light=Black, Dark=White}"                             
                              CheckedChanged="RadioButtonCheckedChanged_light" 
                              IsChecked="{Binding IsChecked_Light, Mode=TwoWay}"
-                             TextColor="{AppThemeBinding Light=Black, Dark=White}" />
+                              />
 
             </HorizontalStackLayout>
         </Border>
         <StackLayout Orientation="Horizontal" HorizontalOptions="StartAndExpand" Spacing="10" >
             <Button Text="OK" Clicked="OkButton_Clicked" HorizontalOptions="FillAndExpand" TextColor="White" WidthRequest="150" />
-            <Button Text="{Binding Label_cancel}" Clicked="OnCancel" BackgroundColor="{x:Static models:Constantes.Color_Error}"
+            <Button Text="{Binding Label_cancel}" Clicked="OnCancel" BackgroundColor="{x:Static models:Constantes.Color_Warning}"
                     TextColor="White" WidthRequest="150"/>
         </StackLayout>
     </StackLayout>

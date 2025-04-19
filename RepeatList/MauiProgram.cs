@@ -1,13 +1,20 @@
 ﻿using CommunityToolkit.Maui;
 using Microsoft.Extensions.Logging;
 using Microsoft.Maui.LifecycleEvents;
-using Plugin.AdMob;
+//using Plugin.AdMob;
 using RepeatList.Models;
 using RepeatList.ViewModels;
 using SQLitePCL;
 
 namespace RepeatList
 {
+    using Microsoft.Maui;
+    using Microsoft.Maui.Handlers;
+    using RepeatList.Controls;
+#if ANDROID
+    using RepeatList.Platforms.Android;
+#endif
+
     public static class MauiProgram
     {
         public static MauiApp CreateMauiApp()
@@ -15,31 +22,37 @@ namespace RepeatList
             var builder = MauiApp.CreateBuilder();
             builder
                 .UseMauiApp<App>()
+                .ConfigureMauiHandlers(handlers =>
+                {
+#if ANDROID
+                    handlers.AddHandler(typeof(AdBannerView), typeof(AdBannerViewHandler));
+#endif
+                })
                 .UseMauiCommunityToolkit()
-                //.UseMauiMTAdmob()
+            //.UseMauiMTAdmob()
             .ConfigureFonts(fonts =>
             {
                 fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                 fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
-            })          ;
+            });
 
 
             builder.ConfigureLifecycleEvents(events =>
             {
 #if ANDROID
-    events.AddAndroid(android => android
-        .OnCreate((activity, bundle) => 
-        {
-            // Enable edge-to-edge
-            activity.Window?.SetDecorFitsSystemWindows(false);
-            
-            //// Optional: Set status/navigation bar colors
-            //if (activity.Window != null)
-            //{
-            //    activity.Window.StatusBarColor = Android.Graphics.Color.Transparent;
-            //    activity.Window.NavigationBarColor = Android.Graphics.Color.Transparent;
-            //}
-        }));
+                events.AddAndroid(android => android
+                    .OnCreate((activity, bundle) =>
+                    {
+                        // Enable edge-to-edge
+                        activity.Window?.SetDecorFitsSystemWindows(false);
+
+                        //// Optional: Set status/navigation bar colors
+                        //if (activity.Window != null)
+                        //{
+                        //    activity.Window.StatusBarColor = Android.Graphics.Color.Transparent;
+                        //    activity.Window.NavigationBarColor = Android.Graphics.Color.Transparent;
+                        //}
+                    }));
 #endif
             });
 
@@ -65,7 +78,7 @@ namespace RepeatList
             builder.Services.AddTransient<Header>();
 
 
-            builder.UseAdMob();
+            //builder.UseAdMob();
 
             //builder.Services.AddSingleton<Position>();  // Falls global
             //builder.Services.AddTransient<Position>();

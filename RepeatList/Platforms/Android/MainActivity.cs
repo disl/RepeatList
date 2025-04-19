@@ -1,5 +1,6 @@
 ﻿using Android.App;
 using Android.Content.PM;
+using Android.Gms.Ads;
 using Android.OS;
 
 namespace RepeatList
@@ -12,6 +13,10 @@ namespace RepeatList
             //Android.Util.Log.Debug("MAUI_DEBUG", "App started in Release mode");
 
             base.OnCreate(savedInstanceState);
+
+            // Initialisiere Mobile Ads SDK
+            MobileAds.Initialize(this);
+
 
             // Aktivieren von EdgeToEdge
             //Microsoft.Maui.ApplicationModel.Platform.CurrentActivity?.Window?.SetDecorFitsSystemWindows(false);

@@ -5,6 +5,7 @@
              xmlns:controls="clr-namespace:RepeatList.Controls"
              xmlns:local="clr-namespace:RepeatList.ViewModels"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+              xmlns:properties="clr-namespace:RepeatList.Properties"
              Title="{Binding Title}" 
              >
     <ContentPage.BindingContext>
@@ -89,7 +90,9 @@
                 <CollectionView.EmptyView>
                     <ContentView>
                         <StackLayout HorizontalOptions="Center" VerticalOptions="Center">
-                            <Label Text="{Binding No_items_to_display}" HorizontalOptions="Fill" HorizontalTextAlignment="Center" />
+                            <Label Text="{x:Static properties:Resources.No_items_to_display}" 
+                                   HorizontalOptions="Fill" HorizontalTextAlignment="Center"
+                                   TextColor="{AppThemeBinding Light={DynamicResource PrimaryTextColor}, Dark={DynamicResource PrimaryTextColorLight}}"/>
                         </StackLayout>
                     </ContentView>
                 </CollectionView.EmptyView>
@@ -151,8 +154,10 @@
                 </CollectionView.ItemTemplate>
                 <CollectionView.EmptyView>
                     <ContentView>
-                        <StackLayout HorizontalOptions="Center" VerticalOptions="Center">
-                            <Label Text="{Binding No_items_to_display}" HorizontalOptions="Fill" HorizontalTextAlignment="Center" />
+                        <StackLayout HorizontalOptions="Center" VerticalOptions="Center" >
+                            <Label Text="{x:Static properties:Resources.No_items_to_display}"
+                                   HorizontalOptions="Fill" HorizontalTextAlignment="Center"
+                                   TextColor="{AppThemeBinding Light={DynamicResource PrimaryTextColor}, Dark={DynamicResource PrimaryTextColorLight}}"/>
                         </StackLayout>
                     </ContentView>
                 </CollectionView.EmptyView>

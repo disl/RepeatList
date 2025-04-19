@@ -5,10 +5,12 @@
              xmlns:models="clr-namespace:RepeatList.Models"
              xmlns:local="clr-namespace:RepeatList.ViewModels"
              xmlns:controls="clr-namespace:RepeatList.Controls"
-             xmlns:admob="clr-namespace:Plugin.AdMob;assembly=Plugin.AdMob"
+            
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"        
              Title="{Binding Title}" 
              >
+    <!--xmlns:admob="clr-namespace:Plugin.AdMob;assembly=Plugin.AdMob"-->
+
     <ContentPage.BindingContext>
         <local:ListsPageViewModel />
     </ContentPage.BindingContext>
@@ -97,6 +99,9 @@
 
 
         <!-- Place the Admob controls here -->
-        <admob:BannerAd AdUnitId="ca-app-pub-3940256099942544/6300978111" Grid.Row="3" />
+        <!--<admob:BannerAd AdUnitId="ca-app-pub-3940256099942544/6300978111" Grid.Row="3" />-->
+
+
+        <controls:AdBannerView HeightRequest="50" Grid.Row="3"/>
     </Grid>
 </ContentPage>
