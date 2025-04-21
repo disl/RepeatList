@@ -14,7 +14,7 @@
     </ContentPage.BindingContext>
     <ContentPage.ToolbarItems>
         <ToolbarItem  IconImageSource="help_icon.png" Clicked="OnHelpButton_Clicked" />
-        <ToolbarItem  IconImageSource="menu.png" Clicked="OpenMenu" />
+        <ToolbarItem  IconImageSource="{Binding Menu_icon}" Clicked="OpenMenu" />
     </ContentPage.ToolbarItems>
 
     <Grid  RowDefinitions="10,auto,*,auto,*,auto" Margin="15,0,15,15">

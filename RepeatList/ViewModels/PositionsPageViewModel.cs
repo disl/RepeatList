@@ -23,7 +23,34 @@ namespace RepeatList.ViewModels
         public string SelectedItem_KindOfSorting_key_name = "SelectedItem_KindOfSorting";
         public double ButtonsSize = 25;
 
+        [ObservableProperty] private string menu_icon = "menu.png";
         [ObservableProperty] private bool duplicate_entries_add = true;
+        partial void OnDuplicate_entries_addChanged(bool oldValue, bool newValue)
+        {
+            Preferences.Set("Duplicate_entries_add", newValue);
+
+            Menu_icon = newValue ? "menu.png" : "menu_alert.png";
+        }
+
+        //[ObservableProperty] public bool changeListsCheckedState;
+        //partial void OnChangeListsCheckedStateChanged(bool oldValue, bool newValue)
+        //{
+        //    string image_source = "";
+        //    if (Application.Current.UserAppTheme == AppTheme.Dark)
+        //    {
+        //        image_source = newValue ? "check_box_check_white.png" : "check_box_blank_white.png";
+        //    }
+        //    else
+        //    {
+        //        image_source = newValue ? "check_box_check.png" : "check_box_blank.png";
+        //    }
+
+        //    PositionImageSource = image_source;
+        //}
+
+
+
+
         [ObservableProperty] private string search = Properties.Resources.search;
         [ObservableProperty] private string title;  // = Properties.Resources.Positions.ToUpper();
         [ObservableProperty] public string resetImageSource;

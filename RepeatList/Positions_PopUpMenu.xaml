@@ -18,7 +18,8 @@
                          Content="{x:Static properties:Resources.replace}" 
                          CheckedChanged="Duplicate_entries_replace" 
                          BackgroundColor="gray"
-                         TextColor="{AppThemeBinding Light=Black, Dark=White}"
+                         TextColor="{x:Static models:Constantes.Color_Warning}"
+
                          />
             <RadioButton x:Name="rbDuplicate_entries_add"
                          Content="{x:Static properties:Resources.add}" IsChecked="true" 
