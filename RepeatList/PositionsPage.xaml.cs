@@ -35,7 +35,7 @@ namespace RepeatList
             {
                 ViewModel.IsBusy = true;
 
-                ViewModel.Duplicate_entries_add = Preferences.Get("duplicate_entries_add", false);
+                ViewModel.Duplicate_entries_add = Preferences.Get("duplicate_entries_add", true);
 
                 //if (ViewModel != null && ViewModel.Headers != null && ViewModel.Headers.Count > 0)
                 //    HeaderListView.SelectedItem=ViewModel.Headers[0];
@@ -408,9 +408,6 @@ namespace RepeatList
         private async void Positions_inputEntry_Completed(object sender, EventArgs e)
         {
             await ForPositions_input();
-
-            //Positions_inputEntry.IsEnabled = false;
-            //Positions_inputEntry.IsEnabled = true;
         }
 
         private async Task ForPositions_input()
@@ -452,7 +449,9 @@ namespace RepeatList
             // Undone
             if (string.IsNullOrEmpty(searchText))
             {
-                ViewModel.Positions_undone_filterd = new ObservableCollection<Position>(ViewModel.Positions_undone);
+                //ViewModel.Positions_undone_filterd = new ObservableCollection<Position>(ViewModel.Positions_undone);
+                foreach (var item in ViewModel.Positions_undone)
+                    ViewModel.Positions_undone_filterd.Add(item);
             }
             else
             {
@@ -488,17 +487,21 @@ namespace RepeatList
 
         private async void OpenMenu(object sender, EventArgs e)
         {
-            if (sender is ImageButton button)
+            var popup = new Positions_PopUpMenu();
+            var result = await Shell.Current.ShowPopupAsync(popup);
+            switch (result)
             {
-                var popup = new Positions_PopUpMenu();
-                var result = await Shell.Current.ShowPopupAsync(popup);
-                switch (result)
-                {
-                    case "Export_not_completed_as_a_text_list":
-                        await ViewModel.Export_list_textClicked(); break;
-                }
-                ViewModel.Duplicate_entries_add = Preferences.Get("duplicate_entries_add", false);
+                case "Export_not_completed_as_a_text_list":
+                    if (ViewModel.Positions_undone.Count == 0)
+                    {
+                        await DisplayAlert(Properties.Resources.Export_list,
+                            Properties.Resources.List_is_empty, "OK");
+                        return;
+                    }
+                    await ViewModel.Export_list_textClicked();
+                    break;
             }
+            ViewModel.Duplicate_entries_add = Preferences.Get("duplicate_entries_add", true);
         }
 
 

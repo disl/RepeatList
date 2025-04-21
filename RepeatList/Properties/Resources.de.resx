@@ -207,13 +207,21 @@
     <value>Eingabe</value>
   </data>
   <data name="InputTextWithMicrophoneViewModel_PlaceholderText" xml:space="preserve">
-    <value>1. Sie können einen einfachen Satz verwenden, z. B. "Milch 2 St.";
+    <value>POSITIONSEINGABE:
+----------------------------------
+1. Sie können einen einfachen Satz verwenden, z.B. "Milch 2 St."; 
 
 2. eine Liste als Satz mit einem Semikolon (";") als Trennzeichen, z.B. "Milch 2 St.;Fleisch 0,5 kg;Saft 1 Packung;Bonnen 1 S.". Eine solche Liste kann z.B. per WhatsApp verschickt und schnell eingelesen werden.
 
 3. Sie können eine verschickte Liste, siehe Punkt 2, aus der Zwischenablage einfügen.
 
-Am Ende bitte nicht vergessen, die Eingabetaste zu drücken :)</value>
+Am Ende bitte die Enter-Taste nicht vergessen :)
+
+MENÜPUNKT "DOPPELTE POSITIONEN":
+-----------------------------------------------------------------
+1. ERSETZEN: Alte Einträge, die mit dem Schlüsselwort z.B. "Apfel" beginnen ("Apfel rot 1 kg", "Apfel grün 2 kg" usw.) werden gelöscht und durch neuer Eintrag ersetzt. Wenn Sie also einige Varianten beibehalten wollen, verwenden Sie bitte "Apfel_rot 1 kg", "Apfel_grün 2 kg" usw. 
+
+2. HINZUFÜGEN: Neue Einträge werden in jedem Fall hinzugefügt.</value>
   </data>
   <data name="InputText_placeholder" xml:space="preserve">
     <value>Einfügen: "Apfel" oder: "Apfel;Birne;..." mehr s.?</value>
@@ -229,6 +237,9 @@ Am Ende bitte nicht vergessen, die Eingabetaste zu drücken :)</value>
   </data>
   <data name="List_information_has_wrong_format" xml:space="preserve">
     <value>Listeninformation hat falsches Format</value>
+  </data>
+  <data name="List_is_empty" xml:space="preserve">
+    <value>Liste ist leer</value>
   </data>
   <data name="List_manipulation" xml:space="preserve">
     <value>Liste</value>
@@ -247,6 +258,10 @@ Am Ende bitte nicht vergessen, die Eingabetaste zu drücken :)</value>
   </data>
   <data name="No_items_to_display" xml:space="preserve">
     <value>Keine Elemente zum Anzeigen</value>
+  </data>
+  <data name="Old_entries_that_begin_with_the_keyword" xml:space="preserve">
+    <value>Alte Einträge, die mit dem Schlüsselwort z.B. "Apfel" beginnen ("Apfel rot 1 kg", "Apfel grün 2 kg" usw.) werden gelöscht und durch neueR Eintrag ersetzt. Wenn Sie also einige Varianten beibehalten wollen, verwenden Sie bitte "Apfel_rot 1 kg", "Apfel_grün 2 kg" usw. 
+Wollen Sie trotzdem fortfahren?</value>
   </data>
   <data name="Operation_successfully_completed" xml:space="preserve">
     <value>Operation erfolgreich abgeschlossen</value>

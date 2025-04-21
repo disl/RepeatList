@@ -207,13 +207,21 @@
     <value>Introduzca</value>
   </data>
   <data name="InputTextWithMicrophoneViewModel_PlaceholderText" xml:space="preserve">
-    <value>1. puede utilizar una frase simple, por ejemplo «Leche 2 uds»;
+    <value>ENTRADA DE POSICIÓN:
+----------------------------------
+1. puede utilizar una frase simple, por ejemplo «Leche 2 uds»; 
 
-2. una lista en forma de frase con un punto y coma («;») como separador, p. ej. «leche 2 uds;carne 0,5 kg;zumo 1 paquete;peras 1 p.». Una lista así puede enviarse por WhatsApp, por ejemplo, y leerse rápidamente.
+2. una lista en forma de frase con un punto y coma («;») como separador, p. ej. «Leche 2 uds;Carne 0,5 kg;Zumo 1 paquete;Bonnen 1 p.». Una lista de este tipo puede enviarse por WhatsApp, por ejemplo, y leerse rápidamente.
 
-3. puedes pegar una lista enviada, ver punto 2, desde el portapapeles.
+3. Puede pegar una lista enviada, véase el punto 2, desde el portapapeles.
 
-Al final, no olvide pulsar la tecla Intro :)</value>
+No olvide pulsar la tecla Intro al final :)
+
+OPCIÓN DE MENÚ «DUPLICAR ELEMENTOS»:
+-----------------------------------------------------------------
+1. SUSTITUIR: Las entradas antiguas que comienzan con la palabra clave, por ejemplo, «manzana» («manzana roja 1 kg», «manzana verde 2 kg», etc.) se eliminan y se sustituyen por entradas nuevas. Por lo tanto, si desea conservar algunas variantes, utilice «manzana_roja 1 kg», «manzana_verde 2 kg», etc. 
+
+2. AÑADIR: Se añadirán nuevas entradas en cualquier caso.</value>
   </data>
   <data name="InputText_placeholder" xml:space="preserve">
     <value>Insertar: «Manzana» o: «Manzana;Pera;...» ¿más s.?</value>
@@ -229,6 +237,9 @@ Al final, no olvide pulsar la tecla Intro :)</value>
   </data>
   <data name="List_information_has_wrong_format" xml:space="preserve">
     <value>La información de la lista tiene un formato incorrecto</value>
+  </data>
+  <data name="List_is_empty" xml:space="preserve">
+    <value>La lista está vacía</value>
   </data>
   <data name="List_manipulation" xml:space="preserve">
     <value>Lista</value>
@@ -247,6 +258,10 @@ Al final, no olvide pulsar la tecla Intro :)</value>
   </data>
   <data name="No_items_to_display" xml:space="preserve">
     <value>No hay elementos para mostrar</value>
+  </data>
+  <data name="Old_entries_that_begin_with_the_keyword" xml:space="preserve">
+    <value>Las entradas antiguas que comienzan con la palabra clave, por ejemplo, «manzana» («manzana roja 1 kg», «manzana verde 2 kg», etc.) se eliminan y se sustituyen por entradas nuevas. Por lo tanto, si desea conservar algunas variantes, utilice «Manzana_roja 1 kg», «Manzana_verde 2 kg», etc.
+¿Desea continuar?</value>
   </data>
   <data name="Operation_successfully_completed" xml:space="preserve">
     <value>Operación completada con éxito</value>

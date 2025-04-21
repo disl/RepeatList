@@ -333,13 +333,18 @@ namespace RepeatList.Properties {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die 1. you can use a simple sentence, e.g. ‘Milk 2 pcs’;
+        ///   Sucht eine lokalisierte Zeichenfolge, die POSITION INPUT:
+        ///----------------------------------
+        ///1. you can use a simple sentence, e.g. ‘Milk 2 pcs’; 
         ///
         ///2. a list as a sentence with a semicolon (‘;’) as a separator, e.g. ‘Milk 2 pcs;Meat 0.5 kg;Juice 1 pack;Bonnen 1 p.’. Such a list can be sent via WhatsApp, for example, and read in quickly.
         ///
         ///3. you can paste a sent list, see point 2, from the clipboard.
         ///
-        ///At the end, please do not forget to press the Enter key :) ähnelt.
+        ///Don&apos;t forget to press the Enter key at the end :)
+        ///
+        ///MENU ITEM ‘DUPLICATE ITEMS’:
+        ///----------------------------------------------------------- [Rest der Zeichenfolge wurde abgeschnitten]&quot;; ähnelt.
         /// </summary>
         public static string InputTextWithMicrophoneViewModel_PlaceholderText {
             get {
@@ -371,6 +376,15 @@ namespace RepeatList.Properties {
         public static string List_information_has_wrong_format {
             get {
                 return ResourceManager.GetString("List_information_has_wrong_format", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die List is empty ähnelt.
+        /// </summary>
+        public static string List_is_empty {
+            get {
+                return ResourceManager.GetString("List_is_empty", resourceCulture);
             }
         }
         
@@ -434,6 +448,16 @@ namespace RepeatList.Properties {
         public static string No_items_to_display {
             get {
                 return ResourceManager.GetString("No_items_to_display", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Old entries that begin with the keyword e.g. ‘apple’ (‘apple red 1 kg’, ‘apple green 2 kg’ etc.) are deleted and replaced by new entries. So if you want to keep some variants, please use ‘apple_red 1 kg’, ‘apple_green 2 kg’ etc.
+        ///Do you still want to continue? ähnelt.
+        /// </summary>
+        public static string Old_entries_that_begin_with_the_keyword {
+            get {
+                return ResourceManager.GetString("Old_entries_that_begin_with_the_keyword", resourceCulture);
             }
         }
         

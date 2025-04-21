@@ -3,64 +3,37 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="RepeatList.PositionsPage"             
              xmlns:controls="clr-namespace:RepeatList.Controls"
+             xmlns:models="clr-namespace:RepeatList.Models"
              xmlns:local="clr-namespace:RepeatList.ViewModels"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
-              xmlns:properties="clr-namespace:RepeatList.Properties"
+             xmlns:properties="clr-namespace:RepeatList.Properties"
              Title="{Binding Title}" 
              >
     <ContentPage.BindingContext>
         <local:PositionsPageViewModel />
     </ContentPage.BindingContext>
     <ContentPage.ToolbarItems>
-        <!--<ToolbarItem  IconImageSource="swap_vert_icon_white.png" Command="{Binding Export_list_textClickedCommand}" />-->
-        <!--<ToolbarItem  IconImageSource="swap_vert_icon_white.png" Clicked="OnResetPositionsClicked" />-->
         <ToolbarItem  IconImageSource="help_icon.png" Clicked="OnHelpButton_Clicked" />
-        <ToolbarItem  IconImageSource="kofi_symbol.png" Clicked="CoffeeButtonClicked" />
-
-        <!--<ToolbarItem  StyleId="Item1" Order="Secondary"  IconImageSource="share_icon.png"  Text="{Binding Label_Export_list}" Command="{Binding Export_list_ClickedCommand}" />
-    <ToolbarItem  StyleId="Item2" Order="Secondary" Text="{Binding Label_Reset_current_list}" Command="{Binding Reset_current_list_ClickedCommand}" />-->
-
+        <ToolbarItem  IconImageSource="menu.png" Clicked="OpenMenu" />
     </ContentPage.ToolbarItems>
 
-    <Grid  RowDefinitions="10,auto,*,auto,*,auto" Margin="15,5,15,15">
+    <Grid  RowDefinitions="10,auto,*,auto,*,auto" Margin="15,0,15,15">
 
         <!--<ActivityIndicator IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}" Grid.Row="0" />-->
         <controls:ActivityProgressBar IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}" Grid.Row="0" />
 
+        <SearchBar x:Name="searchBar" 
+                   Placeholder="{Binding Search}" 
+                   TextChanged="OnSearchTextChanged" 
+                   SearchButtonPressed="OnSearchButtonPressed"
+                   Margin="0,0,0,10" 
+                   TextColor="{AppThemeBinding Light={DynamicResource PrimaryTextColor}, Dark={DynamicResource PrimaryTextColorLight}}"
+                   PlaceholderColor="{AppThemeBinding Light={DynamicResource PrimaryTextColor}, Dark={DynamicResource PrimaryTextColorLight}}"
+                   CancelButtonColor ="{AppThemeBinding Light={DynamicResource PrimaryTextColor}, Dark={DynamicResource PrimaryTextColorLight}}"
+                   Grid.Row="1" />
+        
 
-        <!--Undone-->
-        <!--<StackLayout Orientation="Horizontal"    Grid.Row="1">
-            -->
-        <!--<Label Text="{Binding Label_undone}" FontAttributes="Bold" VerticalOptions="Center"  HorizontalOptions="StartAndExpand" Margin="0" FontSize="Large"
-                            TextColor="{AppThemeBinding Light={DynamicResource PrimaryTextColor}, Dark={DynamicResource PrimaryTextColorLight}}" />-->
-        <!--<ImageButton Source="add_icon.png" Clicked="OnAddPositionClicked"   VerticalOptions="Center"
-                            MaximumWidthRequest="{Binding ImageButton_size}" MaximumHeightRequest="{Binding ImageButton_size}" HorizontalOptions="End" />>-->
-        <!--
-            <ImageButton Source="swap_vert_icon.png" Clicked="OnResetPositionsClicked"
-                            MaximumWidthRequest="{Binding ImageButton_size}" MaximumHeightRequest="{Binding ImageButton_size}"  HorizontalOptions="EndAndExpand"/>
-        </StackLayout>-->
-        <Grid ColumnDefinitions="*,auto"   Grid.Row="1" ColumnSpacing="10" Margin="0,0,5,5">
-            <SearchBar x:Name="searchBar"  Placeholder="{Binding Search}"  Grid.Column="0" VerticalOptions="End" Margin="0,0,0,7"
-                       TextChanged="OnSearchTextChanged" SearchButtonPressed="OnSearchButtonPressed"  />
-
-            <ImageButton Grid.Column="1"  Clicked="OpenMenu"  HeightRequest="30" WidthRequest="30" >
-                <ImageButton.Source>
-                    <AppThemeBinding Light="more_vert_black.png"  Dark="more_vert_white.png" />
-                </ImageButton.Source>
-            </ImageButton>
-
-
-
-            <!--<Picker x:Name="SortingPickerHeader" Title="{Binding  Title_sort_by}"  HorizontalOptions="EndAndExpand" VerticalOptions="End"  Grid.Column="1"
-                TextColor="{AppThemeBinding Light={DynamicResource PrimaryTextColor}, Dark={DynamicResource PrimaryTextColorLight}}"
-                TitleColor="{AppThemeBinding Light={DynamicResource PrimaryTextColor}, Dark={DynamicResource PrimaryTextColorLight}}"
-                SelectedIndexChanged="SortingPicker_SelectedIndexChanged"           
-                SelectedItem="{Binding  SelectedItem_KindOfSorting, Mode=TwoWay}">
-                <Picker.ItemDisplayBinding>
-                    <Binding Path="Name" />
-                </Picker.ItemDisplayBinding>
-            </Picker>-->
-        </Grid>
+        <!--</Grid>-->
         <Border   Stroke="Gray" StrokeThickness="1"  Padding="10"  Grid.Row="2" >
             <Border.StrokeShape>
                 <RoundRectangle CornerRadius="5" />
@@ -166,15 +139,7 @@
 
         <!--Input-->
         <Grid ColumnDefinitions="*,Auto"   Grid.Row="5" Margin="0,20,0,20" ColumnSpacing="5">
-            <!--<ImageButton Source="help_icon.png" Grid.Column="0"  Clicked="OnHelpButton_Clicked" HeightRequest="35" WidthRequest="35"  VerticalOptions="Center"  />-->
-            <!--<Border Style="{StaticResource UnderlineBorderStyle}" >-->
-            <!--<Entry x:Name="Positions_inputEntry"  
-                   Text="{Binding InputText}"  
-                   Placeholder="{Binding InputText_placeholder}" Grid.Column="1" 
-                   TextColor="{AppThemeBinding Light={DynamicResource PrimaryTextColor}, Dark={DynamicResource PrimaryTextColorLight}}"
-                   PlaceholderColor="{AppThemeBinding Light=Gray, Dark=LightGray}"
-                   BackgroundColor="{AppThemeBinding Light=White, Dark=#282828}"
-                   Completed="Positions_inputEntry_Completed" VerticalOptions="Center" Focused="Positions_inputEntry_Focused" />-->
+           
 
             <Border Grid.Column="0"
                 Stroke="{AppThemeBinding Light=#DDDDDD, Dark=#444444}"

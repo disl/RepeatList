@@ -23,7 +23,7 @@ namespace RepeatList.ViewModels
         public string SelectedItem_KindOfSorting_key_name = "SelectedItem_KindOfSorting";
         public double ButtonsSize = 25;
 
-        [ObservableProperty] private bool duplicate_entries_add;
+        [ObservableProperty] private bool duplicate_entries_add = true;
         [ObservableProperty] private string search = Properties.Resources.search;
         [ObservableProperty] private string title;  // = Properties.Resources.Positions.ToUpper();
         [ObservableProperty] public string resetImageSource;
@@ -496,10 +496,20 @@ namespace RepeatList.ViewModels
         {
             if (Header_SelectedItem == null || position == null) return;
 
-            IsBusy = true;
-
-            if (!Duplicate_entries_add)
+            if (Duplicate_entries_add == false)  // old positins are deleted
+            {
+                //if (!string.IsNullOrEmpty(position.Title))
+                //{
+                //    bool answer = await Application.Current.MainPage.DisplayAlert(
+                //            Properties.Resources.Are_you_sure,
+                //            Properties.Resources.Old_entries_that_begin_with_the_keyword, Properties.Resources.yes, Properties.Resources.no);
+                //    if (answer)
+                //    {
+                // Delete all positions with the same first word
                 await DeleteIfAvailable(position.Title);
+                //}
+                //}
+            }
 
             var new_guid = await _databaseService.AddPositionAsync(position, generate_new_guid);
             position.Id = new_guid;
@@ -521,11 +531,19 @@ namespace RepeatList.ViewModels
         private async Task DeleteIfAvailable(string positionEntryText)
         {
             var first_word = GetFirstWordFromString(positionEntryText);
-            var pos = Positions.FirstOrDefault(x => x.Title.ToLower().Contains(first_word.ToLower()));
-            if (pos != null)
+
+            // First word of the title matches  
+            var pos_arr = Positions
+                .Where(x => x.Title.Split(' ', StringSplitOptions.RemoveEmptyEntries)
+                    .FirstOrDefault()?.Equals(first_word, StringComparison.OrdinalIgnoreCase) == true)
+                .ToList();
+            foreach (var pos in pos_arr)
             {
-                if (!pos.IsCompleted)  // ??????????
+                if (pos != null)
+                {
+                    //if (!pos.IsCompleted)  // ??????????
                     await DeletePosition(pos);
+                }
             }
         }
 

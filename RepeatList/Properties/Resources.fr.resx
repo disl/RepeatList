@@ -207,13 +207,21 @@
     <value>Entrée</value>
   </data>
   <data name="InputTextWithMicrophoneViewModel_PlaceholderText" xml:space="preserve">
-    <value>1. vous pouvez utiliser une phrase simple, par exemple « lait 2 p. » ;
+    <value>SAISIE DE LA POSITION :
+----------------------------------
+1. vous pouvez utiliser une phrase simple, par exemple « lait 2 pcs » ; 
 
-2. une liste sous forme de phrase avec un point-virgule («  ; ») comme séparateur, p. ex. « lait 2 pcs;viande 0,5 kg;jus 1 paquet;poires 1 p. ». Une telle liste peut par exemple être envoyée par WhatsApp et être lue rapidement.
+2. une liste sous forme de phrase avec un point-virgule («  ; ») comme séparateur, p. ex. « lait 2 pcs;viande 0,5 kg;jus 1 paquet;tonnes 1 p. ». Une telle liste peut par exemple être envoyée par WhatsApp et être lue rapidement.
 
 3. vous pouvez insérer une liste envoyée, voir point 2, à partir du presse-papiers.
 
-A la fin, n'oubliez pas d'appuyer sur la touche « Entrée » :)</value>
+A la fin, n'oubliez pas d'appuyer sur la touche Entrée :)
+
+POINT DE MENU « POSITIONS DOUBLES » :
+-----------------------------------------------------------------
+1. REMPLACER : les anciennes entrées qui commencent par le mot-clé « pomme » par exemple (« pomme rouge 1 kg », « pomme verte 2 kg », etc.) sont supprimées et remplacées par une nouvelle entrée. Par conséquent, si vous souhaitez conserver certaines variantes, veuillez utiliser « pomme_rouge 1 kg », « pomme_vert 2 kg », etc. 
+
+2) AJOUTER : de nouvelles entrées sont ajoutées dans tous les cas.</value>
   </data>
   <data name="InputText_placeholder" xml:space="preserve">
     <value>Insérer : « pomme » ou : « pomme;poire ;... » plus s. ?</value>
@@ -229,6 +237,9 @@ A la fin, n'oubliez pas d'appuyer sur la touche « Entrée » :)</value>
   </data>
   <data name="List_information_has_wrong_format" xml:space="preserve">
     <value>Le format des informations de la liste est incorrect</value>
+  </data>
+  <data name="List_is_empty" xml:space="preserve">
+    <value>La liste est vide</value>
   </data>
   <data name="List_manipulation" xml:space="preserve">
     <value>Liste</value>
@@ -247,6 +258,10 @@ A la fin, n'oubliez pas d'appuyer sur la touche « Entrée » :)</value>
   </data>
   <data name="No_items_to_display" xml:space="preserve">
     <value>Aucun élément à afficher</value>
+  </data>
+  <data name="Old_entries_that_begin_with_the_keyword" xml:space="preserve">
+    <value>Les anciennes entrées commençant par le mot-clé « pomme » par exemple (« pomme rouge 1 kg », « pomme verte 2 kg », etc.) sont supprimées et remplacées par de nouvelles entrées. Ainsi, si vous souhaitez conserver certaines variantes, veuillez utiliser « pomme_rouge 1 kg », « pomme_verte 2 kg », etc.
+Vous voulez quand même continuer ?</value>
   </data>
   <data name="Operation_successfully_completed" xml:space="preserve">
     <value>Operation successfully completed</value>

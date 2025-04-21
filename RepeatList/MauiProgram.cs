@@ -24,9 +24,11 @@ namespace RepeatList
                 .UseMauiApp<App>()
                 .ConfigureMauiHandlers(handlers =>
                 {
+
 #if ANDROID
                     handlers.AddHandler(typeof(AdBannerView), typeof(AdBannerViewHandler));
 #endif
+
                 })
                 .UseMauiCommunityToolkit()
             //.UseMauiMTAdmob()

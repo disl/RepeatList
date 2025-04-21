@@ -207,13 +207,21 @@
     <value>Inserimento</value>
   </data>
   <data name="InputTextWithMicrophoneViewModel_PlaceholderText" xml:space="preserve">
-    <value>1. è possibile utilizzare una frase semplice, ad esempio “Latte 2 pz”;
+    <value>POSIZIONE IN INGRESSO:
+----------------------------------
+1. è possibile utilizzare una frase semplice, ad esempio “Latte 2 pezzi”; 
 
-2. un elenco come frase con un punto e virgola (';') come separatore, ad esempio “Latte 2 pz;Carne 0,5 kg;Succo 1 confezione;Bonnen 1 p.”. Un elenco di questo tipo può essere inviato, ad esempio, tramite WhatsApp e letto rapidamente.
+2. un elenco come frase con un punto e virgola (“;”) come separatore, ad esempio “Latte 2 pz;Carne 0,5 kg;Succo 1 confezione;Bonnen 1 p.”. Un elenco di questo tipo può essere inviato via WhatsApp, ad esempio, e letto rapidamente.
 
 3. è possibile incollare un elenco inviato, vedi punto 2, dagli appunti.
 
-Alla fine, non dimenticate di premere il tasto Invio :)</value>
+Non dimenticate di premere il tasto Invio alla fine :)
+
+VOCE DI MENU “DUPLICA ELEMENTI”:
+-----------------------------------------------------------------
+1. SOSTITUISCI: le vecchie voci che iniziano con la parola chiave, ad esempio “mela” (“mela rossa 1 kg”, “mela verde 2 kg” ecc.) vengono eliminate e sostituite da nuove voci. Quindi, se si desidera mantenere alcune varianti, utilizzare “mela_rossa 1 kg”, “mela_verde 2 kg” ecc. 
+
+2. AGGIUNGI: le nuove voci saranno aggiunte in ogni caso.</value>
   </data>
   <data name="InputText_placeholder" xml:space="preserve">
     <value>Inserire: 'mela' o: 'mela;pera;...' altro s.?</value>
@@ -229,6 +237,9 @@ Alla fine, non dimenticate di premere il tasto Invio :)</value>
   </data>
   <data name="List_information_has_wrong_format" xml:space="preserve">
     <value>Le informazioni dell'elenco hanno un formato sbagliato</value>
+  </data>
+  <data name="List_is_empty" xml:space="preserve">
+    <value>L'elenco è vuoto</value>
   </data>
   <data name="List_manipulation" xml:space="preserve">
     <value>Elenco</value>
@@ -247,6 +258,10 @@ Alla fine, non dimenticate di premere il tasto Invio :)</value>
   </data>
   <data name="No_items_to_display" xml:space="preserve">
     <value>Nessun elemento da visualizzare</value>
+  </data>
+  <data name="Old_entries_that_begin_with_the_keyword" xml:space="preserve">
+    <value>Le vecchie voci che iniziano con la parola chiave, ad esempio “mela” (“mela rossa 1 kg”, “mela verde 2 kg” ecc.) vengono cancellate e sostituite da nuove voci. Quindi, se volete mantenere alcune varianti, utilizzate “mela_rossa 1 kg”, “mela_verde 2 kg” ecc.
+Volete ancora continuare?</value>
   </data>
   <data name="Operation_successfully_completed" xml:space="preserve">
     <value>Operazione completata con successo</value>
