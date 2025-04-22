@@ -23,8 +23,8 @@ namespace RepeatList.ViewModels
         public string SelectedItem_KindOfSorting_key_name = "SelectedItem_KindOfSorting";
         public double ButtonsSize = 25;
 
-        [ObservableProperty] private string menu_icon = "menu.png";
-        [ObservableProperty] private bool duplicate_entries_add = true;
+        [ObservableProperty] public string menu_icon;
+        [ObservableProperty] public bool duplicate_entries_add;
         partial void OnDuplicate_entries_addChanged(bool oldValue, bool newValue)
         {
             Preferences.Set("Duplicate_entries_add", newValue);
