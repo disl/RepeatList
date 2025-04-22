@@ -26,7 +26,7 @@ public partial class Positions_PopUpMenu : Popup
         Export_not_completed_as_a_text_list_Button.InvalidateMeasure();
 
         // Set the default value for the checkbox based on the saved preference
-        bool isChecked = Preferences.Get("duplicate_entries_add", false);
+        bool isChecked = Preferences.Get("duplicate_entries_add", true);
         rbDuplicate_entries_add.IsChecked = isChecked;
         rbDuplicate_entries_replace.IsChecked = !isChecked;
     }

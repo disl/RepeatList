@@ -25,6 +25,8 @@ namespace RepeatList
             ViewModel = new PositionsPageViewModel(selectedItem);
             BindingContext = ViewModel;
             SetupPageViewModel = new SetupPageViewModel();
+
+           
         }
 
         protected async override void OnAppearing()
@@ -36,6 +38,7 @@ namespace RepeatList
                 ViewModel.IsBusy = true;
 
                 ViewModel.Duplicate_entries_add = Preferences.Get("duplicate_entries_add", true);
+                ViewModel.Menu_icon = ViewModel.Duplicate_entries_add ? "menu.png" : "menu_alert.png";
 
                 //if (ViewModel != null && ViewModel.Headers != null && ViewModel.Headers.Count > 0)
                 //    HeaderListView.SelectedItem=ViewModel.Headers[0];
