@@ -138,6 +138,9 @@
   <data name="Cancel" xml:space="preserve">
     <value>Скасувати</value>
   </data>
+  <data name="close" xml:space="preserve">
+    <value>Закрити</value>
+  </data>
   <data name="collapse" xml:space="preserve">
     <value>Згорнути</value>
   </data>

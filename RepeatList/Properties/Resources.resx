@@ -356,4 +356,7 @@ MENU ITEM ‘DUPLICATE ITEMS’:
     <value>Old entries that begin with the keyword e.g. ‘apple’ (‘apple red 1 kg’, ‘apple green 2 kg’ etc.) are deleted and replaced by new entries. So if you want to keep some variants, please use ‘apple_red 1 kg’, ‘apple_green 2 kg’ etc.
 Do you still want to continue?</value>
   </data>
+  <data name="close" xml:space="preserve">
+    <value>Close</value>
+  </data>
 </root>

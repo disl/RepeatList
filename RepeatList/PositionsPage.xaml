@@ -22,16 +22,16 @@
         <!--<ActivityIndicator IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}" Grid.Row="0" />-->
         <controls:ActivityProgressBar IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}" Grid.Row="0" />
 
-        <SearchBar x:Name="searchBar" 
-                   Placeholder="{Binding Search}" 
-                   TextChanged="OnSearchTextChanged" 
-                   SearchButtonPressed="OnSearchButtonPressed"
-                   Margin="0,0,0,10" 
+        <!--<SearchBar x:Name="searchBar" Placeholder="{Binding Search}" TextChanged="OnSearchTextChanged" SearchButtonPressed="OnSearchButtonPressed" Margin="0,0,0,10" Grid.Row="1" />-->
+
+        <Grid ColumnDefinitions="auto,*" Grid.Row="1" Margin="0,0,0,10" ColumnSpacing="10">
+            <Image Source="{AppThemeBinding Light=search_black.png, Dark=search_white.png}"  Grid.Column="0" />
+            <Entry x:Name="searchBar" Grid.Column="1" Placeholder="{Binding Search}" HeightRequest="50"
                    TextColor="{AppThemeBinding Light={DynamicResource PrimaryTextColor}, Dark={DynamicResource PrimaryTextColorLight}}"
-                   PlaceholderColor="{AppThemeBinding Light={DynamicResource PrimaryTextColor}, Dark={DynamicResource PrimaryTextColorLight}}"
-                   CancelButtonColor ="{AppThemeBinding Light={DynamicResource PrimaryTextColor}, Dark={DynamicResource PrimaryTextColorLight}}"
-                   Grid.Row="1" />
-        
+                   PlaceholderColor="{AppThemeBinding Light=Gray, Dark=LightGray}"                   
+                   TextChanged="OnSearchTextChanged" ClearButtonVisibility="WhileEditing" />
+        </Grid>
+
 
         <!--</Grid>-->
         <Border   Stroke="Gray" StrokeThickness="1"  Padding="10"  Grid.Row="2" >
@@ -139,7 +139,7 @@
 
         <!--Input-->
         <Grid ColumnDefinitions="*,Auto"   Grid.Row="5" Margin="0,20,0,20" ColumnSpacing="5">
-           
+
 
             <Border Grid.Column="0"
                 Stroke="{AppThemeBinding Light=#DDDDDD, Dark=#444444}"

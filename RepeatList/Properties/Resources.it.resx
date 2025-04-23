@@ -138,6 +138,9 @@
   <data name="Cancel" xml:space="preserve">
     <value>Annulla</value>
   </data>
+  <data name="close" xml:space="preserve">
+    <value>Chiudere</value>
+  </data>
   <data name="collapse" xml:space="preserve">
     <value>falten</value>
   </data>

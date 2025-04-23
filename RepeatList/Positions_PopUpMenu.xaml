@@ -31,7 +31,7 @@
 
         <Button x:Name="CancelButton" 
           BackgroundColor="{x:Static models:Constantes.Color_Warning}" Margin="0,10,0,0"  
-          Text="{x:Static properties:Resources.Cancel}" TextColor="White" 
+          Text="{x:Static properties:Resources.close}" TextColor="White" 
           Clicked="CancelButtonClicked"    />
 
         <!--<Button  Text="{x:Static properties:Resources.Delete_list}" TextColor="White" 
