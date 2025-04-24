@@ -91,8 +91,7 @@
             </ImageButton>
             <Picker x:Name="SortingPicker" Title="{Binding  Title_sort_by}"  Grid.Column="3" VerticalOptions="Center" Margin="0"
                         TextColor="{AppThemeBinding Light={DynamicResource PrimaryTextColor}, Dark={DynamicResource PrimaryTextColorLight}}"
-                        TitleColor="{AppThemeBinding Light={DynamicResource PrimaryTextColor}, Dark={DynamicResource PrimaryTextColorLight}}"
-                    
+                        TitleColor="Gray"                    
                         SelectedIndexChanged="SortingPicker_SelectedIndexChanged"           
                         SelectedItem="{Binding  SelectedItem_KindOfSorting, Mode=TwoWay}">
                 <Picker.ItemDisplayBinding>
