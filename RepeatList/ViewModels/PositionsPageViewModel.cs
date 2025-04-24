@@ -267,7 +267,8 @@ namespace RepeatList.ViewModels
                 if (!Guid.TryParse(guid_str, out tmp_guid))
                 {
                     await Application.Current.MainPage.DisplaySnackbar(Properties.Resources.String_is_not_a_valid_List_ID,
-                        visualOptions: new SnackbarOptions { BackgroundColor = Color.FromArgb(Constantes.Color_Error_string), TextColor = Colors.White });
+                        visualOptions: new SnackbarOptions { BackgroundColor = Color.FromArgb(Constantes.Color_Error_string), TextColor = Colors.White },
+                duration: TimeSpan.FromSeconds(2));
                     IsBusy = false;
                     return;
                 }
@@ -286,7 +287,8 @@ namespace RepeatList.ViewModels
                     {
                         BackgroundColor = Color.FromArgb(Constantes.Color_Error_string),
                         TextColor = Colors.White
-                    });
+                    },
+                duration: TimeSpan.FromSeconds(2));
                 IsBusy = false;
                 return;
             }
@@ -306,7 +308,8 @@ namespace RepeatList.ViewModels
             await EditIsSynchronizedHeader(Header_SelectedItem, true);
 
             await Application.Current.MainPage.DisplaySnackbar(Properties.Resources.List_was_imported_successfully,
-                visualOptions: new SnackbarOptions { BackgroundColor = Color.FromArgb(Constantes.Color_Success_string), TextColor = Colors.White });
+                visualOptions: new SnackbarOptions { BackgroundColor = Color.FromArgb(Constantes.Color_Success_string), TextColor = Colors.White }
+                , duration: TimeSpan.FromSeconds(2));
 
             IsBusy = false;
         }
@@ -332,7 +335,8 @@ namespace RepeatList.ViewModels
                         if (!Guid.TryParse(guid_str, out tmp_guid))
                         {
                             await Application.Current.MainPage.DisplaySnackbar(Properties.Resources.String_is_not_a_valid_List_ID,
-                                visualOptions: new SnackbarOptions { BackgroundColor = Color.FromArgb(Constantes.Color_Error_string), TextColor = Colors.White });
+                                visualOptions: new SnackbarOptions { BackgroundColor = Color.FromArgb(Constantes.Color_Error_string), TextColor = Colors.White }
+                                , duration: TimeSpan.FromSeconds(2));
                             IsBusy = false;
                             return;
                         }

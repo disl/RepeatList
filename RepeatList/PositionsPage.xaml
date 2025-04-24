@@ -72,28 +72,38 @@
             </CollectionView>
         </Border>
 
-        <!--Done-->
-        <StackLayout Orientation="Horizontal" Margin="0,10,5,10" Grid.Row="3">
-            <Label Text="{Binding Label_done}" FontAttributes="Bold"  HorizontalOptions="StartAndExpand" FontSize="Large" VerticalOptions="Center"
+        <!-- Sorting -->
+        <!--<StackLayout Orientation="Horizontal" Margin="0,10,5,10" Grid.Row="3">-->
+        <Grid ColumnDefinitions="auto,*,auto,auto" Margin="0,10,0,10" Grid.Row="3">
+            <Label Text="{Binding Label_done}" Grid.Column="0"  FontAttributes="Bold"   FontSize="Large" VerticalOptions="Center"
                         TextColor="{AppThemeBinding Light={DynamicResource PrimaryTextColor}, Dark={DynamicResource PrimaryTextColorLight}}" />
 
-            <ImageButton   Clicked="OnResetPositionsClicked" VerticalOptions="Center" HeightRequest="35" WidthRequest="35"                            >
+            <ImageButton   Clicked="OnResetPositionsClicked" Grid.Column="1" VerticalOptions="Center" HeightRequest="35" WidthRequest="35"                            >
                 <ImageButton.Source>
                     <AppThemeBinding Light="swap_vert_icon.png"  Dark="swap_vert_icon_white.png" />
                 </ImageButton.Source>
             </ImageButton>
 
-            <Picker x:Name="SortingPicker" Title="{Binding  Title_sort_by}"  HorizontalOptions="EndAndExpand" VerticalOptions="Center" Margin="0"
+            <ImageButton   Clicked="OnResetPositionsClicked" Grid.Column="2" VerticalOptions="Center" HeightRequest="20" WidthRequest="20"                            >
+                <ImageButton.Source>
+                    <AppThemeBinding Light="sort_black.png"  Dark="sort_white.png" />
+                </ImageButton.Source>
+            </ImageButton>
+            <Picker x:Name="SortingPicker" Title="{Binding  Title_sort_by}"  Grid.Column="3" VerticalOptions="Center" Margin="0"
                         TextColor="{AppThemeBinding Light={DynamicResource PrimaryTextColor}, Dark={DynamicResource PrimaryTextColorLight}}"
                         TitleColor="{AppThemeBinding Light={DynamicResource PrimaryTextColor}, Dark={DynamicResource PrimaryTextColorLight}}"
+                    
                         SelectedIndexChanged="SortingPicker_SelectedIndexChanged"           
                         SelectedItem="{Binding  SelectedItem_KindOfSorting, Mode=TwoWay}">
                 <Picker.ItemDisplayBinding>
                     <Binding Path="Name" />
                 </Picker.ItemDisplayBinding>
             </Picker>
-        </StackLayout>
 
+        </Grid>
+        <!--</StackLayout>-->
+
+        <!--Done-->
         <Border   Stroke="Gray" StrokeThickness="1"  Padding="10" Grid.Row="4">
             <Border.StrokeShape>
                 <RoundRectangle CornerRadius="5" />
@@ -138,9 +148,133 @@
         </Border>
 
         <!--Input-->
-        <Grid ColumnDefinitions="*,Auto"   Grid.Row="5" Margin="0,20,0,20" ColumnSpacing="5">
+
+        <!-- Türkis & Petrol -->
+        <Grid ColumnDefinitions="*,Auto"
+      Grid.Row="5"
+      Margin="0,20,0,20"
+      ColumnSpacing="8">
+
+            <!-- Eingabefeld mit farbiger Umrandung -->
+            <Border Grid.Column="0"
+            x:Name="InputBorder"
+            Stroke="{AppThemeBinding Light=#00BCD4, Dark=#80DEEA}"
+            StrokeThickness="2"
+            BackgroundColor="{AppThemeBinding Light=#E0F7FA, Dark=#004D40}"
+            Padding="8"
+            StrokeShape="RoundRectangle 10"
+            Margin="0">
+
+                <Entry x:Name="Positions_inputEntry"
+               Text="{Binding InputText, Mode=TwoWay}"
+               Placeholder="{Binding InputText_placeholder}"
+               TextColor="{AppThemeBinding Light=#004D40, Dark=White}"
+               PlaceholderColor="{AppThemeBinding Light=#55004D40, Dark=#55FFFFFF}"
+               BackgroundColor="Transparent"
+               FontSize="16"
+               Completed="Positions_inputEntry_Completed"
+               Focused="Positions_inputEntry_Focused" />
+            </Border>
+
+            <!-- Aktionstaste rechts -->
+            <Button Text=";"
+            Grid.Column="1"
+            Clicked="OnSemicolonButton_Clicked"
+            TextColor="White"
+            BackgroundColor="{AppThemeBinding Light=#0097A7, Dark=#00ACC1}"
+            CornerRadius="10"
+            FontAttributes="Bold"
+            FontSize="Title"
+            WidthRequest="48"
+            HeightRequest="48"
+            VerticalOptions="Center" />
+        </Grid>
 
 
+
+        <!-- BLAU -->
+        <!-- <Grid ColumnDefinitions="*,Auto"
+      Grid.Row="5"
+      Margin="0,20,0,20"
+      ColumnSpacing="8">
+
+           
+          <Border Grid.Column="0"
+            x:Name="InputBorder"
+            Stroke="{AppThemeBinding Light=#2196F3, Dark=#64B5F6}"
+            StrokeThickness="2"
+            BackgroundColor="{AppThemeBinding Light=#E3F2FD, Dark=#0D47A1}"
+            Padding="8"
+            StrokeShape="RoundRectangle 10"
+            Margin="0">
+
+                <Entry x:Name="Positions_inputEntry"
+               Text="{Binding InputText, Mode=TwoWay}"
+               Placeholder="{Binding InputText_placeholder}"
+               TextColor="{AppThemeBinding Light=#0D47A1, Dark=White}"
+               PlaceholderColor="{AppThemeBinding Light=#552196F3, Dark=#55FFFFFF}"
+               BackgroundColor="Transparent"
+               FontSize="16"
+               Completed="Positions_inputEntry_Completed"
+               Focused="Positions_inputEntry_Focused" />
+            </Border>
+
+            -->
+        <!-- Button -->
+        <!--
+            <Button Text=";"
+            Grid.Column="1"
+            Clicked="OnSemicolonButton_Clicked"
+            TextColor="White"
+            BackgroundColor="{AppThemeBinding Light=#1976D2, Dark=#1E88E5}"
+            CornerRadius="10"
+            FontAttributes="Bold"
+            FontSize="Title"
+            WidthRequest="48"
+            HeightRequest="48"
+            VerticalOptions="Center" />
+        </Grid>-->
+
+
+
+        <!--<Grid ColumnDefinitions="*,Auto" Grid.Row="5" Margin="0,20,0,20" ColumnSpacing="8">
+
+            <Border Grid.Column="0"
+            x:Name="InputBorder"
+            Stroke="{AppThemeBinding Light=#00BCD4, Dark=#80DEEA}" 
+                StrokeThickness="2"
+            BackgroundColor="{AppThemeBinding Light=#E0F7FA, Dark=#004D40}"
+                
+                Padding="8"
+            StrokeShape="RoundRectangle 10"
+            Margin="0,0,0,0"
+            >
+                <Entry  x:Name="Positions_inputEntry"
+                Text="{Binding InputText, Mode=TwoWay}"
+                Placeholder="{Binding InputText_placeholder}"
+                TextColor="{AppThemeBinding Light=#004D40, Dark=White}"
+                PlaceholderColor="{AppThemeBinding Light=#55004D40, Dark=#55FFFFFF}"
+                BackgroundColor="Transparent"
+                FontSize="16"
+                Completed="Positions_inputEntry_Completed"
+                Focused="Positions_inputEntry_Focused" />
+            </Border>
+
+            <Button Text=";" Grid.Column="1"
+            Clicked="OnSemicolonButton_Clicked"
+            TextColor="White"
+            BackgroundColor="{AppThemeBinding Light=#0097A7, Dark=#00ACC1}" 
+                CornerRadius="10"
+            FontAttributes="Bold"
+            FontSize="Title"
+            WidthRequest="48"
+            HeightRequest="48"
+            VerticalOptions="Center" />
+        </Grid>-->
+
+
+        <!-- BLACK & WHITE -->
+        <!--<Grid ColumnDefinitions="*,Auto"   Grid.Row="5" Margin="0,20,0,20" ColumnSpacing="5">
             <Border Grid.Column="0"
                 Stroke="{AppThemeBinding Light=#DDDDDD, Dark=#444444}"
                 StrokeThickness="1"
@@ -157,13 +291,8 @@
                         Completed="Positions_inputEntry_Completed" VerticalOptions="Center" Focused="Positions_inputEntry_Focused"
                     />
             </Border>
-
-            <!--</Border>-->
             <Button Text=";" Grid.Column="1"  Clicked="OnSemicolonButton_Clicked" TextColor="White" FontAttributes="Bold" FontSize="Title" VerticalOptions="Center"  />
-        </Grid>
-
-        <!--</Grid>-->
-        <!---->
+        </Grid>-->
 
     </Grid>
 </ContentPage>

@@ -421,12 +421,14 @@ namespace RepeatList
 
             ViewModel.InputText = string.Empty;
 
-            await Application.Current.MainPage.DisplaySnackbar(Properties.Resources.Operation_successfully_completed,
+            await Application.Current.MainPage.DisplaySnackbar(Properties.Resources.Operation_successfully_completed,                
                 visualOptions: new SnackbarOptions
                 {
                     BackgroundColor = Color.FromArgb(Constantes.Color_Success_string),
-                    TextColor = Colors.White
-                });
+                    TextColor = Colors.White,
+                },
+                duration: TimeSpan.FromSeconds(2)
+                );
 
             ViewModel.IsBusy = false;
         }

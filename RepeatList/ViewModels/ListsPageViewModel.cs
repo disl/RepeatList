@@ -346,7 +346,8 @@ namespace RepeatList.ViewModels
                     {
                         BackgroundColor = Color.FromArgb(Constantes.Color_Error_string),
                         TextColor = Colors.White
-                    });
+                    },
+                duration: TimeSpan.FromSeconds(2));
                 IsBusy = false;
                 return;
                 //}
@@ -734,7 +735,8 @@ namespace RepeatList.ViewModels
                 {
                     BackgroundColor = Color.FromArgb(Constantes.Color_Success_string),
                     TextColor = Colors.White
-                });
+                },
+                duration: TimeSpan.FromSeconds(2));
 
             await _databaseService.UpdateIsSynchronizedHeaderAsync(Header_SelectedItem.Id, false);
 

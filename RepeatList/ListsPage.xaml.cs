@@ -151,7 +151,7 @@ namespace RepeatList
                            {
                                BackgroundColor = Color.FromArgb(Constantes.Color_Error_string),
                                TextColor = Colors.White
-                           });
+                           }, duration: TimeSpan.FromSeconds(2));
                         return;
                     }
                     new_list_name = new_list_name.Substring(ind, new_list_name.Length - ind).Replace(">>>", "");
@@ -166,7 +166,7 @@ namespace RepeatList
                     {
                         BackgroundColor = Color.FromArgb(Constantes.Color_Success_string),
                         TextColor = Colors.White
-                    });
+                    }, duration: TimeSpan.FromSeconds(2));
 
                 ViewModel.SetFirstItemForHeaders();
             }
@@ -215,7 +215,7 @@ namespace RepeatList
                         {
                             BackgroundColor = Color.FromArgb(Constantes.Color_Success_string),
                             TextColor = Colors.White
-                        });
+                        }, duration: TimeSpan.FromSeconds(2));
 
                     ViewModel.IsBusy = false;
                 }
