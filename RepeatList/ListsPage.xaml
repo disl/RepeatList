@@ -77,15 +77,6 @@
                                     <AppThemeBinding Light="more_vert_black.png"  Dark="more_vert_white.png" />
                                 </ImageButton.Source>
                             </ImageButton>
-
-                            <!--<ImageButton Source="edit_icon.png" Clicked="OnEditHeaderClicked" HeightRequest="30" CommandParameter="{Binding}"  Grid.Column="2"/>
-                            <ImageButton Source="delete_icon.png" Clicked="OnDeleteHeaderClicked" 
-                                                 HeightRequest="30" CommandParameter="{Binding}"  Grid.Column="3"/>
-                            <ImageButton Source="sync_cloud_icon.png" Clicked="Sync_list_upClicked" 
-                                                 HeightRequest="30" CommandParameter="{Binding}"  Grid.Column="4" />-->
-
-
-                            <!--<ImageButton Source="sync_disabled_icon.png" IsVisible="{Binding IsSynchronized}" Clicked="OnIsSynchronizedClicked" CommandParameter="{Binding}" Grid.Column="3"/>-->
                         </Grid>
                         <Border.GestureRecognizers>
                             <TapGestureRecognizer Tapped="OnItemTapped"/>

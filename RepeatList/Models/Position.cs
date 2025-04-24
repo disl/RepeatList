@@ -28,17 +28,17 @@ namespace RepeatList.Models
         {
             get
             {
-                string image_source = "check_box_outline_blank.png";
-                image_source= IsCompleted ? "check_box_outline.png" : "check_box_outline_blank.png";
+                string image_source;// = "check_box_outline_blank.png";
+                //image_source= IsCompleted ? "check_box_outline.png" : "check_box_outline_blank.png";
 
-                //if (Application.Current.UserAppTheme == AppTheme.Dark)
-                //{
-                //image_source= IsCompleted ? "check_box_check_white.png" : "check_box_blank_white.png";
-                //}
-                //else
-                //{
-                //    image_source= IsCompleted ? "check_box_check.png" : "check_box_blank.png";
-                //}
+                if (Application.Current.UserAppTheme == AppTheme.Dark)
+                {
+                    image_source= IsCompleted ? "check_box_check_white.png" : "check_box_blank_white.png";
+                }
+                else
+                {
+                    image_source= IsCompleted ? "check_box_check.png" : "check_box_blank.png";
+                }
                 return image_source;
             }
         }
