@@ -360,7 +360,9 @@ namespace RepeatList.ViewModels
                 return;
             }
 
-            var _header = Headers.FirstOrDefault(x => x.Id == sync_responce.Header.Id);
+            Header? _header = null;
+            if (Headers != null)
+                _header = Headers.FirstOrDefault(x => x.Id == sync_responce.Header.Id);
             if (_header != null)
             {
                 await EditNameHeader(_header, sync_responce.Header.ListName);
@@ -512,6 +514,7 @@ namespace RepeatList.ViewModels
 
             Headers = new ObservableCollection<Header>(headers);
 
+
             FilteredList = new ObservableCollection<Header>(Headers);
         }
 
@@ -589,8 +592,9 @@ namespace RepeatList.ViewModels
 
             IsBusy = true;
 
-            if (Replace_old_word_when_inserting)
+            if (Replace_old_word_when_inserting && position != null && position.Title != null)
                 await DeleteIfAvailable(position.Title);
+
 
             await _databaseService.AddPositionAsync(position, generate_new_guid);  // newPosition);
             await LoadLists();
@@ -604,8 +608,13 @@ namespace RepeatList.ViewModels
 
         private async Task DeleteIfAvailable(string positionEntryText)
         {
+            if (Lists == null || Lists.Count == 0)
+                return;
+
             var first_word = GetFirstWordFromString(positionEntryText);
-            var pos = Lists.FirstOrDefault(x => x.Title.ToLower().Contains(first_word.ToLower()));
+            if (first_word == null) return;
+
+            var pos = Lists.FirstOrDefault(x => x.Title != null && x.Title.Contains(first_word, StringComparison.OrdinalIgnoreCase));
             if (pos != null)
             {
                 if (!pos.IsCompleted)  // ??????????
@@ -691,7 +700,8 @@ namespace RepeatList.ViewModels
                 await LoadHeaders();
 
                 var selectedItem = await _databaseService.GetHeaderAsync(new_header_id);
-                Header_SelectedItem = selectedItem;
+                if (selectedItem != null)
+                    Header_SelectedItem = selectedItem;
 
                 return new_header_id;
             }

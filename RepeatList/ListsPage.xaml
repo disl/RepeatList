@@ -49,7 +49,8 @@
         </Grid>
 
         <CollectionView x:Name="HeaderListView"  
-                        ItemsSource="{Binding FilteredList}" Grid.Row="2"                                
+                        ItemsSource="{Binding FilteredList}" 
+                        Grid.Row="2"                                
                         SelectionMode="Single" 
                         SelectedItem="{Binding Header_SelectedItem}" 
                         ItemSizingStrategy="MeasureAllItems"
