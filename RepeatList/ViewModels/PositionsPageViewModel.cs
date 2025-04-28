@@ -23,6 +23,118 @@ namespace RepeatList.ViewModels
         public string SelectedItem_KindOfSorting_key_name = "SelectedItem_KindOfSorting";
         public double ButtonsSize = 25;
 
+
+        [ObservableProperty] public bool sortImages_visible = true;
+
+        [ObservableProperty] public double imageButton_resetPositions_SizeRequest = 35;
+        [ObservableProperty] public double image_sort_SizeRequest = 20;
+
+
+        [ObservableProperty] public double gridheight_undone = -1;
+        [ObservableProperty] public double gridheight_done = -1;
+
+        [ObservableProperty]
+        public RowDefinitionCollection rowDefinitions = new RowDefinitionCollection
+        {
+                new RowDefinition(10),
+                new RowDefinition(GridLength.Auto),
+                new RowDefinition(GridLength.Star),
+                new RowDefinition(GridLength.Auto),
+                new RowDefinition(GridLength.Star),
+                new RowDefinition(GridLength.Auto)
+            };
+        [ObservableProperty] public bool isvisible_undone = true;
+        [ObservableProperty] public bool isvisible_done = true;
+
+        [ObservableProperty] public bool? collapse_undone = null;
+        partial void OnCollapse_undoneChanged(bool? oldValue, bool? newValue)
+        {
+            SetCollapseUndone(newValue);
+        }
+
+        private void SetCollapseUndone(bool? newValue)
+        {
+            if (newValue == null)
+            {
+                Collapse_undone_icon = Application.Current.UserAppTheme == AppTheme.Dark ? "expand_icon_white.png" : "expand_icon_black.png";
+                Collapse_done_icon = Application.Current.UserAppTheme == AppTheme.Dark ? "expand_icon_white.png" : "expand_icon_black.png";
+
+                RowDefinitions = new RowDefinitionCollection
+                {
+                    new RowDefinition(10),
+                    new RowDefinition(GridLength.Auto),
+                    new RowDefinition(GridLength.Star),
+                    new RowDefinition(GridLength.Auto),
+                    new RowDefinition(GridLength.Star),
+                    new RowDefinition(GridLength.Auto)
+                };
+                Gridheight_undone =-1;
+                Gridheight_done =-1;
+
+                SortImages_visible=true;
+                ImageButton_resetPositions_SizeRequest = 35;
+                Image_sort_SizeRequest=20;
+                Isvisible_undone = true;
+                Isvisible_done=true;
+            }
+            else
+            {
+                if (newValue == true)
+                {
+                    Collapse_undone_icon = Application.Current.UserAppTheme == AppTheme.Dark ? "expand_icon_white.png" : "expand_icon_black.png";
+                    Collapse_done_icon = Application.Current.UserAppTheme == AppTheme.Dark ? "collapse_icon_white.png" : "collapse_icon_black.png";
+
+                    RowDefinitions = new RowDefinitionCollection
+                    {
+                        new RowDefinition(10),
+                        new RowDefinition(GridLength.Auto),
+                        new RowDefinition(0), //new RowDefinition(GridLength.Star),
+                        new RowDefinition(GridLength.Auto),
+                        new RowDefinition(GridLength.Star),
+                        new RowDefinition(GridLength.Auto)
+                    };
+
+                    Gridheight_undone =0;
+                    
+                    Gridheight_done =-1;
+                    SortImages_visible=true;
+                    ImageButton_resetPositions_SizeRequest = 35;
+                    Image_sort_SizeRequest=20;
+
+                    Isvisible_undone = false;
+                    Isvisible_done=true;
+                }
+                else
+                {
+                    Collapse_undone_icon = Application.Current.UserAppTheme == AppTheme.Dark ? "collapse_icon_white.png" : "collapse_icon_black.png";
+                    Collapse_done_icon = Application.Current.UserAppTheme == AppTheme.Dark ? "expand_icon_white.png" : "expand_icon_black.png";
+
+                    RowDefinitions = new RowDefinitionCollection
+                    {
+                        new RowDefinition(10),
+                        new RowDefinition(GridLength.Auto),
+                        new RowDefinition(GridLength.Star),
+                        new RowDefinition(0),  //new RowDefinition(GridLength.Auto),
+                        new RowDefinition(0),  //new RowDefinition(GridLength.Star),
+                        new RowDefinition(GridLength.Auto)
+                    };
+                    Gridheight_undone =-1;
+
+                    Gridheight_done =0;
+                    SortImages_visible=false;
+                    ImageButton_resetPositions_SizeRequest = 0;
+                    Image_sort_SizeRequest=0;
+
+                    Isvisible_undone = true;
+                    Isvisible_done=false;
+                }
+            }
+        }
+
+        [ObservableProperty] public string collapse_undone_icon;
+        [ObservableProperty] public string collapse_done_icon;
+
+
         [ObservableProperty] public string menu_icon;
         [ObservableProperty] public bool duplicate_entries_add;
         partial void OnDuplicate_entries_addChanged(bool oldValue, bool newValue)
@@ -90,6 +202,8 @@ namespace RepeatList.ViewModels
 
             //SetFirstItemForHeaders();
             InitSelectedItem_KindOfSorting();
+
+            SetCollapseUndone(null);
         }
 
         public void InitLabels()
@@ -238,6 +352,18 @@ namespace RepeatList.ViewModels
 
 
         #region COMMANDS       
+
+        [RelayCommand]
+        public void Undone_ImageButtonClicked()
+        {
+            Collapse_undone = Collapse_undone == null ? false : null;
+        }
+
+        [RelayCommand]
+        public void Done_ImageButtonClicked()
+        {
+            Collapse_undone = Collapse_undone == null ? true : null;
+        }
 
         [RelayCommand]
         public async Task Export_list_textClicked()

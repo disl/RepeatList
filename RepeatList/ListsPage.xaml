@@ -15,7 +15,7 @@
     </ContentPage.BindingContext>
     <ContentPage.ToolbarItems>
         <ToolbarItem  IconImageSource="add_icon_white.png" Clicked="OnAddHeaderClicked" />
-        <ToolbarItem  IconImageSource="kofi_symbol.png" Clicked="CoffeeButtonClicked" />
+        <!--<ToolbarItem  IconImageSource="kofi_symbol.png" Clicked="CoffeeButtonClicked" />-->
         <!--<ToolbarItem  StyleId="Item1" Order="Secondary"  IconImageSource="share_icon.png"  Text="{Binding Label_Export_list}" Command="{Binding Export_list_ClickedCommand}" />-->
         <!--<ToolbarItem  StyleId="Item2" Order="Secondary" Text="{Binding Label_Reset_current_list}" Command="{Binding Reset_current_list_ClickedCommand}" />-->
     </ContentPage.ToolbarItems>

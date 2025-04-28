@@ -26,7 +26,26 @@ namespace RepeatList
             BindingContext = ViewModel;
             SetupPageViewModel = new SetupPageViewModel();
 
-           
+            // RowDefinitions="10,auto,*,auto,*,auto"
+            // Done and Undone are visible
+            //MainGrid.RowDefinitions = new RowDefinitionCollection {
+            //    new RowDefinition(10),
+            //    new RowDefinition(GridLength.Auto),
+            //    new RowDefinition(GridLength.Star),
+            //    new RowDefinition(GridLength.Auto),
+            //    new RowDefinition(GridLength.Star),
+            //    new RowDefinition(GridLength.Auto)
+            //};
+
+            // Only Done is visible
+            //MainGrid.RowDefinitions = new RowDefinitionCollection {
+            //    new RowDefinition(10),
+            //    new RowDefinition(GridLength.Auto),
+            //    new RowDefinition(GridLength.Star),
+            //    new RowDefinition(0), //new RowDefinition(GridLength.Auto),
+            //    new RowDefinition(0), //new RowDefinition(GridLength.Star),
+            //    new RowDefinition(GridLength.Auto)
+            //};
         }
 
         protected async override void OnAppearing()
@@ -421,7 +440,7 @@ namespace RepeatList
 
             ViewModel.InputText = string.Empty;
 
-            await Application.Current.MainPage.DisplaySnackbar(Properties.Resources.Operation_successfully_completed,                
+            await Application.Current.MainPage.DisplaySnackbar(Properties.Resources.Operation_successfully_completed,
                 visualOptions: new SnackbarOptions
                 {
                     BackgroundColor = Color.FromArgb(Constantes.Color_Success_string),
