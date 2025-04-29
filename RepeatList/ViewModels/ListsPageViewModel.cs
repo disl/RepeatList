@@ -588,7 +588,8 @@ namespace RepeatList.ViewModels
 
         public async Task AddPosition(Position position, bool generate_new_guid, bool Replace_old_word_when_inserting)
         {
-            if (Header_SelectedItem == null || position == null) return;
+            if (Header_SelectedItem == null || position == null) 
+                return;
 
             IsBusy = true;
 

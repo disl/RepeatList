@@ -12,17 +12,23 @@ namespace RepeatList.ViewModels
         #region PROPERTIES
 
         private DatabaseService _databaseService;
-        public event PropertyChangedEventHandler PropertyChanged;
+        //public event PropertyChangedEventHandler PropertyChanged;
 
         [ObservableProperty] public bool isChecked_Dark;
         partial void OnIsChecked_DarkChanged(bool oldValue, bool newValue)
         {
-            SelectedItem.DefaultAppTheme = newValue ? "Dark" : "Light";
+            if (SelectedItem != null)
+            {
+                SelectedItem.DefaultAppTheme = newValue ? "Dark" : "Light";
+            }
         }
         [ObservableProperty] public bool isChecked_Light;
         partial void OnIsChecked_LightChanged(bool oldValue, bool newValue)
         {
-            SelectedItem.DefaultAppTheme = newValue ? "Light" : "Dark";
+            if (SelectedItem != null)
+            {
+                SelectedItem.DefaultAppTheme = newValue ? "Light" : "Dark";
+            }
         }
 
         [ObservableProperty] public ObservableCollection<Setup> list = new ObservableCollection<Setup>();
@@ -32,17 +38,17 @@ namespace RepeatList.ViewModels
         [ObservableProperty] public string title_thema = Properties.Resources.theme;
         [ObservableProperty] public string label_cancel = Properties.Resources.Cancel;
 
-        [ObservableProperty] public ObservableCollection<LanguageItem> languages;
-        [ObservableProperty] public LanguageItem selectedLanguage;
-        partial void OnSelectedLanguageChanged(LanguageItem oldValue, LanguageItem newValue)
+        [ObservableProperty] public ObservableCollection<LanguageItem>? languages;
+        [ObservableProperty] public LanguageItem? selectedLanguage;
+        partial void OnSelectedLanguageChanged(LanguageItem? oldValue, LanguageItem? newValue)
         {
-            SelectedItem.DefaultLanguage = newValue.Code;
+            if (SelectedItem != null && newValue != null)
+            {
+                SelectedItem.DefaultLanguage = newValue.Code;
+            }
         }
 
-
         #endregion
-
-        //public double ButtonsSize = 30;
 
         public SetupPageViewModel()
         {
@@ -88,22 +94,27 @@ namespace RepeatList.ViewModels
                     SelectedItem = List.FirstOrDefault();
 
                     // Thema
-                    if (SelectedItem.DefaultAppTheme == "Dark")                    
-                        Application.Current.UserAppTheme = AppTheme.Dark;
-                    else
-                        Application.Current.UserAppTheme = AppTheme.Light;
+                    if (SelectedItem != null && Application.Current != null)
+                    {
+                        if (SelectedItem.DefaultAppTheme == "Dark")
+                            Application.Current.UserAppTheme = AppTheme.Dark;
+                        else
+                            Application.Current.UserAppTheme = AppTheme.Light;
 
-                    IsChecked_Dark = Application.Current.UserAppTheme == AppTheme.Dark;
-                    IsChecked_Light = Application.Current.UserAppTheme == AppTheme.Light;
+                        IsChecked_Dark = Application.Current.UserAppTheme == AppTheme.Dark;
+                        IsChecked_Light = Application.Current.UserAppTheme == AppTheme.Light;
+                    }
 
-                    // Language
                     CultureInfo ci = new CultureInfo("en");
-                    ci = new CultureInfo(SelectedItem.DefaultLanguage);
-
+                    if (SelectedItem != null)
+                        ci = new CultureInfo(SelectedItem.DefaultLanguage);
                     Thread.CurrentThread.CurrentCulture = ci;
                     Thread.CurrentThread.CurrentUICulture = ci;
 
-                    SelectedLanguage = Languages.FirstOrDefault(x => x.Code.ToLower() == ci.TwoLetterISOLanguageName.ToLower());
+                    if (Languages != null)
+                    {
+                        SelectedLanguage = Languages.FirstOrDefault(x => x.Code != null && x.Code.Equals(ci.TwoLetterISOLanguageName, StringComparison.CurrentCultureIgnoreCase))  ;
+                    }
                 }
             }
         }

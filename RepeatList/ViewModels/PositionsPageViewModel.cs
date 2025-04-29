@@ -16,7 +16,7 @@ namespace RepeatList.ViewModels
         private DatabaseService _databaseService;
         public SupabaseService _supabaseService;
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        //public event PropertyChangedEventHandler PropertyChanged;
 
         private SetupPageViewModel? setupPageViewModel;
 
@@ -36,7 +36,8 @@ namespace RepeatList.ViewModels
         [ObservableProperty]
         public RowDefinitionCollection rowDefinitions = new RowDefinitionCollection
         {
-                new RowDefinition(10),
+                new RowDefinition(GridLength.Auto),
+                new RowDefinition(GridLength.Auto),
                 new RowDefinition(GridLength.Auto),
                 new RowDefinition(GridLength.Star),
                 new RowDefinition(GridLength.Auto),
@@ -61,7 +62,8 @@ namespace RepeatList.ViewModels
 
                 RowDefinitions = new RowDefinitionCollection
                 {
-                    new RowDefinition(10),
+                    new RowDefinition(GridLength.Auto),
+                    new RowDefinition(GridLength.Auto),
                     new RowDefinition(GridLength.Auto),
                     new RowDefinition(GridLength.Star),
                     new RowDefinition(GridLength.Auto),
@@ -86,7 +88,8 @@ namespace RepeatList.ViewModels
 
                     RowDefinitions = new RowDefinitionCollection
                     {
-                        new RowDefinition(10),
+                        new RowDefinition(GridLength.Auto),
+                        new RowDefinition(GridLength.Auto),
                         new RowDefinition(GridLength.Auto),
                         new RowDefinition(0), //new RowDefinition(GridLength.Star),
                         new RowDefinition(GridLength.Auto),
@@ -111,7 +114,8 @@ namespace RepeatList.ViewModels
 
                     RowDefinitions = new RowDefinitionCollection
                     {
-                        new RowDefinition(10),
+                        new RowDefinition(GridLength.Auto),
+                        new RowDefinition(GridLength.Auto),
                         new RowDefinition(GridLength.Auto),
                         new RowDefinition(GridLength.Star),
                         new RowDefinition(0),  //new RowDefinition(GridLength.Auto),
