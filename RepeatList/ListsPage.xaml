@@ -23,7 +23,7 @@
 
         <!--<ActivityIndicator IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}" Grid.Row="0" />-->
 
-        <controls:ActivityProgressBar IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}" Grid.Row="0" />
+        <!--<controls:ActivityProgressBar IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}" Grid.Row="0" />-->
 
         <!--<StackLayout Orientation="Horizontal" Spacing="10" Margin="0,15,0,10" HorizontalOptions="End" Grid.Row="1">
             <ImageButton Source="add_icon.png" Clicked="OnAddHeaderClicked"   

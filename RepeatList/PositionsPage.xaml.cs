@@ -95,7 +95,7 @@ namespace RepeatList
                 if (ViewModel.Header_SelectedItem.IsSynchronized)
                 {
                     _timer = Dispatcher.CreateTimer();
-                    _timer.Interval = TimeSpan.FromSeconds(30);
+                    _timer.Interval = TimeSpan.FromSeconds(15);
                     _timer.Tick += _timer_Tick;
                     _timer.Start();
                 }

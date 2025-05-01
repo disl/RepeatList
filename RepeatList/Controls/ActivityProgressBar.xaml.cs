@@ -1,5 +1,3 @@
-using System.ComponentModel;
-
 namespace RepeatList.Controls;
 
 public partial class ActivityProgressBar : ContentView

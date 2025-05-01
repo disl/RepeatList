@@ -50,14 +50,14 @@
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net9.0-android|AnyCPU'">
 	  <EmbedAssembliesIntoApk>False</EmbedAssembliesIntoApk>
-	  <ApplicationDisplayVersion>1.0.53</ApplicationDisplayVersion>
-	  <ApplicationVersion>53</ApplicationVersion>
+	  <ApplicationDisplayVersion>1.0.54</ApplicationDisplayVersion>
+	  <ApplicationVersion>54</ApplicationVersion>
 	  <AndroidKeyStore>False</AndroidKeyStore>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net9.0-ios|AnyCPU'">
-	  <ApplicationDisplayVersion>1.0.53</ApplicationDisplayVersion>
-	  <ApplicationVersion>53</ApplicationVersion>
+	  <ApplicationDisplayVersion>1.0.54</ApplicationDisplayVersion>
+	  <ApplicationVersion>54</ApplicationVersion>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net9.0-windows10.0.19041.0|AnyCPU'">
@@ -66,16 +66,16 @@
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net9.0-android|AnyCPU'">
-	  <ApplicationDisplayVersion>1.0.53</ApplicationDisplayVersion>
-	  <ApplicationVersion>53</ApplicationVersion>
+	  <ApplicationDisplayVersion>1.0.54</ApplicationDisplayVersion>
+	  <ApplicationVersion>54</ApplicationVersion>
 	  <AndroidLinkTool>r8</AndroidLinkTool>
 	  <AndroidKeyStore>False</AndroidKeyStore>
 	  <RunAOTCompilation>True</RunAOTCompilation>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net9.0-ios|AnyCPU'">
-	  <ApplicationDisplayVersion>1.0.53</ApplicationDisplayVersion>
-	  <ApplicationVersion>53</ApplicationVersion>
+	  <ApplicationDisplayVersion>1.0.54</ApplicationDisplayVersion>
+	  <ApplicationVersion>54</ApplicationVersion>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net9.0-windows10.0.19041.0|AnyCPU'">
@@ -139,6 +139,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Compile Remove="Controls\ActivityProgressBar.xaml.cs" />
 	  <Compile Remove="InputPromptPage.cs" />
 	  <Compile Remove="InputTextWithMicrophone.xaml.cs" />
 	  <Compile Remove="MainPage_old.xaml.cs" />
@@ -162,6 +163,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <MauiXaml Remove="Controls\ActivityProgressBar.xaml" />
 	  <MauiXaml Remove="MainPage_old.xaml" />
 	</ItemGroup>
 
@@ -217,9 +219,6 @@
 	</ItemGroup>-->
 
 	<ItemGroup>
-		<MauiXaml Update="Controls\ActivityProgressBar.xaml">
-		  <Generator>MSBuild:Compile</Generator>
-		</MauiXaml>
 		<MauiXaml Update="Controls\FlyoutHeader.xaml">
 		  <Generator>MSBuild:Compile</Generator>
 		</MauiXaml>

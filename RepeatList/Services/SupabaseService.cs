@@ -6,11 +6,11 @@ namespace RepeatList.Services
     public class SupabaseService
     {
         private readonly Client _supabase;
-        private readonly DatabaseService _databaseService;
+        //private readonly DatabaseService _databaseService;
 
         public SupabaseService()
         {
-            _databaseService =  new DatabaseService();
+            //_databaseService =  new DatabaseService();
 
             var supabaseKey = AppSettings.Load().Result.ApiKeys.SupabaseKey;
             _supabase = new Client(
