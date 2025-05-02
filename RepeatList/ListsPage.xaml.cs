@@ -2,6 +2,7 @@
 using CommunityToolkit.Maui.Core;
 using CommunityToolkit.Maui.Views;
 using RepeatList.Models;
+//using RepeatList.Platforms.Android;
 using RepeatList.ViewModels;
 using System.Collections.ObjectModel;
 using System.Globalization;
@@ -61,6 +62,8 @@ namespace RepeatList
                 ResourcesViewModel = new ResourcesViewModel();
 
                 await ForTimer_Tick();
+
+                await CheckForUpdates();
             }
             catch (Exception ex)
             {
@@ -70,6 +73,21 @@ namespace RepeatList
             {
                 ViewModel.IsBusy = false;
             }
+        }
+
+        private async Task CheckForUpdates()
+        {
+#if ANDROID
+            try
+            {
+                var updater = new Platforms.Android.InAppUpdater();
+                await updater.CheckForUpdatesAsync();
+            }
+            catch (Exception ex)
+            {
+                await Shell.Current.DisplayAlert("Update Error", ex.Message, "OK");
+            }
+#endif
         }
 
         private async void _timer_Tick(object? sender, EventArgs e)

@@ -50,14 +50,14 @@
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net9.0-android|AnyCPU'">
 	  <EmbedAssembliesIntoApk>False</EmbedAssembliesIntoApk>
-	  <ApplicationDisplayVersion>1.0.54</ApplicationDisplayVersion>
-	  <ApplicationVersion>54</ApplicationVersion>
+	  <ApplicationDisplayVersion>1.0.56</ApplicationDisplayVersion>
+	  <ApplicationVersion>56</ApplicationVersion>
 	  <AndroidKeyStore>False</AndroidKeyStore>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net9.0-ios|AnyCPU'">
-	  <ApplicationDisplayVersion>1.0.54</ApplicationDisplayVersion>
-	  <ApplicationVersion>54</ApplicationVersion>
+	  <ApplicationDisplayVersion>1.0.56</ApplicationDisplayVersion>
+	  <ApplicationVersion>56</ApplicationVersion>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net9.0-windows10.0.19041.0|AnyCPU'">
@@ -66,16 +66,16 @@
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net9.0-android|AnyCPU'">
-	  <ApplicationDisplayVersion>1.0.54</ApplicationDisplayVersion>
-	  <ApplicationVersion>54</ApplicationVersion>
+	  <ApplicationDisplayVersion>1.0.56</ApplicationDisplayVersion>
+	  <ApplicationVersion>56</ApplicationVersion>
 	  <AndroidLinkTool>r8</AndroidLinkTool>
 	  <AndroidKeyStore>False</AndroidKeyStore>
 	  <RunAOTCompilation>True</RunAOTCompilation>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net9.0-ios|AnyCPU'">
-	  <ApplicationDisplayVersion>1.0.54</ApplicationDisplayVersion>
-	  <ApplicationVersion>54</ApplicationVersion>
+	  <ApplicationDisplayVersion>1.0.56</ApplicationDisplayVersion>
+	  <ApplicationVersion>56</ApplicationVersion>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net9.0-windows10.0.19041.0|AnyCPU'">
@@ -317,6 +317,9 @@
 	</ItemGroup>
 
 	<ItemGroup Condition="'$(TargetFramework)' == 'net9.0-android'">
+	  <PackageReference Include="Xamarin.Google.Android.Play.Core">
+	    <Version>1.10.3.17</Version>
+	  </PackageReference>
 	  <PackageReference Include="Xamarin.GooglePlayServices.Ads.Lite">
 	    <Version>124.0.0</Version>
 	  </PackageReference>
