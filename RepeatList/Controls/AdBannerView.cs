@@ -5,8 +5,6 @@ public class AdBannerView : View
     // Test Ad Unit
     public string AdUnitId { get; set; } = "ca-app-pub-3940256099942544/6300978111"; // Test Ad Unit
 
-    //public string AdUnitId { get; set; } = "ca-app-pub-9459821903521146/1522469225";  //"ca-app-pub-9459821903521146/5965979832";
-
-    // TProduktions
+    // Produktion
     //public string AdUnitId { get; set; } = "ca-app-pub-9459821903521146/5965979832";
 }

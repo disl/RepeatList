@@ -2,7 +2,6 @@
 using CommunityToolkit.Maui.Core;
 using CommunityToolkit.Maui.Views;
 using RepeatList.Models;
-//using RepeatList.Platforms.Android;
 using RepeatList.ViewModels;
 using System.Collections.ObjectModel;
 using System.Globalization;
@@ -14,6 +13,7 @@ namespace RepeatList
     public partial class ListsPage : ContentPage
     {
         int m_max_count_of_sync_lists = 2;
+        static bool m_need_for_update = true;
 
         private SetupPageViewModel SetupPageViewModel { get; set; }
         private ListsPageViewModel ViewModel { get; set; }
@@ -63,7 +63,11 @@ namespace RepeatList
 
                 await ForTimer_Tick();
 
-                await CheckForUpdates();
+                if (m_need_for_update)
+                {
+                    await CheckForUpdates();
+                    m_need_for_update = false;
+                }
             }
             catch (Exception ex)
             {

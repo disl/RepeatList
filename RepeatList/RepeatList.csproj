@@ -50,14 +50,14 @@
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net9.0-android|AnyCPU'">
 	  <EmbedAssembliesIntoApk>False</EmbedAssembliesIntoApk>
-	  <ApplicationDisplayVersion>1.0.56</ApplicationDisplayVersion>
-	  <ApplicationVersion>56</ApplicationVersion>
+	  <ApplicationDisplayVersion>1.0.61</ApplicationDisplayVersion>
+	  <ApplicationVersion>61</ApplicationVersion>
 	  <AndroidKeyStore>False</AndroidKeyStore>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net9.0-ios|AnyCPU'">
-	  <ApplicationDisplayVersion>1.0.56</ApplicationDisplayVersion>
-	  <ApplicationVersion>56</ApplicationVersion>
+	  <ApplicationDisplayVersion>1.0.61</ApplicationDisplayVersion>
+	  <ApplicationVersion>61</ApplicationVersion>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net9.0-windows10.0.19041.0|AnyCPU'">
@@ -66,16 +66,16 @@
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net9.0-android|AnyCPU'">
-	  <ApplicationDisplayVersion>1.0.56</ApplicationDisplayVersion>
-	  <ApplicationVersion>56</ApplicationVersion>
+	  <ApplicationDisplayVersion>1.0.61</ApplicationDisplayVersion>
+	  <ApplicationVersion>61</ApplicationVersion>
 	  <AndroidLinkTool>r8</AndroidLinkTool>
 	  <AndroidKeyStore>False</AndroidKeyStore>
 	  <RunAOTCompilation>True</RunAOTCompilation>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net9.0-ios|AnyCPU'">
-	  <ApplicationDisplayVersion>1.0.56</ApplicationDisplayVersion>
-	  <ApplicationVersion>56</ApplicationVersion>
+	  <ApplicationDisplayVersion>1.0.61</ApplicationDisplayVersion>
+	  <ApplicationVersion>61</ApplicationVersion>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net9.0-windows10.0.19041.0|AnyCPU'">
@@ -144,6 +144,7 @@
 	  <Compile Remove="InputTextWithMicrophone.xaml.cs" />
 	  <Compile Remove="MainPage_old.xaml.cs" />
 	  <Compile Remove="Platforms\Android\AdViewRenderer.cs" />
+	  <Compile Remove="Platforms\Android\InAppUpdateManager.cs" />
 	  <Compile Remove="Program.cs" />
 	  <Compile Remove="Properties\Resources.es.Designer.cs" />
 	  <Compile Remove="Properties\Resources.fr.Designer.cs" />
