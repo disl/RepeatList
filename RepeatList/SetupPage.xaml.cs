@@ -69,7 +69,8 @@ public partial class SetupPage : ContentPage
         }
         catch(Exception ex)
         {
-
+            if (ex != null)
+                SentrySdk.CaptureException(ex);
         }
     }
 

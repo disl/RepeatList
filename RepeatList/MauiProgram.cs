@@ -1,6 +1,5 @@
 ﻿using CommunityToolkit.Maui;
 using Microsoft.Extensions.Logging;
-//using Plugin.AdMob;
 using RepeatList.Models;
 using RepeatList.ViewModels;
 using SQLitePCL;
@@ -19,6 +18,22 @@ namespace RepeatList
             var builder = MauiApp.CreateBuilder();
             builder
                 .UseMauiApp<App>()
+
+    // Add this section anywhere on the builder:
+    .UseSentry(options => {
+        // The DSN is the only required setting.
+        options.Dsn = "https://b253a0732b2859186cc53692b1a9e625@o4509272206475264.ingest.de.sentry.io/4509272207982672";
+
+        // Use debug mode if you want to see what the SDK is doing.
+        // Debug messages are written to stdout with Console.Writeline,
+        // and are viewable in your IDE's debug console or with 'adb logcat', etc.
+        // This option is not recommended when deploying your application.
+        options.Debug = true;
+
+        // Other Sentry options can be set here.
+    })
+
+
                 .ConfigureMauiHandlers(handlers =>
                 {
 
@@ -28,7 +43,11 @@ namespace RepeatList
 
                 })
                 .UseMauiCommunityToolkit()
-            //.UseMauiMTAdmob()
+        
+
+
+
+
             .ConfigureFonts(fonts =>
             {
                 fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");

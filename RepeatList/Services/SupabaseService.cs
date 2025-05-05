@@ -94,6 +94,9 @@ namespace RepeatList.Services
             }
             catch (Exception ex)
             {
+                if (ex != null)
+                    SentrySdk.CaptureException(ex);
+
                 return (null, null);
             }
         }

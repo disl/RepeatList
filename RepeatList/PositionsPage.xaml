@@ -15,7 +15,7 @@
     </ContentPage.BindingContext>
     <ContentPage.ToolbarItems>
         <ToolbarItem  IconImageSource="help_icon.png" Clicked="OnHelpButton_Clicked" />
-        <ToolbarItem  IconImageSource="{Binding Menu_icon}" Clicked="OpenMenu" />
+        <ToolbarItem  IconImageSource="{Binding Menu_icon, FallbackValue = 'menu.png'}" Clicked="OpenMenu" />
     </ContentPage.ToolbarItems>
     <Grid x:Name="MainGrid" RowDefinitions="{Binding RowDefinitions}"  Margin="15,0,15,15">
 
@@ -30,7 +30,7 @@
         </Border>-->
 
         <!-- TITLE -->
-        <Label Grid.Row="0" Text="{Binding Title}" FontSize="24" HorizontalOptions="Center" 
+        <Label Grid.Row="0" Text="{Binding Title, FallbackValue = ''}" FontSize="24" HorizontalOptions="Center" 
                TextColor="{AppThemeBinding Light={DynamicResource PrimaryTextColor}, Dark={DynamicResource PrimaryTextColorLight}}"
 />
 
@@ -41,7 +41,7 @@
                    TextColor="{AppThemeBinding Light={DynamicResource PrimaryTextColor}, Dark={DynamicResource PrimaryTextColorLight}}"
                    PlaceholderColor="{AppThemeBinding Light=Gray, Dark=LightGray}"                   
                    TextChanged="OnSearchTextChanged" ClearButtonVisibility="WhileEditing" />
-            <ImageButton Source="{Binding Collapse_undone_icon}" 
+            <ImageButton Source="{Binding Collapse_undone_icon, FallbackValue = ''}" 
                          Command="{Binding Undone_ImageButtonClickedCommand}" 
                          WidthRequest="30"
                          Margin="20,0,0,0"
@@ -61,8 +61,10 @@
                 <RoundRectangle CornerRadius="5" />
             </Border.StrokeShape>
             <CollectionView x:Name="PositionListView"  
-                                    ItemsSource="{Binding Positions_undone_filterd, FallbackValue = 'Binding Failed! PositionListView (ItemsSource)'}" 
-                                    SelectedItem="{Binding Position_selectedItem, Mode=OneWayToSource, FallbackValue = 'Binding Failed! PositionListView (SelectedItem)'}"                                      
+                            
+                                    ItemsSource="{Binding Positions_undone_filterd}" 
+                            
+                                    SelectedItem="{Binding Position_selectedItem, Mode=OneWayToSource}"                                      
                                     SelectionMode="Single" 
                                     
                                     SelectionChanged="OnPositionSelected_new" >
@@ -70,11 +72,11 @@
                     <DataTemplate>
                         <Grid  ColumnDefinitions="5*, 1*,1*,1*" VerticalOptions="Center" HeightRequest="45">
                             <ScrollView Orientation="Horizontal"  Grid.Column="0" VerticalOptions="Center" >
-                                <Label Text="{Binding Title, FallbackValue = 'Binding Failed! PositionListView (Title)'}"     
+                                <Label Text="{Binding Title, FallbackValue = '?'}"     
                                        VerticalTextAlignment="Center"
                                        TextColor="{AppThemeBinding Light={DynamicResource PrimaryTextColor}, Dark={DynamicResource PrimaryTextColorLight}}"/>
                             </ScrollView>
-                            <ImageButton Source="{Binding PositionImageSource, FallbackValue = 'Binding Failed! PositionListView (PositionImageSource)'}" 
+                            <ImageButton Source="{Binding PositionImageSource, FallbackValue = 'check_box_blank.png'}" 
                                          Clicked="OnCheckedButtonClicked" CommandParameter="{Binding}" 
                                          HeightRequest="30" Grid.Column="1"/>
                             <ImageButton Source="{AppThemeBinding Light=edit_icon_black.png, Dark=edit_icon_white.png}" 
@@ -102,15 +104,15 @@
         <!-- SORTING -->
         <Grid ColumnDefinitions="auto,*,auto,auto,auto" Margin="0,7,0,7" 
               Grid.Row="3" 
-              IsVisible="{Binding Isvisible_done}" 
-              HeightRequest="{Binding Gridheight_done}" >
+              IsVisible="{Binding Isvisible_done, FallbackValue = true}" 
+              HeightRequest="{Binding Gridheight_done, FallbackValue = -1}" >
 
             <Label Text="{Binding Label_done}" Grid.Column="0"  FontAttributes="Bold"   FontSize="Large" VerticalOptions="Center"
                         TextColor="{AppThemeBinding Light={DynamicResource PrimaryTextColor}, Dark={DynamicResource PrimaryTextColorLight}}" />
 
             <ImageButton   Clicked="OnResetPositionsClicked" Grid.Column="1" VerticalOptions="Center" 
-                           HeightRequest="{Binding ImageButton_resetPositions_SizeRequest}"   
-                           IsVisible="{Binding SortImages_visible}"
+                           HeightRequest="{Binding ImageButton_resetPositions_SizeRequest, FallbackValue = 35}"   
+                           IsVisible="{Binding SortImages_visible, FallbackValue = true}"
                            >
                 <ImageButton.Source>
                     <AppThemeBinding Light="swap_vert_icon.png"  Dark="swap_vert_icon_white.png" />

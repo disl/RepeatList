@@ -15,6 +15,8 @@
                 MainThread.BeginInvokeOnMainThread(async () =>
                 {
                     await Application.Current.MainPage.DisplayAlert("Task-Fehler", e.Exception.Message, "OK");
+
+                    SentrySdk.CaptureException(e.Exception);
                 });
             };
 
@@ -22,12 +24,15 @@
             Task.Run(async () => await DatabaseHelper.CopyDatabaseToAppData("todo.db3")).Wait();
 
             //MainPage = new MainPage();
-           // MainPage = new NavigationPage(new ListsPage());
+            // MainPage = new NavigationPage(new ListsPage());
         }
 
         private void HandleUnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
             Exception ex = e.ExceptionObject as Exception;
+
+            if (ex != null)
+                SentrySdk.CaptureException(ex);
 
             // Zurück zum MainThread wechseln
             MainThread.BeginInvokeOnMainThread(async () =>
@@ -43,6 +48,6 @@
             return new Window(new AppShell());
         }
 
-       
+
     }
 }

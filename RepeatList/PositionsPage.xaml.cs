@@ -102,6 +102,7 @@ namespace RepeatList
             }
             catch (Exception ex)
             {
+                SentrySdk.CaptureException(ex);
                 throw;
             }
             finally { ViewModel.IsBusy = false; }
@@ -166,78 +167,89 @@ namespace RepeatList
         {
             Header? json = null;
 
-            ViewModel.IsBusy = true;
-
-            if (string.IsNullOrEmpty(_input) || ViewModel.Headers == null)
-            {
-                ViewModel.IsBusy = false;
-                return;
-            }
-
             try
             {
-                json = JsonConvert.DeserializeObject<Header>(_input);
-            }
-            catch { json = null; }
+                ViewModel.IsBusy = true;
 
-            if (json != null)
-            {
-                if (ViewModel.Headers != null)
-                {
-                    var header = ViewModel.Headers.FirstOrDefault(x => x.Id == json.Id);
-                    if (header != null)
-                    {
-                        ViewModel.Header_SelectedItem = header;
-
-                        // Existing Header
-                        header.UpdatedAt = DateTime.Now.ToUniversalTime();
-                        // Add to existing positions
-                        foreach (var pos in json.Positions)
-                        {
-                            pos.Title = pos.Title.Trim() + " (+)";
-                            await ViewModel.AddPosition(pos, false);
-                        }
-                    }
-                    else
-                    {
-                        // Add new header
-                        json.UpdatedAt = DateTime.Now.ToUniversalTime();
-                        var new_header = await ViewModel.AddHeader(json.ListName, json.Id);
-
-                        ViewModel.Header_SelectedItem = new_header;
-
-                        // Add new positions
-                        foreach (var pos in json.Positions)
-                        {
-                            pos.HeaderId = new_header.Id;
-                            pos.Title = pos.Title.Trim() + " (+)";
-                            await ViewModel.AddPosition(pos, false);
-                        }
-                    }
-                }
-            }
-            else
-            {
-                if (ViewModel.Header_SelectedItem == null)
+                if (string.IsNullOrEmpty(_input) || ViewModel.Headers == null)
                 {
                     ViewModel.IsBusy = false;
                     return;
                 }
 
-                if (_input.Contains(";"))  // && !ViewModel.Replace_old_word_when_inserting)
+                try
                 {
-                    var items_list = _input.Split(";").ToList();
-                    if (items_list.Count > 0)
-                    {
-                        foreach (var item in items_list)
-                        {
-                            if (string.IsNullOrEmpty(item))
-                                continue;
+                    json = JsonConvert.DeserializeObject<Header>(_input);
+                }
+                catch { json = null; }
 
+                if (json != null)
+                {
+                    if (ViewModel.Headers != null)
+                    {
+                        var header = ViewModel.Headers.FirstOrDefault(x => x.Id == json.Id);
+                        if (header != null)
+                        {
+                            ViewModel.Header_SelectedItem = header;
+
+                            // Existing Header
+                            header.UpdatedAt = DateTime.Now.ToUniversalTime();
+                            // Add to existing positions
+                            foreach (var pos in json.Positions)
+                            {
+                                pos.Title = pos.Title.Trim() + " (+)";
+                                await ViewModel.AddPosition(pos, false);
+                            }
+                        }
+                        else
+                        {
+                            // Add new header
+                            json.UpdatedAt = DateTime.Now.ToUniversalTime();
+                            var new_header = await ViewModel.AddHeader(json.ListName, json.Id);
+
+                            ViewModel.Header_SelectedItem = new_header;
+
+                            // Add new positions
+                            foreach (var pos in json.Positions)
+                            {
+                                pos.HeaderId = new_header.Id;
+                                pos.Title = pos.Title.Trim() + " (+)";
+                                await ViewModel.AddPosition(pos, false);
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    if (ViewModel.Header_SelectedItem == null)
+                    {
+                        ViewModel.IsBusy = false;
+                        return;
+                    }
+
+                    if (_input.Contains(";"))  // && !ViewModel.Replace_old_word_when_inserting)
+                    {
+                        var items_list = _input.Split(";").ToList();
+                        if (items_list.Count > 0)
+                        {
+                            foreach (var item in items_list)
+                            {
+                                if (string.IsNullOrEmpty(item))
+                                    continue;
+
+                                var new_pos = new Position();
+                                new_pos.HeaderId = ViewModel.Header_SelectedItem.Id;
+                                new_pos.UpdatedAt = DateTime.Now.ToUniversalTime();
+                                new_pos.Title = item.Trim();
+                                await ViewModel.AddPosition(new_pos, true);
+                            }
+                        }
+                        else
+                        {
                             var new_pos = new Position();
                             new_pos.HeaderId = ViewModel.Header_SelectedItem.Id;
+                            new_pos.Title = _input;
                             new_pos.UpdatedAt = DateTime.Now.ToUniversalTime();
-                            new_pos.Title = item.Trim();
                             await ViewModel.AddPosition(new_pos, true);
                         }
                     }
@@ -250,16 +262,12 @@ namespace RepeatList
                         await ViewModel.AddPosition(new_pos, true);
                     }
                 }
-                else
-                {
-                    var new_pos = new Position();
-                    new_pos.HeaderId = ViewModel.Header_SelectedItem.Id;
-                    new_pos.Title = _input;
-                    new_pos.UpdatedAt = DateTime.Now.ToUniversalTime();
-                    await ViewModel.AddPosition(new_pos, true);
-                }
             }
-
+            catch (Exception ex)
+            {
+                SentrySdk.CaptureException(ex);
+                throw;
+            }
 
         }
 
@@ -267,15 +275,23 @@ namespace RepeatList
         {
             if (ViewModel.IsBusy) return;
 
-            ViewModel.IsBusy = true;
-
-            var button = sender as ImageButton;
-            if (button?.CommandParameter is Position pos)
+            try
             {
-                await ViewModel.DeletePosition(pos);
-            }
+                ViewModel.IsBusy = true;
 
-            ViewModel.IsBusy = false;
+                var button = sender as ImageButton;
+                if (button?.CommandParameter is Position pos)
+                {
+                    await ViewModel.DeletePosition(pos);
+                }
+
+                ViewModel.IsBusy = false;
+            }
+            catch (Exception ex)
+            {
+                SentrySdk.CaptureException(ex);
+                throw;
+            }
         }
 
         private async void OnEditPositionClicked(object sender, EventArgs e)
@@ -319,24 +335,32 @@ namespace RepeatList
         {
             if (ViewModel.IsBusy) return;
 
-            if (ViewModel.HeaderSelected)
+            try
             {
-                ViewModel.HeaderSelected = false;
-                return;
+                if (ViewModel.HeaderSelected)
+                {
+                    ViewModel.HeaderSelected = false;
+                    return;
+                }
+
+                if (sender is Microsoft.Maui.Controls.CheckBox switchControl &&
+                    e != null &&
+                    switchControl.BindingContext != null &&
+                    switchControl.BindingContext is Position position)
+                {
+                    ViewModel.IsBusy = true;
+
+                    position.IsCompleted = e.Value;
+                    //position.UpdatedAt = DateTime.Now.ToUniversalTime();
+                    await ViewModel.UpdatePosition(position);
+
+                    ViewModel.IsBusy = false;
+                }
             }
-
-            if (sender is Microsoft.Maui.Controls.CheckBox switchControl &&
-                e != null &&
-                switchControl.BindingContext != null &&
-                switchControl.BindingContext is Position position)
+            catch (Exception ex)
             {
-                ViewModel.IsBusy = true;
-
-                position.IsCompleted = e.Value;
-                //position.UpdatedAt = DateTime.Now.ToUniversalTime();
-                await ViewModel.UpdatePosition(position);
-
-                ViewModel.IsBusy = false;
+                SentrySdk.CaptureException(ex);
+                throw;
             }
         }
 
@@ -351,20 +375,28 @@ namespace RepeatList
 
             //ViewModel.IsBusy=true;
 
-            searchBar.Text = "";
-
-            if (sender is Microsoft.Maui.Controls.ImageButton switchControl &&
-                e != null &&
-                switchControl.BindingContext != null &&
-                switchControl.BindingContext is Position position)
+            try
             {
-                ViewModel.IsBusy = true;
+                searchBar.Text = "";
 
-                position.IsCompleted = !position.IsCompleted;  // e.Value;
-                                                               // position.UpdatedAt = DateTime.Now.ToUniversalTime();
-                await ViewModel.UpdatePosition(position);
+                if (sender is Microsoft.Maui.Controls.ImageButton switchControl &&
+                    e != null &&
+                    switchControl.BindingContext != null &&
+                    switchControl.BindingContext is Position position)
+                {
+                    ViewModel.IsBusy = true;
 
-                ViewModel.IsBusy = false;
+                    position.IsCompleted = !position.IsCompleted;  // e.Value;
+                                                                   // position.UpdatedAt = DateTime.Now.ToUniversalTime();
+                    await ViewModel.UpdatePosition(position);
+
+                    ViewModel.IsBusy = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                SentrySdk.CaptureException(ex);
+                throw;
             }
         }
 
@@ -382,48 +414,72 @@ namespace RepeatList
 
         private async void OnIsSynchronizedClicked(object sender, EventArgs e)
         {
-            var button = sender as ImageButton;
-            if (button?.CommandParameter is Header header)
+            try
             {
-                bool answer = await DisplayAlert(Properties.Resources.Do_you_really_want_to_end_the_synchronising_of_this_list,
-                Properties.Resources.Are_you_sure, Properties.Resources.yes, Properties.Resources.no);
-                if (answer)
+                var button = sender as ImageButton;
+                if (button?.CommandParameter is Header header)
                 {
-                    await ViewModel.EditIsSynchronizedHeader(header, false);
+                    bool answer = await DisplayAlert(Properties.Resources.Do_you_really_want_to_end_the_synchronising_of_this_list,
+                    Properties.Resources.Are_you_sure, Properties.Resources.yes, Properties.Resources.no);
+                    if (answer)
+                    {
+                        await ViewModel.EditIsSynchronizedHeader(header, false);
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                SentrySdk.CaptureException(ex);
+                throw;
             }
         }
 
         private async void Sync_list_upClicked(object sender, EventArgs e)
         {
-            var button = sender as ImageButton;
-            if (button?.CommandParameter is Header header)
+            try
             {
-                bool answer = await DisplayAlert(Properties.Resources.Would_you_like_to_start_synchronisation_now,
-                Properties.Resources.Are_you_sure, Properties.Resources.yes, Properties.Resources.no);
-                if (answer)
+                var button = sender as ImageButton;
+                if (button?.CommandParameter is Header header)
                 {
-                    ViewModel.Header_SelectedItem = header;
+                    bool answer = await DisplayAlert(Properties.Resources.Would_you_like_to_start_synchronisation_now,
+                    Properties.Resources.Are_you_sure, Properties.Resources.yes, Properties.Resources.no);
+                    if (answer)
+                    {
+                        ViewModel.Header_SelectedItem = header;
 
-                    await ViewModel.Sync_list_upClicked();
+                        await ViewModel.Sync_list_upClicked();
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                SentrySdk.CaptureException(ex);
+                throw;
             }
         }
 
         private async void Sync_list_downClicked(object sender, EventArgs e)
         {
-            var button = sender as ImageButton;
-            if (button?.CommandParameter is Header header)
+            try
             {
-                bool answer = await DisplayAlert(Properties.Resources.Would_you_like_to_start_synchronisation_now,
-                Properties.Resources.Are_you_sure, Properties.Resources.yes, Properties.Resources.no);
-                if (answer)
+                var button = sender as ImageButton;
+                if (button?.CommandParameter is Header header)
                 {
-                    ViewModel.Header_SelectedItem = header;
+                    bool answer = await DisplayAlert(Properties.Resources.Would_you_like_to_start_synchronisation_now,
+                    Properties.Resources.Are_you_sure, Properties.Resources.yes, Properties.Resources.no);
+                    if (answer)
+                    {
+                        ViewModel.Header_SelectedItem = header;
 
-                    await ViewModel.Sync_list_downClicked(header);
+                        await ViewModel.Sync_list_downClicked(header);
 
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                SentrySdk.CaptureException(ex);
+                throw;
             }
         }
 
@@ -464,38 +520,46 @@ namespace RepeatList
 
         private void OnSearchTextChanged(object sender, TextChangedEventArgs e)
         {
-            string searchText = e.NewTextValue?.ToLower() ?? "";
-
-            //ViewModel.FilteredList.Clear();
-            ViewModel.Positions_undone_filterd.Clear();
-            ViewModel.Positions_done_filtered.Clear();
-
-            // Undone
-            if (string.IsNullOrEmpty(searchText))
+            try
             {
-                //ViewModel.Positions_undone_filterd = new ObservableCollection<Position>(ViewModel.Positions_undone);
-                foreach (var item in ViewModel.Positions_undone)
-                    ViewModel.Positions_undone_filterd.Add(item);
-            }
-            else
-            {
-                foreach (var item in ViewModel.Positions_undone.Where(x => x.Title.ToLower().Contains(searchText.ToLower())))
+                string searchText = e.NewTextValue?.ToLower() ?? "";
+
+                //ViewModel.FilteredList.Clear();
+                ViewModel.Positions_undone_filterd.Clear();
+                ViewModel.Positions_done_filtered.Clear();
+
+                // Undone
+                if (string.IsNullOrEmpty(searchText))
                 {
-                    ViewModel.Positions_undone_filterd.Add(item);
+                    //ViewModel.Positions_undone_filterd = new ObservableCollection<Position>(ViewModel.Positions_undone);
+                    foreach (var item in ViewModel.Positions_undone)
+                        ViewModel.Positions_undone_filterd.Add(item);
+                }
+                else
+                {
+                    foreach (var item in ViewModel.Positions_undone.Where(x => x.Title.ToLower().Contains(searchText.ToLower())))
+                    {
+                        ViewModel.Positions_undone_filterd.Add(item);
+                    }
+                }
+
+                // Done
+                if (string.IsNullOrEmpty(searchText))
+                {
+                    ViewModel.Positions_done_filtered = new ObservableCollection<Position>(ViewModel.Positions_done);
+                }
+                else
+                {
+                    foreach (var item in ViewModel.Positions_done.Where(x => x.Title.ToLower().Contains(searchText.ToLower())))
+                    {
+                        ViewModel.Positions_done_filtered.Add(item);
+                    }
                 }
             }
-
-            // Done
-            if (string.IsNullOrEmpty(searchText))
+            catch (Exception ex)
             {
-                ViewModel.Positions_done_filtered = new ObservableCollection<Position>(ViewModel.Positions_done);
-            }
-            else
-            {
-                foreach (var item in ViewModel.Positions_done.Where(x => x.Title.ToLower().Contains(searchText.ToLower())))
-                {
-                    ViewModel.Positions_done_filtered.Add(item);
-                }
+                SentrySdk.CaptureException(ex);
+                throw;
             }
         }
 

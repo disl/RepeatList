@@ -52,9 +52,9 @@
                 <RoundRectangle CornerRadius="5" />
             </Border.StrokeShape>
             <CollectionView x:Name="HeaderListView"  
-                        ItemsSource="{Binding FilteredList, FallbackValue = 'Binding Failed! HeaderListView (ItemsSource)'}"                  
+                        ItemsSource="{Binding FilteredList}"                  
                         SelectionMode="Single" 
-                        SelectedItem="{Binding Header_SelectedItem, FallbackValue = 'Binding Failed! HeaderListView (SelectedItem)'}" 
+                        SelectedItem="{Binding Header_SelectedItem}" 
                         ItemSizingStrategy="MeasureAllItems"
                         SelectionChanged="OnHeaderListViewSelected" 
                        >
@@ -66,10 +66,11 @@
                                 <toolkit:AvatarView Grid.Column="0" HeightRequest="48" Text="{Binding AvatarName}" WidthRequest="48" BackgroundColor="Gray" TextColor="White"  />
                                 <!--StackLayout>-->
                                 <!--<ScrollView Orientation="Horizontal"   VerticalOptions="Center" >-->
-                                <Label Text="{Binding ListName}"  VerticalOptions="Center" FontSize="Medium"   Grid.Column="1" 
+                                <Label Text="{Binding ListName, FallbackValue = '?'}"  VerticalOptions="Center" FontSize="Medium"   Grid.Column="1" 
                                        TextColor="{AppThemeBinding Light={DynamicResource PrimaryTextColor}, Dark={DynamicResource PrimaryTextColorLight}}"/>
                                 <!--</ScrollView>-->
-                                <Image Source="{Binding Sync_arrow_down_icon}" IsVisible="{Binding IsSynchronized}" HeightRequest="30" Grid.Column="2" />
+                                <Image Source="{Binding Sync_arrow_down_icon, FallbackValue = 'sync_arrow_down_icon_red.png'}" 
+                                       IsVisible="{Binding IsSynchronized, FallbackValue = false}" HeightRequest="30" Grid.Column="2" />
 
                                 <!-- Menu-Button -->
                                 <ImageButton Grid.Column="3"   HeightRequest="30" WidthRequest="30" CommandParameter="{Binding .}">
@@ -92,7 +93,7 @@
                         <VerticalStackLayout HorizontalOptions="Center">
                             <Button Clicked="OnAddHeaderClicked" VerticalOptions="Center"
                                 BackgroundColor="{x:Static models:Constantes.Color_Primary}"
-                                Text="{Binding Please_create_a_first_list}"  />
+                                Text="{Binding Please_create_a_first_list, FallbackValue = '?'}"  />
                         </VerticalStackLayout>
                     </ContentView>
                 </CollectionView.EmptyView>
@@ -106,6 +107,6 @@
             </Border.StrokeShape>
             <controls:AdBannerView HeightRequest="50" />
         </Border>-->
-        
+
     </Grid>
 </ContentPage>

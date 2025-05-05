@@ -103,7 +103,7 @@ namespace RepeatList.ViewModels
         //}
         [ObservableProperty] public string sync_arrow_down_icon = "sync_arrow_down_icon_red.png";
         [ObservableProperty] public CultureInfo cultur;
-        [ObservableProperty] public ObservableCollection<Header>? filteredList;
+        [ObservableProperty] public ObservableCollection<Header> filteredList = new();
         [ObservableProperty] public string please_create_a_first_list = Properties.Resources.Please_create_a_first_list;
         [ObservableProperty] public bool isSynchronized = false;
         [ObservableProperty] public string title_sort_by = Properties.Resources.sort_by;
@@ -218,6 +218,9 @@ namespace RepeatList.ViewModels
             }
             catch (Exception ex)
             {
+                if (ex != null)
+                    SentrySdk.CaptureException(ex);
+
                 //await Application.Current.MainPage.DisplaySnackbar(Properties.Resources.String_is_not_a_valid_list_description);
                 //IsBusy = false;
                 //return false;
@@ -513,8 +516,6 @@ namespace RepeatList.ViewModels
                 return;
 
             Headers = new ObservableCollection<Header>(headers);
-
-
             FilteredList = new ObservableCollection<Header>(Headers);
         }
 

@@ -23,8 +23,12 @@ namespace RepeatList.ViewModels
         public string SelectedItem_KindOfSorting_key_name = "SelectedItem_KindOfSorting";
         public double ButtonsSize = 25;
 
-        [ObservableProperty] public string collapse_undone_icon;
-        [ObservableProperty] public string collapse_done_icon;
+        [ObservableProperty]
+        public string collapse_undone_icon =
+            Application.Current != null && Application.Current.UserAppTheme == AppTheme.Dark ? "expand_icon_white.png" : "expand_icon_black.png";
+        [ObservableProperty]
+        public string collapse_done_icon =
+            Application.Current != null && Application.Current.UserAppTheme == AppTheme.Dark ? "expand_icon_white.png" : "expand_icon_black.png";
 
 
         [ObservableProperty] public string menu_icon = "menu.png";
@@ -75,14 +79,14 @@ namespace RepeatList.ViewModels
                     new RowDefinition(GridLength.Star),
                     new RowDefinition(GridLength.Auto)
                 };
-                Gridheight_undone =-1;
-                Gridheight_done =-1;
+                Gridheight_undone = -1;
+                Gridheight_done = -1;
 
-                SortImages_visible=true;
+                SortImages_visible = true;
                 ImageButton_resetPositions_SizeRequest = 35;
-                Image_sort_SizeRequest=20;
+                Image_sort_SizeRequest = 20;
                 Isvisible_undone = true;
-                Isvisible_done=true;
+                Isvisible_done = true;
             }
             else
             {
@@ -102,15 +106,15 @@ namespace RepeatList.ViewModels
                         new RowDefinition(GridLength.Auto)
                     };
 
-                    Gridheight_undone =0;
+                    Gridheight_undone = 0;
 
-                    Gridheight_done =-1;
-                    SortImages_visible=true;
+                    Gridheight_done = -1;
+                    SortImages_visible = true;
                     ImageButton_resetPositions_SizeRequest = 35;
-                    Image_sort_SizeRequest=20;
+                    Image_sort_SizeRequest = 20;
 
                     Isvisible_undone = false;
-                    Isvisible_done=true;
+                    Isvisible_done = true;
                 }
                 else
                 {
@@ -127,20 +131,20 @@ namespace RepeatList.ViewModels
                         new RowDefinition(0),  //new RowDefinition(GridLength.Star),
                         new RowDefinition(GridLength.Auto)
                     };
-                    Gridheight_undone =-1;
+                    Gridheight_undone = -1;
 
-                    Gridheight_done =0;
-                    SortImages_visible=false;
+                    Gridheight_done = 0;
+                    SortImages_visible = false;
                     ImageButton_resetPositions_SizeRequest = 0;
-                    Image_sort_SizeRequest=0;
+                    Image_sort_SizeRequest = 0;
 
                     Isvisible_undone = true;
-                    Isvisible_done=false;
+                    Isvisible_done = false;
                 }
             }
         }
 
-        
+
         partial void OnDuplicate_entries_addChanged(bool oldValue, bool newValue)
         {
             Menu_icon = newValue ? "menu.png" : "menu_alert.png";
@@ -389,7 +393,7 @@ namespace RepeatList.ViewModels
         {
             Guid tmp_guid = Guid.Empty;
 
-            if(Application.Current == null)
+            if (Application.Current == null)
                 return;
 
             string guid_str = await Application.Current.MainPage.DisplayPromptAsync(
@@ -503,7 +507,8 @@ namespace RepeatList.ViewModels
             }
             catch (Exception ex)
             {
-
+                if (ex != null)
+                    SentrySdk.CaptureException(ex);
             }
             finally
             {
@@ -615,8 +620,13 @@ namespace RepeatList.ViewModels
 
             Label_Positions = Properties.Resources.Positions.ToUpper() + " (0)";
 
-            Label_done = string.Format("{0} ({1})", Properties.Resources.done, Positions_done.Count);
-            Label_undone = string.Format("{0} ({1})", Properties.Resources.undone, Positions_undone.Count);
+            Label_done = Properties.Resources.done;
+            if (Positions_done != null)
+                Label_done = string.Format("{0} ({1})", Properties.Resources.done, Positions_done.Count);
+
+            Label_undone = Properties.Resources.undone;
+            if (Positions_undone != null)
+                Label_undone = string.Format("{0} ({1})", Properties.Resources.undone, Positions_undone.Count);
 
             if (Header_SelectedItem == null)
                 return;
@@ -649,8 +659,10 @@ namespace RepeatList.ViewModels
 
             FilteredList = new ObservableCollection<Position>(_pos_arr);
 
-            Positions_undone_filterd = new ObservableCollection<Position>(Positions_undone);
-            Positions_done_filtered = new ObservableCollection<Position>(Positions_done);
+            if (Positions_undone != null)
+                Positions_undone_filterd = new ObservableCollection<Position>(Positions_undone);
+            if (Positions_done != null)
+                Positions_done_filtered = new ObservableCollection<Position>(Positions_done);
 
             IsBusy = false;
             PositionListViewVisible = true;

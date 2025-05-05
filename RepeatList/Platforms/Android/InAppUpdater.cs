@@ -54,6 +54,9 @@ namespace RepeatList.Platforms.Android
             }
             catch (Exception ex)
             {
+                if (ex != null)
+                    SentrySdk.CaptureException(ex);
+
                 // Handle or log the exception
                 Console.WriteLine($"InAppUpdate failed: {ex.Message}");
                 throw;

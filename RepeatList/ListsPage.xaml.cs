@@ -68,9 +68,14 @@ namespace RepeatList
                     await CheckForUpdates();
                     m_need_for_update = false;
                 }
+
+                // TEST
+                //SentrySdk.CaptureMessage("Hello Sentry");
             }
             catch (Exception ex)
             {
+
+                SentrySdk.CaptureException(ex);
                 throw;
             }
             finally
@@ -89,7 +94,10 @@ namespace RepeatList
             }
             catch (Exception ex)
             {
-                await Shell.Current.DisplayAlert("Update Error", ex.Message, "OK");
+
+                    SentrySdk.CaptureException(ex);
+                    await Shell.Current.DisplayAlert("Update Error", ex.Message, "OK");
+
             }
 #endif
         }
@@ -118,9 +126,12 @@ namespace RepeatList
                     }
                 }
             }
-            catch
+            catch (Exception ex)
             {
+
+                SentrySdk.CaptureException(ex);
                 Header.IsSupabaseOk = false;
+                throw;
             }
 
             ViewModel.IsBusy = false;
@@ -152,45 +163,54 @@ namespace RepeatList
         {
             Guid tmp_guid = Guid.Empty;
 
-            string new_list_name = await DisplayPromptAsync(
-                Properties.Resources.AddNewList, Properties.Resources.Enter_a_list_name_or_insert_a_ready_made, "OK", Properties.Resources.Cancel);
-            if (!string.IsNullOrWhiteSpace(new_list_name))
+            try
             {
-                if (Guid.TryParse(new_list_name, out tmp_guid))
+                string new_list_name = await DisplayPromptAsync(
+                    Properties.Resources.AddNewList, Properties.Resources.Enter_a_list_name_or_insert_a_ready_made, "OK", Properties.Resources.Cancel);
+                if (!string.IsNullOrWhiteSpace(new_list_name))
                 {
-                    await ViewModel.Sync_list_downClicked(new_list_name);
-                    return;
-                }
-
-                // Check ">>>" (JSON-List)
-                else if (new_list_name.Contains(">>>"))
-                {
-                    var ind = new_list_name.IndexOf(">>>");
-                    if (ind < 0)
+                    if (Guid.TryParse(new_list_name, out tmp_guid))
                     {
-                        await Application.Current.MainPage.DisplaySnackbar(
-                           Properties.Resources.List_information_has_wrong_format, visualOptions: new SnackbarOptions
-                           {
-                               BackgroundColor = Color.FromArgb(Constantes.Color_Error_string),
-                               TextColor = Colors.White
-                           }, duration: TimeSpan.FromSeconds(2));
+                        await ViewModel.Sync_list_downClicked(new_list_name);
                         return;
                     }
-                    new_list_name = new_list_name.Substring(ind, new_list_name.Length - ind).Replace(">>>", "");
-                }
 
-                if (!await ViewModel.InputHeaderWithPositions(new_list_name))
-                {
-                    var new_id = await ViewModel.AddHeader(new_list_name, false);
-                }
-                await Application.Current.MainPage.DisplaySnackbar(Properties.Resources.List_added_successfully,
-                    visualOptions: new SnackbarOptions
+                    // Check ">>>" (JSON-List)
+                    else if (new_list_name.Contains(">>>"))
                     {
-                        BackgroundColor = Color.FromArgb(Constantes.Color_Success_string),
-                        TextColor = Colors.White
-                    }, duration: TimeSpan.FromSeconds(2));
+                        var ind = new_list_name.IndexOf(">>>");
+                        if (ind < 0)
+                        {
+                            await Application.Current.MainPage.DisplaySnackbar(
+                               Properties.Resources.List_information_has_wrong_format, visualOptions: new SnackbarOptions
+                               {
+                                   BackgroundColor = Color.FromArgb(Constantes.Color_Error_string),
+                                   TextColor = Colors.White
+                               }, duration: TimeSpan.FromSeconds(2));
+                            return;
+                        }
+                        new_list_name = new_list_name.Substring(ind, new_list_name.Length - ind).Replace(">>>", "");
+                    }
 
-                ViewModel.SetFirstItemForHeaders();
+                    if (!await ViewModel.InputHeaderWithPositions(new_list_name))
+                    {
+                        var new_id = await ViewModel.AddHeader(new_list_name, false);
+                    }
+                    await Application.Current.MainPage.DisplaySnackbar(Properties.Resources.List_added_successfully,
+                        visualOptions: new SnackbarOptions
+                        {
+                            BackgroundColor = Color.FromArgb(Constantes.Color_Success_string),
+                            TextColor = Colors.White
+                        }, duration: TimeSpan.FromSeconds(2));
+
+                    ViewModel.SetFirstItemForHeaders();
+                }
+            }
+            catch (Exception ex)
+            {
+
+                SentrySdk.CaptureException(ex);
+                throw;
             }
         }
 
@@ -216,58 +236,85 @@ namespace RepeatList
 
         private async Task OnDeleteHeaderClicked(object sender, EventArgs e)
         {
-            var button = sender as ImageButton;
-            if (button?.CommandParameter is Header header)
+            try
             {
-                bool answer = await DisplayAlert(Properties.Resources.Delete_list, Properties.Resources.Selected_list_and_list_synchronisations_will_now_be_deleted,
-                    Properties.Resources.yes, Properties.Resources.no);
-                if (answer)
+                var button = sender as ImageButton;
+                if (button?.CommandParameter is Header header)
                 {
+                    bool answer = await DisplayAlert(Properties.Resources.Delete_list, Properties.Resources.Selected_list_and_list_synchronisations_will_now_be_deleted,
+                        Properties.Resources.yes, Properties.Resources.no);
+                    if (answer)
+                    {
 
-                    ViewModel.IsBusy = true;
+                        ViewModel.IsBusy = true;
 
-                    await ViewModel.DeleteHeader(header);
-                    ViewModel.SetFirstItemForHeaders();
+                        await ViewModel.DeleteHeader(header);
+                        ViewModel.SetFirstItemForHeaders();
 
-                    // Delete linkd to Supabase 
-                    await ViewModel.DeleteHeaderInSupabase(header);
+                        // Delete linkd to Supabase 
+                        await ViewModel.DeleteHeaderInSupabase(header);
 
-                    await Application.Current.MainPage.DisplaySnackbar(Properties.Resources.List_was_successfully_deleted,
-                        visualOptions: new SnackbarOptions
-                        {
-                            BackgroundColor = Color.FromArgb(Constantes.Color_Success_string),
-                            TextColor = Colors.White
-                        }, duration: TimeSpan.FromSeconds(2));
+                        await Application.Current.MainPage.DisplaySnackbar(Properties.Resources.List_was_successfully_deleted,
+                            visualOptions: new SnackbarOptions
+                            {
+                                BackgroundColor = Color.FromArgb(Constantes.Color_Success_string),
+                                TextColor = Colors.White
+                            }, duration: TimeSpan.FromSeconds(2));
 
-                    ViewModel.IsBusy = false;
+                        ViewModel.IsBusy = false;
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+
+                SentrySdk.CaptureException(ex);
+                throw;
             }
         }
 
         private async void OnCopyHeaderClicked(object sender, EventArgs e)
         {
-            var button = sender as ImageButton;
-            if (button?.CommandParameter is Header header)
+            try
             {
-                string new_list_name = await DisplayPromptAsync(Properties.Resources.copy_list, Properties.Resources.Enter_list_name, "OK", Properties.Resources.Cancel);
-                if (!string.IsNullOrWhiteSpace(new_list_name))
+                var button = sender as ImageButton;
+                if (button?.CommandParameter is Header header)
                 {
-                    var new_int = await ViewModel.CopyHeader(header, new_list_name);
-                    ViewModel.SetFirstItemForHeaders();
+                    string new_list_name = await DisplayPromptAsync(Properties.Resources.copy_list, Properties.Resources.Enter_list_name, "OK", Properties.Resources.Cancel);
+                    if (!string.IsNullOrWhiteSpace(new_list_name))
+                    {
+                        var new_int = await ViewModel.CopyHeader(header, new_list_name);
+                        ViewModel.SetFirstItemForHeaders();
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+
+                SentrySdk.CaptureException(ex);
+                throw;
             }
         }
 
         private async Task OnEditHeaderClicked(object sender, EventArgs e)
         {
-            var button = sender as ImageButton;
-            if (button?.CommandParameter is Header header)
+            try
             {
-                string new_list_name = await DisplayPromptAsync(Properties.Resources.Input, Properties.Resources.Enter_new_list_name, "OK", Properties.Resources.Cancel, initialValue: header.ListName);
-                if (!string.IsNullOrWhiteSpace(new_list_name))
+                var button = sender as ImageButton;
+                if (button?.CommandParameter is Header header)
                 {
-                    await ViewModel.EditNameHeader(header, new_list_name);
+                    string new_list_name = await DisplayPromptAsync(Properties.Resources.Input, Properties.Resources.Enter_new_list_name, "OK", Properties.Resources.Cancel, initialValue: header.ListName);
+                    if (!string.IsNullOrWhiteSpace(new_list_name))
+                    {
+                        await ViewModel.EditNameHeader(header, new_list_name);
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+
+                SentrySdk.CaptureException(ex);
+                throw;
             }
         }
 
@@ -288,40 +335,57 @@ namespace RepeatList
 
         private async void OnIsSynchronizedClicked(object sender, EventArgs e)
         {
-            var button = sender as ImageButton;
-            if (button?.CommandParameter is Header header)
+            try
             {
-                bool answer = await DisplayAlert(Properties.Resources.Do_you_really_want_to_end_the_synchronising_of_this_list,
-                Properties.Resources.Are_you_sure, Properties.Resources.yes, Properties.Resources.no);
-                if (answer)
+                var button = sender as ImageButton;
+                if (button?.CommandParameter is Header header)
                 {
-                    await ViewModel.EditIsSynchronizedHeader(header, false);
+                    bool answer = await DisplayAlert(Properties.Resources.Do_you_really_want_to_end_the_synchronising_of_this_list,
+                    Properties.Resources.Are_you_sure, Properties.Resources.yes, Properties.Resources.no);
+                    if (answer)
+                    {
+                        await ViewModel.EditIsSynchronizedHeader(header, false);
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+
+                SentrySdk.CaptureException(ex);
+                throw;
             }
         }
 
         private async Task Sync_list_upClicked(object sender, EventArgs e)
         {
-            var button = sender as ImageButton;
-            if (button?.CommandParameter is Header header)
+            try
             {
-                var count_of_sync_lists = ViewModel.Headers.Count(x => x.IsSynchronized);
-
-                if (count_of_sync_lists == m_max_count_of_sync_lists)
+                var button = sender as ImageButton;
+                if (button?.CommandParameter is Header header)
                 {
-                    await DisplayAlert(Properties.Resources.A_maximum_of_3_synchronised_lists_are_permitted.Replace("%1", m_max_count_of_sync_lists.ToString()),
-                        Properties.Resources.Are_you_sure, Properties.Resources.yes);
-                    return;
-                }
+                    var count_of_sync_lists = ViewModel.Headers.Count(x => x.IsSynchronized);
 
-                bool answer = await DisplayAlert(Properties.Resources.Would_you_like_to_start_synchronisation_now,
-                    Properties.Resources.Are_you_sure, Properties.Resources.yes, Properties.Resources.no);
-                if (answer)
-                {
-                    ViewModel.Header_SelectedItem = header;
+                    if (count_of_sync_lists == m_max_count_of_sync_lists)
+                    {
+                        await DisplayAlert(Properties.Resources.A_maximum_of_3_synchronised_lists_are_permitted.Replace("%1", m_max_count_of_sync_lists.ToString()),
+                            Properties.Resources.Are_you_sure, Properties.Resources.yes);
+                        return;
+                    }
 
-                    await ViewModel.Sync_list_upClicked();
+                    bool answer = await DisplayAlert(Properties.Resources.Would_you_like_to_start_synchronisation_now,
+                        Properties.Resources.Are_you_sure, Properties.Resources.yes, Properties.Resources.no);
+                    if (answer)
+                    {
+                        ViewModel.Header_SelectedItem = header;
+
+                        await ViewModel.Sync_list_upClicked();
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                SentrySdk.CaptureException(ex);
+                throw;
             }
         }
 

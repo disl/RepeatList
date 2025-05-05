@@ -113,7 +113,8 @@ namespace RepeatList.Services
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                if (ex != null)
+                    SentrySdk.CaptureException(ex);
                 return headers;
             }
         }
