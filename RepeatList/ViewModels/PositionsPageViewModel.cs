@@ -23,7 +23,12 @@ namespace RepeatList.ViewModels
         public string SelectedItem_KindOfSorting_key_name = "SelectedItem_KindOfSorting";
         public double ButtonsSize = 25;
 
+        [ObservableProperty] public string collapse_undone_icon;
+        [ObservableProperty] public string collapse_done_icon;
 
+
+        [ObservableProperty] public string menu_icon = "menu.png";
+        [ObservableProperty] public bool duplicate_entries_add;
         [ObservableProperty] public bool sortImages_visible = true;
 
         [ObservableProperty] public double imageButton_resetPositions_SizeRequest = 35;
@@ -57,8 +62,8 @@ namespace RepeatList.ViewModels
         {
             if (newValue == null)
             {
-                Collapse_undone_icon = Application.Current.UserAppTheme == AppTheme.Dark ? "expand_icon_white.png" : "expand_icon_black.png";
-                Collapse_done_icon = Application.Current.UserAppTheme == AppTheme.Dark ? "expand_icon_white.png" : "expand_icon_black.png";
+                Collapse_undone_icon = Application.Current != null && Application.Current.UserAppTheme == AppTheme.Dark ? "expand_icon_white.png" : "expand_icon_black.png";
+                Collapse_done_icon = Application.Current != null && Application.Current.UserAppTheme == AppTheme.Dark ? "expand_icon_white.png" : "expand_icon_black.png";
 
                 RowDefinitions = new RowDefinitionCollection
                 {
@@ -83,8 +88,8 @@ namespace RepeatList.ViewModels
             {
                 if (newValue == true)
                 {
-                    Collapse_undone_icon = Application.Current.UserAppTheme == AppTheme.Dark ? "expand_icon_white.png" : "expand_icon_black.png";
-                    Collapse_done_icon = Application.Current.UserAppTheme == AppTheme.Dark ? "collapse_icon_white.png" : "collapse_icon_black.png";
+                    Collapse_undone_icon = Application.Current != null && Application.Current.UserAppTheme == AppTheme.Dark ? "expand_icon_white.png" : "expand_icon_black.png";
+                    Collapse_done_icon = Application.Current != null && Application.Current.UserAppTheme == AppTheme.Dark ? "collapse_icon_white.png" : "collapse_icon_black.png";
 
                     RowDefinitions = new RowDefinitionCollection
                     {
@@ -98,7 +103,7 @@ namespace RepeatList.ViewModels
                     };
 
                     Gridheight_undone =0;
-                    
+
                     Gridheight_done =-1;
                     SortImages_visible=true;
                     ImageButton_resetPositions_SizeRequest = 35;
@@ -109,8 +114,8 @@ namespace RepeatList.ViewModels
                 }
                 else
                 {
-                    Collapse_undone_icon = Application.Current.UserAppTheme == AppTheme.Dark ? "collapse_icon_white.png" : "collapse_icon_black.png";
-                    Collapse_done_icon = Application.Current.UserAppTheme == AppTheme.Dark ? "expand_icon_white.png" : "expand_icon_black.png";
+                    Collapse_undone_icon = Application.Current != null && Application.Current.UserAppTheme == AppTheme.Dark ? "collapse_icon_white.png" : "collapse_icon_black.png";
+                    Collapse_done_icon = Application.Current != null && Application.Current.UserAppTheme == AppTheme.Dark ? "expand_icon_white.png" : "expand_icon_black.png";
 
                     RowDefinitions = new RowDefinitionCollection
                     {
@@ -135,17 +140,12 @@ namespace RepeatList.ViewModels
             }
         }
 
-        [ObservableProperty] public string collapse_undone_icon;
-        [ObservableProperty] public string collapse_done_icon;
-
-
-        [ObservableProperty] public string menu_icon;
-        [ObservableProperty] public bool duplicate_entries_add;
+        
         partial void OnDuplicate_entries_addChanged(bool oldValue, bool newValue)
         {
-            Preferences.Set("Duplicate_entries_add", newValue);
-
             Menu_icon = newValue ? "menu.png" : "menu_alert.png";
+
+            Preferences.Set("Duplicate_entries_add", newValue);
         }
 
         //[ObservableProperty] public bool changeListsCheckedState;
@@ -282,7 +282,7 @@ namespace RepeatList.ViewModels
         partial void OnChangePositionsCheckedStateChanged(bool oldValue, bool newValue)
         {
             string image_source = "";
-            if (Application.Current.UserAppTheme == AppTheme.Dark)
+            if (Application.Current != null && Application.Current.UserAppTheme == AppTheme.Dark)
             {
                 image_source = newValue ? "check_box_check_white.png" : "check_box_blank_white.png";
             }
@@ -389,6 +389,9 @@ namespace RepeatList.ViewModels
         {
             Guid tmp_guid = Guid.Empty;
 
+            if(Application.Current == null)
+                return;
+
             string guid_str = await Application.Current.MainPage.DisplayPromptAsync(
                  Properties.Resources.import_liste,
                  Properties.Resources.Please_enter_the_ID_of_the_list_to_be_synchronised);
@@ -423,7 +426,7 @@ namespace RepeatList.ViewModels
                 return;
             }
 
-            var _header = Headers.FirstOrDefault(x => x.Id == sync_responce.Header.Id);
+            var _header = Headers != null ? Headers.FirstOrDefault(x => x.Id == sync_responce.Header.Id) : null;
             if (_header != null)
                 Header = sync_responce.Header;
             else

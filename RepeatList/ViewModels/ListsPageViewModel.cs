@@ -150,7 +150,7 @@ namespace RepeatList.ViewModels
         [ObservableProperty] private string _label_undone = Properties.Resources.undone;
         [ObservableProperty] private string label_paste_from_clipboard = Properties.Resources.Paste_from_clipboard;
 
-        [ObservableProperty] private Header header_SelectedItem;
+        [ObservableProperty] private Header? header_SelectedItem;
         [ObservableProperty] private ObservableCollection<Header>? headers = new ObservableCollection<Header>();
         [ObservableProperty] private Header? header = new Header();
         [ObservableProperty] private Models.Position? position_selectedItem;

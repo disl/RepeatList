@@ -52,9 +52,9 @@
                 <RoundRectangle CornerRadius="5" />
             </Border.StrokeShape>
             <CollectionView x:Name="HeaderListView"  
-                        ItemsSource="{Binding FilteredList}"                  
+                        ItemsSource="{Binding FilteredList, FallbackValue = 'Binding Failed! HeaderListView (ItemsSource)'}"                  
                         SelectionMode="Single" 
-                        SelectedItem="{Binding Header_SelectedItem}" 
+                        SelectedItem="{Binding Header_SelectedItem, FallbackValue = 'Binding Failed! HeaderListView (SelectedItem)'}" 
                         ItemSizingStrategy="MeasureAllItems"
                         SelectionChanged="OnHeaderListViewSelected" 
                        >

@@ -61,8 +61,8 @@
                 <RoundRectangle CornerRadius="5" />
             </Border.StrokeShape>
             <CollectionView x:Name="PositionListView"  
-                                    ItemsSource="{Binding Positions_undone_filterd}" 
-                                    SelectedItem="{Binding Position_selectedItem, Mode=OneWayToSource}"                                      
+                                    ItemsSource="{Binding Positions_undone_filterd, FallbackValue = 'Binding Failed! PositionListView (ItemsSource)'}" 
+                                    SelectedItem="{Binding Position_selectedItem, Mode=OneWayToSource, FallbackValue = 'Binding Failed! PositionListView (SelectedItem)'}"                                      
                                     SelectionMode="Single" 
                                     
                                     SelectionChanged="OnPositionSelected_new" >
@@ -70,11 +70,11 @@
                     <DataTemplate>
                         <Grid  ColumnDefinitions="5*, 1*,1*,1*" VerticalOptions="Center" HeightRequest="45">
                             <ScrollView Orientation="Horizontal"  Grid.Column="0" VerticalOptions="Center" >
-                                <Label Text="{Binding Title}"     
+                                <Label Text="{Binding Title, FallbackValue = 'Binding Failed! PositionListView (Title)'}"     
                                        VerticalTextAlignment="Center"
                                        TextColor="{AppThemeBinding Light={DynamicResource PrimaryTextColor}, Dark={DynamicResource PrimaryTextColorLight}}"/>
                             </ScrollView>
-                            <ImageButton Source="{Binding PositionImageSource}" 
+                            <ImageButton Source="{Binding PositionImageSource, FallbackValue = 'Binding Failed! PositionListView (PositionImageSource)'}" 
                                          Clicked="OnCheckedButtonClicked" CommandParameter="{Binding}" 
                                          HeightRequest="30" Grid.Column="1"/>
                             <ImageButton Source="{AppThemeBinding Light=edit_icon_black.png, Dark=edit_icon_white.png}" 
