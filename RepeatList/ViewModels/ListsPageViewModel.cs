@@ -218,8 +218,8 @@ namespace RepeatList.ViewModels
             }
             catch (Exception ex)
             {
-                if (ex != null)
-                    SentrySdk.CaptureException(ex);
+                //if (ex != null)
+                //    SentrySdk.CaptureException(ex);
 
                 //await Application.Current.MainPage.DisplaySnackbar(Properties.Resources.String_is_not_a_valid_list_description);
                 //IsBusy = false;
@@ -328,7 +328,9 @@ namespace RepeatList.ViewModels
         [RelayCommand]
         public async Task Sync_list_downClicked(string guid_str_param)  //Header header)
         {
-            //Guid tmp_guid = new Guid(header.Id);
+            if(string.IsNullOrWhiteSpace(guid_str_param)) 
+                return;
+
             Guid tmp_guid = new Guid(guid_str_param);
 
             IsBusy = true;

@@ -121,14 +121,12 @@ namespace RepeatList
                     if (header.IsSynchronized)
                     {
                         await ViewModel.Sync_list_downClicked(header.Id);
-
                         Header.IsSupabaseOk = true;
                     }
                 }
             }
             catch (Exception ex)
             {
-
                 SentrySdk.CaptureException(ex);
                 Header.IsSupabaseOk = false;
                 throw;
