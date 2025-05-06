@@ -22,20 +22,20 @@
         <!--<controls:ActivityProgressBar IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}" Grid.Row="0" />-->
 
         <!-- ADMOB -->
-        <!--<Border Stroke="{AppThemeBinding Light=#00BCD4, Dark=#80DEEA}" StrokeThickness="0" Padding="5" Grid.Row="0" >
+        <Border Stroke="{AppThemeBinding Light=#00BCD4, Dark=#80DEEA}" StrokeThickness="0" Padding="5" Grid.Row="0" >
             <Border.StrokeShape>
                 <RoundRectangle CornerRadius="0" />
             </Border.StrokeShape>
             <controls:AdBannerView HeightRequest="{OnIdiom Phone=50, Tablet=90}" />
-        </Border>-->
+        </Border>
 
         <!-- TITLE -->
-        <Label Grid.Row="0" Text="{Binding Title, FallbackValue = ''}" FontSize="24" HorizontalOptions="Center" 
+        <Label Grid.Row="1" Text="{Binding Title, FallbackValue = ''}" FontSize="24" HorizontalOptions="Center" 
                TextColor="{AppThemeBinding Light={DynamicResource PrimaryTextColor}, Dark={DynamicResource PrimaryTextColorLight}}"
 />
 
         <!-- SEARCH -->
-        <Grid ColumnDefinitions="auto,*,auto" Grid.Row="1" Margin="0,0,0,2" ColumnSpacing="10">
+        <Grid ColumnDefinitions="auto,*,auto" Grid.Row="2" Margin="0,0,0,2" ColumnSpacing="10">
             <Image Source="{AppThemeBinding Light=search_black.png, Dark=search_white.png}"  Grid.Column="0" />
             <Entry x:Name="searchBar" Grid.Column="1" Placeholder="{Binding Search}" HeightRequest="50"
                    TextColor="{AppThemeBinding Light={DynamicResource PrimaryTextColor}, Dark={DynamicResource PrimaryTextColorLight}}"
@@ -53,7 +53,7 @@
         <Border   Stroke="{AppThemeBinding Light=#00BCD4, Dark=#80DEEA}" 
                   StrokeThickness="1"  
                   Padding="10"  
-                  Grid.Row="2"  
+                  Grid.Row="3"  
                   IsVisible="{Binding Isvisible_undone}" 
                   HeightRequest="{Binding Gridheight_undone}" 
                   >
@@ -103,7 +103,7 @@
 
         <!-- SORTING -->
         <Grid ColumnDefinitions="auto,*,auto,auto,auto" Margin="0,7,0,7" 
-              Grid.Row="3" 
+              Grid.Row="4" 
               IsVisible="{Binding Isvisible_done, FallbackValue = true}" 
               HeightRequest="{Binding Gridheight_done, FallbackValue = -1}" >
 
@@ -144,7 +144,7 @@
 
         <!-- DONE -->
         <Border   
-            Stroke="{AppThemeBinding Light=#00BCD4, Dark=#80DEEA}" StrokeThickness="1"  Padding="10" Grid.Row="4" 
+            Stroke="{AppThemeBinding Light=#00BCD4, Dark=#80DEEA}" StrokeThickness="1"  Padding="10" Grid.Row="5" 
             IsVisible="{Binding Isvisible_done}"
             HeightRequest="{Binding Gridheight_done}"
             >
@@ -194,7 +194,7 @@
 
         <!-- INPUT -->
         <Grid ColumnDefinitions="*,Auto"
-          Grid.Row="5"
+          Grid.Row="6"
           Margin="0,10,0,0"
           ColumnSpacing="8">
 

@@ -45,7 +45,7 @@ namespace RepeatList.ViewModels
         [ObservableProperty]
         public RowDefinitionCollection rowDefinitions = new RowDefinitionCollection
         {
-                //new RowDefinition(GridLength.Auto),
+                new RowDefinition(GridLength.Auto),
                 new RowDefinition(GridLength.Auto),
                 new RowDefinition(GridLength.Auto),
                 new RowDefinition(GridLength.Star),
@@ -71,7 +71,7 @@ namespace RepeatList.ViewModels
 
                 RowDefinitions = new RowDefinitionCollection
                 {
-                    //new RowDefinition(GridLength.Auto),
+                    new RowDefinition(GridLength.Auto),
                     new RowDefinition(GridLength.Auto),
                     new RowDefinition(GridLength.Auto),
                     new RowDefinition(GridLength.Star),
@@ -97,7 +97,7 @@ namespace RepeatList.ViewModels
 
                     RowDefinitions = new RowDefinitionCollection
                     {
-                        //new RowDefinition(GridLength.Auto),
+                        new RowDefinition(GridLength.Auto),
                         new RowDefinition(GridLength.Auto),
                         new RowDefinition(GridLength.Auto),
                         new RowDefinition(0), //new RowDefinition(GridLength.Star),
@@ -123,7 +123,7 @@ namespace RepeatList.ViewModels
 
                     RowDefinitions = new RowDefinitionCollection
                     {
-                        //new RowDefinition(GridLength.Auto),
+                        new RowDefinition(GridLength.Auto),
                         new RowDefinition(GridLength.Auto),
                         new RowDefinition(GridLength.Auto),
                         new RowDefinition(GridLength.Star),

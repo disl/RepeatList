@@ -12,10 +12,10 @@
 				 android:roundIcon="@mipmap/appicon_round"
 				 android:supportsRtl="true">
 
-		 <meta-data android:name="com.google.android.gms.ads.APPLICATION_ID"	
-				   android:value="ca-app-pub-3940256099942544~6300978111"/>
-		<!--	<meta-data android:name="com.google.android.gms.ads.APPLICATION_ID"	
-				   android:value="ca-app-pub-9459821903521146~5965979832"/>  --> 
+		 <!--<meta-data android:name="com.google.android.gms.ads.APPLICATION_ID"	
+				   android:value="ca-app-pub-3940256099942544~6300978111"/>-->
+			<meta-data android:name="com.google.android.gms.ads.APPLICATION_ID"	
+				   android:value="ca-app-pub-9459821903521146~5965979832"/>   
 	</application>
 
 
