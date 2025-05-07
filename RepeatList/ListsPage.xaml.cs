@@ -65,12 +65,14 @@ namespace RepeatList
 
                 if (m_need_for_update)
                 {
-                    await CheckForUpdates();
+#if ANDROID
+                    if (IsPlayCoreApiAvailable())
+                    {
+                        await CheckForUpdates();
+                    }       
+#endif
                     m_need_for_update = false;
                 }
-
-                // TEST
-                //SentrySdk.CaptureMessage("Hello Sentry");
             }
             catch (Exception ex)
             {
@@ -84,9 +86,29 @@ namespace RepeatList
             }
         }
 
+
+#if ANDROID
+        bool IsPlayCoreApiAvailable()
+        {
+            try
+            {
+                var context = Android.App.Application.Context;
+                var packageManager = context.PackageManager;
+                var playStorePackageName = "com.android.vending";
+                var intent = packageManager.GetLaunchIntentForPackage(playStorePackageName);
+                return intent != null;
+            }
+            catch
+            {
+                return false;
+            }
+
+
+        }
+
+
         private async Task CheckForUpdates()
         {
-#if ANDROID
             try
             {
                 var updater = new Platforms.Android.InAppUpdater();
@@ -95,12 +117,14 @@ namespace RepeatList
             catch (Exception ex)
             {
 
-                    SentrySdk.CaptureException(ex);
-                    await Shell.Current.DisplayAlert("Update Error", ex.Message, "OK");
+                //SentrySdk.CaptureException(ex);
+                //await Shell.Current.DisplayAlert("Update Error", ex.Message, "OK");
 
             }
-#endif
+
         }
+#endif
+
 
         private async void _timer_Tick(object? sender, EventArgs e)
         {
