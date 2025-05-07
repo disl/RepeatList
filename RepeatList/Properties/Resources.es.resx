@@ -284,6 +284,9 @@ OPCIÓN DE MENÚ «DUPLICAR ELEMENTOS»:
   <data name="Positions" xml:space="preserve">
     <value>Posiciones</value>
   </data>
+  <data name="Rate_app" xml:space="preserve">
+    <value>Valore la app</value>
+  </data>
   <data name="replace" xml:space="preserve">
     <value>Sustituir</value>
   </data>

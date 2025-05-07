@@ -359,4 +359,7 @@ Do you still want to continue?</value>
   <data name="close" xml:space="preserve">
     <value>Close</value>
   </data>
+  <data name="Rate_app" xml:space="preserve">
+    <value>Rate app</value>
+  </data>
 </root>

@@ -284,6 +284,9 @@ Vous voulez quand même continuer ?</value>
   <data name="Positions" xml:space="preserve">
     <value>Positions</value>
   </data>
+  <data name="Rate_app" xml:space="preserve">
+    <value>Évaluer l'app</value>
+  </data>
   <data name="replace" xml:space="preserve">
     <value>Remplacer</value>
   </data>

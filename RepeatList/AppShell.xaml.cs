@@ -1,4 +1,6 @@
 ﻿using RepeatList.ViewModels;
+using Microsoft.Maui.ApplicationModel;
+using Microsoft.Maui.Controls;
 
 namespace RepeatList
 {
@@ -24,6 +26,19 @@ namespace RepeatList
             BindingContext = ViewModel;
         }
 
+        private async void OnRateAppClicked(object sender, EventArgs e)
+        {
+            string url = "";
+
+#if ANDROID
+            url = $"https://play.google.com/store/apps/details?id={AppInfo.PackageName}";
+//#elif IOS
+//            url = "https://apps.apple.com/app/idDEINE_APP_ID";
+//#else
+//            url = "https://google.com";
+#endif
+            await Launcher.Default.OpenAsync(url);
+        }
 
     }
 }

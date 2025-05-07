@@ -525,6 +525,15 @@ namespace RepeatList.Properties {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Rate app ähnelt.
+        /// </summary>
+        public static string Rate_app {
+            get {
+                return ResourceManager.GetString("Rate_app", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Replace ähnelt.
         /// </summary>
         public static string replace {

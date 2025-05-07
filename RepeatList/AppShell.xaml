@@ -17,10 +17,19 @@
         <viewModels:ResourcesViewModel />
     </Shell.BindingContext>
 
-    <ShellContent  Title="MiniList"  ContentTemplate="{DataTemplate local:ListsPage}"  Route="Lists"  />
-    <ShellContent x:Name="setupContetnt" Title="{Binding Setup}"  ContentTemplate="{DataTemplate local:SetupPage}"  Route="SetupPage" />
+    <ShellContent Title="MiniList"  
+                  ContentTemplate="{DataTemplate local:ListsPage}"  
+                  Icon="{AppThemeBinding Light=home_black.png, Dark=home_white.png}"  
+                  Route="Lists"  />
+    <ShellContent x:Name="setupContetnt" 
+                  Title="{Binding Setup}" 
+                  Icon="{AppThemeBinding Light=settings_black.png, Dark=settings_white.png}"  
+                  ContentTemplate="{DataTemplate local:SetupPage}"  
+                  Route="SetupPage" />
+    <ShellContent Title="Positions"  ContentTemplate="{DataTemplate local:PositionsPage}"  Route="Positions" IsVisible="False" />
+    <ShellContent Title="Lists/Positions"  ContentTemplate="{DataTemplate local:PositionsPage}"  Route="Lists/Positions" IsVisible="False" />
 
-   
-    <ShellContent  Title="Positions"  ContentTemplate="{DataTemplate local:PositionsPage}"  Route="Positions" IsVisible="False" />
-    <ShellContent  Title="Lists/Positions"  ContentTemplate="{DataTemplate local:PositionsPage}"  Route="Lists/Positions" IsVisible="False" />
+    <MenuItem Text="{x:Static properties:Resources.Rate_app}" 
+              Clicked="OnRateAppClicked" 
+              IconImageSource="{AppThemeBinding Light=star_black.png, Dark=star_white.png}"  />
 </Shell>

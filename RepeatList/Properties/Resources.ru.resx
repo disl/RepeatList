@@ -284,6 +284,9 @@
   <data name="Positions" xml:space="preserve">
     <value>Элементы</value>
   </data>
+  <data name="Rate_app" xml:space="preserve">
+    <value>Оцените приложение</value>
+  </data>
   <data name="replace" xml:space="preserve">
     <value>Заменить</value>
   </data>
