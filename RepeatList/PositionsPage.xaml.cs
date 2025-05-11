@@ -570,7 +570,7 @@ namespace RepeatList
 
         private async void OpenMenu(object sender, EventArgs e)
         {
-            var popup = new Positions_PopUpMenu();
+            var popup = new Positions_PopUpMenu(ViewModel.SupabaseService_ready);
             var result = await Shell.Current.ShowPopupAsync(popup);
             switch (result)
             {

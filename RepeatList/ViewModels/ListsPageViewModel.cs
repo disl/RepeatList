@@ -16,7 +16,9 @@ namespace RepeatList.ViewModels
     public partial class ListsPageViewModel : ObservableObject
     {
         private DatabaseService _databaseService;
-        private SupabaseService _supabaseService;
+        private SupabaseService? _supabaseService;
+
+
 
         //public event PropertyChangedEventHandler PropertyChanged;
 
@@ -26,11 +28,22 @@ namespace RepeatList.ViewModels
         public double ButtonsSize = 25;
 
         [ObservableProperty] public string resetImageSource;
+        [ObservableProperty] public bool supabaseService_ready;
 
         public ListsPageViewModel()
         {
             _databaseService = new DatabaseService();
-            _supabaseService = new SupabaseService();
+
+            try
+            {
+                _supabaseService = new SupabaseService();
+                SupabaseService_ready = true;
+            }
+            catch (Exception ex)
+            {
+                _supabaseService = null;
+                SupabaseService_ready = false;
+            }
 
             setupPageViewModel = new SetupPageViewModel();
             _ = setupPageViewModel.Load();
@@ -328,7 +341,7 @@ namespace RepeatList.ViewModels
         [RelayCommand]
         public async Task Sync_list_downClicked(string guid_str_param)  //Header header)
         {
-            if(string.IsNullOrWhiteSpace(guid_str_param)) 
+            if (string.IsNullOrWhiteSpace(guid_str_param) || _supabaseService == null)
                 return;
 
             Guid tmp_guid = new Guid(guid_str_param);
@@ -397,6 +410,12 @@ namespace RepeatList.ViewModels
         [RelayCommand]
         public async Task Sync_list_upClicked()
         {
+            if (_supabaseService == null)
+            {
+                //await Application.Current.MainPage.DisplaySnackbar(Properties.Resources.Supabase_service_is_not_available);
+                IsBusy = false;
+                return;
+            }
             Lists = (await _databaseService.GetPositionsAsync(Header_SelectedItem.Id)).ToObservableCollection();
             if (Lists == null || Lists.Count == 0 || Header == null)
             {
@@ -408,7 +427,8 @@ namespace RepeatList.ViewModels
 
             Header_SelectedItem.Positions = Lists.ToList();
 
-            await _supabaseService.SyncHeaderWithDetailsAsync(Header_SelectedItem);
+            if (SupabaseService_ready)
+                await _supabaseService.SyncHeaderWithDetailsAsync(Header_SelectedItem);
 
             await EditIsSynchronizedHeader(Header_SelectedItem, true);
 
@@ -455,7 +475,7 @@ namespace RepeatList.ViewModels
 
 
             string send_text = "";
-            for (int i = 1; i<= Lists.Count; i++)
+            for (int i = 1; i <= Lists.Count; i++)
             {
                 send_text += i + ". " + Lists[i].Title + Environment.NewLine;
             }
@@ -504,7 +524,8 @@ namespace RepeatList.ViewModels
 
         public async Task DeleteHeaderInSupabase(Header header)
         {
-            if (header == null) return;
+            if (header == null || _supabaseService == null) 
+                return;
             await _supabaseService.DeleteHeaderWithDetailsAsync(header);
         }
 
@@ -528,7 +549,7 @@ namespace RepeatList.ViewModels
             Header_SelectedItem = null;
             Header newHeader = new Header();
             //if (!string.IsNullOrEmpty(Id))
-            newHeader = new Header { ListName = HeaderEntryText, UpdatedAt = DateTime.Now.ToUniversalTime(), IsSynchronized= IsSynchronized };
+            newHeader = new Header { ListName = HeaderEntryText, UpdatedAt = DateTime.Now.ToUniversalTime(), IsSynchronized = IsSynchronized };
             //else
             //    newHeader = new Header { Id = Guid.NewGuid().ToString(), ListName = HeaderEntryText, UpdatedAt = DateTime.Now };
 
@@ -591,7 +612,7 @@ namespace RepeatList.ViewModels
 
         public async Task AddPosition(Position position, bool generate_new_guid, bool Replace_old_word_when_inserting)
         {
-            if (Header_SelectedItem == null || position == null) 
+            if (Header_SelectedItem == null || position == null)
                 return;
 
             IsBusy = true;

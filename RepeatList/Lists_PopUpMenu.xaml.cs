@@ -12,13 +12,15 @@ public partial class Lists_PopUpMenu : Popup
         InitializeComponent();
     }
 
-    public Lists_PopUpMenu(Header item)
+    public Lists_PopUpMenu(Header item, bool SupabaseService_ready)
     {
         InitializeComponent();
 
         SelectedItem = item;
 
-        Sync_removeButton.IsVisible = item.IsSynchronized;
+        Sync_removeButton.IsVisible = item.IsSynchronized && SupabaseService_ready;
+        //Synchronisation_of_listsLabel.IsVisible = SupabaseService_ready;
+        //Send_synchronisationButton.IsVisible = SupabaseService_ready;
     }
 
     private void OnEditHeaderClicked(object sender, EventArgs e)

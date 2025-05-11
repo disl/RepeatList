@@ -6,18 +6,18 @@ namespace RepeatList;
 public partial class Positions_PopUpMenu : Popup
 {
     public Position SelectedItem { get; set; }
+    private bool _supabaseServiceReady;
 
     public Positions_PopUpMenu()
     {
         InitializeComponent();
     }
+    public Positions_PopUpMenu(bool SupabaseService_ready)
+    {
+        InitializeComponent();
 
-    //public Positions_PopUpMenu(List<Position> item)
-    //{
-    //    InitializeComponent();
-
-    //    SelectedItem = item;       
-    //}
+        _supabaseServiceReady = SupabaseService_ready;
+    }
 
     protected override void OnParentSet()
     {

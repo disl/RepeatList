@@ -21,10 +21,10 @@
                 Clicked="Export_list_Clicked"  CommandParameter="{Binding}"  />
         <Button  Text="{x:Static properties:Resources.import_liste}" TextColor="White" 
                 Clicked="Import_list_Clicked"  CommandParameter="{Binding}"  />
-        
 
-        <Label Text="{x:Static properties:Resources.Synchronisation_of_lists}"  FontSize="Medium" TextColor="White" />
-        <Button Text="{x:Static properties:Resources.Send_synchronisation}" TextColor="White" 
+
+        <Label x:Name="Synchronisation_of_listsLabel" Text="{x:Static properties:Resources.Synchronisation_of_lists}"  FontSize="Medium" TextColor="White" />
+        <Button x:Name="Send_synchronisationButton" Text="{x:Static properties:Resources.Send_synchronisation}" TextColor="White" 
                 Clicked="Sync_list_upClicked"  CommandParameter="{Binding}"   />
         <Button x:Name="Sync_removeButton"  Text="{x:Static properties:Resources.Delete_Synchronisation}"  
                 BackgroundColor="{x:Static models:Constantes.Color_Warning}"

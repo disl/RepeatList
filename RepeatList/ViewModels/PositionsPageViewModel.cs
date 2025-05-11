@@ -30,7 +30,7 @@ namespace RepeatList.ViewModels
         public string collapse_done_icon =
             Application.Current != null && Application.Current.UserAppTheme == AppTheme.Dark ? "expand_icon_white.png" : "expand_icon_black.png";
 
-
+        [ObservableProperty] public bool supabaseService_ready;
         [ObservableProperty] public string menu_icon = "menu.png";
         [ObservableProperty] public bool duplicate_entries_add;
         [ObservableProperty] public bool sortImages_visible = true;
@@ -197,7 +197,16 @@ namespace RepeatList.ViewModels
         public PositionsPageViewModel(Header selectedItem)
         {
             _databaseService = new DatabaseService();
-            _supabaseService = new SupabaseService();
+            try
+            {
+                _supabaseService = new SupabaseService();
+                SupabaseService_ready = true;
+            }
+            catch (Exception ex)
+            {
+                _supabaseService = null;
+                SupabaseService_ready = false;
+            }
 
             setupPageViewModel = new SetupPageViewModel();
             _ = setupPageViewModel.Load();
@@ -393,7 +402,7 @@ namespace RepeatList.ViewModels
         {
             Guid tmp_guid = Guid.Empty;
 
-            if (Application.Current == null)
+            if (Application.Current == null || _supabaseService==null)
                 return;
 
             string guid_str = await Application.Current.MainPage.DisplayPromptAsync(
@@ -451,9 +460,13 @@ namespace RepeatList.ViewModels
             IsBusy = false;
         }
 
+
         [RelayCommand]
         public async Task Sync_list_downClicked(Header header)
         {
+            if(_supabaseService == null)
+                return;
+
             Guid tmp_guid = new Guid(header.Id);
 
             try
@@ -520,7 +533,7 @@ namespace RepeatList.ViewModels
         [RelayCommand]
         public async Task Sync_list_upClicked()
         {
-            if (Positions == null || Positions.Count == 0 || Header == null)
+            if (Positions == null || Positions.Count == 0 || Header == null || _supabaseService == null)
                 return;
 
             IsBusy = true;
@@ -573,7 +586,7 @@ namespace RepeatList.ViewModels
 
         public async Task DeleteHeaderInSupabase(Header header)
         {
-            if (header == null) return;
+            if (header == null || _supabaseService == null) return;
             await _supabaseService.DeleteHeaderWithDetailsAsync(header);
         }
 
@@ -696,7 +709,7 @@ namespace RepeatList.ViewModels
             var sort_pos_arr = Positions.OrderBy(x => x.IsCompleted).ThenBy(a => a.Title).ToList();
             Positions = new ObservableCollection<Position>(sort_pos_arr);
 
-            if (Header_SelectedItem.IsSynchronized)
+            if (Header_SelectedItem.IsSynchronized && _supabaseService != null)
             {
                 await _supabaseService.SyncPositionAsync(position);
             }
@@ -757,7 +770,7 @@ namespace RepeatList.ViewModels
 
             pos.UpdatedAt = DateTime.Now.ToUniversalTime();
 
-            if (Header_SelectedItem.IsSynchronized)
+            if (Header_SelectedItem.IsSynchronized && _supabaseService != null)
             {
                 await _supabaseService.SyncPositionAsync(pos);
             }
@@ -776,7 +789,7 @@ namespace RepeatList.ViewModels
             Position_selectedItem = pos;
             await _databaseService.DeletePositionAsync(pos.Id);
 
-            if (Header_SelectedItem.IsSynchronized)
+            if (Header_SelectedItem.IsSynchronized && _supabaseService != null)
                 await _supabaseService.DeletePositionAsync(pos);
 
             await LoadPositions();
@@ -843,7 +856,7 @@ namespace RepeatList.ViewModels
             Position_selectedItem = position;
             await _databaseService.EditPositionsTitleAsync(position, title);
 
-            if (Header_SelectedItem.IsSynchronized)
+            if (Header_SelectedItem.IsSynchronized && _supabaseService != null)
                 await _supabaseService.SyncPositionAsync(position);
 
             await LoadPositions();
@@ -859,7 +872,7 @@ namespace RepeatList.ViewModels
 
             await _databaseService.UpdateIsCompletedPositionsAsync(Header_SelectedItem.Id, false);
 
-            if (Header_SelectedItem.IsSynchronized)
+            if (Header_SelectedItem.IsSynchronized && _supabaseService != null)
             {
                 Header_SelectedItem.Positions = await _databaseService.GetPositionsAsync(Header_SelectedItem.Id);
 

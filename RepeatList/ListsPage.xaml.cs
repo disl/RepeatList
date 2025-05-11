@@ -126,6 +126,8 @@ namespace RepeatList
 #endif
 
 
+
+
         private async void _timer_Tick(object? sender, EventArgs e)
         {
             await ForTimer_Tick();
@@ -491,7 +493,7 @@ namespace RepeatList
         {
             if (sender is ImageButton button)
             {
-                var popup = new Lists_PopUpMenu((Header)button.CommandParameter);
+                var popup = new Lists_PopUpMenu((Header)button.CommandParameter, ViewModel.SupabaseService_ready);
                 var result = await Shell.Current.ShowPopupAsync(popup);
                 switch (result)
                 {

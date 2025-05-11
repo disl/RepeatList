@@ -20,7 +20,7 @@ namespace RepeatList.Models
         {
             get
             {
-                if (string.IsNullOrEmpty(ListName)) return "";
+                if (string.IsNullOrEmpty(ListName) || ListName.Length < 2) return "";
                 else
                     return ListName.Substring(0, 2).ToUpper();
             }
@@ -42,7 +42,7 @@ namespace RepeatList.Models
                     return "";
                 else
                 {
-                    return IsSupabaseOk ? "icon_sync_green.png" : "icon_sync_red.png"; 
+                    return IsSupabaseOk ? "icon_sync_green.png" : "icon_sync_red.png";
                 }
             }
         }

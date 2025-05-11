@@ -20,6 +20,8 @@ namespace RepeatList.Services
             _supabase.InitializeAsync().Wait();
         }
 
+
+
         public async Task SyncHeaderWithDetailsAsync(Header? header)
         {
             // Hole den Header aus der lokalen Datenbank
