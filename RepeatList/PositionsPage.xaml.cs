@@ -24,28 +24,7 @@ namespace RepeatList
 
             ViewModel = new PositionsPageViewModel(selectedItem);
             BindingContext = ViewModel;
-            SetupPageViewModel = new SetupPageViewModel();
-
-            // RowDefinitions="10,auto,*,auto,*,auto"
-            // Done and Undone are visible
-            //MainGrid.RowDefinitions = new RowDefinitionCollection {
-            //    new RowDefinition(10),
-            //    new RowDefinition(GridLength.Auto),
-            //    new RowDefinition(GridLength.Star),
-            //    new RowDefinition(GridLength.Auto),
-            //    new RowDefinition(GridLength.Star),
-            //    new RowDefinition(GridLength.Auto)
-            //};
-
-            // Only Done is visible
-            //MainGrid.RowDefinitions = new RowDefinitionCollection {
-            //    new RowDefinition(10),
-            //    new RowDefinition(GridLength.Auto),
-            //    new RowDefinition(GridLength.Star),
-            //    new RowDefinition(0), //new RowDefinition(GridLength.Auto),
-            //    new RowDefinition(0), //new RowDefinition(GridLength.Star),
-            //    new RowDefinition(GridLength.Auto)
-            //};
+            SetupPageViewModel = new SetupPageViewModel();            
         }
 
         protected async override void OnAppearing()

@@ -7,12 +7,13 @@
              xmlns:local="clr-namespace:RepeatList.ViewModels"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              xmlns:properties="clr-namespace:RepeatList.Properties"
+             xmlns:system="clr-namespace:System;assembly=System.Runtime"
              Title="" 
              >
 
-    <ContentPage.BindingContext>
+    <!--<ContentPage.BindingContext>
         <local:PositionsPageViewModel />
-    </ContentPage.BindingContext>
+    </ContentPage.BindingContext>-->
     <ContentPage.ToolbarItems>
         <ToolbarItem  IconImageSource="help_icon.png" Clicked="OnHelpButton_Clicked" />
         <ToolbarItem  IconImageSource="{Binding Menu_icon, FallbackValue = 'menu.png'}" Clicked="OpenMenu" />

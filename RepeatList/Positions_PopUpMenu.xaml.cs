@@ -12,6 +12,7 @@ public partial class Positions_PopUpMenu : Popup
     {
         InitializeComponent();
     }
+
     public Positions_PopUpMenu(bool SupabaseService_ready)
     {
         InitializeComponent();

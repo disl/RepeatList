@@ -153,7 +153,7 @@ namespace RepeatList
             }
             catch (Exception ex)
             {
-                SentrySdk.CaptureException(ex);
+                //SentrySdk.CaptureException(ex);
                 Header.IsSupabaseOk = false;
                 throw;
             }

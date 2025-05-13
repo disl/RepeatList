@@ -10,9 +10,9 @@
              >
     <!--xmlns:admob="clr-namespace:Plugin.AdMob;assembly=Plugin.AdMob"-->
 
-    <ContentPage.BindingContext>
+    <!--<ContentPage.BindingContext>
         <local:ListsPageViewModel />
-    </ContentPage.BindingContext>
+    </ContentPage.BindingContext>-->
     <ContentPage.ToolbarItems>
         <ToolbarItem  IconImageSource="add_icon_white.png" Clicked="OnAddHeaderClicked" />
         <!--<ToolbarItem  IconImageSource="kofi_symbol.png" Clicked="CoffeeButtonClicked" />-->
