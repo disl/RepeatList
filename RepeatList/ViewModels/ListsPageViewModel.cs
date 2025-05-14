@@ -150,7 +150,7 @@ namespace RepeatList.ViewModels
         [ObservableProperty] private string search = Properties.Resources.search;
         [ObservableProperty] private string title = Properties.Resources.Lists.ToUpper();
         [ObservableProperty] private string currentCulture;
-        [ObservableProperty] private int imageButton_size = 30;
+        [ObservableProperty] private int imageButton_size = 35;
         [ObservableProperty] private string label_lists = Properties.Resources.Lists.ToUpper();
         [ObservableProperty] private string label_addNewList = Properties.Resources.AddNewList;
         [ObservableProperty] private string label_Lists = Properties.Resources.Lists.ToUpper() + " (0)";
@@ -372,12 +372,6 @@ namespace RepeatList.ViewModels
                 //}
             }
 
-            if (sync_responce.Header == null || sync_responce.Header.Id == null)
-            {
-                IsBusy = false;
-                return;
-            }
-
             Header? _header = null;
             if (Headers != null)
                 _header = Headers.FirstOrDefault(x => x.Id == sync_responce.Header.Id);
@@ -524,7 +518,7 @@ namespace RepeatList.ViewModels
 
         public async Task DeleteHeaderInSupabase(Header header)
         {
-            if (header == null || _supabaseService == null) 
+            if (header == null || _supabaseService == null)
                 return;
             await _supabaseService.DeleteHeaderWithDetailsAsync(header);
         }

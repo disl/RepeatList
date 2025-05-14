@@ -67,7 +67,7 @@ namespace RepeatList.Services
             }
         }
 
-        public async Task<(Header header, List<Position> position)> GetHeaderWithPositionsByIdAsync(Guid headerId)
+        public async Task<(Header? header, List<Position>? position)> GetHeaderWithPositionsByIdAsync(Guid headerId)
         {
             try
             {
@@ -96,8 +96,8 @@ namespace RepeatList.Services
             }
             catch (Exception ex)
             {
-                if (ex != null)
-                    SentrySdk.CaptureException(ex);
+                //if (ex != null)
+                //    SentrySdk.CaptureException(ex);
 
                 return (null, null);
             }

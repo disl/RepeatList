@@ -27,7 +27,7 @@
             <Border.StrokeShape>
                 <RoundRectangle CornerRadius="0" />
             </Border.StrokeShape>
-            <controls:AdBannerView HeightRequest="{OnIdiom Phone=50, Tablet=90}" />
+            <controls:AdBannerView HeightRequest="{OnIdiom Phone=50, Tablet=50}" />
         </Border>
 
         <!-- TITLE -->
