@@ -18,11 +18,8 @@ public partial class SetupPage : ContentPage
     {
         InitializeComponent();
 
-        ViewModel = BindingContext as  SetupPageViewModel;
-
-        //_oldThema = ViewModel.SelectedItem.DefaultAppTheme;
-        //_oldLanguage = ViewModel.SelectedItem.DefaultLanguage;
-        //_currLanguage=_oldLanguage;
+        ViewModel = new SetupPageViewModel();
+        BindingContext = ViewModel;
     }
 
     protected override void OnAppearing()
@@ -32,11 +29,8 @@ public partial class SetupPage : ContentPage
 
         _oldThema = ViewModel.SelectedItem.DefaultAppTheme;
         _oldLanguage = ViewModel.SelectedItem.DefaultLanguage;
-        //_currLanguage=_oldLanguage;
 
-        _ = ViewModel.Load();
-
-       
+        _ = ViewModel.Load();       
     }   
 
     private async void OkButton_Clicked(object sender, EventArgs e)

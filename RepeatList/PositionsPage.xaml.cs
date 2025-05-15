@@ -69,7 +69,7 @@ namespace RepeatList
 
                 ViewModel.Label_lists = tmp_lists;
 
-                ViewModel.InitLabels();
+                ViewModel.InitLabels();                
 
                 if (ViewModel.Header_SelectedItem.IsSynchronized)
                 {

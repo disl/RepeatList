@@ -5,9 +5,9 @@
              xmlns:models="clr-namespace:RepeatList.Models"
              xmlns:local="clr-namespace:RepeatList.ViewModels"
              >
-    <ContentPage.BindingContext>
+    <!--<ContentPage.BindingContext>
         <local:SetupPageViewModel/>
-    </ContentPage.BindingContext>
+    </ContentPage.BindingContext>-->
     <ScrollView>
         <StackLayout  VerticalOptions="StartAndExpand" Margin="20" Spacing="10" >
             <Border Stroke="Gray" Padding="10" Margin="0,10,0,0">
