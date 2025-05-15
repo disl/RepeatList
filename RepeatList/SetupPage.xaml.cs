@@ -141,4 +141,9 @@ public partial class SetupPage : ContentPage
         //ViewModel.SelectedItem.DefaultAppTheme = "Light";
         //ForRadioButtonCheckedChanged();
     }
+
+    private void SortingPicker_SelectedIndexChanged(object sender, EventArgs e)
+    {
+
+    }
 }
