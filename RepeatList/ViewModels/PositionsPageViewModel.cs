@@ -3,10 +3,12 @@ using CommunityToolkit.Maui.Core;
 using CommunityToolkit.Maui.Core.Extensions;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Microsoft.Maui.Graphics;
 using RepeatList.Models;
 using RepeatList.Services;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Data;
 using Position = RepeatList.Models.Position;
 
 namespace RepeatList.ViewModels
@@ -16,7 +18,7 @@ namespace RepeatList.ViewModels
         private DatabaseService _databaseService;
         public SupabaseService _supabaseService;
 
-        //public event PropertyChangedEventHandler PropertyChanged;
+        List<Categories_listType> m_Categoeies_listType_list = new List<Categories_listType>();
 
         private SetupPageViewModel? setupPageViewModel;
 
@@ -62,6 +64,7 @@ namespace RepeatList.ViewModels
         {
             SetCollapseUndone(newValue);
         }
+
 
         private void SetCollapseUndone(bool? newValue)
         {
@@ -145,31 +148,12 @@ namespace RepeatList.ViewModels
             }
         }
 
-
         partial void OnDuplicate_entries_addChanged(bool oldValue, bool newValue)
         {
             Menu_icon = newValue ? "menu.png" : "menu_alert.png";
 
             Preferences.Set("Duplicate_entries_add", newValue);
         }
-
-        //[ObservableProperty] public bool changeListsCheckedState;
-        //partial void OnChangeListsCheckedStateChanged(bool oldValue, bool newValue)
-        //{
-        //    string image_source = "";
-        //    if (Application.Current.UserAppTheme == AppTheme.Dark)
-        //    {
-        //        image_source = newValue ? "check_box_check_white.png" : "check_box_blank_white.png";
-        //    }
-        //    else
-        //    {
-        //        image_source = newValue ? "check_box_check.png" : "check_box_blank.png";
-        //    }
-
-        //    PositionImageSource = image_source;
-        //}
-
-
 
 
         [ObservableProperty] private string search = Properties.Resources.search;
@@ -178,21 +162,7 @@ namespace RepeatList.ViewModels
 
         public PositionsPageViewModel()
         {
-            //_databaseService =  new DatabaseService();
-            //_supabaseService =  new SupabaseService();
-
-            //setupPageViewModel =new SetupPageViewModel();
-
-            //_ = setupPageViewModel.Load();
-            //CurrentCulture= setupPageViewModel.SelectedItem.DefaultLanguage;
-
-            ////_ = LoadHeaders();
-
-            //_ = LoadPositions();
-
-            ////SetFirstItemForHeaders();
-            //InitSelectedItem_KindOfSorting();
-            ////SetResetImageSource();
+            
         }
 
         public PositionsPageViewModel(Header selectedItem)
@@ -222,6 +192,30 @@ namespace RepeatList.ViewModels
             InitSelectedItem_KindOfSorting();
 
             SetCollapseUndone(null);
+
+
+            SetRowColors();
+        }
+
+        private void SetRowColors()
+        {
+            m_Categoeies_listType_list.Clear();
+            var categoeies_list = Positions.PredictionType.Select(x => x.Category).Distinct().ToList();
+            List<Color> randomColors = GetRandomColors(m_colors, categoeies_list.Count).Distinct().ToList();
+
+            for (int i = 0; i < categoeies_list.Count; i++)
+            {
+                m_Categoeies_listType_list.Add(new Categories_listType(categoeies_list[i], randomColors[i]));
+            }
+
+            foreach (DataGridViewRow row in dataGridView1.Rows)
+            {
+                row.Cells[CategorieColumn.Index].Style.BackColor=Color.White;
+
+                if (row.Cells[categoryDataGridViewTextBoxColumn.Index].Value != null)
+                    row.Cells[CategorieColumn.Index].Style.BackColor=
+                        GetColorByCategorie(row.Cells[categoryDataGridViewTextBoxColumn.Index].Value.ToString());
+            }
         }
 
         public void InitLabels()
@@ -678,8 +672,20 @@ namespace RepeatList.ViewModels
             if (Positions_done != null)
                 Positions_done_filtered = new ObservableCollection<Position>(Positions_done);
 
+            foreach(var item in Positions_undone_filterd)
+            {
+                item.Category_color
+            }
+
+
+
             IsBusy = false;
             PositionListViewVisible = true;
+        }
+
+        private Color GetColorByCategorie(ObservableCollection<Position> list, string category)
+        {
+            return list.First(x => x.Category == category).Category_color;
         }
 
         public async Task AddPosition(Position position, bool generate_new_guid)
@@ -892,5 +898,17 @@ namespace RepeatList.ViewModels
 
 
         #endregion
+    }
+
+    internal class Categories_listType
+    {
+        public Categories_listType(string category, Color color)
+        {
+            Category=category;
+            Color=color;
+        }
+
+        public string Category { get; set; }
+        public Color Color { get; set; }
     }
 }

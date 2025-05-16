@@ -68,7 +68,7 @@
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
                         <Grid  ColumnDefinitions="13,5*, 1*,1*,1*" VerticalOptions="Center" HeightRequest="45" ColumnSpacing="10" >
-                            <Button BackgroundColor="{Binding Category_color_undone}" Grid.Column="0" />
+                            <Button BackgroundColor="{Binding Category_color}" Grid.Column="0" BorderColor="{AppThemeBinding Light=Gray, Dark=LightGray}" />
                             <ScrollView Orientation="Horizontal"  Grid.Column="1" VerticalOptions="Center" >
                                 <Label Text="{Binding Title, FallbackValue = '?'}"     
                                        VerticalTextAlignment="Center"
@@ -162,8 +162,8 @@
                                HeightRequest="45"
                                ColumnSpacing="10"                               
                                >
-                            
-                            <Button BackgroundColor="red" Grid.Column="0" />
+
+                            <Button BackgroundColor="{Binding Category_color}" Grid.Column="0" BorderColor="{AppThemeBinding Light=Gray, Dark=LightGray}"/>
                             
                             <ScrollView Orientation="Horizontal" VerticalOptions="Center" Grid.Column="1">
                                 <Label Text="{Binding Title}" 
