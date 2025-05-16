@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using Newtonsoft.Json;
 using Supabase.Postgrest.Attributes;
 using Supabase.Postgrest.Models;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -64,5 +65,7 @@ namespace RepeatList.Models
         //}
 
         public bool IsCompleted { get; set; } = false;
+
+        public Color Category_color_undone { get; set; } = Colors.Green;
     }
 }

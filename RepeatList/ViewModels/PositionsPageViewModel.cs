@@ -30,6 +30,7 @@ namespace RepeatList.ViewModels
         public string collapse_done_icon =
             Application.Current != null && Application.Current.UserAppTheme == AppTheme.Dark ? "expand_icon_white.png" : "expand_icon_black.png";
 
+
         [ObservableProperty] public bool supabaseService_ready;
         [ObservableProperty] public string menu_icon = "menu.png";
         [ObservableProperty] public bool duplicate_entries_add;

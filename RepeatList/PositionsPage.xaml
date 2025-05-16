@@ -11,9 +11,9 @@
              Title="" 
              >
 
-    <!--<ContentPage.BindingContext>
+    <ContentPage.BindingContext>
         <local:PositionsPageViewModel />
-    </ContentPage.BindingContext>-->
+    </ContentPage.BindingContext>
     <ContentPage.ToolbarItems>
         <ToolbarItem  IconImageSource="help_icon.png" Clicked="OnHelpButton_Clicked" />
         <ToolbarItem  IconImageSource="{Binding Menu_icon, FallbackValue = 'menu.png'}" Clicked="OpenMenu" />
@@ -32,8 +32,7 @@
 
         <!-- TITLE -->
         <Label Grid.Row="1" Text="{Binding Title, FallbackValue = ''}" FontSize="24" HorizontalOptions="Center" 
-               TextColor="{AppThemeBinding Light={DynamicResource PrimaryTextColor}, Dark={DynamicResource PrimaryTextColorLight}}"
-/>
+               TextColor="{AppThemeBinding Light={DynamicResource PrimaryTextColor}, Dark={DynamicResource PrimaryTextColorLight}}" />
 
         <!-- SEARCH -->
         <Grid ColumnDefinitions="auto,*,auto" Grid.Row="2" Margin="0,0,0,2" ColumnSpacing="10">
@@ -61,18 +60,15 @@
             <Border.StrokeShape>
                 <RoundRectangle CornerRadius="5" />
             </Border.StrokeShape>
-            <CollectionView x:Name="PositionListView"  
-                            
-                                    ItemsSource="{Binding Positions_undone_filterd}" 
-                            
+            <CollectionView x:Name="PositionListView"                              
+                                    ItemsSource="{Binding Positions_undone_filterd}"                             
                                     SelectedItem="{Binding Position_selectedItem, Mode=OneWayToSource}"                                      
-                                    SelectionMode="Single" 
-                                    
+                                    SelectionMode="Single"                                     
                                     SelectionChanged="OnPositionSelected_new" >
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
                         <Grid  ColumnDefinitions="13,5*, 1*,1*,1*" VerticalOptions="Center" HeightRequest="45" ColumnSpacing="10" >
-                            <Button BackgroundColor="red" Grid.Column="0" />
+                            <Button BackgroundColor="{Binding Category_color_undone}" Grid.Column="0" />
                             <ScrollView Orientation="Horizontal"  Grid.Column="1" VerticalOptions="Center" >
                                 <Label Text="{Binding Title, FallbackValue = '?'}"     
                                        VerticalTextAlignment="Center"
