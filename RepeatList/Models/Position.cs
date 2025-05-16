@@ -11,54 +11,54 @@ namespace RepeatList.Models
 {
     public class Position : BaseModel
     {
-        static MLContext mlContext;
-        static ITransformer? mlModel;
-        static PredictionEngine<ModelInput, ModelOutput> predEngine;
+        //static MLContext mlContext;
+        //static ITransformer? mlModel;
+        //static PredictionEngine<ModelInput, ModelOutput> predEngine;
 
 
-        public class ModelInput
-        {
-            [LoadColumn(0)]
-            [ColumnName(@"col0")]
-            public string Col0 { get; set; }
+        //public class ModelInput
+        //{
+        //    [LoadColumn(0)]
+        //    [ColumnName(@"col0")]
+        //    public string Col0 { get; set; }
 
-            [LoadColumn(1)]
-            [ColumnName(@"col1")]
-            public string Col1 { get; set; }
+        //    [LoadColumn(1)]
+        //    [ColumnName(@"col1")]
+        //    public string Col1 { get; set; }
 
-        }
+        //}
 
-        public class ModelOutput
-        {
-            [ColumnName(@"col0")]
-            public float[] Col0 { get; set; }
+        //public class ModelOutput
+        //{
+        //    [ColumnName(@"col0")]
+        //    public float[] Col0 { get; set; }
 
-            [ColumnName(@"col1")]
-            public uint Col1 { get; set; }
+        //    [ColumnName(@"col1")]
+        //    public uint Col1 { get; set; }
 
-            [ColumnName(@"Features")]
-            public float[] Features { get; set; }
+        //    [ColumnName(@"Features")]
+        //    public float[] Features { get; set; }
 
-            [ColumnName(@"PredictedLabel")]
-            public string PredictedLabel { get; set; }
+        //    [ColumnName(@"PredictedLabel")]
+        //    public string PredictedLabel { get; set; }
 
-            [ColumnName(@"Score")]
-            public float[] Score { get; set; }
+        //    [ColumnName(@"Score")]
+        //    public float[] Score { get; set; }
 
-        }
+        //}
 
         public Position()
         {
-            InitColors();
+            //InitColors();
 
-            if (mlContext == null)
-            {
-                using var stream = Assembly.GetExecutingAssembly()
-                    .GetManifestResourceStream("RepeatList.Resources.ML.MLModel1.zip");
-                mlContext = new MLContext();
-                mlModel = mlContext.Model.Load(stream, out _);
-                predEngine = mlContext.Model.CreatePredictionEngine<ModelInput, ModelOutput>(mlModel);
-            }
+            //if (mlContext == null)
+            //{
+            //    using var stream = Assembly.GetExecutingAssembly()
+            //        .GetManifestResourceStream("RepeatList.Resources.ML.MLModel1.zip");
+            //    mlContext = new MLContext();
+            //    mlModel = mlContext.Model.Load(stream, out _);
+            //    predEngine = mlContext.Model.CreatePredictionEngine<ModelInput, ModelOutput>(mlModel);
+            //}
         }
 
         //[JsonIgnore]
@@ -79,48 +79,48 @@ namespace RepeatList.Models
                 title = value;
 
                 // Set Categorie
-                if (string.IsNullOrEmpty(title))
-                {
+                //if (string.IsNullOrEmpty(title))
+                //{
 
-                }
-                else
-                {
-                    var first_word = title.Split(' ')[0];
+                //}
+                //else
+                //{
+                //    //var first_word = title.Split(' ')[0];
 
-                    //var sampleData = new MLModel1.ModelInput()
-                    //{
-                    //    Col0 = first_word,
-                    //};
+                //    //var sampleData = new MLModel1.ModelInput()
+                //    //{
+                //    //    Col0 = first_word,
+                //    //};
 
-                    ModelInput input = new ModelInput() { Col0=first_word };
-                    var prediction = predEngine.Predict(input);
-                    if (prediction != null)
-                    {
-                        Category = prediction.PredictedLabel;
+                //    //ModelInput input = new ModelInput() { Col0=first_word };
+                //    //var prediction = predEngine.Predict(input);
+                //    //if (prediction != null)
+                //    //{
+                //    //    Category = prediction.PredictedLabel;
 
-                        //dataSet1.PredictionType.AddPredictionTypeRow(
-                        //    s,
-                        //    predicted_item.Key,
-                        //    Convert.ToDecimal(predicted_item.Value));
-                    }
+                //    //    //dataSet1.PredictionType.AddPredictionTypeRow(
+                //    //    //    s,
+                //    //    //    predicted_item.Key,
+                //    //    //    Convert.ToDecimal(predicted_item.Value));
+                //    //}
 
-                    //MLModel1.ModelInput sampleData = new MLModel1.ModelInput()
-                    //{
-                    //    Col0 = first_word,
-                    //};
-                    //var sortedScoresWithLabel = MLModel1.PredictAllLabels(sampleData);
-                    //if (sortedScoresWithLabel != null && sortedScoresWithLabel.Count() > 0)
-                    //{
-                    //    var predicted_item = sortedScoresWithLabel.FirstOrDefault();
+                //    //MLModel1.ModelInput sampleData = new MLModel1.ModelInput()
+                //    //{
+                //    //    Col0 = first_word,
+                //    //};
+                //    //var sortedScoresWithLabel = MLModel1.PredictAllLabels(sampleData);
+                //    //if (sortedScoresWithLabel != null && sortedScoresWithLabel.Count() > 0)
+                //    //{
+                //    //    var predicted_item = sortedScoresWithLabel.FirstOrDefault();
 
-                    //    Category = predicted_item.Key;
+                //    //    Category = predicted_item.Key;
 
-                    //    //dataSet1.PredictionType.AddPredictionTypeRow(
-                    //    //    s,
-                    //    //    predicted_item.Key,
-                    //    //    Convert.ToDecimal(predicted_item.Value));
-                    //}
-                }
+                //    //    //dataSet1.PredictionType.AddPredictionTypeRow(
+                //    //    //    s,
+                //    //    //    predicted_item.Key,
+                //    //    //    Convert.ToDecimal(predicted_item.Value));
+                //    //}
+                //}
             }
         }
 
@@ -170,57 +170,57 @@ namespace RepeatList.Models
 
 
 
-        private void InitColors()
-        {
-            m_colors=new List<Color>();
+        //private void InitColors()
+        //{
+        //    m_colors=new List<Color>();
 
-            if (Application.Current.UserAppTheme == AppTheme.Dark)
-            {
-                m_colors.Add(Colors.Yellow);
-                m_colors.Add(Colors.Lime);
-                m_colors.Add(Colors.Cyan);
-                m_colors.Add(Colors.HotPink);
-                m_colors.Add(Colors.Orange);
-                m_colors.Add(Colors.Orchid);
-                m_colors.Add(Colors.Gold);
-                m_colors.Add(Colors.Red);
-                m_colors.Add(Colors.LimeGreen);
-                m_colors.Add(Colors.Turquoise);
-                m_colors.Add(Colors.Magenta);
-                m_colors.Add(Colors.Coral);
-                m_colors.Add(Colors.SkyBlue);
-                m_colors.Add(Colors.Aqua);
-                m_colors.Add(Color.FromArgb("#FFEF00")); // 255, 239, 0));  // Canary Yellow
-                m_colors.Add(Color.FromArgb("#0047AB"));  //0, 71, 171));      // Cobalt Blue
-                m_colors.Add(Color.FromArgb("#E0115F")); // 224, 17, 95));        // Ruby Red
-                m_colors.Add(Color.FromArgb("#4CBB17"));  // 76, 187, 23));     // Kelly Green
-                m_colors.Add(Color.FromArgb("#9966CC")); // 153, 102, 204));     // Amethyst
-                m_colors.Add(Color.FromArgb("#FF1493"));  // 255, 20, 147));      // Deep Pink
-            }
-            else
-            {
-                m_colors.Add(Color.FromArgb("#000080"));  // 0, 0, 128));    // Navy Blue
-                m_colors.Add(Colors.DarkRed);
-                m_colors.Add(Colors.ForestGreen);
-                m_colors.Add(Colors.Indigo);
-                m_colors.Add(Colors.RoyalBlue);
-                m_colors.Add(Color.FromArgb("#CC5500")); // 204, 85, 0));   // Burnt Orange
-                m_colors.Add(Colors.DarkMagenta);
-                m_colors.Add(Color.FromArgb("#008000")); // 0, 128, 0));    // Emerald Green
-                m_colors.Add(Color.FromArgb("#654321")); // 101, 67, 33));  // Chocolate Brown
-                m_colors.Add(Color.FromArgb("#800020")); // 128, 0, 32));   // Burgundy
-                m_colors.Add(Colors.OliveDrab);
-                m_colors.Add(Colors.DarkSlateGray);
-                m_colors.Add(Colors.SaddleBrown);
-                m_colors.Add(Colors.MidnightBlue);
-                m_colors.Add(Colors.DarkOliveGreen);
-                m_colors.Add(Color.FromArgb("#0047AB"));  //0, 71, 171));      // Cobalt Blue
-                m_colors.Add(Color.FromArgb("#E0115F")); // 224, 17, 95));        // Ruby Red
-                m_colors.Add(Color.FromArgb("#4CBB17"));  // 76, 187, 23));     // Kelly Green
-                m_colors.Add(Color.FromArgb("#9966CC")); // 153, 102, 204));     // Amethyst
-                m_colors.Add(Color.FromArgb("#FF1493"));  // 255, 20, 147));      // Deep Pink
-            }
-        }
+        //    if (Application.Current.UserAppTheme == AppTheme.Dark)
+        //    {
+        //        m_colors.Add(Colors.Yellow);
+        //        m_colors.Add(Colors.Lime);
+        //        m_colors.Add(Colors.Cyan);
+        //        m_colors.Add(Colors.HotPink);
+        //        m_colors.Add(Colors.Orange);
+        //        m_colors.Add(Colors.Orchid);
+        //        m_colors.Add(Colors.Gold);
+        //        m_colors.Add(Colors.Red);
+        //        m_colors.Add(Colors.LimeGreen);
+        //        m_colors.Add(Colors.Turquoise);
+        //        m_colors.Add(Colors.Magenta);
+        //        m_colors.Add(Colors.Coral);
+        //        m_colors.Add(Colors.SkyBlue);
+        //        m_colors.Add(Colors.Aqua);
+        //        m_colors.Add(Color.FromArgb("#FFEF00")); // 255, 239, 0));  // Canary Yellow
+        //        m_colors.Add(Color.FromArgb("#0047AB"));  //0, 71, 171));      // Cobalt Blue
+        //        m_colors.Add(Color.FromArgb("#E0115F")); // 224, 17, 95));        // Ruby Red
+        //        m_colors.Add(Color.FromArgb("#4CBB17"));  // 76, 187, 23));     // Kelly Green
+        //        m_colors.Add(Color.FromArgb("#9966CC")); // 153, 102, 204));     // Amethyst
+        //        m_colors.Add(Color.FromArgb("#FF1493"));  // 255, 20, 147));      // Deep Pink
+        //    }
+        //    else
+        //    {
+        //        m_colors.Add(Color.FromArgb("#000080"));  // 0, 0, 128));    // Navy Blue
+        //        m_colors.Add(Colors.DarkRed);
+        //        m_colors.Add(Colors.ForestGreen);
+        //        m_colors.Add(Colors.Indigo);
+        //        m_colors.Add(Colors.RoyalBlue);
+        //        m_colors.Add(Color.FromArgb("#CC5500")); // 204, 85, 0));   // Burnt Orange
+        //        m_colors.Add(Colors.DarkMagenta);
+        //        m_colors.Add(Color.FromArgb("#008000")); // 0, 128, 0));    // Emerald Green
+        //        m_colors.Add(Color.FromArgb("#654321")); // 101, 67, 33));  // Chocolate Brown
+        //        m_colors.Add(Color.FromArgb("#800020")); // 128, 0, 32));   // Burgundy
+        //        m_colors.Add(Colors.OliveDrab);
+        //        m_colors.Add(Colors.DarkSlateGray);
+        //        m_colors.Add(Colors.SaddleBrown);
+        //        m_colors.Add(Colors.MidnightBlue);
+        //        m_colors.Add(Colors.DarkOliveGreen);
+        //        m_colors.Add(Color.FromArgb("#0047AB"));  //0, 71, 171));      // Cobalt Blue
+        //        m_colors.Add(Color.FromArgb("#E0115F")); // 224, 17, 95));        // Ruby Red
+        //        m_colors.Add(Color.FromArgb("#4CBB17"));  // 76, 187, 23));     // Kelly Green
+        //        m_colors.Add(Color.FromArgb("#9966CC")); // 153, 102, 204));     // Amethyst
+        //        m_colors.Add(Color.FromArgb("#FF1493"));  // 255, 20, 147));      // Deep Pink
+        //    }
+        //}
     }
 
     //internal class Categories_listType

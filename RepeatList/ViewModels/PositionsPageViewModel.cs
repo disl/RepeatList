@@ -4,11 +4,14 @@ using CommunityToolkit.Maui.Core.Extensions;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Maui.Graphics;
+using Microsoft.ML;
+using Microsoft.ML.Data;
 using RepeatList.Models;
 using RepeatList.Services;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Data;
+using System.Reflection;
 using Position = RepeatList.Models.Position;
 
 namespace RepeatList.ViewModels
@@ -17,6 +20,11 @@ namespace RepeatList.ViewModels
     {
         private DatabaseService _databaseService;
         public SupabaseService _supabaseService;
+        static MLContext mlContext;
+        static ITransformer? mlModel;
+        private List<Color> m_colors = new();
+
+        static PredictionEngine<ModelInput, ModelOutput> predEngine;
 
         List<Categories_listType> m_Categoeies_listType_list = new List<Categories_listType>();
 
@@ -162,7 +170,7 @@ namespace RepeatList.ViewModels
 
         public PositionsPageViewModel()
         {
-            
+
         }
 
         public PositionsPageViewModel(Header selectedItem)
@@ -186,6 +194,17 @@ namespace RepeatList.ViewModels
             if (selectedItem.ListName != null)
                 Header_SelectedItem = selectedItem;
 
+            if (mlContext == null)
+            {
+                using var stream = Assembly.GetExecutingAssembly()
+                    .GetManifestResourceStream("RepeatList.Resources.ML.MLModel1.zip");
+                mlContext = new MLContext();
+                mlModel = mlContext.Model.Load(stream, out _);
+                predEngine = mlContext.Model.CreatePredictionEngine<ModelInput, ModelOutput>(mlModel);
+            }
+
+            InitColors();
+
             _ = LoadPositions();
 
             //SetFirstItemForHeaders();
@@ -194,29 +213,10 @@ namespace RepeatList.ViewModels
             SetCollapseUndone(null);
 
 
-            SetRowColors();
+            //SetRowColors();
         }
 
-        private void SetRowColors()
-        {
-            m_Categoeies_listType_list.Clear();
-            var categoeies_list = Positions.PredictionType.Select(x => x.Category).Distinct().ToList();
-            List<Color> randomColors = GetRandomColors(m_colors, categoeies_list.Count).Distinct().ToList();
 
-            for (int i = 0; i < categoeies_list.Count; i++)
-            {
-                m_Categoeies_listType_list.Add(new Categories_listType(categoeies_list[i], randomColors[i]));
-            }
-
-            foreach (DataGridViewRow row in dataGridView1.Rows)
-            {
-                row.Cells[CategorieColumn.Index].Style.BackColor=Color.White;
-
-                if (row.Cells[categoryDataGridViewTextBoxColumn.Index].Value != null)
-                    row.Cells[CategorieColumn.Index].Style.BackColor=
-                        GetColorByCategorie(row.Cells[categoryDataGridViewTextBoxColumn.Index].Value.ToString());
-            }
-        }
 
         public void InitLabels()
         {
@@ -459,7 +459,7 @@ namespace RepeatList.ViewModels
         [RelayCommand]
         public async Task Sync_list_downClicked(Header header)
         {
-            if(_supabaseService == null)
+            if (_supabaseService == null)
                 return;
 
             Guid tmp_guid = new Guid(header.Id);
@@ -648,7 +648,12 @@ namespace RepeatList.ViewModels
                 return;
             }
             Positions = _pos_arr.OrderBy(x => x.IsCompleted).ThenBy(a => a.Title).ToObservableCollection();
-            Positions_undone = _pos_arr.Where(a => a.IsCompleted == false).OrderBy(x => x.Title).ToObservableCollection();
+
+
+            FillCategories();
+
+
+            Positions_undone = _pos_arr.Where(a => a.IsCompleted == false).OrderBy(y=>y.Category).OrderBy(x => x.Title).ToObservableCollection();
 
             if (SelectedItem_KindOfSorting == null)
             {
@@ -672,20 +677,135 @@ namespace RepeatList.ViewModels
             if (Positions_done != null)
                 Positions_done_filtered = new ObservableCollection<Position>(Positions_done);
 
-            foreach(var item in Positions_undone_filterd)
-            {
-                item.Category_color
-            }
-
-
+           
 
             IsBusy = false;
             PositionListViewVisible = true;
         }
 
-        private Color GetColorByCategorie(ObservableCollection<Position> list, string category)
+        private void FillCategories()
         {
-            return list.First(x => x.Category == category).Category_color;
+            for (int i = 0; i < Positions.Count; i++)
+            {
+                var first_word = Positions[i].Title.Split(' ')[0];
+
+                var sampleData = new ModelInput()
+                {
+                    Col0 = first_word,
+                };
+
+                var input = new ModelInput() { Col0=first_word };
+                var prediction = predEngine.Predict(input);
+                if (prediction != null)
+                {
+                    Positions[i].Category = prediction.PredictedLabel;
+                }
+            }
+            SetRowColors();
+        }
+
+        private void SetRowColors()
+        {
+            m_Categoeies_listType_list.Clear();
+            var categories_list = Positions.Select(x => x.Category).Distinct().ToList();
+            List<Color> randomColors = GetRandomColors(m_colors, categories_list.Count).Distinct().ToList();
+
+            for (int i = 0; i < categories_list.Count; i++)
+            {
+                m_Categoeies_listType_list.Add(new Categories_listType(categories_list[i], randomColors[i]));
+            }
+
+            for (int i = 0; i < Positions.Count; i++)
+            {
+                Positions[i].Category_color = Colors.Transparent;
+                if(!string.IsNullOrEmpty(Positions[i].Category))
+                {
+                    Positions[i].Category_color = GetColorByCategorie(Positions[i].Category);
+                }
+            }
+
+            //foreach (DataGridViewRow row in dataGridView1.Rows)
+            //{
+            //    row.Cells[CategorieColumn.Index].Style.BackColor=Color.White;
+
+            //    if (row.Cells[categoryDataGridViewTextBoxColumn.Index].Value != null)
+            //        row.Cells[CategorieColumn.Index].Style.BackColor=
+            //            GetColorByCategorie(row.Cells[categoryDataGridViewTextBoxColumn.Index].Value.ToString());
+            //}
+        }
+
+        private List<Color> GetRandomColors(List<Color> allColors, int count)
+        {
+            if (count > allColors.Count)
+                throw new ArgumentException("Anzahl darf nicht größer als die Liste sein!");
+
+            Random random = new Random();
+            HashSet<Color> selectedColors = new HashSet<Color>();
+
+            while (selectedColors.Count < count)
+            {
+                int randomIndex = random.Next(allColors.Count);
+                selectedColors.Add(allColors[randomIndex]);
+            }
+
+            return new List<Color>(selectedColors);
+        }
+
+        private void InitColors()
+        {
+            m_colors=new List<Color>();
+
+            if (Application.Current.UserAppTheme == AppTheme.Dark)
+            {
+                m_colors.Add(Colors.Yellow);
+                m_colors.Add(Colors.Lime);
+                m_colors.Add(Colors.Cyan);
+                m_colors.Add(Colors.HotPink);
+                m_colors.Add(Colors.Orange);
+                m_colors.Add(Colors.Orchid);
+                m_colors.Add(Colors.Gold);
+                m_colors.Add(Colors.Red);
+                m_colors.Add(Colors.LimeGreen);
+                m_colors.Add(Colors.Turquoise);
+                m_colors.Add(Colors.Magenta);
+                m_colors.Add(Colors.Coral);
+                m_colors.Add(Colors.SkyBlue);
+                m_colors.Add(Colors.Aqua);
+                m_colors.Add(Color.FromArgb("#FFEF00")); // 255, 239, 0));  // Canary Yellow
+                m_colors.Add(Color.FromArgb("#0047AB"));  //0, 71, 171));      // Cobalt Blue
+                m_colors.Add(Color.FromArgb("#E0115F")); // 224, 17, 95));        // Ruby Red
+                m_colors.Add(Color.FromArgb("#4CBB17"));  // 76, 187, 23));     // Kelly Green
+                m_colors.Add(Color.FromArgb("#9966CC")); // 153, 102, 204));     // Amethyst
+                m_colors.Add(Color.FromArgb("#FF1493"));  // 255, 20, 147));      // Deep Pink
+            }
+            else
+            {
+                m_colors.Add(Color.FromArgb("#000080"));  // 0, 0, 128));    // Navy Blue
+                m_colors.Add(Colors.DarkRed);
+                m_colors.Add(Colors.ForestGreen);
+                m_colors.Add(Colors.Indigo);
+                m_colors.Add(Colors.RoyalBlue);
+                m_colors.Add(Color.FromArgb("#CC5500")); // 204, 85, 0));   // Burnt Orange
+                m_colors.Add(Colors.DarkMagenta);
+                m_colors.Add(Color.FromArgb("#008000")); // 0, 128, 0));    // Emerald Green
+                m_colors.Add(Color.FromArgb("#654321")); // 101, 67, 33));  // Chocolate Brown
+                m_colors.Add(Color.FromArgb("#800020")); // 128, 0, 32));   // Burgundy
+                m_colors.Add(Colors.OliveDrab);
+                m_colors.Add(Colors.DarkSlateGray);
+                m_colors.Add(Colors.SaddleBrown);
+                m_colors.Add(Colors.MidnightBlue);
+                m_colors.Add(Colors.DarkOliveGreen);
+                m_colors.Add(Color.FromArgb("#0047AB"));  //0, 71, 171));      // Cobalt Blue
+                m_colors.Add(Color.FromArgb("#E0115F")); // 224, 17, 95));        // Ruby Red
+                m_colors.Add(Color.FromArgb("#4CBB17"));  // 76, 187, 23));     // Kelly Green
+                m_colors.Add(Color.FromArgb("#9966CC")); // 153, 102, 204));     // Amethyst
+                m_colors.Add(Color.FromArgb("#FF1493"));  // 255, 20, 147));      // Deep Pink
+            }
+        }
+
+        private Color GetColorByCategorie(string category)
+        {
+            return m_Categoeies_listType_list.First(x => x.Category == category).Color;
         }
 
         public async Task AddPosition(Position position, bool generate_new_guid)
@@ -898,6 +1018,37 @@ namespace RepeatList.ViewModels
 
 
         #endregion
+    }
+
+    public class ModelInput
+    {
+        [LoadColumn(0)]
+        [ColumnName(@"col0")]
+        public string Col0 { get; set; }
+
+        [LoadColumn(1)]
+        [ColumnName(@"col1")]
+        public string Col1 { get; set; }
+
+    }
+
+    public class ModelOutput
+    {
+        [ColumnName(@"col0")]
+        public float[] Col0 { get; set; }
+
+        [ColumnName(@"col1")]
+        public uint Col1 { get; set; }
+
+        [ColumnName(@"Features")]
+        public float[] Features { get; set; }
+
+        [ColumnName(@"PredictedLabel")]
+        public string PredictedLabel { get; set; }
+
+        [ColumnName(@"Score")]
+        public float[] Score { get; set; }
+
     }
 
     internal class Categories_listType
