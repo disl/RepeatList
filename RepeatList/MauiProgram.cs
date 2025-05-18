@@ -54,23 +54,21 @@ namespace RepeatList
                 fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
             });
 
-            builder.Services.AddSingleton<ListsPage>();
             builder.Services.AddSingleton<ListsPageViewModel>();
+            builder.Services.AddSingleton<ListsPage>();
 
-            builder.Services.AddSingleton<PositionsPage>();
             builder.Services.AddSingleton<PositionsPageViewModel>();
+            builder.Services.AddSingleton<PositionsPage>();
 
-            //builder.Services.AddSingleton<InputTextWithMicrophone>();
-            //builder.Services.AddSingleton<InputTextWithMicrophoneViewModel>();
-
-            builder.Services.AddSingleton<SetupPage>();
             builder.Services.AddSingleton<SetupPageViewModel>();
+            builder.Services.AddSingleton<SetupPage>();
 
-            builder.Services.AddSingleton<HelpPage>();
             builder.Services.AddSingleton<HelpPageViewModel>();
+            builder.Services.AddSingleton<HelpPage>();
+            
 
-            builder.Services.AddSingleton<Header>();  // Falls global
-            builder.Services.AddTransient<Header>();
+            //builder.Services.AddSingleton<Header>();  // Falls global
+            //builder.Services.AddTransient<Header>();
 
 
             //builder.UseAdMob();

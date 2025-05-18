@@ -13,7 +13,7 @@ namespace RepeatList
     public partial class PositionsPage : ContentPage
     {
         private SetupPageViewModel SetupPageViewModel { get; set; }
-        private HelpPageViewModel HelpPageViewModel { get; set; }
+        //private HelpPageViewModel HelpPageViewModel { get; set; }
         private PositionsPageViewModel ViewModel { get; set; }
 
         private IDispatcherTimer _timer;
@@ -322,7 +322,7 @@ namespace RepeatList
                     return;
                 }
 
-                if (sender is Microsoft.Maui.Controls.CheckBox switchControl &&
+                if (sender is CheckBox switchControl &&
                     e != null &&
                     switchControl.BindingContext != null &&
                     switchControl.BindingContext is Position position)
@@ -330,7 +330,6 @@ namespace RepeatList
                     ViewModel.IsBusy = true;
 
                     position.IsCompleted = e.Value;
-                    //position.UpdatedAt = DateTime.Now.ToUniversalTime();
                     await ViewModel.UpdatePosition(position);
 
                     ViewModel.IsBusy = false;

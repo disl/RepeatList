@@ -25,6 +25,7 @@ namespace RepeatList.Models
                     return ListName.Substring(0, 2).ToUpper();
             }
         }
+
         public DateTime UpdatedAt { get; set; }
 
         //[JsonIgnore]

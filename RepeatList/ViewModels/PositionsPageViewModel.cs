@@ -3,7 +3,6 @@ using CommunityToolkit.Maui.Core;
 using CommunityToolkit.Maui.Core.Extensions;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Microsoft.Maui.Graphics;
 using Microsoft.ML;
 using Microsoft.ML.Data;
 using RepeatList.Models;
@@ -397,7 +396,7 @@ namespace RepeatList.ViewModels
         {
             Guid tmp_guid = Guid.Empty;
 
-            if (Application.Current == null || _supabaseService==null)
+            if (Application.Current == null || _supabaseService == null)
                 return;
 
             string guid_str = await Application.Current.MainPage.DisplayPromptAsync(
@@ -653,7 +652,7 @@ namespace RepeatList.ViewModels
             FillCategories();
 
 
-            Positions_undone = _pos_arr.Where(a => a.IsCompleted == false).OrderBy(y=>y.Category).OrderBy(x => x.Title).ToObservableCollection();
+            Positions_undone = _pos_arr.Where(a => a.IsCompleted == false).OrderBy(y => y.Category).OrderBy(x => x.Title).ToObservableCollection();
 
             if (SelectedItem_KindOfSorting == null)
             {
@@ -677,7 +676,7 @@ namespace RepeatList.ViewModels
             if (Positions_done != null)
                 Positions_done_filtered = new ObservableCollection<Position>(Positions_done);
 
-           
+
 
             IsBusy = false;
             PositionListViewVisible = true;
@@ -694,7 +693,7 @@ namespace RepeatList.ViewModels
                     Col0 = first_word,
                 };
 
-                var input = new ModelInput() { Col0=first_word };
+                var input = new ModelInput() { Col0 = first_word };
                 var prediction = predEngine.Predict(input);
                 if (prediction != null)
                 {
@@ -704,11 +703,19 @@ namespace RepeatList.ViewModels
             SetRowColors();
         }
 
+        List<string>? m_old_categories_list = null;
+        List<Color> randomColors = new();
+
         private void SetRowColors()
-        {
+        {            
             m_Categoeies_listType_list.Clear();
             var categories_list = Positions.Select(x => x.Category).Distinct().ToList();
-            List<Color> randomColors = GetRandomColors(m_colors, categories_list.Count).Distinct().ToList();
+
+            if (m_old_categories_list == null || !m_old_categories_list.Equals(categories_list))
+            {
+                randomColors = GetRandomColors(m_colors, categories_list.Count).Distinct().ToList();
+                m_old_categories_list = categories_list;
+            }
 
             for (int i = 0; i < categories_list.Count; i++)
             {
@@ -718,7 +725,7 @@ namespace RepeatList.ViewModels
             for (int i = 0; i < Positions.Count; i++)
             {
                 Positions[i].Category_color = Colors.Transparent;
-                if(!string.IsNullOrEmpty(Positions[i].Category))
+                if (!string.IsNullOrEmpty(Positions[i].Category))
                 {
                     Positions[i].Category_color = GetColorByCategorie(Positions[i].Category);
                 }
@@ -753,7 +760,7 @@ namespace RepeatList.ViewModels
 
         private void InitColors()
         {
-            m_colors=new List<Color>();
+            m_colors = new List<Color>();
 
             if (Application.Current.UserAppTheme == AppTheme.Dark)
             {
@@ -1055,8 +1062,8 @@ namespace RepeatList.ViewModels
     {
         public Categories_listType(string category, Color color)
         {
-            Category=category;
-            Color=color;
+            Category = category;
+            Color = color;
         }
 
         public string Category { get; set; }
