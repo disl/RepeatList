@@ -565,9 +565,23 @@ namespace RepeatList
             ViewModel.Duplicate_entries_add = Preferences.Get("duplicate_entries_add", true);
         }
 
+        private async void Category_colorClicked(object sender, EventArgs e)
+        {
+            var button = sender as Button;
+            if (button?.CommandParameter is Position position)
+            {
+                // Hier category color change
 
 
 
+
+                //string new_title = await DisplayPromptAsync(Properties.Resources.Input, Properties.Resources.Enter_new_position_title, "OK", Properties.Resources.Cancel, initialValue: position.Title);
+                //if (!string.IsNullOrWhiteSpace(new_title))
+                //{
+                //    await ViewModel.EditTitleOfPosition(position, new_title);
+                //}
+            }
+        }
     }
 
 }

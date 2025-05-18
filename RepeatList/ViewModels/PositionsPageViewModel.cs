@@ -615,6 +615,8 @@ namespace RepeatList.ViewModels
             return newHeader;
         }
 
+        private List<Position>? m_old_Positions = null;
+
         internal async Task LoadPositions()
         {
             IsBusy = true;
@@ -648,11 +650,15 @@ namespace RepeatList.ViewModels
             }
             Positions = _pos_arr.OrderBy(x => x.IsCompleted).ThenBy(a => a.Title).ToObservableCollection();
 
+            // set categories 
+            //if (m_old_Positions == null || Positions.Count != m_old_Positions.Count) //!Positions.ToList().SequenceEqual(m_old_Positions, new PositionComparer()))
+            //{
+                FillCategories();
 
-            FillCategories();
+            //    m_old_Positions = Positions.ToList();
+            //}
 
-
-            Positions_undone = _pos_arr.Where(a => a.IsCompleted == false).OrderBy(y => y.Category).OrderBy(x => x.Title).ToObservableCollection();
+            Positions_undone = _pos_arr.Where(a => a.IsCompleted == false).OrderBy(y => y.Category).ThenBy(x => x.Title).ToObservableCollection();
 
             if (SelectedItem_KindOfSorting == null)
             {
@@ -663,7 +669,7 @@ namespace RepeatList.ViewModels
             if (SelectedItem_KindOfSorting.Value == "date")
                 Positions_done = _pos_arr.Where(a => a.IsCompleted).OrderByDescending(x => x.UpdatedAt).ToObservableCollection();
             else if (SelectedItem_KindOfSorting.Value == "alpha")
-                Positions_done = _pos_arr.Where(a => a.IsCompleted).OrderBy(x => x.Title).ToObservableCollection();
+                Positions_done = _pos_arr.Where(a => a.IsCompleted).OrderBy(y => y.Category).ThenBy(x => x.Title).ToObservableCollection();
 
             Label_done = string.Format("{0} ({1})", Properties.Resources.done, Positions_done.Count);
             Label_undone = string.Format("{0} ({1})", Properties.Resources.undone, Positions_undone.Count);
@@ -707,11 +713,11 @@ namespace RepeatList.ViewModels
         List<Color> randomColors = new();
 
         private void SetRowColors()
-        {            
+        {
             m_Categoeies_listType_list.Clear();
-            var categories_list = Positions.Select(x => x.Category).Distinct().ToList();
+            var categories_list = Positions.Select(x => x.Category).Distinct().OrderBy(x => x).ToList();
 
-            if (m_old_categories_list == null || !m_old_categories_list.Equals(categories_list))
+            if (m_old_categories_list == null || !m_old_categories_list.SequenceEqual(categories_list))
             {
                 randomColors = GetRandomColors(m_colors, categories_list.Count).Distinct().ToList();
                 m_old_categories_list = categories_list;
