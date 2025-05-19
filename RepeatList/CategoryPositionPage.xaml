@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="RepeatList.CategoryPositionPage"
+             xmlns:local="clr-namespace:RepeatList.ViewModels"
+             Title="CategoryPositionPage">
+    
+    <ContentPage.BindingContext>
+        <local:CategoryPositionViewModel />
+    </ContentPage.BindingContext>
+    
+    <VerticalStackLayout Padding="20">
+        <Label Text="Bitte wählen Sie eine Kategorie:"
+               FontSize="Medium"
+               HorizontalOptions="Center" />
+
+        <!--<Picker Title="Kategorie auswählen"
+                ItemsSource="{Binding Categories}"
+                SelectedItem="{Binding SelectedCategory}"
+                HorizontalOptions="Fill" />-->
+
+        <Border Stroke="Gray" Padding="5" Margin="0,10,0,0">
+            <StackLayout Orientation="Vertical">
+
+                <Label Text="{Binding Title}" 
+                       VerticalOptions="CenterAndExpand"  
+                       WidthRequest="70"
+                       TextColor="{AppThemeBinding Light={DynamicResource PrimaryTextColor}, Dark={DynamicResource PrimaryTextColorLight}}" />
+
+                <CollectionView ItemsSource="{Binding Categories}" 
+                    SelectionMode="Single"                    
+                    SelectedItem="{Binding SelectedCategory, Mode=TwoWay}">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <StackLayout Orientation="Horizontal" Padding="10">
+                                <Label Text="{Binding Category}" VerticalOptions="Center" 
+                                       TextColor="{AppThemeBinding Light=Black, Dark=White}"/>
+                            </StackLayout>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+
+            </StackLayout>
+        </Border>
+
+        <Label Text="{Binding SelectedCategory, StringFormat='Ausgewählt: {0}'}"
+               FontSize="Medium"
+               HorizontalOptions="Center"
+               Margin="0,20,0,0" />
+    </VerticalStackLayout>
+</ContentPage>

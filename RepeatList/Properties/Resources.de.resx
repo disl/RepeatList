@@ -308,6 +308,9 @@ Wollen Sie trotzdem fortfahren?</value>
   <data name="Selected_list_and_list_synchronisations_will_now_be_deleted" xml:space="preserve">
     <value>Ausgewählte Liste und Listensynchronisationen werden jetzt gelöscht, sind Sie damit einverstanden?</value>
   </data>
+  <data name="Select_a_category" xml:space="preserve">
+    <value>Wählen Sie eine Kategorie aus</value>
+  </data>
   <data name="Send_synchronisation" xml:space="preserve">
     <value>Synchronisation senden</value>
   </data>

@@ -8,6 +8,7 @@ using RepeatList.ViewModels;
 using System.Collections.ObjectModel;
 using System.Globalization;
 
+
 namespace RepeatList
 {
     public partial class PositionsPage : ContentPage
@@ -15,6 +16,7 @@ namespace RepeatList
         private SetupPageViewModel SetupPageViewModel { get; set; }
         //private HelpPageViewModel HelpPageViewModel { get; set; }
         private PositionsPageViewModel ViewModel { get; set; }
+        private CategoryPosition_PopUpViewModel m_CategoryPosition_PopUpViewModel  = new CategoryPosition_PopUpViewModel();
 
         private IDispatcherTimer _timer;
 
@@ -571,6 +573,15 @@ namespace RepeatList
             if (button?.CommandParameter is Position position)
             {
                 // Hier category color change
+                var categories_list = ViewModel.Positions.Select(x => x.Category).Distinct().OrderBy(x => x).ToObservableCollection();
+
+                var popup = new CategoryPosition_PopUp(categories_list, position.Category);
+                var result = await Shell.Current.ShowPopupAsync(popup);
+                if (result != null)
+                {
+                    await m_CategoryPosition_PopUpViewModel.Update(position.Title, result.ToString());
+                }
+
 
 
 

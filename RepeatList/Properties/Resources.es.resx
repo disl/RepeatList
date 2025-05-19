@@ -308,6 +308,9 @@ OPCIÓN DE MENÚ «DUPLICAR ELEMENTOS»:
   <data name="Selected_list_and_list_synchronisations_will_now_be_deleted" xml:space="preserve">
     <value>La lista seleccionada y las sincronizaciones de listas se eliminarán, ¿está de acuerdo?</value>
   </data>
+  <data name="Select_a_category" xml:space="preserve">
+    <value>Seleccione una categoría</value>
+  </data>
   <data name="Send_synchronisation" xml:space="preserve">
     <value>Enviar sincronización</value>
   </data>

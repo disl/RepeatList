@@ -14,7 +14,7 @@
                 <HorizontalStackLayout Spacing="40"  RadioButtonGroup.SelectedValue="{Binding SelectedItem.DefaultAppTheme, Mode=TwoWay}">
 
                     <Label Text="{Binding Title_thema}" VerticalOptions="Center"  WidthRequest="70" 
-        TextColor="{AppThemeBinding Light=Black, Dark=White}" />
+                           TextColor="{AppThemeBinding Light=Black, Dark=White}" />
 
                     <RadioButton Value="Dark" Content="Dark"   
                   BackgroundColor="{AppThemeBinding Light=White, Dark=Black}"
@@ -55,7 +55,7 @@
 
                 </StackLayout>
             </Border>
-           
+
             <StackLayout Orientation="Horizontal" HorizontalOptions="StartAndExpand" Spacing="10" >
                 <Button Text="OK" Clicked="OkButton_Clicked" HorizontalOptions="FillAndExpand" TextColor="White" WidthRequest="150" />
                 <Button Text="{Binding Label_cancel}" Clicked="OnCancel" BackgroundColor="{x:Static models:Constantes.Color_Warning}"

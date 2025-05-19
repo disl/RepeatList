@@ -42,8 +42,11 @@ namespace RepeatList.Services
                 Id INTEGER PRIMARY KEY AUTOINCREMENT,
                 DefaultLanguage TEXT NOT NULL DEFAULT 'en',
                 DefaultAppTheme TEXT NOT NULL DEFAULT 'Dark'
-                
-            );";
+            );
+            CREATE TABLE IF NOT EXISTS CategoryPosition(
+                Position TEXT PRIMARY KEY,
+                Category TEXT NOT NULL 
+            ); ";
             command.ExecuteNonQuery();
 
             //AddColumnIfNotExists("Header", "IsSynchronized", "INTEGER", _connection, "DEFAULT 0");
@@ -329,7 +332,7 @@ namespace RepeatList.Services
         #region SETUP
 
 
-        // Header CRUD
+        // Setup CRUD
         public async Task<List<Setup>> GetSetupsAsync()
         {
             var Setups = new List<Setup>();
@@ -422,6 +425,116 @@ namespace RepeatList.Services
             var ret_val = await command.ExecuteNonQueryAsync();
 
             //await GetPositionsAsync(position.HeaderId);
+
+            return ret_val;
+        }
+
+        #endregion
+
+
+        #region CategoryPosition
+
+
+        public async Task<List<CategoryPosition>> GetCategoryPositionsAsync()
+        {
+            var CategoryPositions = new List<CategoryPosition>();
+
+            var command = _connection.CreateCommand();
+            command.CommandText = "SELECT * FROM CategoryPosition";
+
+            using (var reader = await command.ExecuteReaderAsync())
+            {
+                while (await reader.ReadAsync())
+                {                    
+                    CategoryPositions.Add(new CategoryPosition(
+                        reader.GetString(0),
+                        reader.GetString(1)
+                    ));
+                }
+            }
+            return CategoryPositions;
+        }
+
+        public async Task<CategoryPosition?> GetCategoryPositionAsync(string Position)
+        {
+            var CategoryPositions = new List<CategoryPosition>();
+            var CategoryPosition = new CategoryPosition();
+
+            try
+            {
+                var command = _connection.CreateCommand();
+                command.CommandText = "SELECT * FROM CategoryPosition WHERE Position=@Position";
+                command.Parameters.AddWithValue("@Position", Position);
+
+                using (var reader = await command.ExecuteReaderAsync())
+                {
+                    while (await reader.ReadAsync())
+                    {
+                        CategoryPositions.Add(new CategoryPosition
+                        (
+                            reader.GetString(0),
+                            reader.GetString(1)
+                        ));
+                    }
+                }
+
+                if (CategoryPositions != null && CategoryPositions.Count == 1)
+                    CategoryPosition = CategoryPositions[0];
+                else CategoryPosition = null;
+
+                return CategoryPosition;
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+
+        public async Task<int> AddCategoryPositionAsync(CategoryPosition CategoryPosition)
+        {
+            try
+            {
+                var command = _connection.CreateCommand();
+                command.CommandText = "INSERT INTO CategoryPosition (Position, Category) VALUES (@Position, @Category)";
+                command.Parameters.AddWithValue("@Position", CategoryPosition.Position);
+                command.Parameters.AddWithValue("@Category", CategoryPosition.Category);
+                await command.ExecuteNonQueryAsync();
+
+                // Die letzte eingefügte ID abrufen
+                var idCommand = _connection.CreateCommand();
+                idCommand.CommandText = "SELECT last_insert_rowid()";
+                var newId_obj = await idCommand.ExecuteScalarAsync();
+                if (newId_obj != DBNull.Value)
+                    return Convert.ToInt32(newId_obj);
+                else
+                    return -1;
+            }
+            catch (Exception ex)
+            {
+                return -1;
+            }
+        }
+
+        public async Task<int> DeleteCategoryPositionAsync(string position)
+        {
+            var command = _connection.CreateCommand();
+            command.CommandText = "DELETE FROM CategoryPosition WHERE Position = @Position";
+            command.Parameters.AddWithValue("@Position", position);
+
+            return await command.ExecuteNonQueryAsync();
+        }
+
+        public async Task<int> UpdateCategoryPositionAsync(CategoryPosition position)
+        {
+            if (position == null || string.IsNullOrEmpty(position.Position))
+                return 0;
+
+            var command = _connection.CreateCommand();
+            command.CommandText = "UPDATE CategoryPosition SET Category = @Category WHERE Position = @Position";
+            command.Parameters.AddWithValue("@Position", position.Position);
+            command.Parameters.AddWithValue("@Category", position.Category);
+
+            var ret_val = await command.ExecuteNonQueryAsync();
 
             return ret_val;
         }

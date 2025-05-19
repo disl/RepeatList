@@ -588,6 +588,15 @@ namespace RepeatList.Properties {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Select a category ähnelt.
+        /// </summary>
+        public static string Select_a_category {
+            get {
+                return ResourceManager.GetString("Select_a_category", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Selected list and list synchronisations will now be deleted, do you agree? ähnelt.
         /// </summary>
         public static string Selected_list_and_list_synchronisations_will_now_be_deleted {

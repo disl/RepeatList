@@ -70,7 +70,7 @@
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
                         <!--HeightRequest="45"-->
-                        <Grid  ColumnDefinitions="15,6*,1*,1*,1*" VerticalOptions="Center" 
+                        <Grid  ColumnDefinitions="30,6*,1*,1*,1*" VerticalOptions="Center" 
                                
                                ColumnSpacing="10" >
                             <Button BackgroundColor="{Binding Category_color}" Grid.Column="0" 

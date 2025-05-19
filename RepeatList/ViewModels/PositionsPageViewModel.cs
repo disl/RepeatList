@@ -72,7 +72,6 @@ namespace RepeatList.ViewModels
             SetCollapseUndone(newValue);
         }
 
-
         private void SetCollapseUndone(bool? newValue)
         {
             if (newValue == null)

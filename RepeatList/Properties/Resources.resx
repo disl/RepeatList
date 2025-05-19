@@ -362,4 +362,7 @@ Do you still want to continue?</value>
   <data name="Rate_app" xml:space="preserve">
     <value>Rate app</value>
   </data>
+  <data name="Select_a_category" xml:space="preserve">
+    <value>Select a category</value>
+  </data>
 </root>

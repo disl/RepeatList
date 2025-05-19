@@ -308,6 +308,9 @@
   <data name="Selected_list_and_list_synchronisations_will_now_be_deleted" xml:space="preserve">
     <value>Вибраний список і синхронізації списків буде видалено, ви згодні?</value>
   </data>
+  <data name="Select_a_category" xml:space="preserve">
+    <value>Виберіть категорію</value>
+  </data>
   <data name="Send_synchronisation" xml:space="preserve">
     <value>Надіслати синхронізацію</value>
   </data>
