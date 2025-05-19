@@ -10,6 +10,7 @@ using RepeatList.Services;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Data;
+using System.Reactive.Linq;
 using System.Reflection;
 using Position = RepeatList.Models.Position;
 
@@ -22,6 +23,7 @@ namespace RepeatList.ViewModels
         static MLContext mlContext;
         static ITransformer? mlModel;
         private List<Color> m_colors = new();
+        private CategoryPosition_PopUpViewModel m_CategoryPosition_PopUpViewModel = new CategoryPosition_PopUpViewModel();
 
         static PredictionEngine<ModelInput, ModelOutput> predEngine;
 
@@ -39,7 +41,7 @@ namespace RepeatList.ViewModels
         public string collapse_done_icon =
             Application.Current != null && Application.Current.UserAppTheme == AppTheme.Dark ? "expand_icon_white.png" : "expand_icon_black.png";
 
-
+        [ObservableProperty] public List<CategoryPosition> categories_db;
         [ObservableProperty] public bool supabaseService_ready;
         [ObservableProperty] public string menu_icon = "menu.png";
         [ObservableProperty] public bool duplicate_entries_add;
@@ -201,6 +203,9 @@ namespace RepeatList.ViewModels
                 predEngine = mlContext.Model.CreatePredictionEngine<ModelInput, ModelOutput>(mlModel);
             }
 
+            // Categories
+            GetCategories_DB().GetAwaiter().GetResult(); 
+
             InitColors();
 
             _ = LoadPositions();
@@ -214,7 +219,11 @@ namespace RepeatList.ViewModels
             //SetRowColors();
         }
 
-
+        private async Task GetCategories_DB()
+        {
+            await m_CategoryPosition_PopUpViewModel.FillList();
+            Categories_db = m_CategoryPosition_PopUpViewModel.Categories_db;
+        }
 
         public void InitLabels()
         {
@@ -652,7 +661,7 @@ namespace RepeatList.ViewModels
             // set categories 
             //if (m_old_Positions == null || Positions.Count != m_old_Positions.Count) //!Positions.ToList().SequenceEqual(m_old_Positions, new PositionComparer()))
             //{
-                FillCategories();
+            FillCategories();
 
             //    m_old_Positions = Positions.ToList();
             //}
@@ -710,6 +719,8 @@ namespace RepeatList.ViewModels
 
         List<string>? m_old_categories_list = null;
         List<Color> randomColors = new();
+
+
 
         private void SetRowColors()
         {

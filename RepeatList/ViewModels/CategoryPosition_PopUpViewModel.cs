@@ -14,7 +14,7 @@ namespace RepeatList.ViewModels
         [ObservableProperty] string? title = "Select category";
         [ObservableProperty] string? selectedCategory;
         [ObservableProperty] ObservableCollection<string> categories = new ObservableCollection<string>();
-        [ObservableProperty] ObservableCollection<CategoryPosition> categories_db;
+        [ObservableProperty] List<CategoryPosition> categories_db;
 
         public CategoryPosition_PopUpViewModel()
         {
@@ -42,6 +42,8 @@ namespace RepeatList.ViewModels
             {
                 await Update(new CategoryPosition(Position, Categorie));
             }
+            await FillList();
+            SelectedCategory = Categorie;
         }
 
         public async Task<int> Add(string Position, string Categorie)
@@ -50,7 +52,6 @@ namespace RepeatList.ViewModels
             var new_id = await _databaseService.AddCategoryPositionAsync(newItem);
 
             await FillList();
-
             SelectedCategory = Categorie;
 
             return new_id;
@@ -71,13 +72,13 @@ namespace RepeatList.ViewModels
             await _databaseService.UpdateCategoryPositionAsync(item);
             await FillList();
 
+            await FillList();
             SelectedCategory = item.Category;
         }
 
-        private async Task FillList()
+        public async Task FillList()
         {
-            var list = await _databaseService.GetCategoryPositionsAsync();
-            Categories_db = (ObservableCollection<CategoryPosition>)list.ToObservable<CategoryPosition>();
+            Categories_db = await _databaseService.GetCategoryPositionsAsync();
         }
     }
 }

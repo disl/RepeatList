@@ -16,7 +16,7 @@ namespace RepeatList
         private SetupPageViewModel SetupPageViewModel { get; set; }
         //private HelpPageViewModel HelpPageViewModel { get; set; }
         private PositionsPageViewModel ViewModel { get; set; }
-        private CategoryPosition_PopUpViewModel m_CategoryPosition_PopUpViewModel  = new CategoryPosition_PopUpViewModel();
+        private CategoryPosition_PopUpViewModel m_CategoryPosition_PopUpViewModel = new CategoryPosition_PopUpViewModel();
 
         private IDispatcherTimer _timer;
 
@@ -26,7 +26,7 @@ namespace RepeatList
 
             ViewModel = new PositionsPageViewModel(selectedItem);
             BindingContext = ViewModel;
-            SetupPageViewModel = new SetupPageViewModel();            
+            SetupPageViewModel = new SetupPageViewModel();
         }
 
         protected async override void OnAppearing()
@@ -71,7 +71,7 @@ namespace RepeatList
 
                 ViewModel.Label_lists = tmp_lists;
 
-                ViewModel.InitLabels();                
+                ViewModel.InitLabels();
 
                 if (ViewModel.Header_SelectedItem.IsSynchronized)
                 {
@@ -572,6 +572,9 @@ namespace RepeatList
             var button = sender as Button;
             if (button?.CommandParameter is Position position)
             {
+                if (position == null || position.Title==null || position.Category == null)
+                    return;
+
                 // Hier category color change
                 var categories_list = ViewModel.Positions.Select(x => x.Category).Distinct().OrderBy(x => x).ToObservableCollection();
 
@@ -580,6 +583,8 @@ namespace RepeatList
                 if (result != null)
                 {
                     await m_CategoryPosition_PopUpViewModel.Update(position.Title, result.ToString());
+
+                    ViewModel.Categories_db = m_CategoryPosition_PopUpViewModel.Categories_db;
                 }
 
 
