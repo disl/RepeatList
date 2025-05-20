@@ -28,7 +28,7 @@ namespace RepeatList.ViewModels
             Categories = categories_list;
         }
 
-        public async Task Update(string Position, string Categorie)
+        public async Task UpdateOrAdd(string Position, string Categorie)
         {
           if(string.IsNullOrEmpty(Position) || string.IsNullOrEmpty(Categorie))
                 return;

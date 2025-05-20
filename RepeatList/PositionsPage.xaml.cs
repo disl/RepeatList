@@ -582,9 +582,12 @@ namespace RepeatList
                 var result = await Shell.Current.ShowPopupAsync(popup);
                 if (result != null)
                 {
-                    await m_CategoryPosition_PopUpViewModel.Update(position.Title, result.ToString());
+                    await m_CategoryPosition_PopUpViewModel.UpdateOrAdd(position.Title, result.ToString());
 
-                    ViewModel.Categories_db = m_CategoryPosition_PopUpViewModel.Categories_db;
+                    //ViewModel.Categories_db = m_CategoryPosition_PopUpViewModel.Categories_db;
+
+
+                    await ViewModel.RefreshColors(); 
                 }
 
 

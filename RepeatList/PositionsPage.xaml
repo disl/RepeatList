@@ -173,7 +173,7 @@
                 <!--HeightRequest="45"-->
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
-                        <Grid  ColumnDefinitions="15,6*, 1*,1*,1*" 
+                        <Grid  ColumnDefinitions="30,6*, 1*,1*,1*" 
                                VerticalOptions="Center"                           
                                ColumnSpacing="10"                               
                                >

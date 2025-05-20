@@ -204,11 +204,7 @@ namespace RepeatList.ViewModels
             }
 
             // Categories
-            GetCategories_DB().GetAwaiter().GetResult(); 
-
-            InitColors();
-
-            _ = LoadPositions();
+            RefreshColors().GetAwaiter().GetResult(); 
 
             //SetFirstItemForHeaders();
             InitSelectedItem_KindOfSorting();
@@ -217,6 +213,15 @@ namespace RepeatList.ViewModels
 
 
             //SetRowColors();
+        }
+
+        public async Task RefreshColors()
+        {
+            GetCategories_DB().GetAwaiter().GetResult();
+
+            InitColors();
+
+            await LoadPositions();
         }
 
         private async Task GetCategories_DB()
@@ -623,8 +628,6 @@ namespace RepeatList.ViewModels
             return newHeader;
         }
 
-        private List<Position>? m_old_Positions = null;
-
         internal async Task LoadPositions()
         {
             IsBusy = true;
@@ -659,12 +662,7 @@ namespace RepeatList.ViewModels
             Positions = _pos_arr.OrderBy(x => x.IsCompleted).ThenBy(a => a.Title).ToObservableCollection();
 
             // set categories 
-            //if (m_old_Positions == null || Positions.Count != m_old_Positions.Count) //!Positions.ToList().SequenceEqual(m_old_Positions, new PositionComparer()))
-            //{
             FillCategories();
-
-            //    m_old_Positions = Positions.ToList();
-            //}
 
             Positions_undone = _pos_arr.Where(a => a.IsCompleted == false).OrderBy(y => y.Category).ThenBy(x => x.Title).ToObservableCollection();
 
@@ -696,22 +694,40 @@ namespace RepeatList.ViewModels
             PositionListViewVisible = true;
         }
 
-        private void FillCategories()
+        public void FillCategories()
         {
+            // From prediction
             for (int i = 0; i < Positions.Count; i++)
             {
+                //string? tmp_category = null;
+
                 var first_word = Positions[i].Title.Split(' ')[0];
 
-                var sampleData = new ModelInput()
-                {
-                    Col0 = first_word,
-                };
+                // From DB
+                GetCategories_DB().GetAwaiter().GetResult();
 
-                var input = new ModelInput() { Col0 = first_word };
-                var prediction = predEngine.Predict(input);
-                if (prediction != null)
+                if (Categories_db != null && Categories_db.Count > 0)
                 {
-                    Positions[i].Category = prediction.PredictedLabel;
+                    var match_obj = Categories_db.FirstOrDefault(x => x.Position.Contains(first_word, StringComparison.CurrentCultureIgnoreCase));
+                    if (match_obj != null)
+                    {
+                        Positions[i].Category = match_obj.Category;
+                    }
+                }
+
+                if (string.IsNullOrEmpty(Positions[i].Category))
+                {
+                    var sampleData = new ModelInput()
+                    {
+                        Col0 = first_word,
+                    };
+
+                    var input = new ModelInput() { Col0 = first_word };
+                    var prediction = predEngine.Predict(input);
+                    if (prediction != null)
+                    {
+                        Positions[i].Category = prediction.PredictedLabel;
+                    }
                 }
             }
             SetRowColors();
