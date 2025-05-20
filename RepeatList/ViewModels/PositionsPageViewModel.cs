@@ -16,21 +16,17 @@ using Position = RepeatList.Models.Position;
 
 namespace RepeatList.ViewModels
 {
-    public partial class PositionsPageViewModel : ObservableObject   // INotifyPropertyChanged,
+    public partial class PositionsPageViewModel : ObservableObject   
     {
         private DatabaseService _databaseService;
         public SupabaseService _supabaseService;
         static MLContext mlContext;
         static ITransformer? mlModel;
-        private List<Color> m_colors = new();
+        public static List<Color> ColorsList = new();
         private CategoryPosition_PopUpViewModel m_CategoryPosition_PopUpViewModel = new CategoryPosition_PopUpViewModel();
-
         static PredictionEngine<ModelInput, ModelOutput> predEngine;
-
         List<Categories_listType> m_Categoeies_listType_list = new List<Categories_listType>();
-
         private SetupPageViewModel? setupPageViewModel;
-
         public string SelectedItem_KindOfSorting_key_name = "SelectedItem_KindOfSorting";
         public double ButtonsSize = 25;
 
@@ -715,6 +711,7 @@ namespace RepeatList.ViewModels
                     }
                 }
 
+                // From ML
                 if (string.IsNullOrEmpty(Positions[i].Category))
                 {
                     var sampleData = new ModelInput()
@@ -745,7 +742,7 @@ namespace RepeatList.ViewModels
 
             if (m_old_categories_list == null || !m_old_categories_list.SequenceEqual(categories_list))
             {
-                randomColors = GetRandomColors(m_colors, categories_list.Count).Distinct().ToList();
+                randomColors = FillColorsList(ColorsList, categories_list.Count).Distinct().ToList();
                 m_old_categories_list = categories_list;
             }
 
@@ -773,7 +770,7 @@ namespace RepeatList.ViewModels
             //}
         }
 
-        private List<Color> GetRandomColors(List<Color> allColors, int count)
+        private List<Color> FillColorsList(List<Color> allColors, int count)
         {
             if (count > allColors.Count)
                 throw new ArgumentException("Anzahl darf nicht größer als die Liste sein!");
@@ -781,64 +778,70 @@ namespace RepeatList.ViewModels
             Random random = new Random();
             HashSet<Color> selectedColors = new HashSet<Color>();
 
-            while (selectedColors.Count < count)
+            for (int i = 0; i < count; i++)
             {
-                int randomIndex = random.Next(allColors.Count);
-                selectedColors.Add(allColors[randomIndex]);
+                selectedColors.Add(allColors[i]);
             }
+
+            // Random variant
+            //while (selectedColors.Count < count)
+            //{
+            //    int randomIndex = random.Next(allColors.Count);
+            //    selectedColors.Add(allColors[randomIndex]);
+            //}
 
             return new List<Color>(selectedColors);
         }
 
         private void InitColors()
         {
-            m_colors = new List<Color>();
+            ColorsList = new List<Color>();
 
             if (Application.Current.UserAppTheme == AppTheme.Dark)
             {
-                m_colors.Add(Colors.Yellow);
-                m_colors.Add(Colors.Lime);
-                m_colors.Add(Colors.Cyan);
-                m_colors.Add(Colors.HotPink);
-                m_colors.Add(Colors.Orange);
-                m_colors.Add(Colors.Orchid);
-                m_colors.Add(Colors.Gold);
-                m_colors.Add(Colors.Red);
-                m_colors.Add(Colors.LimeGreen);
-                m_colors.Add(Colors.Turquoise);
-                m_colors.Add(Colors.Magenta);
-                m_colors.Add(Colors.Coral);
-                m_colors.Add(Colors.SkyBlue);
-                m_colors.Add(Colors.Aqua);
-                m_colors.Add(Color.FromArgb("#FFEF00")); // 255, 239, 0));  // Canary Yellow
-                m_colors.Add(Color.FromArgb("#0047AB"));  //0, 71, 171));      // Cobalt Blue
-                m_colors.Add(Color.FromArgb("#E0115F")); // 224, 17, 95));        // Ruby Red
-                m_colors.Add(Color.FromArgb("#4CBB17"));  // 76, 187, 23));     // Kelly Green
-                m_colors.Add(Color.FromArgb("#9966CC")); // 153, 102, 204));     // Amethyst
-                m_colors.Add(Color.FromArgb("#FF1493"));  // 255, 20, 147));      // Deep Pink
+                ColorsList.Add(Colors.Yellow);
+                ColorsList.Add(Colors.Lime);
+                ColorsList.Add(Colors.Cyan);
+                ColorsList.Add(Colors.HotPink);
+                ColorsList.Add(Colors.Orange);
+                ColorsList.Add(Colors.Orchid);
+                ColorsList.Add(Colors.Gold);
+                ColorsList.Add(Colors.Red);
+                ColorsList.Add(Colors.LimeGreen);
+                ColorsList.Add(Colors.Turquoise);
+                ColorsList.Add(Colors.Magenta);
+                ColorsList.Add(Colors.Coral);
+                ColorsList.Add(Colors.SkyBlue);
+                ColorsList.Add(Colors.Aqua);
+                ColorsList.Add(Color.FromArgb("#FFEF00")); // 255, 239, 0));  // Canary Yellow
+                ColorsList.Add(Color.FromArgb("#0047AB"));  //0, 71, 171));      // Cobalt Blue
+                ColorsList.Add(Color.FromArgb("#E0115F")); // 224, 17, 95));        // Ruby Red
+                ColorsList.Add(Color.FromArgb("#4CBB17"));  // 76, 187, 23));     // Kelly Green
+                ColorsList.Add(Color.FromArgb("#9966CC")); // 153, 102, 204));     // Amethyst
+                ColorsList.Add(Color.FromArgb("#FF1493"));  // 255, 20, 147));      // Deep Pink
             }
             else
             {
-                m_colors.Add(Color.FromArgb("#000080"));  // 0, 0, 128));    // Navy Blue
-                m_colors.Add(Colors.DarkRed);
-                m_colors.Add(Colors.ForestGreen);
-                m_colors.Add(Colors.Indigo);
-                m_colors.Add(Colors.RoyalBlue);
-                m_colors.Add(Color.FromArgb("#CC5500")); // 204, 85, 0));   // Burnt Orange
-                m_colors.Add(Colors.DarkMagenta);
-                m_colors.Add(Color.FromArgb("#008000")); // 0, 128, 0));    // Emerald Green
-                m_colors.Add(Color.FromArgb("#654321")); // 101, 67, 33));  // Chocolate Brown
-                m_colors.Add(Color.FromArgb("#800020")); // 128, 0, 32));   // Burgundy
-                m_colors.Add(Colors.OliveDrab);
-                m_colors.Add(Colors.DarkSlateGray);
-                m_colors.Add(Colors.SaddleBrown);
-                m_colors.Add(Colors.MidnightBlue);
-                m_colors.Add(Colors.DarkOliveGreen);
-                m_colors.Add(Color.FromArgb("#0047AB"));  //0, 71, 171));      // Cobalt Blue
-                m_colors.Add(Color.FromArgb("#E0115F")); // 224, 17, 95));        // Ruby Red
-                m_colors.Add(Color.FromArgb("#4CBB17"));  // 76, 187, 23));     // Kelly Green
-                m_colors.Add(Color.FromArgb("#9966CC")); // 153, 102, 204));     // Amethyst
-                m_colors.Add(Color.FromArgb("#FF1493"));  // 255, 20, 147));      // Deep Pink
+                ColorsList.Add(Color.FromArgb("#000080"));  // 0, 0, 128));    // Navy Blue
+                ColorsList.Add(Colors.DarkRed);
+                ColorsList.Add(Colors.ForestGreen);
+                ColorsList.Add(Colors.Indigo);
+                ColorsList.Add(Colors.RoyalBlue);
+                ColorsList.Add(Color.FromArgb("#CC5500")); // 204, 85, 0));   // Burnt Orange
+                ColorsList.Add(Colors.DarkMagenta);
+                ColorsList.Add(Color.FromArgb("#008000")); // 0, 128, 0));    // Emerald Green
+                ColorsList.Add(Color.FromArgb("#654321")); // 101, 67, 33));  // Chocolate Brown
+                ColorsList.Add(Color.FromArgb("#800020")); // 128, 0, 32));   // Burgundy
+                ColorsList.Add(Colors.OliveDrab);
+                ColorsList.Add(Colors.DarkSlateGray);
+                ColorsList.Add(Colors.SaddleBrown);
+                ColorsList.Add(Colors.MidnightBlue);
+                ColorsList.Add(Colors.DarkOliveGreen);
+                ColorsList.Add(Color.FromArgb("#0047AB"));  //0, 71, 171));      // Cobalt Blue
+                ColorsList.Add(Color.FromArgb("#E0115F")); // 224, 17, 95));        // Ruby Red
+                ColorsList.Add(Color.FromArgb("#4CBB17"));  // 76, 187, 23));     // Kelly Green
+                ColorsList.Add(Color.FromArgb("#9966CC")); // 153, 102, 204));     // Amethyst
+                ColorsList.Add(Color.FromArgb("#FF1493"));  // 255, 20, 147));      // Deep Pink
             }
         }
 

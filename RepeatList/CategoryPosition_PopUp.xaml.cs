@@ -8,6 +8,8 @@ public partial class CategoryPosition_PopUp : Popup
 {
     private CategoryPosition_PopUpViewModel ViewModel { get; set; }
 
+
+
     public CategoryPosition_PopUp()
     {
         InitializeComponent();
@@ -17,13 +19,8 @@ public partial class CategoryPosition_PopUp : Popup
     {
         InitializeComponent();
 
-        ViewModel = new CategoryPosition_PopUpViewModel(list);
+        ViewModel = new CategoryPosition_PopUpViewModel(list, category);
         BindingContext = ViewModel;
-
-        if (category != null)
-        {
-            ViewModel.SelectedCategory = category;
-        }
     }
 
     private void CancelButtonClicked(object sender, EventArgs e)
@@ -33,7 +30,13 @@ public partial class CategoryPosition_PopUp : Popup
 
     private void OkButton_Clicked(object sender, EventArgs e)
     {
-        Close(ViewModel.SelectedCategory);
+        if (ViewModel.SelectedCategory != null && !string.IsNullOrEmpty(ViewModel.SelectedCategory.Category))
+            Close(ViewModel.SelectedCategory.Category);
+        else
+            Close();
     }
-   
+
+
+
+
 }

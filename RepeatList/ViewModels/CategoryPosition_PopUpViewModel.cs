@@ -2,8 +2,6 @@
 using RepeatList.Models;
 using RepeatList.Services;
 using System.Collections.ObjectModel;
-using System.Reactive.Linq;
-using System.Reactive.Threading.Tasks;
 
 namespace RepeatList.ViewModels
 {
@@ -11,9 +9,9 @@ namespace RepeatList.ViewModels
     {
         private DatabaseService _databaseService;
 
+        [ObservableProperty] ObservableCollection<CategoryPosition_PopUpViewModelType> categories_colors_list = new();
         [ObservableProperty] string? title = "Select category";
-        [ObservableProperty] string? selectedCategory;
-        [ObservableProperty] ObservableCollection<string> categories = new ObservableCollection<string>();
+        [ObservableProperty] CategoryPosition_PopUpViewModelType? selectedCategory;
         [ObservableProperty] List<CategoryPosition> categories_db;
 
         public CategoryPosition_PopUpViewModel()
@@ -21,38 +19,49 @@ namespace RepeatList.ViewModels
             _databaseService = new DatabaseService();
         }
 
-        public CategoryPosition_PopUpViewModel(ObservableCollection<string> categories_list)
+        public CategoryPosition_PopUpViewModel(ObservableCollection<string> categories_list, string category)
         {
             _databaseService = new DatabaseService();
 
-            Categories = categories_list;
+            for (int i=0; i < categories_list.Count; i++)
+            {
+                Categories_colors_list.Add(
+                    new CategoryPosition_PopUpViewModelType(
+                        categories_list[i], 
+                        PositionsPageViewModel.ColorsList[i])
+                    );
+            }
+
+            SelectedCategory = Categories_colors_list.FirstOrDefault(x => x.Category == category);
+
+            //Categories = categories_list;
         }
 
-        public async Task UpdateOrAdd(string Position, string Categorie)
+        public async Task UpdateOrAdd(string Position, string Category)
         {
-          if(string.IsNullOrEmpty(Position) || string.IsNullOrEmpty(Categorie))
+          if(string.IsNullOrEmpty(Position) || string.IsNullOrEmpty(Category))
                 return;
 
             var item = await _databaseService.GetCategoryPositionAsync(Position);
             if(item == null)
             {
-                await Add(Position, Categorie);
+                await Add(Position, Category);
             }
             else
             {
-                await Update(new CategoryPosition(Position, Categorie));
+                await Update(new CategoryPosition(Position, Category));
             }
             await FillList();
-            SelectedCategory = Categorie;
+            SelectedCategory = Categories_colors_list.FirstOrDefault(x=>x.Category == Category);
         }
 
-        public async Task<int> Add(string Position, string Categorie)
+        public async Task<int> Add(string Position, string Category)
         {
-            var newItem = new CategoryPosition (Position, Categorie);
+            var newItem = new CategoryPosition (Position, Category);
             var new_id = await _databaseService.AddCategoryPositionAsync(newItem);
 
             await FillList();
-            SelectedCategory = Categorie;
+            SelectedCategory = Categories_colors_list.FirstOrDefault(x => x.Category == Category);
 
             return new_id;
         }
@@ -70,15 +79,28 @@ namespace RepeatList.ViewModels
             if (item == null) return;
 
             await _databaseService.UpdateCategoryPositionAsync(item);
-            await FillList();
 
             await FillList();
-            SelectedCategory = item.Category;
+            SelectedCategory = Categories_colors_list.FirstOrDefault(x => x.Category == item.Category);
         }
 
         public async Task FillList()
         {
             Categories_db = await _databaseService.GetCategoryPositionsAsync();
         }
+    }
+
+    public class CategoryPosition_PopUpViewModelType
+    {
+        public CategoryPosition_PopUpViewModelType(string category, Color color)
+        {
+            Category=category;
+            Color=color;
+        }
+
+        public string Category { get; set; }
+        public Color Color { get; set; }
+
+
     }
 }

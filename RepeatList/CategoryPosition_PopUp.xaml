@@ -6,41 +6,33 @@
     xmlns:models="clr-namespace:RepeatList.Models"
     xmlns:properties="clr-namespace:RepeatList.Properties"
     x:Class="RepeatList.CategoryPosition_PopUp">
-
     <VerticalStackLayout Padding="10" BackgroundColor="LightGray">
         <Label Text="{x:Static properties:Resources.Select_a_category}" FontSize="Medium" HorizontalOptions="Center" />
-
         <Border Stroke="Gray" Padding="5" >
             <StackLayout Orientation="Vertical">
-                <CollectionView  ItemsSource="{Binding Categories}" 
+                <CollectionView  ItemsSource="{Binding Categories_colors_list}" 
                                  SelectionMode="Single"      
                                  MaximumHeightRequest="300"
                                  SelectedItem="{Binding SelectedCategory, Mode=TwoWay}">
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
-                            <StackLayout  Padding="10">
-                                <Label Text="{Binding}" VerticalOptions="Center" 
-                                       TextColor="Black"
-                                    />
-                            </StackLayout>
+                            <Grid ColumnDefinitions="auto,*" ColumnSpacing="10">
+                                <toolkit:AvatarView Grid.Column="0" Text="" BackgroundColor="{Binding Color}"  />
+                                <Label Text="{Binding Category}" VerticalOptions="Center" TextColor="Black" Grid.Column="1" />
+                            </Grid>
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
                 </CollectionView>
-
             </StackLayout>
         </Border>
-
         <Label Text="{x:Static properties:Resources.add}" FontSize="Medium" HorizontalOptions="Center" Margin="0,20,0,0"/>
-        <Entry Text="{Binding SelectedCategory, Mode=TwoWay}" ClearButtonVisibility="WhileEditing" />
-
-
+        <Entry Text="{Binding SelectedCategory.Category, Mode=TwoWay}" ClearButtonVisibility="WhileEditing" />
         <HorizontalStackLayout HorizontalOptions="Center">
-            <Button Text="OK" Clicked="OkButton_Clicked" HorizontalOptions="FillAndExpand" TextColor="White" WidthRequest="100" />
+            <Button Text="OK" Clicked="OkButton_Clicked"  TextColor="White" WidthRequest="100" />
             <Button x:Name="CancelButton" 
                     BackgroundColor="{x:Static models:Constantes.Color_Warning}" Margin="10,0,0,0"  
                     Text="{x:Static properties:Resources.close}" TextColor="White" 
                     Clicked="CancelButtonClicked"    />
-
         </HorizontalStackLayout>
     </VerticalStackLayout>
 </toolkit:Popup>
