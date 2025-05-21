@@ -323,8 +323,14 @@ Wollen Sie trotzdem fortfahren?</value>
   <data name="sort_by_alphabet" xml:space="preserve">
     <value>Nach Alphabet</value>
   </data>
+  <data name="sort_by_category" xml:space="preserve">
+    <value>Nach Kategorie</value>
+  </data>
   <data name="sort_by_date" xml:space="preserve">
     <value>Nach Datum</value>
+  </data>
+  <data name="sort_by_time" xml:space="preserve">
+    <value>Nach Zeit</value>
   </data>
   <data name="String_is_not_a_valid_list_description" xml:space="preserve">
     <value>Zeichenkette ist keine gültige Listenbeschreibung (JSON-Format)</value>

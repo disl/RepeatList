@@ -65,7 +65,9 @@ namespace RepeatList
 
             builder.Services.AddSingleton<HelpPageViewModel>();
             builder.Services.AddSingleton<HelpPage>();
-            
+
+            builder.Services.AddSingleton<Header>();
+
 
             //builder.Services.AddSingleton<Header>();  // Falls global
             //builder.Services.AddTransient<Header>();

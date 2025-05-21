@@ -642,11 +642,29 @@ namespace RepeatList.Properties {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die By category ähnelt.
+        /// </summary>
+        public static string sort_by_category {
+            get {
+                return ResourceManager.GetString("sort_by_category", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die By date ähnelt.
         /// </summary>
         public static string sort_by_date {
             get {
                 return ResourceManager.GetString("sort_by_date", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die By time ähnelt.
+        /// </summary>
+        public static string sort_by_time {
+            get {
+                return ResourceManager.GetString("sort_by_time", resourceCulture);
             }
         }
         

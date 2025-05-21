@@ -323,8 +323,14 @@ Vous voulez quand même continuer ?</value>
   <data name="sort_by_alphabet" xml:space="preserve">
     <value>Par ordre alphabétique</value>
   </data>
+  <data name="sort_by_category" xml:space="preserve">
+    <value>Par catégorie</value>
+  </data>
   <data name="sort_by_date" xml:space="preserve">
     <value>Par date</value>
+  </data>
+  <data name="sort_by_time" xml:space="preserve">
+    <value>par temps</value>
   </data>
   <data name="String_is_not_a_valid_list_description" xml:space="preserve">
     <value>La chaîne de caractères n'est pas une description de liste valide (format JSON)</value>

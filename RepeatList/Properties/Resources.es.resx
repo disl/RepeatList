@@ -323,8 +323,14 @@ OPCIÓN DE MENÚ «DUPLICAR ELEMENTOS»:
   <data name="sort_by_alphabet" xml:space="preserve">
     <value>Por alfabeto</value>
   </data>
+  <data name="sort_by_category" xml:space="preserve">
+    <value>Por categoría</value>
+  </data>
   <data name="sort_by_date" xml:space="preserve">
     <value>Por fecha</value>
+  </data>
+  <data name="sort_by_time" xml:space="preserve">
+    <value>Por tiempo</value>
   </data>
   <data name="String_is_not_a_valid_list_description" xml:space="preserve">
     <value>La cadena no es una descripción de lista válida (formato JSON)</value>

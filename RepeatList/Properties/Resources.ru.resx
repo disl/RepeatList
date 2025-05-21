@@ -323,8 +323,14 @@
   <data name="sort_by_alphabet" xml:space="preserve">
     <value>По алфавиту</value>
   </data>
+  <data name="sort_by_category" xml:space="preserve">
+    <value>По категориям</value>
+  </data>
   <data name="sort_by_date" xml:space="preserve">
     <value>По дате</value>
+  </data>
+  <data name="sort_by_time" xml:space="preserve">
+    <value>по времени</value>
   </data>
   <data name="String_is_not_a_valid_list_description" xml:space="preserve">
     <value>Строка не является правильным описанием списка (формат JSON)</value>

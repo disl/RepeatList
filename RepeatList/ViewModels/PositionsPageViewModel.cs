@@ -268,18 +268,6 @@ namespace RepeatList.ViewModels
 
         #region PROPERTIES
 
-        //bool replace_old_word_when_inserting;
-        //public bool Replace_old_word_when_inserting
-        //{
-        //    get
-        //    {
-        //        replace_old_word_when_inserting = Preferences.Get("Replace_old_word_when_inserting", true);
-        //        return replace_old_word_when_inserting;
-        //    }
-        //    set { replace_old_word_when_inserting = value; }
-        //}
-
-
         [ObservableProperty] public string no_items_to_display = Properties.Resources.No_items_to_display;
         [ObservableProperty] public bool isSynchronized = false;
         [ObservableProperty] public string title_sort_by = Properties.Resources.sort_by;
@@ -288,8 +276,9 @@ namespace RepeatList.ViewModels
         [ObservableProperty]
         public ObservableCollection<CMBType_String> itemSource_KindOfSorting = new ObservableCollection<CMBType_String>
         {
-             new CMBType_String(Properties.Resources.sort_by_date, "date"),
-             new CMBType_String(Properties.Resources.sort_by_alphabet, "alpha" )
+             new CMBType_String(Properties.Resources.sort_by_time, "date"),
+             new CMBType_String(Properties.Resources.sort_by_alphabet, "alpha" ),
+             new CMBType_String(Properties.Resources.sort_by_category, "category" )
         };
         [ObservableProperty] public bool positionListViewVisible;
         [ObservableProperty] public bool headerSelected;
@@ -671,6 +660,8 @@ namespace RepeatList.ViewModels
             if (SelectedItem_KindOfSorting.Value == "date")
                 Positions_done = _pos_arr.Where(a => a.IsCompleted).OrderByDescending(x => x.UpdatedAt).ToObservableCollection();
             else if (SelectedItem_KindOfSorting.Value == "alpha")
+                Positions_done = _pos_arr.Where(a => a.IsCompleted).OrderBy(x => x.Title).ToObservableCollection();
+            else if (SelectedItem_KindOfSorting.Value == "category")
                 Positions_done = _pos_arr.Where(a => a.IsCompleted).OrderBy(y => y.Category).ThenBy(x => x.Title).ToObservableCollection();
 
             Label_done = string.Format("{0} ({1})", Properties.Resources.done, Positions_done.Count);

@@ -53,7 +53,8 @@ namespace RepeatList
                 ViewModel.ItemSource_KindOfSorting = new ObservableCollection<CMBType_String>
                 {
                  new CMBType_String(Properties.Resources.sort_by_date, "date"),
-                 new CMBType_String(Properties.Resources.sort_by_alphabet, "alpha" )
+                 new CMBType_String(Properties.Resources.sort_by_alphabet, "alpha" ),
+                 new CMBType_String(Properties.Resources.sort_by_category, "category" )
                 };
 
                 if (SortingPicker == null)

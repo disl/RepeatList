@@ -128,7 +128,7 @@
                            IsVisible="{Binding SortImages_visible, FallbackValue = true}"
                            >
                 <ImageButton.Source>
-                    <AppThemeBinding Light="swap_vert_icon.png"  Dark="swap_vert_icon_white.png" />
+                    <AppThemeBinding Light="double_arrow_icon_black.png"  Dark="double_arrow_icon_white.png" />
                 </ImageButton.Source>
             </ImageButton>
 

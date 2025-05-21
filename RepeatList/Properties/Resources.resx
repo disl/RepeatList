@@ -365,4 +365,10 @@ Do you still want to continue?</value>
   <data name="Select_a_category" xml:space="preserve">
     <value>Select a category</value>
   </data>
+  <data name="sort_by_time" xml:space="preserve">
+    <value>By time</value>
+  </data>
+  <data name="sort_by_category" xml:space="preserve">
+    <value>By category</value>
+  </data>
 </root>
