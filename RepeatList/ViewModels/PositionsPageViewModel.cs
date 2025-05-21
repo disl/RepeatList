@@ -16,7 +16,7 @@ using Position = RepeatList.Models.Position;
 
 namespace RepeatList.ViewModels
 {
-    public partial class PositionsPageViewModel : ObservableObject   
+    public partial class PositionsPageViewModel : ObservableObject
     {
         private DatabaseService _databaseService;
         public SupabaseService _supabaseService;
@@ -200,7 +200,7 @@ namespace RepeatList.ViewModels
             }
 
             // Categories
-            RefreshColors().GetAwaiter().GetResult(); 
+            RefreshColors().GetAwaiter().GetResult();
 
             //SetFirstItemForHeaders();
             InitSelectedItem_KindOfSorting();
@@ -722,18 +722,25 @@ namespace RepeatList.ViewModels
         }
 
         List<string>? m_old_categories_list = null;
-        List<Color> randomColors = new();
+        List<Color>? randomColors = new();
 
 
 
         private void SetRowColors()
         {
+            if (Positions == null || Positions.Count == 0)
+                return;
+
             m_Categoeies_listType_list.Clear();
             var categories_list = Positions.Select(x => x.Category).Distinct().OrderBy(x => x).ToList();
 
             if (m_old_categories_list == null || !m_old_categories_list.SequenceEqual(categories_list))
             {
                 randomColors = FillColorsList(ColorsList, categories_list.Count).Distinct().ToList();
+
+                if (randomColors == null)
+                    return;
+
                 m_old_categories_list = categories_list;
             }
 
@@ -751,89 +758,122 @@ namespace RepeatList.ViewModels
                 }
             }
 
-            //foreach (DataGridViewRow row in dataGridView1.Rows)
-            //{
-            //    row.Cells[CategorieColumn.Index].Style.BackColor=Color.White;
-
-            //    if (row.Cells[categoryDataGridViewTextBoxColumn.Index].Value != null)
-            //        row.Cells[CategorieColumn.Index].Style.BackColor=
-            //            GetColorByCategorie(row.Cells[categoryDataGridViewTextBoxColumn.Index].Value.ToString());
-            //}
         }
 
-        private List<Color> FillColorsList(List<Color> allColors, int count)
+        private List<Color>? FillColorsList(List<Color> allColors, int count)
         {
-            if (count > allColors.Count)
-                throw new ArgumentException("Anzahl darf nicht größer als die Liste sein!");
-
-            Random random = new Random();
-            HashSet<Color> selectedColors = new HashSet<Color>();
-
-            for (int i = 0; i < count; i++)
+            try
             {
-                selectedColors.Add(allColors[i]);
+                if (count > allColors.Count)
+                    return null;
+                //throw new ArgumentException("Anzahl darf nicht größer als die Liste sein!");
+
+                //Random random = new Random();
+                HashSet<Color> selectedColors = new HashSet<Color>();
+
+                for (int i = 0; i < count; i++)
+                {
+                    selectedColors.Add(allColors[i]);
+                }
+
+                // Random variant
+                //while (selectedColors.Count < count)
+                //{
+                //    int randomIndex = random.Next(allColors.Count);
+                //    selectedColors.Add(allColors[randomIndex]);
+                //}
+
+                return new List<Color>(selectedColors);
             }
-
-            // Random variant
-            //while (selectedColors.Count < count)
-            //{
-            //    int randomIndex = random.Next(allColors.Count);
-            //    selectedColors.Add(allColors[randomIndex]);
-            //}
-
-            return new List<Color>(selectedColors);
+            catch (Exception e)
+            {
+                return null;
+            }
         }
+
+        public static readonly string[] RandomContrastColors =
+        {
+            "#FF6B6B", "#4ECDC4", "#FFE66D", "#2EC4B6", "#FF9F1C",
+            "#A13D63", "#3A7D44", "#FF1654", "#247BA0", "#F3FFBD",
+            "#B388EB", "#70C1B3", "#F72585", "#7209B7", "#3A0CA3",
+            "#4361EE", "#4CC9F0", "#F8961E", "#F94144", "#F3722C",
+            "#577590", "#43AA8B", "#90BE6D", "#F9C74F", "#FFD166",
+            "#EF476F", "#06D6A0", "#118AB2", "#073B4C", "#FFD166",
+            "#8338EC", "#3A86FF", "#FF006E", "#FB5607", "#FFBE0B",
+            "#9B5DE5", "#F15BB5", "#FEE440", "#00BBF9", "#00F5D4",
+            "#A41623", "#5C6784", "#1D7874", "#679289", "#F4C095",
+            "#EE4266", "#2A1E5C", "#C4B7CB", "#BBC7A4", "#FFEE93",
+            "#0B132B", "#3A506B", "#5BC0BE", "#6FFFE9", "#E2C044",
+            "#5D2E8C", "#7E6B8F", "#F75C03", "#D90368", "#04E762",
+            "#2274A5", "#F1C40F", "#E74C3C", "#2ECC71", "#9B59B6",
+            "#1ABC9C", "#F39C12", "#D35400", "#3498DB", "#E91E63",
+            "#8E44AD", "#16A085", "#C0392B", "#2980B9", "#D98880",
+            "#7D3C98", "#1E8449", "#F4D03F", "#E67E22", "#A569BD",
+            "#27AE60", "#D35400", "#3498DB", "#E74C3C", "#9B59B6",
+            "#34495E", "#F1C40F", "#2ECC71", "#16A085", "#D98880",
+            "#7D3C98", "#1E8449", "#F4D03F", "#E67E22", "#A569BD",
+            "#27AE60", "#D35400", "#3498DB", "#E74C3C", "#9B59B6",
+            "#0E4D92", "#137547", "#5F0F40", "#9A031E", "#FB8B24"
+        };
 
         private void InitColors()
         {
+            if (ColorsList != null &&  ColorsList.Count == RandomContrastColors.Length)
+                return;
+
             ColorsList = new List<Color>();
 
-            if (Application.Current.UserAppTheme == AppTheme.Dark)
+            foreach(string color_str in RandomContrastColors)
             {
-                ColorsList.Add(Colors.Yellow);
-                ColorsList.Add(Colors.Lime);
-                ColorsList.Add(Colors.Cyan);
-                ColorsList.Add(Colors.HotPink);
-                ColorsList.Add(Colors.Orange);
-                ColorsList.Add(Colors.Orchid);
-                ColorsList.Add(Colors.Gold);
-                ColorsList.Add(Colors.Red);
-                ColorsList.Add(Colors.LimeGreen);
-                ColorsList.Add(Colors.Turquoise);
-                ColorsList.Add(Colors.Magenta);
-                ColorsList.Add(Colors.Coral);
-                ColorsList.Add(Colors.SkyBlue);
-                ColorsList.Add(Colors.Aqua);
-                ColorsList.Add(Color.FromArgb("#FFEF00")); // 255, 239, 0));  // Canary Yellow
-                ColorsList.Add(Color.FromArgb("#0047AB"));  //0, 71, 171));      // Cobalt Blue
-                ColorsList.Add(Color.FromArgb("#E0115F")); // 224, 17, 95));        // Ruby Red
-                ColorsList.Add(Color.FromArgb("#4CBB17"));  // 76, 187, 23));     // Kelly Green
-                ColorsList.Add(Color.FromArgb("#9966CC")); // 153, 102, 204));     // Amethyst
-                ColorsList.Add(Color.FromArgb("#FF1493"));  // 255, 20, 147));      // Deep Pink
+                ColorsList.Add(Color.FromArgb(color_str));
             }
-            else
-            {
-                ColorsList.Add(Color.FromArgb("#000080"));  // 0, 0, 128));    // Navy Blue
-                ColorsList.Add(Colors.DarkRed);
-                ColorsList.Add(Colors.ForestGreen);
-                ColorsList.Add(Colors.Indigo);
-                ColorsList.Add(Colors.RoyalBlue);
-                ColorsList.Add(Color.FromArgb("#CC5500")); // 204, 85, 0));   // Burnt Orange
-                ColorsList.Add(Colors.DarkMagenta);
-                ColorsList.Add(Color.FromArgb("#008000")); // 0, 128, 0));    // Emerald Green
-                ColorsList.Add(Color.FromArgb("#654321")); // 101, 67, 33));  // Chocolate Brown
-                ColorsList.Add(Color.FromArgb("#800020")); // 128, 0, 32));   // Burgundy
-                ColorsList.Add(Colors.OliveDrab);
-                ColorsList.Add(Colors.DarkSlateGray);
-                ColorsList.Add(Colors.SaddleBrown);
-                ColorsList.Add(Colors.MidnightBlue);
-                ColorsList.Add(Colors.DarkOliveGreen);
-                ColorsList.Add(Color.FromArgb("#0047AB"));  //0, 71, 171));      // Cobalt Blue
-                ColorsList.Add(Color.FromArgb("#E0115F")); // 224, 17, 95));        // Ruby Red
-                ColorsList.Add(Color.FromArgb("#4CBB17"));  // 76, 187, 23));     // Kelly Green
-                ColorsList.Add(Color.FromArgb("#9966CC")); // 153, 102, 204));     // Amethyst
-                ColorsList.Add(Color.FromArgb("#FF1493"));  // 255, 20, 147));      // Deep Pink
-            }
+
+            //if (Application.Current.UserAppTheme == AppTheme.Dark)
+            //{
+            //    ColorsList.Add(Colors.Yellow);
+            //    ColorsList.Add(Colors.Lime);
+            //    ColorsList.Add(Colors.Cyan);
+            //    ColorsList.Add(Colors.HotPink);
+            //    ColorsList.Add(Colors.Orange);
+            //    ColorsList.Add(Colors.Orchid);
+            //    ColorsList.Add(Colors.Gold);
+            //    ColorsList.Add(Colors.Red);
+            //    ColorsList.Add(Colors.LimeGreen);
+            //    ColorsList.Add(Colors.Turquoise);
+            //    ColorsList.Add(Colors.Magenta);
+            //    ColorsList.Add(Colors.Coral);
+            //    ColorsList.Add(Colors.SkyBlue);
+            //    ColorsList.Add(Colors.Aqua);
+            //    ColorsList.Add(Color.FromArgb("#FFEF00")); // 255, 239, 0));  // Canary Yellow
+            //    ColorsList.Add(Color.FromArgb("#0047AB"));  //0, 71, 171));      // Cobalt Blue
+            //    ColorsList.Add(Color.FromArgb("#E0115F")); // 224, 17, 95));        // Ruby Red
+            //    ColorsList.Add(Color.FromArgb("#4CBB17"));  // 76, 187, 23));     // Kelly Green
+            //    ColorsList.Add(Color.FromArgb("#9966CC")); // 153, 102, 204));     // Amethyst
+            //    ColorsList.Add(Color.FromArgb("#FF1493"));  // 255, 20, 147));      // Deep Pink
+            //}
+            //else
+            //{
+            //    ColorsList.Add(Color.FromArgb("#000080"));  // 0, 0, 128));    // Navy Blue
+            //    ColorsList.Add(Colors.DarkRed);
+            //    ColorsList.Add(Colors.ForestGreen);
+            //    ColorsList.Add(Colors.Indigo);
+            //    ColorsList.Add(Colors.RoyalBlue);
+            //    ColorsList.Add(Color.FromArgb("#CC5500")); // 204, 85, 0));   // Burnt Orange
+            //    ColorsList.Add(Colors.DarkMagenta);
+            //    ColorsList.Add(Color.FromArgb("#008000")); // 0, 128, 0));    // Emerald Green
+            //    ColorsList.Add(Color.FromArgb("#654321")); // 101, 67, 33));  // Chocolate Brown
+            //    ColorsList.Add(Color.FromArgb("#800020")); // 128, 0, 32));   // Burgundy
+            //    ColorsList.Add(Colors.OliveDrab);
+            //    ColorsList.Add(Colors.DarkSlateGray);
+            //    ColorsList.Add(Colors.SaddleBrown);
+            //    ColorsList.Add(Colors.MidnightBlue);
+            //    ColorsList.Add(Colors.DarkOliveGreen);
+            //    ColorsList.Add(Color.FromArgb("#0047AB"));  //0, 71, 171));      // Cobalt Blue
+            //    ColorsList.Add(Color.FromArgb("#E0115F")); // 224, 17, 95));        // Ruby Red
+            //    ColorsList.Add(Color.FromArgb("#4CBB17"));  // 76, 187, 23));     // Kelly Green
+            //    ColorsList.Add(Color.FromArgb("#9966CC")); // 153, 102, 204));     // Amethyst
+            //    ColorsList.Add(Color.FromArgb("#FF1493"));  // 255, 20, 147));      // Deep Pink
+            //}
         }
 
         private Color GetColorByCategorie(string category)

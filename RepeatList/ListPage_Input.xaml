@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<toolkit:Popup  xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+            xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+            xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             x:Class="RepeatList.ListPage_Input"
+             xmlns:models="clr-namespace:RepeatList.Models"
+             xmlns:local="clr-namespace:RepeatList.ViewModels"
+             xmlns:controls="clr-namespace:RepeatList.Controls"
+             xmlns:properties="clr-namespace:RepeatList.Properties" >
+
+    <ScrollView Padding="20">
+        <VerticalStackLayout  Spacing="15">
+            <!-- Anleitungstext -->
+            <Label Text="{x:Static properties:Resources.Enter_a_list_name_or_insert_a_ready_made}" 
+               FontSize="Medium" />
+
+            <!-- Eingabefeld mit MaxLength -->
+            <Editor x:Name="ListNameEditor"                                   
+                AutoSize="TextChanges" />
+
+            <!-- Buttons -->
+            <HorizontalStackLayout Spacing="10" HorizontalOptions="End">
+                <Button Text="OK"                       
+                        Clicked="OnOkClicked" />
+                <Button Text="{x:Static properties:Resources.Cancel}" 
+                        BackgroundColor="{x:Static models:Constantes.Color_Warning}" 
+                        Clicked="OnCancelClicked" />
+                
+            </HorizontalStackLayout>
+        </VerticalStackLayout>
+    </ScrollView>
+</toolkit:Popup>

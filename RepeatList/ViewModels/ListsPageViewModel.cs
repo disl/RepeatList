@@ -208,8 +208,8 @@ namespace RepeatList.ViewModels
 
         #region COMMANDS       
 
-        [RelayCommand]
-        public async Task<bool> InputHeaderWithPositions(string _input)
+        //[RelayCommand]
+        public async Task<bool> InputHeaderWithPositions(string _input, bool is_json)
         {
             Header? json = null;
 
@@ -234,9 +234,12 @@ namespace RepeatList.ViewModels
                 //if (ex != null)
                 //    SentrySdk.CaptureException(ex);
 
-                //await Application.Current.MainPage.DisplaySnackbar(Properties.Resources.String_is_not_a_valid_list_description);
-                //IsBusy = false;
-                //return false;
+                if (is_json)
+                {
+                    //await Application.Current.MainPage.DisplaySnackbar(Properties.Resources.String_is_not_a_valid_list_description);
+                    //IsBusy = false;
+                    return false;
+                }
             }
 
             if (json != null)

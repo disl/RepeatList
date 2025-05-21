@@ -69,7 +69,7 @@ namespace RepeatList
                     if (IsPlayCoreApiAvailable())
                     {
                         await CheckForUpdates();
-                    }       
+                    }
 #endif
                     m_need_for_update = false;
                 }
@@ -186,53 +186,73 @@ namespace RepeatList
         private async Task ForOnAddHeaderClicked()
         {
             Guid tmp_guid = Guid.Empty;
+            bool is_json = false;
 
             try
             {
-                string new_list_name = await DisplayPromptAsync(
-                    Properties.Resources.AddNewList, Properties.Resources.Enter_a_list_name_or_insert_a_ready_made, "OK", Properties.Resources.Cancel);
-                if (!string.IsNullOrWhiteSpace(new_list_name))
+                //string new_list_name = await DisplayPromptAsync(
+                //    Properties.Resources.AddNewList, Properties.Resources.Enter_a_list_name_or_insert_a_ready_made, "OK", Properties.Resources.Cancel);
+                //if (!string.IsNullOrWhiteSpace(new_list_name))
+                //{
+                var popup = new ListPage_Input();
+                var new_list_name_obj = await Shell.Current.ShowPopupAsync(popup);
+                if (new_list_name_obj == null)
+                    return;
+
+                var new_list_name = new_list_name_obj.ToString();
+
+                if (Guid.TryParse(new_list_name, out tmp_guid))
                 {
-                    if (Guid.TryParse(new_list_name, out tmp_guid))
+                    await ViewModel.Sync_list_downClicked(new_list_name);
+                    return;
+                }
+
+                // Check ">>>" (JSON-List)
+                else if (new_list_name.Contains(">>>"))
+                {
+                    var ind = new_list_name.IndexOf(">>>");
+                    if (ind < 0)
                     {
-                        await ViewModel.Sync_list_downClicked(new_list_name);
+                        await Application.Current.MainPage.DisplaySnackbar(
+                           Properties.Resources.List_information_has_wrong_format, visualOptions: new SnackbarOptions
+                           {
+                               BackgroundColor = Color.FromArgb(Constantes.Color_Error_string),
+                               TextColor = Colors.White
+                           }, duration: TimeSpan.FromSeconds(2));
                         return;
                     }
+                    new_list_name = new_list_name.Substring(ind, new_list_name.Length - ind).Replace(">>>", "");
 
-                    // Check ">>>" (JSON-List)
-                    else if (new_list_name.Contains(">>>"))
-                    {
-                        var ind = new_list_name.IndexOf(">>>");
-                        if (ind < 0)
-                        {
-                            await Application.Current.MainPage.DisplaySnackbar(
-                               Properties.Resources.List_information_has_wrong_format, visualOptions: new SnackbarOptions
-                               {
-                                   BackgroundColor = Color.FromArgb(Constantes.Color_Error_string),
-                                   TextColor = Colors.White
-                               }, duration: TimeSpan.FromSeconds(2));
-                            return;
-                        }
-                        new_list_name = new_list_name.Substring(ind, new_list_name.Length - ind).Replace(">>>", "");
-                    }
-
-                    if (!await ViewModel.InputHeaderWithPositions(new_list_name))
-                    {
-                        var new_id = await ViewModel.AddHeader(new_list_name, false);
-                    }
-                    await Application.Current.MainPage.DisplaySnackbar(Properties.Resources.List_added_successfully,
-                        visualOptions: new SnackbarOptions
-                        {
-                            BackgroundColor = Color.FromArgb(Constantes.Color_Success_string),
-                            TextColor = Colors.White
-                        }, duration: TimeSpan.FromSeconds(2));
-
-                    ViewModel.SetFirstItemForHeaders();
+                    is_json=true;
                 }
+
+                if (!await ViewModel.InputHeaderWithPositions(new_list_name, is_json))
+                {
+                    if (is_json)
+                    {
+                        await Application.Current.MainPage.DisplaySnackbar(Properties.Resources.String_is_not_a_valid_list_description,
+                                    visualOptions: new SnackbarOptions
+                                    {
+                                        BackgroundColor = Color.FromArgb(Constantes.Color_Error_string),
+                                        TextColor = Colors.White
+                                    }, duration: TimeSpan.FromSeconds(3));
+                        IsBusy = false;
+                        return;
+                    }
+                    await ViewModel.AddHeader(new_list_name, false);
+                }
+                await Application.Current.MainPage.DisplaySnackbar(Properties.Resources.List_added_successfully,
+                    visualOptions: new SnackbarOptions
+                    {
+                        BackgroundColor = Color.FromArgb(Constantes.Color_Success_string),
+                        TextColor = Colors.White
+                    }, duration: TimeSpan.FromSeconds(2));
+
+                ViewModel.SetFirstItemForHeaders();
+
             }
             catch (Exception ex)
             {
-
                 SentrySdk.CaptureException(ex);
                 throw;
             }
