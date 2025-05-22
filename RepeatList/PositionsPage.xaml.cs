@@ -57,16 +57,30 @@ namespace RepeatList
                  new CMBType_String(Properties.Resources.sort_by_category, "category" )
                 };
 
+                // Undone-Picker
+                if (SortingPicker_undone == null)
+                    SortingPicker_undone = new Picker();
+                SortingPicker_undone.ItemsSource = ViewModel.ItemSource_KindOfSorting_undone.ToObservableCollection();
+                var _selectedItem_KindOfSorting_key_name = Preferences.Get(ViewModel.SelectedItem_KindOfSorting_key_name_undone, "alpha");
+                if (!string.IsNullOrEmpty(_selectedItem_KindOfSorting_key_name))
+                    ViewModel.SelectedItem_KindOfSorting_undone = ViewModel.ItemSource_KindOfSorting_undone.FirstOrDefault(x => x.Value == _selectedItem_KindOfSorting_key_name);
+                else
+                    ViewModel.SelectedItem_KindOfSorting_undone = ViewModel.ItemSource_KindOfSorting_undone.FirstOrDefault(x => x.Value == "alpha");
+                SortingPicker.SelectedIndex = ViewModel.ItemSource_KindOfSorting.IndexOf(ViewModel.SelectedItem_KindOfSorting);
+
+                // Done-Picker
                 if (SortingPicker == null)
                     SortingPicker = new Picker();
-
                 SortingPicker.ItemsSource = ViewModel.ItemSource_KindOfSorting.ToObservableCollection();
-                var _selectedItem_KindOfSorting_key_name = Preferences.Get(ViewModel.SelectedItem_KindOfSorting_key_name, "date");
+                _selectedItem_KindOfSorting_key_name = Preferences.Get(ViewModel.SelectedItem_KindOfSorting_key_name, "date");
                 if (!string.IsNullOrEmpty(_selectedItem_KindOfSorting_key_name))
                     ViewModel.SelectedItem_KindOfSorting = ViewModel.ItemSource_KindOfSorting.FirstOrDefault(x => x.Value == _selectedItem_KindOfSorting_key_name);
                 else
                     ViewModel.SelectedItem_KindOfSorting = ViewModel.ItemSource_KindOfSorting.FirstOrDefault(x => x.Value == "date");
                 SortingPicker.SelectedIndex = ViewModel.ItemSource_KindOfSorting.IndexOf(ViewModel.SelectedItem_KindOfSorting);
+
+
+
 
                 string tmp_lists = Properties.Resources.Lists.ToUpper();
 
@@ -391,6 +405,13 @@ namespace RepeatList
             var picker = sender as Picker;
             await ViewModel.LoadPositions();
             Preferences.Set(ViewModel.SelectedItem_KindOfSorting_key_name, ViewModel.SelectedItem_KindOfSorting.Value);
+        }
+
+        private async void SortingPicker_undone_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            var picker = sender as Picker;
+            await ViewModel.LoadPositions();
+            Preferences.Set(ViewModel.SelectedItem_KindOfSorting_key_name_undone, ViewModel.SelectedItem_KindOfSorting_undone.Value);
         }
 
         private async void OnIsSynchronizedClicked(object sender, EventArgs e)

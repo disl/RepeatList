@@ -67,11 +67,9 @@
                             <Grid ColumnDefinitions="auto,*,auto,auto" Padding="3" ColumnSpacing="10" >
 
                                 <toolkit:AvatarView Grid.Column="0" HeightRequest="48" Text="{Binding AvatarName}" WidthRequest="48" BackgroundColor="Gray" TextColor="White"  />
-                                <!--StackLayout>-->
-                                <!--<ScrollView Orientation="Horizontal"   VerticalOptions="Center" >-->
+
                                 <Label Text="{Binding ListName, FallbackValue = '?'}"  VerticalOptions="Center" FontSize="Medium"   Grid.Column="1" 
                                        TextColor="{AppThemeBinding Light={DynamicResource PrimaryTextColor}, Dark={DynamicResource PrimaryTextColorLight}}"/>
-                                <!--</ScrollView>-->
                                 <Image Source="{Binding Sync_arrow_down_icon, FallbackValue = 'sync_arrow_down_icon_red.png'}" 
                                        IsVisible="{Binding IsSynchronized, FallbackValue = false}" HeightRequest="30" Grid.Column="2" />
 

@@ -35,18 +35,38 @@
                TextColor="{AppThemeBinding Light={DynamicResource PrimaryTextColor}, Dark={DynamicResource PrimaryTextColorLight}}" />
 
         <!-- SEARCH -->
-        <Grid ColumnDefinitions="auto,*,auto" Grid.Row="2" Margin="0,0,0,2" ColumnSpacing="10">
+        <Grid ColumnDefinitions="auto,*,auto,auto,auto" Grid.Row="2" Margin="0,0,0,2" ColumnSpacing="10">
             <Image Source="{AppThemeBinding Light=search_black.png, Dark=search_white.png}"  Grid.Column="0" />
             <Entry x:Name="searchBar" Grid.Column="1" Placeholder="{Binding Search}" HeightRequest="50"
                    TextColor="{AppThemeBinding Light={DynamicResource PrimaryTextColor}, Dark={DynamicResource PrimaryTextColorLight}}"
                    PlaceholderColor="{AppThemeBinding Light=Gray, Dark=LightGray}"                   
                    TextChanged="OnSearchTextChanged" ClearButtonVisibility="WhileEditing" />
+
+
+            <Image Grid.Column="2" VerticalOptions="Center" 
+         IsVisible="{Binding SortImages_visible}"
+         HeightRequest="{Binding Image_sort_SizeRequest}"                             >
+                <Image.Source>
+                    <AppThemeBinding Light="sort_black.png"  Dark="sort_white.png" />
+                </Image.Source>
+            </Image>
+            <Picker x:Name="SortingPicker_undone" Title="{Binding  Title_sort_by}"  Grid.Column="3" VerticalOptions="Center" 
+              TextColor="{AppThemeBinding Light={DynamicResource PrimaryTextColor}, Dark={DynamicResource PrimaryTextColorLight}}"
+              TitleColor="Gray"                    
+              SelectedIndexChanged="SortingPicker_undone_SelectedIndexChanged"           
+              SelectedItem="{Binding  SelectedItem_KindOfSorting_undone, Mode=TwoWay}">
+                <Picker.ItemDisplayBinding>
+                    <Binding Path="Name" />
+                </Picker.ItemDisplayBinding>
+            </Picker>
+
+
             <ImageButton Source="{Binding Collapse_undone_icon, FallbackValue = ''}" 
                          Command="{Binding Undone_ImageButtonClickedCommand}" 
                          WidthRequest="30"
                          Margin="20,0,0,0"
                          IsVisible="{Binding Isvisible_undone}"
-                         Grid.Column="2" />
+                         Grid.Column="4" />
         </Grid>
 
         <!-- UNDONE -->

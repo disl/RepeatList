@@ -28,6 +28,7 @@ namespace RepeatList.ViewModels
         List<Categories_listType> m_Categoeies_listType_list = new List<Categories_listType>();
         private SetupPageViewModel? setupPageViewModel;
         public string SelectedItem_KindOfSorting_key_name = "SelectedItem_KindOfSorting";
+        public string SelectedItem_KindOfSorting_key_name_undone = "SelectedItem_KindOfSorting_undone";
         public double ButtonsSize = 25;
 
         [ObservableProperty]
@@ -202,13 +203,9 @@ namespace RepeatList.ViewModels
             // Categories
             RefreshColors().GetAwaiter().GetResult();
 
-            //SetFirstItemForHeaders();
             InitSelectedItem_KindOfSorting();
 
             SetCollapseUndone(null);
-
-
-            //SetRowColors();
         }
 
         public async Task RefreshColors()
@@ -273,10 +270,17 @@ namespace RepeatList.ViewModels
         [ObservableProperty] public string title_sort_by = Properties.Resources.sort_by;
         [ObservableProperty] public string title_KindOfSorting = "Sort";
         [ObservableProperty] public CMBType_String selectedItem_KindOfSorting;
+        [ObservableProperty] public CMBType_String selectedItem_KindOfSorting_undone;
         [ObservableProperty]
         public ObservableCollection<CMBType_String> itemSource_KindOfSorting = new ObservableCollection<CMBType_String>
         {
              new CMBType_String(Properties.Resources.sort_by_time, "date"),
+             new CMBType_String(Properties.Resources.sort_by_alphabet, "alpha" ),
+             new CMBType_String(Properties.Resources.sort_by_category, "category" )
+        };
+        [ObservableProperty]
+        public ObservableCollection<CMBType_String> itemSource_KindOfSorting_undone = new ObservableCollection<CMBType_String>
+        {
              new CMBType_String(Properties.Resources.sort_by_alphabet, "alpha" ),
              new CMBType_String(Properties.Resources.sort_by_category, "category" )
         };
@@ -649,7 +653,19 @@ namespace RepeatList.ViewModels
             // set categories 
             FillCategories();
 
-            Positions_undone = _pos_arr.Where(a => a.IsCompleted == false).OrderBy(y => y.Category).ThenBy(x => x.Title).ToObservableCollection();
+
+            if (SelectedItem_KindOfSorting_undone == null)
+            {
+                // ????????
+                SelectedItem_KindOfSorting_undone = new CMBType_String(Properties.Resources.sort_by, "alpha");
+            }
+
+            if (SelectedItem_KindOfSorting_undone.Value == "alpha")
+                Positions_undone = _pos_arr.Where(a => a.IsCompleted==false).OrderBy(x => x.Title).ToObservableCollection();
+            else if (SelectedItem_KindOfSorting_undone.Value == "category")
+                Positions_undone = _pos_arr.Where(a => a.IsCompleted==false).OrderBy(y => y.Category).ThenBy(x => x.Title).ToObservableCollection();
+
+            //Positions_undone = _pos_arr.Where(a => a.IsCompleted == false).OrderBy(y => y.Category).ThenBy(x => x.Title).ToObservableCollection();
 
             if (SelectedItem_KindOfSorting == null)
             {
@@ -823,7 +839,7 @@ namespace RepeatList.ViewModels
 
             ColorsList = new List<Color>();
 
-            foreach(string color_str in RandomContrastColors)
+            foreach (string color_str in RandomContrastColors)
             {
                 ColorsList.Add(Color.FromArgb(color_str));
             }

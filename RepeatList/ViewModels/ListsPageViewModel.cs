@@ -25,6 +25,7 @@ namespace RepeatList.ViewModels
         private SetupPageViewModel? setupPageViewModel;
 
         public string SelectedItem_KindOfSorting_key_name = "SelectedItem_KindOfSorting";
+        public string SelectedItem_KindOfSorting_key_name_undone = "SelectedItem_KindOfSorting_undone";
         public double ButtonsSize = 25;
 
         [ObservableProperty] public string resetImageSource;
@@ -56,6 +57,7 @@ namespace RepeatList.ViewModels
 
             SetFirstItemForHeaders();
             InitSelectedItem_KindOfSorting();
+            InitSelectedItem_KindOfSorting_undone();
             SetResetImageSource();
         }
 
@@ -95,6 +97,15 @@ namespace RepeatList.ViewModels
                 SelectedItem_KindOfSorting = ItemSource_KindOfSorting.FirstOrDefault(x => x.Value == _selectedItem_KindOfSorting);  // new CMBType_String(Properties.Resources.sort_by, "date");
         }
 
+        private void InitSelectedItem_KindOfSorting_undone()
+        {
+            string _selectedItem_KindOfSorting = Preferences.Get(SelectedItem_KindOfSorting_key_name, "date");
+            if (_selectedItem_KindOfSorting == null)
+                SelectedItem_KindOfSorting = new CMBType_String(Properties.Resources.sort_by, "date");
+            else
+                SelectedItem_KindOfSorting = ItemSource_KindOfSorting.FirstOrDefault(x => x.Value == _selectedItem_KindOfSorting);  // new CMBType_String(Properties.Resources.sort_by, "date");
+        }
+
         public void SetFirstItemForHeaders()
         {
             //if (Headers != null && Headers.Count > 0)
@@ -122,6 +133,7 @@ namespace RepeatList.ViewModels
         [ObservableProperty] public string title_sort_by = Properties.Resources.sort_by;
         [ObservableProperty] public string title_KindOfSorting = "Sort";
         [ObservableProperty] public CMBType_String selectedItem_KindOfSorting;
+        [ObservableProperty] public CMBType_String selectedItem_KindOfSorting_undone;
         [ObservableProperty]
         public ObservableCollection<CMBType_String> itemSource_KindOfSorting = new ObservableCollection<CMBType_String>
         {
