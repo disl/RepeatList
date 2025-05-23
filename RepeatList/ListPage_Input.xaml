@@ -8,14 +8,14 @@
              xmlns:controls="clr-namespace:RepeatList.Controls"
              xmlns:properties="clr-namespace:RepeatList.Properties" >
 
-    <ScrollView Padding="20">
-        <VerticalStackLayout  Spacing="15">
+    <ScrollView Padding="20" BackgroundColor="Grey">
+        <VerticalStackLayout  Spacing="15"  >
             <!-- Anleitungstext -->
-            <Label Text="{x:Static properties:Resources.Enter_a_list_name_or_insert_a_ready_made}" 
-               FontSize="Medium" />
+            <Label Text="{x:Static properties:Resources.Enter_a_list_name_or_insert_a_ready_made}"  TextColor="{DynamicResource PrimaryTextColorLight}"
+               FontSize="Medium"  />
 
             <!-- Eingabefeld mit MaxLength -->
-            <Editor x:Name="ListNameEditor"                                   
+            <Editor x:Name="ListNameEditor" TextColor="{DynamicResource PrimaryTextColorLight}"                                   
                 AutoSize="TextChanges" />
 
             <!-- Buttons -->

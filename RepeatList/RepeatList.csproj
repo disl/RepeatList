@@ -50,8 +50,8 @@
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net9.0-android|AnyCPU'">
 	  <EmbedAssembliesIntoApk>False</EmbedAssembliesIntoApk>
-	  <ApplicationDisplayVersion>1.0.75</ApplicationDisplayVersion>
-	  <ApplicationVersion>75</ApplicationVersion>
+	  <ApplicationDisplayVersion>1.0.76</ApplicationDisplayVersion>
+	  <ApplicationVersion>76</ApplicationVersion>
 	  <AndroidKeyStore>False</AndroidKeyStore>
 	</PropertyGroup>
 
@@ -66,8 +66,8 @@
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net9.0-android|AnyCPU'">
-	  <ApplicationDisplayVersion>1.0.75</ApplicationDisplayVersion>
-	  <ApplicationVersion>75</ApplicationVersion>
+	  <ApplicationDisplayVersion>1.0.76</ApplicationDisplayVersion>
+	  <ApplicationVersion>76</ApplicationVersion>
 	  <AndroidLinkTool>r8</AndroidLinkTool>
 	  <AndroidKeyStore>False</AndroidKeyStore>
 	  <RunAOTCompilation>True</RunAOTCompilation>
