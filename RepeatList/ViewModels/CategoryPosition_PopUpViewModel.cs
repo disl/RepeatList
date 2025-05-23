@@ -19,7 +19,7 @@ namespace RepeatList.ViewModels
             _databaseService = new DatabaseService();
         }
 
-        public CategoryPosition_PopUpViewModel(ObservableCollection<string> categories_list, string category)
+        public CategoryPosition_PopUpViewModel(List<Categories_listType> categories_list, string category)
         {
             _databaseService = new DatabaseService();
 
@@ -27,9 +27,12 @@ namespace RepeatList.ViewModels
             {
                 Categories_colors_list.Add(
                     new CategoryPosition_PopUpViewModelType(
-                        categories_list[i], 
-                        PositionsPageViewModel.ColorsList[i])
-                    );
+                        categories_list[i].Category,
+                        categories_list[i].Color
+                        ));
+                    //categories_list[i], 
+                    //PositionsPageViewModel.ColorsList[i])
+                    //);
             }
 
             SelectedCategory = Categories_colors_list.FirstOrDefault(x => x.Category == category);

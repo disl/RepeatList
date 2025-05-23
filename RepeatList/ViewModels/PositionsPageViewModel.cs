@@ -25,7 +25,7 @@ namespace RepeatList.ViewModels
         public static List<Color> ColorsList = new();
         private CategoryPosition_PopUpViewModel m_CategoryPosition_PopUpViewModel = new CategoryPosition_PopUpViewModel();
         //static PredictionEngine<ModelInput, ModelOutput> predEngine;
-        List<Categories_listType> m_Categoeies_listType_list = new List<Categories_listType>();
+        public List<Categories_listType> m_Categories_listType_list = new List<Categories_listType>();
         private SetupPageViewModel? setupPageViewModel;
         public string SelectedItem_KindOfSorting_key_name = "SelectedItem_KindOfSorting";
         public string SelectedItem_KindOfSorting_key_name_undone = "SelectedItem_KindOfSorting_undone";
@@ -205,7 +205,7 @@ namespace RepeatList.ViewModels
             // CSV-Datei laden
             Categories_list = new List<CategoryRule>(); // Groß-/Kleinschreibung ignorieren
             
-            LoadRulesAsync("categories_de.csv").GetAwaiter().GetResult(); 
+            LoadRulesAsync($"categories_{CurrentCulture.ToLower()}.csv").GetAwaiter().GetResult(); 
 
             // Categories
             RefreshColors().GetAwaiter().GetResult();
@@ -215,7 +215,7 @@ namespace RepeatList.ViewModels
             SetCollapseUndone(null);
         }
 
-        public async Task LoadRulesAsync(string fileName = "rules.csv")
+        public async Task LoadRulesAsync(string fileName)
         {
             var lines = new List<string>();
 
@@ -223,7 +223,9 @@ namespace RepeatList.ViewModels
             {
                 // Zugriff auf den Stream der eingebetteten Ressource
                 using Stream fileStream = await FileSystem.Current.OpenAppPackageFileAsync(fileName);
-                using StreamReader reader = new StreamReader(fileStream, Encoding.UTF8);
+                //using StreamReader reader = new StreamReader(fileStream, Encoding.UTF8);
+                using StreamReader reader = new StreamReader(fileStream, Encoding.UTF8, detectEncodingFromByteOrderMarks: true);
+
 
                 // Liest alle Zeilen und überspringt die Kopfzeile
                 string line;
@@ -780,15 +782,15 @@ namespace RepeatList.ViewModels
 
         public void FillCategories()
         {
+            // From DB
+            GetCategories_DB().GetAwaiter().GetResult();
+
             // From prediction
             for (int i = 0; i < Positions.Count; i++)
             {
                 //string? tmp_category = null;
 
                 var first_word = Positions[i].Title.Split(' ')[0];
-
-                // From DB
-                GetCategories_DB().GetAwaiter().GetResult();
 
                 if (Categories_db != null && Categories_db.Count > 0)
                 {
@@ -835,7 +837,7 @@ namespace RepeatList.ViewModels
             if (Positions == null || Positions.Count == 0)
                 return;
 
-            m_Categoeies_listType_list.Clear();
+            m_Categories_listType_list.Clear();
             var categories_list = Positions.Select(x => x.Category).Distinct().OrderBy(x => x).ToList();
 
             if (m_old_categories_list == null || !m_old_categories_list.SequenceEqual(categories_list))
@@ -850,7 +852,15 @@ namespace RepeatList.ViewModels
 
             for (int i = 0; i < categories_list.Count; i++)
             {
-                m_Categoeies_listType_list.Add(new Categories_listType(categories_list[i], randomColors[i]));
+                m_Categories_listType_list.Add(new Categories_listType(categories_list[i], randomColors[i]));
+            }
+
+            // for Unknown category
+            var unknownCategory = m_Categories_listType_list.FirstOrDefault(x => x.Category == Properties.Resources.Unknown);
+            if(unknownCategory != null)
+            {
+                m_Categories_listType_list.Remove(unknownCategory);
+                m_Categories_listType_list.Add(new Categories_listType(Properties.Resources.Unknown, Colors.Transparent));
             }
 
             for (int i = 0; i < Positions.Count; i++)
@@ -982,7 +992,7 @@ namespace RepeatList.ViewModels
 
         private Color GetColorByCategorie(string category)
         {
-            return m_Categoeies_listType_list.First(x => x.Category == category).Color;
+            return m_Categories_listType_list.First(x => x.Category == category).Color;
         }
 
         public async Task AddPosition(Position position, bool generate_new_guid)
@@ -1228,7 +1238,7 @@ namespace RepeatList.ViewModels
 
     //}
 
-    internal class Categories_listType
+    public class Categories_listType
     {
         public Categories_listType(string category, Color color)
         {

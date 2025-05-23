@@ -1,0 +1,629 @@
+Articolo;Categoria
+Latte; Prodotti lattiero-caseari
+Yogurt; Latticini
+Quark;Latticini
+Formaggio; Latticini
+Panna; Latticini
+Burro; Latticini
+Uova; Prodotti lattiero-caseari
+Formaggio cremoso; Prodotti lattiero-caseari
+Mozzarella; Latticini
+Feta; Latticini
+Gouda; latticini
+Cheddar;Latticini
+Parmigiano; latticini
+Ricotta; Latticini
+Mascarpone; latticini
+Panna acida; latticini
+Latticello; Prodotti lattiero-caseari
+Kefir; latticini
+Budino; Latticini
+cagliata; latticini
+Latte condensato; latticini
+Panna acida; Prodotti lattiero-caseari
+Formaggio semiduro; latticini
+Formaggio spalmabile; latticini
+Panna; Latticini
+Margarina; Latticini
+Mela; Frutta e verdura
+Banana; Frutta e verdura
+Arancia; Frutta e verdura
+Limone; Frutta e verdura
+Pera; Frutta e verdura
+Uva; Frutta e verdura
+Fragola; Frutta e verdura
+Lampone; Frutta e verdura
+Mirtillo; Frutta e verdura
+Ciliegia; Frutta e verdura
+Prugna; Frutta e verdura
+Pesca; Frutta e verdura
+Albicocca; Frutta e verdura
+Mango; Frutta e verdura
+Ananas; Frutta e verdura
+Kiwi; Frutta e verdura
+Melone; Frutta e verdura
+Avocado; Frutta e verdura
+Fichi; Frutta e verdura
+Data; Frutta e verdura
+Pomodoro; Frutta e verdura
+Cetriolo; Frutta e verdura
+Insalata; Frutta e verdura
+Carota; Frutta e verdura
+Cipolla; Frutta e verdura
+Patata; Frutta e verdura
+Broccoli; Frutta e verdura
+Spinaci; Frutta e verdura
+Peperoni; Frutta e verdura
+Funghi; Frutta e verdura
+Aglio; Frutta e verdura
+Zucchine; Frutta e verdura
+Melanzana; Frutta e verdura
+Porro; Frutta e verdura
+Asparago; Frutta e verdura
+cavoletti di Bruxelles; Frutta e verdura
+Verza; Frutta e verdura
+Cavolfiore; Frutta e verdura
+Cavolo; Frutta e verdura
+Cavolo rosso; Frutta e verdura
+Cavolo cappuccio bianco; Frutta e verdura
+Cavolo rapa; Frutta e verdura
+Ravanello; Frutta e verdura
+Ravanelli; Frutta e verdura
+Sedano; Frutta e verdura
+Zenzero; Frutta e verdura
+Patata dolce; Frutta e verdura
+Mais; Frutta e verdura
+Piselli; Frutta e verdura
+Fagioli; Frutta e verdura
+Zucca; Frutta e verdura
+Funghi; Frutta e verdura
+Piselli dolci; Frutta e verdura
+Cipolla primaverile; Frutta e verdura
+Indivia; Frutta e verdura
+Lattuga d'agnello; Frutta e verdura
+Rabarbaro; Frutta e verdura
+Carciofo; Frutta e verdura
+Crescione; Frutta e verdura
+Prezzemolo; Frutta e verdura
+Erba cipollina; Frutta e verdura
+Aneto; Frutta e verdura
+Menta; Frutta e verdura
+Basilico; Frutta e verdura
+Timo; Frutta e verdura
+Rosmarino; Frutta e verdura
+Origano; Frutta e verdura
+Pane;Prodotti da forno
+rotoli; prodotti da forno
+Toast;Prodotti da forno
+Croissant; prodotti da forno
+Torte; prodotti da forno
+Pasticceria; prodotti da forno
+Baguette; prodotti da forno
+Pane tostato; prodotti da forno
+Pane integrale; prodotti da forno
+Pane di segale; prodotti da forno
+pane croccante; prodotti da forno
+fette biscottate; prodotti da forno
+muffin;prodotti da forno
+Ciambella;Prodotti da forno
+waffle; prodotti da forno
+Frittelle; prodotti da forno
+biscotti; prodotti da forno
+Impasto lievitato; prodotti da forno
+impasto per pizza; prodotti da forno
+Pasta sfoglia; prodotti da forno
+Pane piatto;Prodotti da forno
+Ciabatta; prodotti da forno
+pretzel; prodotti da forno
+Bastoncino di pretzel; prodotti da forno
+Panini di segale; prodotti da forno
+rotolo; prodotti da forno
+Focaccia; prodotti da forno
+rotolo alla cannella; prodotti da forno
+cereali; colazione
+Fiocchi d'avena; colazione
+Fiocchi di mais; colazione
+Miele; Colazione
+marmellata; colazione
+Nutella; colazione
+sciroppo d'acero; colazione
+Sciroppo d'agave; colazione
+cereali; colazione
+Granola; Colazione
+Porridge; Colazione
+crema al cioccolato; colazione
+Confettura di frutta; colazione
+Burro di arachidi; colazione
+diffusione; colazione
+Caffè; Bevande
+Tè; Bevande
+Acqua; Bevande
+Succo;Bevande
+Coca-Cola; Bevande
+Limonata; Bevande
+Birra; Bevande
+Vino; Bevande
+Spumante; bevande
+Prosecco; Bevande
+Bibita analcolica; Bevande
+Acqua minerale; bevande
+Spritz di mele; bevande
+Tè freddo; bevande
+bevanda al cacao;bevande
+Frullato; Bevande
+Bevanda energetica; Bevande
+Succo di mela; Bevande
+Succo d'arancia; bevande
+Succo d'uva; Bevande
+Succo di verdura; Bevande
+Multivitaminico;Bevande
+Acqua frizzante; Bevande
+Acqua naturale; Bevande
+Carne; Carne e salsiccia
+Salsiccia;Carne e salsiccia
+Prosciutto; Carne e salsiccia
+Pollo; Carne e salsiccia
+Manzo; Carne e salsiccia
+Carne macinata; carne e salsiccia
+Salame; Carne e salsiccia
+Salsicce; Carne e salsiccia
+Pollame; Carne e salsiccia
+Tacchino; Carne e salsiccia
+Vitello; Carne e salsiccia
+Agnello; Carne e salsiccia
+Gioco; Carne e salsiccia
+Bacon; Carne e salsiccia
+Bacon; Carne e salsiccia
+Prosciutto cotto; carne e salsiccia
+Salsiccia al tè; carne e salsiccia
+Salsiccia di fegato; carne e salsiccia
+Bratwurst; Carne e salsiccia
+Viennese; Carne e salsiccia
+Pesce;Pesce e frutti di mare
+Salmone;Pesce e frutti di mare
+Tonno;Pesce e frutti di mare
+Gamberetti;Pesce e frutti di mare
+Sardine; Pesce e frutti di mare
+Aringa; Pesce e frutti di mare
+Sgombro; Pesce e frutti di mare
+Matjes; Pesce e frutti di mare
+Frutti di mare;Pesce e frutti di mare
+Granchi; Pesce e frutti di mare
+Crostacei;Pesce e frutti di mare
+Calamari;Pesce e frutti di mare
+Trota;Pesce e frutti di mare
+Tagliatelle; alimento base
+Riso; alimento base
+Farina; alimento base
+Zucchero; alimento base
+Sale; alimento base
+Pepe; alimento base
+Olio; alimento base
+Aceto; alimento base
+spezie; alimenti base
+Lenticchie; alimento base
+Pomodori in scatola; alimento base
+Passata; alimento base
+miglio; alimento base
+Bulgur; alimento base
+Cuscus; alimento base
+Polenta; alimento base
+semola; alimento base
+Quinoa; alimento base
+Segale; alimento base
+Farro; alimento base
+Ceci; alimento base
+Fagioli rossi; alimento base
+Fagioli bianchi; alimento base
+Latte di cocco; alimento base
+brodo; alimento base
+Zuppa; alimento base
+Spaghetti; alimento base
+Maccheroni; alimento base
+Fusilli; alimento base
+Penne; alimento base
+Pasta a nastro;alimento base
+Lasagna; alimento base
+Patate; alimento base
+Ketchup; Salse e intingoli
+Maionese; Salse e intingoli
+Senape; Salse e intingoli
+Pesto; Salse e intingoli
+Hummus; Salse e intingoli
+Salsa di soia; salse e intingoli
+Tabasco; Salse e intingoli
+Salsa chili; salse e intingoli
+Salsa barbecue; salse e intingoli
+Remoulade; Salse e intingoli
+Pasta di curry; salse e intingoli
+Salse e intingoli Worcestershire
+Vestirsi; Salse e intingoli
+Cioccolato; Dolci e snack
+Patatine; Dolci e snack
+Biscotti; Dolci e snack
+Caramelle gommose; Dolci e snack
+Caramelle; Dolci e snack
+Gelato; dolci e snack
+Noci; Dolci e snack
+mix di frutta secca; dolci e snack
+Popcorn; Dolci e snack
+Barrette di cereali; Dolci e snack
+Tavolette di cioccolato; dolci e snack
+Bastoncini di sale; dolci e snack
+Arachidi; Dolci e snack
+Brezel; Dolci e snack
+Detersivo; Per la casa
+Detersivo per piatti; domestico
+Addetto alle pulizie; Casalingo
+Sapone; per la casa
+Carta igienica; domestico
+Carta da cucina; domestico
+sacchi della spazzatura; domestico
+spugna;domestico
+straccio;domestico
+foglio di alluminio; domestico
+pellicola trasparente; domestico
+Tovaglioli; Per la casa
+Batterie; Domestiche
+lampadina; domestico
+Candele; Per la casa
+panno per la pulizia; domestico
+sacco della spazzatura; domestico
+guanto per la pulizia; uso domestico
+Detergente per vetri; domestico
+Pulitore per tappeti; domestico
+Deodorante per ambienti; domestico
+candela profumata; domestico
+accendino; domestico
+partita;famiglia
+foglio;domestico
+Carta da forno; domestico
+stampo per muffin; per uso domestico
+sacchetti per congelatore; domestico
+Guanti monouso; domestico
+Decalcificante; domestico
+Pulitore per vetri; domestico
+detergente per il bagno; domestico
+Detergente per WC; domestico
+Detergente multiuso; domestico
+Detergente per pavimenti; domestico
+Pastiglia per lavastoviglie; domestico
+Brillantante; domestico
+compressa di sale; domestico
+ammorbidente; domestico
+Detersivo per colori; domestico
+Candeggina; domestico
+Smacchiatore; domestico
+Spray stirante; domestico
+deodorante per tessuti; domestico
+Detergente per forno; domestico
+Detergente per acciaio inossidabile; domestico
+Prodotti per la pulizia dell'argento; domestico
+Cura della pelle; domestico
+Cura del legno; domestico
+Dentifricio; Igiene e cura
+Spazzolino da denti; Igiene e cura
+Bagnoschiuma; igiene e cura
+Shampoo; Igiene e cura
+Balsamo; Igiene e cura
+Crema;Igiene e cura
+Deodorante; Igiene e cura
+Rasoi; Igiene e cura
+Schiuma da barba; Igiene e cura
+Tamponi; Igiene e cura
+assorbenti igienici; igiene e cura
+Tovagliolo di carta; Igiene e cura
+Disinfettanti; Igiene e cura
+Sapone per le mani; igiene e cura
+Salviettine umidificate; Igiene e cura
+Batuffolo di cotone; Igiene e cura
+bastoncini di cotone; igiene e cura
+Cerotti; Igiene e cura
+Smalto per unghie; igiene e cura
+Gel per capelli; igiene e cura
+Lacca per capelli; Igiene e cura
+Profumo;Igiene e cura
+Dopobarba; Igiene e cura
+Mascherina; igiene e cura
+Crema per le mani; igiene e cura
+Lozione per il corpo; igiene e cura
+Sali da bagno; igiene e cura
+Olio da bagno; igiene e cura
+bastoncini di cotone; igiene e cura
+Pinzette; Igiene e cura
+Forbicine per unghie; igiene e cura
+Elastico per capelli; Igiene e cura
+Spazzola per capelli; Igiene e cura
+Pettine;Igiene e cura
+Asciugacapelli; Igiene e cura
+Piastre; Igiene e cura
+Ferro arricciacapelli; Igiene e cura
+Collutorio; Igiene e cura
+antidolorifico; farmaco
+Vitamine; Medicinali
+Sciroppo per la febbre; farmaci
+Sciroppo per la tosse; farmaco
+Bendaggio; Farmaco
+Spray nasale; farmaco
+pastiglia per la gola; farmaco
+crema per ferite;medicazione
+Compressa per le allergie; farmaco
+Snack per cani; articoli per animali domestici
+Cibo per gatti; articoli per animali domestici
+Cibo per uccelli; articoli per animali domestici
+Cibo per conigli; articoli per animali domestici
+Cibo per pesci; articoli per animali domestici
+Guinzaglio; Articoli per animali domestici
+Giocattoli di animali; articoli per animali domestici
+Ciotola; Articoli per animali domestici
+lettiera per gatti; articoli per animali domestici
+Sabbia per uccelli; articoli per animali domestici
+Alimentatore automatico; articoli per animali domestici
+Giocattoli per gatti; articoli per animali domestici
+Cuccia per cani; articoli per animali domestici
+Fiore;Fiori e piante
+Terra;Fiori e Piante
+Fertilizzante; Fiori e piante
+Vasino;Fiori e piante
+Pianta;Fiori e piante
+Semi; Fiori e piante
+Legna da ardere; Negozio di ferramenta e giardinaggio
+Chiodo; Ferramenta e giardino
+Vite; Negozio di ferramenta e giardinaggio
+Martello; Negozio di ferramenta e giardinaggio
+Pinze; Negozio di ferramenta e giardinaggio
+Nastro adesivo; negozio di ferramenta e giardinaggio
+Colore; Ferramenta e giardino
+Spazzole; Negozio di ferramenta e giardinaggio
+Forbici; Ufficio e scuola
+Penna; Ufficio e scuola
+Carta; Ufficio e scuola
+Quaderno; Ufficio e scuola
+Gomma per cancellare; Ufficio e scuola
+Matita; Ufficio e scuola
+Evidenziatore; Ufficio e scuola
+Cucitrice; Ufficio e scuola
+Cartelle; Ufficio e scuola
+Colla; Ufficio e scuola
+Copertina;Ufficio e scuola
+Francobollo; Ufficio e scuola
+Marker;Ufficio e scuola
+Pennarello sottile; Ufficio e scuola
+Blocco note; Ufficio e scuola
+Calendario; Ufficio e scuola
+Pianificatore; Ufficio e scuola
+Postit;Ufficio e scuola
+Graffetta per fogli; Ufficio e scuola
+Cucitrice; Ufficio e scuola
+Perforatrice; Ufficio e scuola
+Copertina;Ufficio e scuola
+Batteria; Elettronica
+Cuffie; Elettronica
+Cavo di ricarica; Elettronica
+Chiavetta USB; elettronica
+Banca di alimentazione; elettronica
+telefono cellulare; elettronica
+Tablet; Elettronica
+Computer portatile; Elettronica
+Monitor; Elettronica
+tastiera;elettronica
+Mouse; Elettronica
+Stampanti; Elettronica
+Fotocamera; Elettronica
+scheda di memoria; elettronica
+DVD;Media
+CD;Media
+Libro;Media
+rivista;media
+giornale;media
+Gioco;Media
+Film;Media
+Musica;Media
+Stoviglie; Articoli per la casa
+Posate;Articoli per la casa
+Tazza;Articoli per la casa
+Vetro;Articoli per la casa
+Piatti;Articoli per la casa
+pentola;articoli per la casa
+padella;articoli per la casa
+ciotola;articoli per la casa
+tavola;articoli per la casa
+setaccio;beni per la casa
+Apriscatole; beni per la casa
+apribottiglie; beni per la casa
+Cavatappi;Articoli per la casa
+Studenti; beni per la casa
+Grattugia;Articoli per la casa
+Mixer;Articoli per la casa
+Tostapane;Articoli per la casa
+macchina da caffè;articoli per la casa
+Forno;Articoli per la casa
+Microonde;Articoli per la casa
+frigorifero;articoli per la casa
+Aspirapolvere; beni per la casa
+scope; beni per la casa
+pala;articoli per la casa
+bidone della spazzatura; casacambiare merce
+Cesto della biancheria; beni per la casa
+asse da stiro; articoli per la casa
+Ferri da stiro;Articoli per la casa
+Grucce per abiti; beni per la casa
+Lavatrice; beni per la casa
+Asciugatrici; Articoli per la casa
+tubo da giardino; giardino
+cesoie da giardino; giardino
+tosaerba; giardino
+annaffiatoio; giardino
+carriola;giardino
+vanga;giardino
+rastrello;giardino
+recinzione del giardino;giardino
+Protezione solare; Farmacia
+balsamo per le labbra; farmacia
+solvente per smalto; farmacia
+pannolino per bambini; articoli per neonati
+Cibo per bambini; articoli per neonati
+Olio per bambini; prodotti per bambini
+ciucci; articoli per neonati
+biberon; articoli per neonati
+Cibo per bambini; articoli per neonati
+Passeggini;Articoli per neonati
+Seggiolone; articoli per neonati
+Giocattoli;Giocattoli
+Puzzle; Giocattoli
+gioco da tavolo; giocattoli
+Animale di peluche; giocattoli
+elementi costitutivi; giocattoli
+libro da colorare; giocattoli
+matite colorate; giocattoli
+personaggio giocattolo; giocattoli
+Bicicletta; Tempo libero e sport
+Palla;Tempo libero e sport
+Corda per saltare; Tempo libero e sport
+Tappetino da yoga; Tempo libero e sport
+Manubrio; Tempo libero e sport
+Scarpe sportive; abbigliamento e accessori
+T-shirt; Abbigliamento e accessori
+Pantaloni; Abbigliamento e accessori
+Maglioni; Abbigliamento e accessori
+Giacca; Abbigliamento e accessori
+Calzini; Abbigliamento e accessori
+Biancheria intima; Abbigliamento e accessori
+Scarpe; Abbigliamento e accessori
+Cinture; Abbigliamento e accessori
+Cappello; Abbigliamento e accessori
+Sciarpa; Abbigliamento e accessori
+Guanti; Abbigliamento e accessori
+Borsa; Abbigliamento e accessori
+Portafoglio; Abbigliamento e accessori
+Zaino; Abbigliamento e accessori
+valigie; forniture da viaggio
+guide turistiche; forniture da viaggio
+Cuscino per il collo; forniture da viaggio
+Occhiali da sole; Accessori
+Gioielli;Accessori
+Orologio;Accessori
+Coperta; Tessili per la casa
+Cuscini; Tessili per la casa
+Biancheria da letto; tessuti per la casa
+Asciugamano; Tessili per la casa
+Tappeto da bagno; tessuti per la casa
+Tenda;Tessuti per la casa
+Tappeti; Tessili per la casa
+Lampada;Mobili e Arredamento
+Sedia;Mobili e Arredamento
+Tavolo;Mobili e Arredi
+Divano;Mobili e Arredamento
+Scaffale;Mobili e Arredi
+Armadio;Mobili e Arredamento
+Cassettiera; Mobili e arredi
+Letto; Mobili e arredamenti
+Materasso; Mobili e arredamenti
+Specchi; Mobili e arredamenti
+Cornici per quadri; Mobili e arredi
+vaso; decorazione
+vaso di fiori;decorazione
+candeliere; decorazione
+figura;decorazione
+Poster;Decorazione
+cestino;conservazione
+Scatola;Conservazione
+scatola;conservazione
+Libreria; Mobili e arredamenti
+Appendiabiti;Mobili e arredamento
+Armadio; Mobili e arredamenti
+Specchio da parete; Mobili e arredi
+Cuscini di seduta; tessuti per la casa
+Coperta da picnic; Tempo libero e sport
+barbecue; giardino
+carbone;giardino
+accendifuoco;giardino
+strofinaccio; domestico
+panno per la pulizia; domestico
+Sacchetti per aspirapolvere; domestico
+secchio;famiglia
+mocio;domestico
+Spazzino; Domestico
+paletta;domestico
+molletta;domestico
+Filo per stendere la biancheria; domestico
+smacchiatore; domestico
+Contenitore per alimenti; aiutante di cucina
+borsa;aiutante in cucina
+Teglia da forno; utensili da cucina
+misurino; utensili da cucina
+Bilance da cucina; aiutanti di cucina
+frusta; utensili da cucina
+cucchiaio di legno; utensili da cucina
+spatola; utensili da cucina
+Tappi di sughero; utensili da cucina
+Libro di ricette;Cucina e pasticceria
+Lievito in polvere; ingredienti per la cottura
+Lievito; ingredienti per la cottura
+Zucchero vanigliato; ingredienti per la cottura
+Cacao; ingredienti per la cottura
+granella di cioccolato; ingredienti per la cottura
+Copertura di cioccolato; ingredienti per la cottura
+Mandorla; ingredienti per la cottura
+Nocciola; ingredienti per la cottura
+Noce; ingredienti per la cottura
+Uvetta; ingredienti per la cottura
+Marzapane; ingredienti per la cottura
+zucchero a velo; ingredienti per la cottura
+Amido di mais; ingredienti per la cottura
+Gelatina; ingredienti per la cottura
+sciroppo; ingredienti per la cottura
+Sottaceto; cibo in scatola
+Olive; Prodotti in scatola
+Capperi; prodotti in scatola
+acciuga; in scatola
+peperoncino;cibo in scatola
+Semi di girasole; dolci e snack
+Semi di zucca; dolci e snack
+Pistacchio; Dolci e snack
+Anacardi; dolci e snack
+Barrette proteiche; dolci e snack
+Frutta secca; dolci e snack
+Barrette energetiche; dolci e snack
+Barrette di frutta; dolci e snack
+Torta di riso; Dolci e snack
+Biscotti salati; Dolci e snack
+Cracker; Dolci e snack
+Arachidi; Dolci e Snack
+Ceci; alimento base
+Fagiolo rosso; alimento base
+Fagiolo bianco; alimento base
+purè di patate; alimento base
+Torte di riso; alimento base
+Riso per sushi; alimento base
+Aceto balsamico; alimento base
+Aceto di mele; alimento base
+Olio di colza; alimento base
+Olio di semi di girasole; alimento base
+Olio d'oliva; alimento base
+Olio di cocco; alimento base
+Latte di soia; latticini
+Latte d'avena; latticini
+Latte di riso; latticini
+Latte di mandorla; Latticini
+Gnocchi; alimento base
+Fagioli secchi; alimento base
+waffle di mais; alimento base
+Spezie;Spezie ed erbe aromatiche
+Curry in polvere; spezie ed erbe aromatiche
+Maggiorana; Spezie ed Erbe Aromatiche
+Cumino; Spezie ed Erbe Aromatiche
+Anice; Spezie ed Erbe
+Cannella; Spezie ed erbe aromatiche
+Vaniglia; Spezie ed erbe aromatiche
+Noce moscata; Spezie ed erbe aromatiche
+Chiodi di garofano; Spezie ed erbe aromatiche
+Foglia di alloro; spezie ed erbe aromatiche
+Peperoncino; Spezie ed erbe aromatiche
+Cumino; Spezie ed erbe aromatiche
+Coriandolo; Spezie ed erbe aromatiche
+Aroma per dolci; ingredienti per la cottura
+Colorante alimentare; ingredienti per la cottura
+Miscela per dolci; ingredienti per la cottura
+Cialda; Dolci e snack
+Bastoncino di sale; Dolci e snack

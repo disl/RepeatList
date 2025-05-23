@@ -600,7 +600,7 @@ namespace RepeatList
                 // Hier category color change
                 var categories_list = ViewModel.Positions.Select(x => x.Category).Distinct().OrderBy(x => x).ToObservableCollection();
 
-                var popup = new CategoryPosition_PopUp(categories_list, position.Category);
+                var popup = new CategoryPosition_PopUp(ViewModel.m_Categories_listType_list, position.Category);
                 var result = await Shell.Current.ShowPopupAsync(popup);
                 if (result != null)
                 {

@@ -7,7 +7,7 @@
     xmlns:properties="clr-namespace:RepeatList.Properties"
     x:Class="RepeatList.CategoryPosition_PopUp">
     <VerticalStackLayout Padding="10" BackgroundColor="LightGray">
-        <Label Text="{x:Static properties:Resources.Select_a_category}" FontSize="Medium" HorizontalOptions="Center" />
+        <Label Text="{x:Static properties:Resources.Select_a_category}" TextColor="Black" FontSize="Medium" HorizontalOptions="Center" />
         <Border Stroke="Gray" Padding="5" >
             <StackLayout Orientation="Vertical">
                 <CollectionView  ItemsSource="{Binding Categories_colors_list}" 
@@ -25,8 +25,8 @@
                 </CollectionView>
             </StackLayout>
         </Border>
-        <Label Text="{x:Static properties:Resources.add}" FontSize="Medium" HorizontalOptions="Center" Margin="0,20,0,0"/>
-        <Entry Text="{Binding SelectedCategory.Category, Mode=TwoWay}" ClearButtonVisibility="WhileEditing" />
+        <Label Text="{x:Static properties:Resources.add}" FontSize="Medium" TextColor="Black" HorizontalOptions="Center" Margin="0,20,0,0"/>
+        <Entry Text="{Binding SelectedCategory.Category, Mode=TwoWay}" TextColor="Black" ClearButtonVisibility="WhileEditing" />
         <HorizontalStackLayout HorizontalOptions="Center">
             <Button Text="OK" Clicked="OkButton_Clicked"  TextColor="White" WidthRequest="100" />
             <Button x:Name="CancelButton" 

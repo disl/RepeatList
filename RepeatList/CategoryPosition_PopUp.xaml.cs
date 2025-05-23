@@ -15,7 +15,7 @@ public partial class CategoryPosition_PopUp : Popup
         InitializeComponent();
     }
 
-    public CategoryPosition_PopUp(ObservableCollection<string> list, string category)
+    public CategoryPosition_PopUp(List<Categories_listType> list, string category)
     {
         InitializeComponent();
 
