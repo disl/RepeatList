@@ -362,6 +362,9 @@ Volete ancora continuare?</value>
   <data name="undone" xml:space="preserve">
     <value>Annullamento</value>
   </data>
+  <data name="Unknown" xml:space="preserve">
+    <value>Sconosciuto</value>
+  </data>
   <data name="Would_you_like_to_overwrite_the_existing_list_with_new_data" xml:space="preserve">
     <value>Si desidera sovrascrivere l'elenco esistente con nuovi dati?</value>
   </data>

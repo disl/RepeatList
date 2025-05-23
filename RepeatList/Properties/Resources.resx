@@ -371,4 +371,7 @@ Do you still want to continue?</value>
   <data name="sort_by_category" xml:space="preserve">
     <value>By category</value>
   </data>
+  <data name="Unknown" xml:space="preserve">
+    <value>Unknown</value>
+  </data>
 </root>

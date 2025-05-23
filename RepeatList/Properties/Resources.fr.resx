@@ -359,6 +359,9 @@ Vous voulez quand même continuer ?</value>
   <data name="undone" xml:space="preserve">
     <value>Non fait</value>
   </data>
+  <data name="Unknown" xml:space="preserve">
+    <value>Inconnu</value>
+  </data>
   <data name="Would_you_like_to_overwrite_the_existing_list_with_new_data" xml:space="preserve">
     <value>Souhaitez-vous écraser la liste existante avec de nouvelles données ?</value>
   </data>

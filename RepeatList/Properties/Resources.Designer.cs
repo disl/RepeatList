@@ -750,6 +750,15 @@ namespace RepeatList.Properties {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Unknown ähnelt.
+        /// </summary>
+        public static string Unknown {
+            get {
+                return ResourceManager.GetString("Unknown", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Would you like to overwrite the existing list with new data? ähnelt.
         /// </summary>
         public static string Would_you_like_to_overwrite_the_existing_list_with_new_data {

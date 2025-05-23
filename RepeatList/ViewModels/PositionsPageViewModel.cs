@@ -3,15 +3,15 @@ using CommunityToolkit.Maui.Core;
 using CommunityToolkit.Maui.Core.Extensions;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Microsoft.ML;
-using Microsoft.ML.Data;
+//using Microsoft.ML;
+//using Microsoft.ML.Data;
 using RepeatList.Models;
 using RepeatList.Services;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Data;
 using System.Reactive.Linq;
-using System.Reflection;
+using System.Text;
 using Position = RepeatList.Models.Position;
 
 namespace RepeatList.ViewModels
@@ -20,16 +20,18 @@ namespace RepeatList.ViewModels
     {
         private DatabaseService _databaseService;
         public SupabaseService _supabaseService;
-        static MLContext mlContext;
-        static ITransformer? mlModel;
+        //static MLContext mlContext;
+        //static ITransformer? mlModel;
         public static List<Color> ColorsList = new();
         private CategoryPosition_PopUpViewModel m_CategoryPosition_PopUpViewModel = new CategoryPosition_PopUpViewModel();
-        static PredictionEngine<ModelInput, ModelOutput> predEngine;
+        //static PredictionEngine<ModelInput, ModelOutput> predEngine;
         List<Categories_listType> m_Categoeies_listType_list = new List<Categories_listType>();
         private SetupPageViewModel? setupPageViewModel;
         public string SelectedItem_KindOfSorting_key_name = "SelectedItem_KindOfSorting";
         public string SelectedItem_KindOfSorting_key_name_undone = "SelectedItem_KindOfSorting_undone";
         public double ButtonsSize = 25;
+
+        private static List<CategoryRule>? Categories_list;
 
         [ObservableProperty]
         public string collapse_undone_icon =
@@ -191,14 +193,19 @@ namespace RepeatList.ViewModels
             if (selectedItem.ListName != null)
                 Header_SelectedItem = selectedItem;
 
-            if (mlContext == null)
-            {
-                using var stream = Assembly.GetExecutingAssembly()
-                    .GetManifestResourceStream("RepeatList.Resources.ML.MLModel1.zip");
-                mlContext = new MLContext();
-                mlModel = mlContext.Model.Load(stream, out _);
-                predEngine = mlContext.Model.CreatePredictionEngine<ModelInput, ModelOutput>(mlModel);
-            }
+            //if (mlContext == null)
+            //{
+            //    using var stream = Assembly.GetExecutingAssembly()
+            //        .GetManifestResourceStream("RepeatList.Resources.ML.MLModel1.zip");
+            //    mlContext = new MLContext();
+            //    mlModel = mlContext.Model.Load(stream, out _);
+            //    predEngine = mlContext.Model.CreatePredictionEngine<ModelInput, ModelOutput>(mlModel);
+            //}
+
+            // CSV-Datei laden
+            Categories_list = new List<CategoryRule>(); // Groß-/Kleinschreibung ignorieren
+            
+            LoadRulesAsync("categories_de.csv").GetAwaiter().GetResult(); 
 
             // Categories
             RefreshColors().GetAwaiter().GetResult();
@@ -207,6 +214,81 @@ namespace RepeatList.ViewModels
 
             SetCollapseUndone(null);
         }
+
+        public async Task LoadRulesAsync(string fileName = "rules.csv")
+        {
+            var lines = new List<string>();
+
+            try
+            {
+                // Zugriff auf den Stream der eingebetteten Ressource
+                using Stream fileStream = await FileSystem.Current.OpenAppPackageFileAsync(fileName);
+                using StreamReader reader = new StreamReader(fileStream, Encoding.UTF8);
+
+                // Liest alle Zeilen und überspringt die Kopfzeile
+                string line;
+                bool isFirstLine = true; // Flag, um den Header zu überspringen
+
+                //while ((line = await reader.ReadLineAsync()) != null)
+                //{
+                while (!reader.EndOfStream)
+                {
+                    if (isFirstLine)
+                    {
+                        isFirstLine = false;
+                        continue; // Header-Zeile überspringen
+                    }
+
+                    while (!reader.EndOfStream)
+                    {
+                        line = reader.ReadLine();
+
+                        var parts = line.Split(';'); // Teilt die Zeile am Komma auf
+                        if (parts.Length >= 2) // Stellen Sie sicher, dass genügend Spalten vorhanden sind
+                        {
+                            Categories_list.Add(new CategoryRule
+                            {
+                                Article = parts[0].Trim(), // Schlüsselwort, Leerzeichen entfernen
+                                Category = parts[1].Trim() // Kategorie, Leerzeichen entfernen
+                            });
+                        }
+                    }                   
+                }                
+            }
+            catch (Exception ex)
+            {
+                Categories_list=null;
+            }
+        }
+
+        /// <summary>
+        /// Kategorisiert einen Artikel basierend auf den geladenen Regeln.
+        /// Die erste passende Regel hat Vorrang.
+        /// </summary>
+        /// <param name="itemName">Der Name/die Beschreibung des zu kategorisierenden Artikels.</param>
+        /// <returns>Die zugewiesene Kategorie oder "Unbekannt", wenn keine Regel passt.</returns>
+        public string GetCategory(string itemName)
+        {
+            if (Categories_list == null || Categories_list.Count == 0)
+            {
+                // Regeln sind noch nicht geladen oder die Liste ist leer
+                return "RegelnNichtGeladen"; // Oder eine andere geeignete Fehlermeldung/Exception
+            }
+
+            foreach (var rule in Categories_list)
+            {
+                // Das ist das Äquivalent zu SQL's LIKE '%search_string%'
+                // Überprüft, ob das Schlüsselwort im Artikelnamen enthalten ist (Groß-/Kleinschreibung ignorieren)
+                if (!string.IsNullOrEmpty(rule.Article) &&
+                    itemName.IndexOf(rule.Article, StringComparison.OrdinalIgnoreCase) >= 0)
+                {
+                    return rule.Category; // Die erste passende Regel gewinnt
+                }
+            }
+
+            return Properties.Resources.Unknown; // Standardkategorie, falls keine Regel passt
+        }
+
 
         public async Task RefreshColors()
         {
@@ -653,7 +735,6 @@ namespace RepeatList.ViewModels
             // set categories 
             FillCategories();
 
-
             if (SelectedItem_KindOfSorting_undone == null)
             {
                 // ????????
@@ -718,20 +799,27 @@ namespace RepeatList.ViewModels
                     }
                 }
 
-                // From ML
+                // From ML/CSV               
                 if (string.IsNullOrEmpty(Positions[i].Category))
                 {
-                    var sampleData = new ModelInput()
-                    {
-                        Col0 = first_word,
-                    };
+                    // CSV
+                    var category = GetCategory(first_word);
+                    if (category != null)
+                        Positions[i].Category = category;
+                    else
+                        Positions[i].Category ="";
 
-                    var input = new ModelInput() { Col0 = first_word };
-                    var prediction = predEngine.Predict(input);
-                    if (prediction != null)
-                    {
-                        Positions[i].Category = prediction.PredictedLabel;
-                    }
+                    // ML
+                    // var sampleData = new ModelInput()
+                    //{
+                    //    Col0 = first_word,
+                    //};
+                    //var input = new ModelInput() { Col0 = first_word };
+                    //var prediction = predEngine.Predict(input);
+                    //if (prediction != null)
+                    //{
+                    //    Positions[i].Category = prediction.PredictedLabel;
+                    //}
                 }
             }
             SetRowColors();
@@ -1109,36 +1197,36 @@ namespace RepeatList.ViewModels
         #endregion
     }
 
-    public class ModelInput
-    {
-        [LoadColumn(0)]
-        [ColumnName(@"col0")]
-        public string Col0 { get; set; }
+    //public class ModelInput
+    //{
+    //    [LoadColumn(0)]
+    //    [ColumnName(@"col0")]
+    //    public string Col0 { get; set; }
 
-        [LoadColumn(1)]
-        [ColumnName(@"col1")]
-        public string Col1 { get; set; }
+    //    [LoadColumn(1)]
+    //    [ColumnName(@"col1")]
+    //    public string Col1 { get; set; }
 
-    }
+    //}
 
-    public class ModelOutput
-    {
-        [ColumnName(@"col0")]
-        public float[] Col0 { get; set; }
+    //public class ModelOutput
+    //{
+    //    [ColumnName(@"col0")]
+    //    public float[] Col0 { get; set; }
 
-        [ColumnName(@"col1")]
-        public uint Col1 { get; set; }
+    //    [ColumnName(@"col1")]
+    //    public uint Col1 { get; set; }
 
-        [ColumnName(@"Features")]
-        public float[] Features { get; set; }
+    //    [ColumnName(@"Features")]
+    //    public float[] Features { get; set; }
 
-        [ColumnName(@"PredictedLabel")]
-        public string PredictedLabel { get; set; }
+    //    [ColumnName(@"PredictedLabel")]
+    //    public string PredictedLabel { get; set; }
 
-        [ColumnName(@"Score")]
-        public float[] Score { get; set; }
+    //    [ColumnName(@"Score")]
+    //    public float[] Score { get; set; }
 
-    }
+    //}
 
     internal class Categories_listType
     {

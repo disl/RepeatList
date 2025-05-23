@@ -359,6 +359,9 @@
   <data name="undone" xml:space="preserve">
     <value>Не зроблено</value>
   </data>
+  <data name="Unknown" xml:space="preserve">
+    <value>Невідомо</value>
+  </data>
   <data name="Would_you_like_to_overwrite_the_existing_list_with_new_data" xml:space="preserve">
     <value>Ви хочете перезаписати існуючий список новими даними?</value>
   </data>

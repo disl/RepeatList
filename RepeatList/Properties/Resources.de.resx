@@ -359,6 +359,9 @@ Wollen Sie trotzdem fortfahren?</value>
   <data name="undone" xml:space="preserve">
     <value>Nicht erledigt</value>
   </data>
+  <data name="Unknown" xml:space="preserve">
+    <value>Unbekannt</value>
+  </data>
   <data name="Would_you_like_to_overwrite_the_existing_list_with_new_data" xml:space="preserve">
     <value>Möchten Sie die bestehende Liste mit neuen Daten überschreiben?</value>
   </data>

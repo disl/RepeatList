@@ -105,32 +105,38 @@
 		<AndroidResource Remove="Platforms\Tizen\**" />
 		<AndroidResource Remove="Platforms\Windows\**" />
 		<AndroidResource Remove="Resources\Images\backup\**" />
+		<AndroidResource Remove="Resources\ML\**" />
 		<AndroidResource Remove="Themes\**" />
 		<Compile Remove="Platforms\MacCatalyst\**" />
 		<Compile Remove="Platforms\Tizen\**" />
 		<Compile Remove="Platforms\Windows\**" />
 		<Compile Remove="Resources\Images\backup\**" />
+		<Compile Remove="Resources\ML\**" />
 		<Compile Remove="Themes\**" />
 		<EmbeddedResource Remove="Platforms\MacCatalyst\**" />
 		<EmbeddedResource Remove="Platforms\Tizen\**" />
 		<EmbeddedResource Remove="Platforms\Windows\**" />
 		<EmbeddedResource Remove="Resources\Images\backup\**" />
+		<EmbeddedResource Remove="Resources\ML\**" />
 		<EmbeddedResource Remove="Themes\**" />
 		<MauiCss Remove="Platforms\MacCatalyst\**" />
 		<MauiCss Remove="Platforms\Tizen\**" />
 		<MauiCss Remove="Platforms\Windows\**" />
 		<MauiCss Remove="Resources\Images\backup\**" />
+		<MauiCss Remove="Resources\ML\**" />
 		<MauiCss Remove="Themes\**" />
 		<MauiImage Remove="Resources\Images\backup\**" />
 		<MauiXaml Remove="Platforms\MacCatalyst\**" />
 		<MauiXaml Remove="Platforms\Tizen\**" />
 		<MauiXaml Remove="Platforms\Windows\**" />
 		<MauiXaml Remove="Resources\Images\backup\**" />
+		<MauiXaml Remove="Resources\ML\**" />
 		<MauiXaml Remove="Themes\**" />
 		<None Remove="Platforms\MacCatalyst\**" />
 		<None Remove="Platforms\Tizen\**" />
 		<None Remove="Platforms\Windows\**" />
 		<None Remove="Resources\Images\backup\**" />
+		<None Remove="Resources\ML\**" />
 		<None Remove="Themes\**" />
 	</ItemGroup>
 
@@ -182,7 +188,6 @@
 		<None Remove="Resources\Images\dotnet_bot.png" />
 		<None Remove="Resources\Images\repeat_list_1024_500.jpeg" />
 		<None Remove="Resources\Images\repeat_list_300.jpeg" />
-		<None Remove="Resources\ML\MLModel1.zip" />
 		<None Remove="Resources\Splash\appicon - Kopie.png" />
 		<None Remove="Resources\Splash\appicon.png" />
 		<None Remove="Resources\Splash\playstore.svg" />
@@ -193,7 +198,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<EmbeddedResource Include="Resources\ML\MLModel1.zip" />
 		<EmbeddedResource Include="Resources\todo.db3">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</EmbeddedResource>
@@ -205,7 +209,6 @@
 		<PackageReference Include="Microsoft.Data.Sqlite.Core" Version="9.0.5" />
 		<PackageReference Include="Microsoft.Maui.Controls" Version="9.0.70" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="9.0.5" />
-		<PackageReference Include="Microsoft.ML" Version="4.0.2" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
 		<PackageReference Include="Sentry.Maui" Version="5.7.0" />
 		<PackageReference Include="SQLitePCLRaw.bundle_e_sqlite3" Version="2.1.11" />
@@ -324,6 +327,12 @@
 	    <Pack>True</Pack>
 	    <PackagePath>\</PackagePath>
 	  </None>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <MauiAsset Update="Resources\Raw\categories_de.csv">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </MauiAsset>
 	</ItemGroup>
 
 	<ItemGroup>
