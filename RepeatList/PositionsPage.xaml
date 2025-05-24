@@ -80,35 +80,25 @@
             <Border.StrokeShape>
                 <RoundRectangle CornerRadius="5" />
             </Border.StrokeShape>
-            <CollectionView x:Name="PositionListView"                              
+            <CollectionView x:Name="PositionListView"  
+                                    ItemSizingStrategy="MeasureFirstItem"
                                     ItemsSource="{Binding Positions_undone_filterd}"                             
                                     SelectedItem="{Binding Position_selectedItem, Mode=OneWayToSource}"                                      
                                     SelectionMode="Single"                                     
                                     SelectionChanged="OnPositionSelected_new" 
-                                    ItemSizingStrategy="MeasureFirstItem"
+                                    
                             >
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
-                        <!--HeightRequest="45"-->
-                        <Grid  ColumnDefinitions="30,6*,1*,1*,1*" VerticalOptions="Center" 
-                               
+                        <Grid  ColumnDefinitions="30,6*,1*,1*,1*" VerticalOptions="Center"                              
                                ColumnSpacing="10" >
                             <Button BackgroundColor="{Binding Category_color}" Grid.Column="0" 
                                     Clicked="Category_colorClicked" CommandParameter="{Binding}"
                                     BorderColor="{AppThemeBinding Light=Gray, Dark=LightGray}" />
-                            <!--<ScrollView Orientation="Horizontal"  Grid.Column="1" VerticalOptions="Center" >
-                                <Label Text="{Binding Title, FallbackValue = '?'}"     
-                                       VerticalTextAlignment="Center"
-                                       TextColor="{AppThemeBinding Light={DynamicResource PrimaryTextColor}, Dark={DynamicResource PrimaryTextColorLight}}"/>
-                            </ScrollView>-->
-
-                            <!--<ScrollView Orientation="Horizontal"  Grid.Column="1" VerticalOptions="Center" >-->
                             <Label  Text="{Binding Title, FallbackValue = '?'}" Grid.Column="1"   
                                     LineBreakMode="TailTruncation" MaxLines="1"
                                     VerticalTextAlignment="Center"
                                     TextColor="{AppThemeBinding Light={DynamicResource PrimaryTextColor}, Dark={DynamicResource PrimaryTextColorLight}}"/>
-                            <!--</ScrollView>-->
-
                             <ImageButton Source="{Binding PositionImageSource, FallbackValue = 'check_box_blank.png'}" 
                                          Clicked="OnCheckedButtonClicked" CommandParameter="{Binding}" 
                                          HeightRequest="30" Grid.Column="2"/>
@@ -184,11 +174,12 @@
             <Border.StrokeShape>
                 <RoundRectangle CornerRadius="5" />
             </Border.StrokeShape>
-            <CollectionView x:Name="PositionDoneListView"  ItemsSource="{Binding Positions_done_filtered}" 
+            <CollectionView x:Name="PositionDoneListView" 
+                            ItemSizingStrategy="MeasureFirstItem"
+                            ItemsSource="{Binding Positions_done_filtered}" 
                             SelectedItem="{Binding Position_selectedItem, Mode=OneWayToSource}"
                             SelectionMode="Single"
                             SelectionChanged="OnPositionSelected_new" 
-                            ItemSizingStrategy="MeasureFirstItem"
                             >
                 <!--HeightRequest="45"-->
                 <CollectionView.ItemTemplate>

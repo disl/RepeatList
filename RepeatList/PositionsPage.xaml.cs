@@ -52,7 +52,7 @@ namespace RepeatList
 
                 ViewModel.ItemSource_KindOfSorting = new ObservableCollection<CMBType_String>
                 {
-                 new CMBType_String(Properties.Resources.sort_by_date, "date"),
+                 new CMBType_String(Properties.Resources.sort_by_time, "date"),
                  new CMBType_String(Properties.Resources.sort_by_alphabet, "alpha" ),
                  new CMBType_String(Properties.Resources.sort_by_category, "category" )
                 };
@@ -402,9 +402,19 @@ namespace RepeatList
 
         private async void SortingPicker_SelectedIndexChanged(object sender, EventArgs e)
         {
-            var picker = sender as Picker;
-            await ViewModel.LoadPositions();
-            Preferences.Set(ViewModel.SelectedItem_KindOfSorting_key_name, ViewModel.SelectedItem_KindOfSorting.Value);
+            try
+            {
+                if (sender == null || ViewModel == null || ViewModel.SelectedItem_KindOfSorting == null)
+                    return;
+                var picker = sender as Picker;
+                await ViewModel.LoadPositions();
+                Preferences.Set(ViewModel.SelectedItem_KindOfSorting_key_name, ViewModel.SelectedItem_KindOfSorting.Value);
+            }
+            catch (Exception ex)
+            {
+                SentrySdk.CaptureException(ex);
+                throw;
+            }
         }
 
         private async void SortingPicker_undone_SelectedIndexChanged(object sender, EventArgs e)
@@ -594,7 +604,7 @@ namespace RepeatList
             var button = sender as Button;
             if (button?.CommandParameter is Position position)
             {
-                if (position == null || position.Title==null || position.Category == null)
+                if (position == null || position.Title == null || position.Category == null)
                     return;
 
                 // Hier category color change
@@ -609,7 +619,7 @@ namespace RepeatList
                     //ViewModel.Categories_db = m_CategoryPosition_PopUpViewModel.Categories_db;
 
 
-                    await ViewModel.RefreshColors(); 
+                    await ViewModel.RefreshColors();
                 }
 
 
