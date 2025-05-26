@@ -39,6 +39,7 @@ namespace RepeatList
 
 #if ANDROID
                     handlers.AddHandler(typeof(AdBannerView), typeof(AdBannerViewHandler));
+                    handlers.AddHandler<CollectionView, Platforms.Android.Handlers.CustomCollectionViewHandler>();
 #endif
 
                 })

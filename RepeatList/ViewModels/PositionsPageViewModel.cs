@@ -3,8 +3,6 @@ using CommunityToolkit.Maui.Core;
 using CommunityToolkit.Maui.Core.Extensions;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-//using Microsoft.ML;
-//using Microsoft.ML.Data;
 using RepeatList.Models;
 using RepeatList.Services;
 using System.Collections.ObjectModel;
@@ -204,8 +202,8 @@ namespace RepeatList.ViewModels
 
             // CSV-Datei laden
             Categories_list = new List<CategoryRule>(); // Groß-/Kleinschreibung ignorieren
-            
-            LoadRulesAsync($"categories_{CurrentCulture.ToLower()}.csv").GetAwaiter().GetResult(); 
+
+            LoadRulesAsync($"categories_{CurrentCulture.ToLower()}.csv").GetAwaiter().GetResult();
 
             // Categories
             RefreshColors().GetAwaiter().GetResult();
@@ -254,8 +252,8 @@ namespace RepeatList.ViewModels
                                 Category = parts[1].Trim() // Kategorie, Leerzeichen entfernen
                             });
                         }
-                    }                   
-                }                
+                    }
+                }
             }
             catch (Exception ex)
             {
@@ -703,81 +701,87 @@ namespace RepeatList.ViewModels
 
         internal async Task LoadPositions()
         {
-            IsBusy = true;
+            try
+            {
+                IsBusy = true;
 
-            Positions.Clear();
-            Positions_undone.Clear();
-            Positions_done.Clear();
-            Positions_undone_filterd.Clear();
-            Positions_done_filtered.Clear();
+                Positions.Clear();
+                Positions_undone.Clear();
+                Positions_done.Clear();
+                Positions_undone_filterd.Clear();
+                Positions_done_filtered.Clear();
 
-            Label_Positions = Properties.Resources.Positions.ToUpper() + " (0)";
+                Label_Positions = Properties.Resources.Positions.ToUpper() + " (0)";
 
-            Label_done = Properties.Resources.done;
-            if (Positions_done != null)
+                Label_done = Properties.Resources.done;
+                if (Positions_done != null)
+                    Label_done = string.Format("{0} ({1})", Properties.Resources.done, Positions_done.Count);
+
+                Label_undone = Properties.Resources.undone;
+                if (Positions_undone != null)
+                    Label_undone = string.Format("{0} ({1})", Properties.Resources.undone, Positions_undone.Count);
+
+                if (Header_SelectedItem == null)
+                    return;
+
+                PositionListViewVisible = false;
+
+                var _pos_arr = await _databaseService.GetPositionsAsync(Header_SelectedItem.Id);
+                if (_pos_arr == null || _pos_arr.Count == 0)
+                {
+                    IsBusy = false;
+                    return;
+                }
+                Positions = _pos_arr.OrderBy(x => x.IsCompleted).ThenBy(a => a.Title).ToObservableCollection();
+
+                // set categories 
+                FillCategories();
+
+                if (SelectedItem_KindOfSorting_undone == null)
+                {
+                    // ????????
+                    SelectedItem_KindOfSorting_undone = new CMBType_String(Properties.Resources.sort_by, "alpha");
+                }
+
+                if (SelectedItem_KindOfSorting_undone.Value == "alpha")
+                    Positions_undone = _pos_arr.Where(a => a.IsCompleted==false).OrderBy(x => x.Title).ToObservableCollection();
+                else if (SelectedItem_KindOfSorting_undone.Value == "category")
+                    Positions_undone = _pos_arr.Where(a => a.IsCompleted==false).OrderBy(y => y.Category).ThenBy(x => x.Title).ToObservableCollection();
+
+                //Positions_undone = _pos_arr.Where(a => a.IsCompleted == false).OrderBy(y => y.Category).ThenBy(x => x.Title).ToObservableCollection();
+
+                if (SelectedItem_KindOfSorting == null)
+                {
+                    // ????????
+                    SelectedItem_KindOfSorting = new CMBType_String(Properties.Resources.sort_by, "date");
+                }
+
+                if (SelectedItem_KindOfSorting.Value == "date")
+                    Positions_done = _pos_arr.Where(a => a.IsCompleted).OrderByDescending(x => x.UpdatedAt).ToObservableCollection();
+                else if (SelectedItem_KindOfSorting.Value == "alpha")
+                    Positions_done = _pos_arr.Where(a => a.IsCompleted).OrderBy(x => x.Title).ToObservableCollection();
+                else if (SelectedItem_KindOfSorting.Value == "category")
+                    Positions_done = _pos_arr.Where(a => a.IsCompleted).OrderBy(y => y.Category).ThenBy(x => x.Title).ToObservableCollection();
+
                 Label_done = string.Format("{0} ({1})", Properties.Resources.done, Positions_done.Count);
-
-            Label_undone = Properties.Resources.undone;
-            if (Positions_undone != null)
                 Label_undone = string.Format("{0} ({1})", Properties.Resources.undone, Positions_undone.Count);
+                Label_Positions = string.Format(Properties.Resources.Positions.ToUpper() + " ({0})", Positions_done.Count + Positions_undone.Count);
 
-            if (Header_SelectedItem == null)
-                return;
+                FilteredList = new ObservableCollection<Position>(_pos_arr);
 
-            PositionListViewVisible = false;
+                if (Positions_undone != null)
+                    Positions_undone_filterd = new ObservableCollection<Position>(Positions_undone);
+                if (Positions_done != null)
+                    Positions_done_filtered = new ObservableCollection<Position>(Positions_done);
 
-            var _pos_arr = await _databaseService.GetPositionsAsync(Header_SelectedItem.Id);
-            if (_pos_arr == null || _pos_arr.Count == 0)
-            {
                 IsBusy = false;
-                return;
+                PositionListViewVisible = true;
             }
-            Positions = _pos_arr.OrderBy(x => x.IsCompleted).ThenBy(a => a.Title).ToObservableCollection();
-
-            // set categories 
-            FillCategories();
-
-            if (SelectedItem_KindOfSorting_undone == null)
+            catch (Exception ex)
             {
-                // ????????
-                SelectedItem_KindOfSorting_undone = new CMBType_String(Properties.Resources.sort_by, "alpha");
+                SentrySdk.CaptureException(ex);
+                throw;
             }
-
-            if (SelectedItem_KindOfSorting_undone.Value == "alpha")
-                Positions_undone = _pos_arr.Where(a => a.IsCompleted==false).OrderBy(x => x.Title).ToObservableCollection();
-            else if (SelectedItem_KindOfSorting_undone.Value == "category")
-                Positions_undone = _pos_arr.Where(a => a.IsCompleted==false).OrderBy(y => y.Category).ThenBy(x => x.Title).ToObservableCollection();
-
-            //Positions_undone = _pos_arr.Where(a => a.IsCompleted == false).OrderBy(y => y.Category).ThenBy(x => x.Title).ToObservableCollection();
-
-            if (SelectedItem_KindOfSorting == null)
-            {
-                // ????????
-                SelectedItem_KindOfSorting = new CMBType_String(Properties.Resources.sort_by, "date");
-            }
-
-            if (SelectedItem_KindOfSorting.Value == "date")
-                Positions_done = _pos_arr.Where(a => a.IsCompleted).OrderByDescending(x => x.UpdatedAt).ToObservableCollection();
-            else if (SelectedItem_KindOfSorting.Value == "alpha")
-                Positions_done = _pos_arr.Where(a => a.IsCompleted).OrderBy(x => x.Title).ToObservableCollection();
-            else if (SelectedItem_KindOfSorting.Value == "category")
-                Positions_done = _pos_arr.Where(a => a.IsCompleted).OrderBy(y => y.Category).ThenBy(x => x.Title).ToObservableCollection();
-
-            Label_done = string.Format("{0} ({1})", Properties.Resources.done, Positions_done.Count);
-            Label_undone = string.Format("{0} ({1})", Properties.Resources.undone, Positions_undone.Count);
-            Label_Positions = string.Format(Properties.Resources.Positions.ToUpper() + " ({0})", Positions_done.Count + Positions_undone.Count);
-
-            FilteredList = new ObservableCollection<Position>(_pos_arr);
-
-            if (Positions_undone != null)
-                Positions_undone_filterd = new ObservableCollection<Position>(Positions_undone);
-            if (Positions_done != null)
-                Positions_done_filtered = new ObservableCollection<Position>(Positions_done);
-
-
-
-            IsBusy = false;
-            PositionListViewVisible = true;
         }
 
         public void FillCategories()
@@ -857,7 +861,7 @@ namespace RepeatList.ViewModels
 
             // for Unknown category
             var unknownCategory = m_Categories_listType_list.FirstOrDefault(x => x.Category == Properties.Resources.Unknown);
-            if(unknownCategory != null)
+            if (unknownCategory != null)
             {
                 m_Categories_listType_list.Remove(unknownCategory);
                 m_Categories_listType_list.Add(new Categories_listType(Properties.Resources.Unknown, Colors.Transparent));
