@@ -50,8 +50,8 @@
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net9.0-android|AnyCPU'">
 	  <EmbedAssembliesIntoApk>False</EmbedAssembliesIntoApk>
-	  <ApplicationDisplayVersion>1.0.78</ApplicationDisplayVersion>
-	  <ApplicationVersion>78</ApplicationVersion>
+	  <ApplicationDisplayVersion>1.0.79</ApplicationDisplayVersion>
+	  <ApplicationVersion>79</ApplicationVersion>
 	  <AndroidKeyStore>False</AndroidKeyStore>
 	</PropertyGroup>
 
@@ -66,8 +66,8 @@
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net9.0-android|AnyCPU'">
-	  <ApplicationDisplayVersion>1.0.78</ApplicationDisplayVersion>
-	  <ApplicationVersion>78</ApplicationVersion>
+	  <ApplicationDisplayVersion>1.0.79</ApplicationDisplayVersion>
+	  <ApplicationVersion>79</ApplicationVersion>
 	  <AndroidLinkTool>r8</AndroidLinkTool>
 	  <AndroidKeyStore>False</AndroidKeyStore>
 	  <RunAOTCompilation>True</RunAOTCompilation>
@@ -210,7 +210,7 @@
 		<PackageReference Include="Microsoft.Maui.Controls" Version="9.0.70" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="9.0.5" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-		<PackageReference Include="Sentry.Maui" Version="5.7.0" />
+		<PackageReference Include="Sentry.Maui" Version="5.10.0" />
 		<PackageReference Include="SQLitePCLRaw.bundle_e_sqlite3" Version="2.1.11" />
 		<PackageReference Include="Supabase" Version="1.1.1" />
 		<PackageReference Include="Supabase.Postgrest" Version="4.1.0" />
@@ -343,10 +343,10 @@
 
 	<ItemGroup Condition="'$(TargetFramework)' == 'net9.0-android'">
 	  <PackageReference Include="Xamarin.Google.Android.Play.Core">
-	    <Version>1.10.3.17</Version>
+	    <Version>1.10.3.18</Version>
 	  </PackageReference>
 	  <PackageReference Include="Xamarin.GooglePlayServices.Ads.Lite">
-	    <Version>124.0.0.1</Version>
+	    <Version>124.0.0.2</Version>
 	  </PackageReference>
 	</ItemGroup>
 

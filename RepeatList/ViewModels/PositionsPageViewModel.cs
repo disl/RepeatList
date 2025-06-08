@@ -43,6 +43,7 @@ namespace RepeatList.ViewModels
         [ObservableProperty] public string menu_icon = "menu.png";
         [ObservableProperty] public bool duplicate_entries_add;
         [ObservableProperty] public bool sortImages_visible = true;
+        [ObservableProperty] public bool udoneSorting_visible = true;
 
         [ObservableProperty] public double imageButton_resetPositions_SizeRequest = 35;
         [ObservableProperty] public double image_sort_SizeRequest = 20;
@@ -91,6 +92,7 @@ namespace RepeatList.ViewModels
                 Gridheight_undone = -1;
                 Gridheight_done = -1;
 
+                UdoneSorting_visible = true;
                 SortImages_visible = true;
                 ImageButton_resetPositions_SizeRequest = 35;
                 Image_sort_SizeRequest = 20;
@@ -117,6 +119,7 @@ namespace RepeatList.ViewModels
 
                     Gridheight_undone = 0;
 
+                    UdoneSorting_visible = false;
                     Gridheight_done = -1;
                     SortImages_visible = true;
                     ImageButton_resetPositions_SizeRequest = 35;
@@ -143,9 +146,10 @@ namespace RepeatList.ViewModels
                     Gridheight_undone = -1;
 
                     Gridheight_done = 0;
+                    UdoneSorting_visible = true;
                     SortImages_visible = false;
                     ImageButton_resetPositions_SizeRequest = 0;
-                    Image_sort_SizeRequest = 0;
+                    Image_sort_SizeRequest = 20;
 
                     Isvisible_undone = true;
                     Isvisible_done = false;
@@ -257,7 +261,7 @@ namespace RepeatList.ViewModels
             }
             catch (Exception ex)
             {
-                Categories_list=null;
+                Categories_list = null;
             }
         }
 
@@ -744,9 +748,9 @@ namespace RepeatList.ViewModels
                 }
 
                 if (SelectedItem_KindOfSorting_undone.Value == "alpha")
-                    Positions_undone = _pos_arr.Where(a => a.IsCompleted==false).OrderBy(x => x.Title).ToObservableCollection();
+                    Positions_undone = _pos_arr.Where(a => a.IsCompleted == false).OrderBy(x => x.Title).ToObservableCollection();
                 else if (SelectedItem_KindOfSorting_undone.Value == "category")
-                    Positions_undone = _pos_arr.Where(a => a.IsCompleted==false).OrderBy(y => y.Category).ThenBy(x => x.Title).ToObservableCollection();
+                    Positions_undone = _pos_arr.Where(a => a.IsCompleted == false).OrderBy(y => y.Category).ThenBy(x => x.Title).ToObservableCollection();
 
                 //Positions_undone = _pos_arr.Where(a => a.IsCompleted == false).OrderBy(y => y.Category).ThenBy(x => x.Title).ToObservableCollection();
 
@@ -813,7 +817,7 @@ namespace RepeatList.ViewModels
                     if (category != null)
                         Positions[i].Category = category;
                     else
-                        Positions[i].Category ="";
+                        Positions[i].Category = "";
 
                     // ML
                     // var sampleData = new ModelInput()
@@ -936,7 +940,7 @@ namespace RepeatList.ViewModels
 
         private void InitColors()
         {
-            if (ColorsList != null &&  ColorsList.Count == RandomContrastColors.Length)
+            if (ColorsList != null && ColorsList.Count == RandomContrastColors.Length)
                 return;
 
             ColorsList = new List<Color>();

@@ -41,17 +41,16 @@
                    TextColor="{AppThemeBinding Light={DynamicResource PrimaryTextColor}, Dark={DynamicResource PrimaryTextColorLight}}"
                    PlaceholderColor="{AppThemeBinding Light=Gray, Dark=LightGray}"                   
                    TextChanged="OnSearchTextChanged" ClearButtonVisibility="WhileEditing" />
-
-
             <Image Grid.Column="2" VerticalOptions="Center" 
-         IsVisible="{Binding SortImages_visible}"
-         HeightRequest="{Binding Image_sort_SizeRequest}"                             >
+                   IsVisible="{Binding UdoneSorting_visible}"
+                   HeightRequest="{Binding Image_sort_SizeRequest}"                             >
                 <Image.Source>
                     <AppThemeBinding Light="sort_black.png"  Dark="sort_white.png" />
                 </Image.Source>
             </Image>
             <Picker x:Name="SortingPicker_undone" Title="{Binding  Title_sort_by}"  Grid.Column="3" VerticalOptions="Center" 
               TextColor="{AppThemeBinding Light={DynamicResource PrimaryTextColor}, Dark={DynamicResource PrimaryTextColorLight}}"
+              IsVisible="{Binding UdoneSorting_visible}"
               TitleColor="Gray"                    
               SelectedIndexChanged="SortingPicker_undone_SelectedIndexChanged"           
               SelectedItem="{Binding  SelectedItem_KindOfSorting_undone, Mode=TwoWay}">
@@ -59,7 +58,6 @@
                     <Binding Path="Name" />
                 </Picker.ItemDisplayBinding>
             </Picker>
-
 
             <ImageButton Source="{Binding Collapse_undone_icon, FallbackValue = ''}" 
                          Command="{Binding Undone_ImageButtonClickedCommand}" 
