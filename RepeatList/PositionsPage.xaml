@@ -83,16 +83,33 @@
                                     ItemsSource="{Binding Positions_undone_filterd}"                             
                                     SelectedItem="{Binding Position_selectedItem, Mode=OneWayToSource}"                                      
                                     SelectionMode="Single"                                     
-                                    SelectionChanged="OnPositionSelected_new" 
-                                    
+                                    SelectionChanged="OnPositionSelected_new"      
+                           
                             >
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
                         <Grid  ColumnDefinitions="30,6*,1*,1*,1*" VerticalOptions="Center"                              
                                ColumnSpacing="10" >
-                            <Button BackgroundColor="{Binding Category_color}" Grid.Column="0" 
+                            <!--<Button BackgroundColor="{Binding Category_color}" Grid.Column="0" 
                                     Clicked="Category_colorClicked" CommandParameter="{Binding}"
-                                    BorderColor="{AppThemeBinding Light=Gray, Dark=LightGray}" />
+                                    BorderColor="{AppThemeBinding Light=Gray, Dark=LightGray}" />-->
+
+                            <Frame  
+                                Grid.Column="0" 
+                                BackgroundColor="{Binding Category_color}"
+                                CornerRadius="4"
+                                HeightRequest="30"
+                                WidthRequest="30"
+                                Padding="0">
+                                <Frame.GestureRecognizers>
+                                    <TapGestureRecognizer 
+                                        Tapped="Category_colorClicked"  
+                                        NumberOfTapsRequired="1" />
+                                </Frame.GestureRecognizers>
+                            </Frame>
+
+
+
                             <Label  Text="{Binding Title, FallbackValue = '?'}" Grid.Column="1"   
                                     LineBreakMode="TailTruncation" MaxLines="1"
                                     VerticalTextAlignment="Center"
@@ -187,9 +204,23 @@
                                ColumnSpacing="10"                               
                                >
 
-                            <Button BackgroundColor="{Binding Category_color}" Grid.Column="0" 
+                            <!--<Button BackgroundColor="{Binding Category_color}" Grid.Column="0" 
                                     Clicked="Category_colorClicked" CommandParameter="{Binding}"
-                                    BorderColor="{AppThemeBinding Light=Gray, Dark=LightGray}"/>
+                                    BorderColor="{AppThemeBinding Light=Gray, Dark=LightGray}"/>-->
+
+                            <Frame 
+                                 BackgroundColor="{Binding Category_color}" Grid.Column="0"
+                                 CornerRadius="4"
+                                 HeightRequest="30"
+                                 WidthRequest="30"
+                                 Padding="0">       
+                                <Frame.GestureRecognizers>
+                                    <TapGestureRecognizer 
+                                         Tapped="Category_colorClicked"  
+                                         NumberOfTapsRequired="1" />
+                                </Frame.GestureRecognizers>
+                            </Frame>
+
 
                             <!--<ScrollView Orientation="Horizontal" VerticalOptions="Center" Grid.Column="1">-->
                             <Label Text="{Binding Title}" Grid.Column="1"

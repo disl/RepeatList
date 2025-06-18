@@ -214,7 +214,21 @@ namespace RepeatList.ViewModels
 
             InitSelectedItem_KindOfSorting();
 
+
             SetCollapseUndone(null);
+
+            string? _collapse_undone = null;
+            try
+            {
+                _collapse_undone = Preferences.Get("Collapse_undone", "");
+                Collapse_undone = string.IsNullOrEmpty(_collapse_undone) ? null : Convert.ToBoolean(_collapse_undone);
+            }
+            catch 
+            {
+                Collapse_undone = null;
+            }
+            
+
         }
 
         public async Task LoadRulesAsync(string fileName)
@@ -456,6 +470,8 @@ namespace RepeatList.ViewModels
         public void Undone_ImageButtonClicked()
         {
             Collapse_undone = Collapse_undone == null ? false : null;
+
+            Preferences.Set("Collapse_undone", Collapse_undone == null ? "" : Collapse_undone.ToString());
         }
 
         [RelayCommand]

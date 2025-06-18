@@ -2,6 +2,7 @@
 using CommunityToolkit.Maui.Core;
 using CommunityToolkit.Maui.Core.Extensions;
 using CommunityToolkit.Maui.Views;
+using Microsoft.Maui.Controls;
 using Newtonsoft.Json;
 using RepeatList.Models;
 using RepeatList.ViewModels;
@@ -599,10 +600,32 @@ namespace RepeatList
             ViewModel.Duplicate_entries_add = Preferences.Get("duplicate_entries_add", true);
         }
 
-        private async void Category_colorClicked(object sender, EventArgs e)
+        //private async void Category_colorClicked(object sender, EventArgs e)
+        //{
+        //    var button = sender as Button;
+        //    if (button?.CommandParameter is Position position)
+        //    {
+        //        if (position == null || position.Title == null || position.Category == null)
+        //            return;
+
+        //        // Hier category color change
+        //        var categories_list = ViewModel.Positions.Select(x => x.Category).Distinct().OrderBy(x => x).ToObservableCollection();
+
+        //        var popup = new CategoryPosition_PopUp(ViewModel.m_Categories_listType_list, position.Category);
+        //        var result = await Shell.Current.ShowPopupAsync(popup);
+        //        if (result != null)
+        //        {
+        //            await m_CategoryPosition_PopUpViewModel.UpdateOrAdd(position.Title, result.ToString());
+        //            await ViewModel.RefreshColors();
+        //        }
+        //    }
+        //}
+
+        private async void Category_colorClicked(object sender, TappedEventArgs e)
         {
-            var button = sender as Button;
-            if (button?.CommandParameter is Position position)
+            var frame = sender as Frame;
+            //if (button?.CommandParameter is Position position)
+            if (frame.BindingContext is Position position)
             {
                 if (position == null || position.Title == null || position.Category == null)
                     return;
@@ -615,22 +638,8 @@ namespace RepeatList
                 if (result != null)
                 {
                     await m_CategoryPosition_PopUpViewModel.UpdateOrAdd(position.Title, result.ToString());
-
-                    //ViewModel.Categories_db = m_CategoryPosition_PopUpViewModel.Categories_db;
-
-
                     await ViewModel.RefreshColors();
                 }
-
-
-
-
-
-                //string new_title = await DisplayPromptAsync(Properties.Resources.Input, Properties.Resources.Enter_new_position_title, "OK", Properties.Resources.Cancel, initialValue: position.Title);
-                //if (!string.IsNullOrWhiteSpace(new_title))
-                //{
-                //    await ViewModel.EditTitleOfPosition(position, new_title);
-                //}
             }
         }
     }
