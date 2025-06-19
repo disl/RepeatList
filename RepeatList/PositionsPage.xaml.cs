@@ -396,9 +396,24 @@ namespace RepeatList
             }
         }
 
-        private void OnPositionSelected_new(object sender, SelectionChangedEventArgs e)
+        private async void OnPositionSelected_new(object sender, SelectionChangedEventArgs e)
         {
             ViewModel.Position_selectedItem = e.CurrentSelection as Position;
+
+            var popup = new Positions_Edit();
+            var result = await Shell.Current.ShowPopupAsync(popup);
+            switch (result)
+            {
+                case "Export_not_completed_as_a_text_list":
+                    //if (ViewModel.Positions_undone.Count == 0)
+                    //{
+                    //    await DisplayAlert(Properties.Resources.Export_list,
+                    //        Properties.Resources.List_is_empty, "OK");
+                    //    return;
+                    //}
+                    //await ViewModel.Export_list_textClicked();
+                    break;
+            }
         }
 
         private async void SortingPicker_SelectedIndexChanged(object sender, EventArgs e)
@@ -600,26 +615,26 @@ namespace RepeatList
             ViewModel.Duplicate_entries_add = Preferences.Get("duplicate_entries_add", true);
         }
 
-        //private async void Category_colorClicked(object sender, EventArgs e)
-        //{
-        //    var button = sender as Button;
-        //    if (button?.CommandParameter is Position position)
-        //    {
-        //        if (position == null || position.Title == null || position.Category == null)
-        //            return;
+        private async void Category_colorClicked(object sender, EventArgs e)
+        {
+            var button = sender as Button;
+            if (button?.CommandParameter is Position position)
+            {
+                if (position == null || position.Title == null || position.Category == null)
+                    return;
 
-        //        // Hier category color change
-        //        var categories_list = ViewModel.Positions.Select(x => x.Category).Distinct().OrderBy(x => x).ToObservableCollection();
+                // Hier category color change
+                var categories_list = ViewModel.Positions.Select(x => x.Category).Distinct().OrderBy(x => x).ToObservableCollection();
 
-        //        var popup = new CategoryPosition_PopUp(ViewModel.m_Categories_listType_list, position.Category);
-        //        var result = await Shell.Current.ShowPopupAsync(popup);
-        //        if (result != null)
-        //        {
-        //            await m_CategoryPosition_PopUpViewModel.UpdateOrAdd(position.Title, result.ToString());
-        //            await ViewModel.RefreshColors();
-        //        }
-        //    }
-        //}
+                var popup = new CategoryPosition_PopUp(ViewModel.m_Categories_listType_list, position.Category);
+                var result = await Shell.Current.ShowPopupAsync(popup);
+                if (result != null)
+                {
+                    await m_CategoryPosition_PopUpViewModel.UpdateOrAdd(position.Title, result.ToString());
+                    await ViewModel.RefreshColors();
+                }
+            }
+        }
 
         private async void Category_colorClicked(object sender, TappedEventArgs e)
         {

@@ -247,6 +247,9 @@
 		<MauiXaml Update="CategoryPosition_PopUp.xaml">
 		  <Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
+		<MauiXaml Update="Positions_Edit.xaml">
+		  <Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
 		<MauiXaml Update="Positions_PopUpMenu.xaml">
 		  <Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
@@ -269,6 +272,9 @@
 	  </Compile>
 	  <Compile Update="CategoryPosition_PopUp.xaml.cs">
 	    <DependentUpon>CategoryPosition_PopUp.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="Positions_Edit.xaml.cs">
+	    <DependentUpon>Positions_Edit.xaml</DependentUpon>
 	  </Compile>
 	  <Compile Update="Positions_PopUpMenu.xaml.cs">
 	    <DependentUpon>Positions_PopUpMenu.xaml</DependentUpon>

@@ -90,11 +90,11 @@
                     <DataTemplate>
                         <Grid  ColumnDefinitions="30,6*,1*,1*,1*" VerticalOptions="Center"                              
                                ColumnSpacing="10" >
-                            <!--<Button BackgroundColor="{Binding Category_color}" Grid.Column="0" 
+                            <Button BackgroundColor="{Binding Category_color}" Grid.Column="0" 
                                     Clicked="Category_colorClicked" CommandParameter="{Binding}"
-                                    BorderColor="{AppThemeBinding Light=Gray, Dark=LightGray}" />-->
+                                    BorderColor="{AppThemeBinding Light=Gray, Dark=LightGray}" />
 
-                            <Frame  
+                            <!--<Frame  
                                 Grid.Column="0" 
                                 BackgroundColor="{Binding Category_color}"
                                 CornerRadius="4"
@@ -106,7 +106,7 @@
                                         Tapped="Category_colorClicked"  
                                         NumberOfTapsRequired="1" />
                                 </Frame.GestureRecognizers>
-                            </Frame>
+                            </Frame>-->
 
 
 
@@ -204,11 +204,11 @@
                                ColumnSpacing="10"                               
                                >
 
-                            <!--<Button BackgroundColor="{Binding Category_color}" Grid.Column="0" 
+                            <Button BackgroundColor="{Binding Category_color}" Grid.Column="0" 
                                     Clicked="Category_colorClicked" CommandParameter="{Binding}"
-                                    BorderColor="{AppThemeBinding Light=Gray, Dark=LightGray}"/>-->
+                                    BorderColor="{AppThemeBinding Light=Gray, Dark=LightGray}"/>
 
-                            <Frame 
+                            <!--<Frame 
                                  BackgroundColor="{Binding Category_color}" Grid.Column="0"
                                  CornerRadius="4"
                                  HeightRequest="30"
@@ -219,7 +219,7 @@
                                          Tapped="Category_colorClicked"  
                                          NumberOfTapsRequired="1" />
                                 </Frame.GestureRecognizers>
-                            </Frame>
+                            </Frame>-->
 
 
                             <!--<ScrollView Orientation="Horizontal" VerticalOptions="Center" Grid.Column="1">-->
