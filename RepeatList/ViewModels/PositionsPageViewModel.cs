@@ -29,6 +29,8 @@ namespace RepeatList.ViewModels
         public string SelectedItem_KindOfSorting_key_name_undone = "SelectedItem_KindOfSorting_undone";
         public double ButtonsSize = 25;
 
+        
+
         private static List<CategoryRule>? Categories_list;
 
         [ObservableProperty]

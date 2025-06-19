@@ -1,13 +1,14 @@
-﻿using CommunityToolkit.Maui.Alerts;
+﻿using AndroidX.Lifecycle;
+using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Maui.Core;
 using CommunityToolkit.Maui.Core.Extensions;
 using CommunityToolkit.Maui.Views;
-using Microsoft.Maui.Controls;
 using Newtonsoft.Json;
 using RepeatList.Models;
 using RepeatList.ViewModels;
 using System.Collections.ObjectModel;
 using System.Globalization;
+using Position = RepeatList.Models.Position;
 
 
 namespace RepeatList
@@ -20,6 +21,11 @@ namespace RepeatList
         private CategoryPosition_PopUpViewModel m_CategoryPosition_PopUpViewModel = new CategoryPosition_PopUpViewModel();
 
         private IDispatcherTimer _timer;
+
+        private int _lastScrollPosition_undone = 0;
+        private object _lastVisibleItem_undone = null;
+        private int _lastScrollPosition_done = 0;
+        private object _lastVisibleItem_done = null;
 
         public PositionsPage(Header selectedItem)
         {
@@ -80,9 +86,6 @@ namespace RepeatList
                     ViewModel.SelectedItem_KindOfSorting = ViewModel.ItemSource_KindOfSorting.FirstOrDefault(x => x.Value == "date");
                 SortingPicker.SelectedIndex = ViewModel.ItemSource_KindOfSorting.IndexOf(ViewModel.SelectedItem_KindOfSorting);
 
-
-
-
                 string tmp_lists = Properties.Resources.Lists.ToUpper();
 
                 ViewModel.Label_lists = tmp_lists;
@@ -103,6 +106,30 @@ namespace RepeatList
                 throw;
             }
             finally { ViewModel.IsBusy = false; }
+        }
+
+        private void OnCollectionView_Undone_Scrolled(object sender, ItemsViewScrolledEventArgs e)
+        {
+            // Vertikale Position speichern
+            _lastScrollPosition_undone =(int) e.VerticalOffset;
+
+            //// Optional: Erstes sichtbares Item speichern
+            //if (e.FirstVisibleItemIndex >= 0 && e.FirstVisibleItemIndex < Items.Count)
+            //{
+            //    _lastVisibleItem = Items[e.FirstVisibleItemIndex];
+            //}
+        }
+
+        private void OnCollectionView_Done_Scrolled(object sender, ItemsViewScrolledEventArgs e)
+        {
+            // Vertikale Position speichern
+            _lastScrollPosition_done = (int)e.VerticalOffset;
+
+            //// Optional: Erstes sichtbares Item speichern
+            //if (e.FirstVisibleItemIndex >= 0 && e.FirstVisibleItemIndex < Items.Count)
+            //{
+            //    _lastVisibleItem = Items[e.FirstVisibleItemIndex];
+            //}
         }
 
         private async void _timer_Tick(object? sender, EventArgs e)
@@ -398,21 +425,34 @@ namespace RepeatList
 
         private async void OnPositionSelected_new(object sender, SelectionChangedEventArgs e)
         {
-            ViewModel.Position_selectedItem = e.CurrentSelection as Position;
+            if (e.CurrentSelection == null || e.CurrentSelection.Count != 1)
+                return;
 
-            var popup = new Positions_Edit();
+            
+            ViewModel.Position_selectedItem = e.CurrentSelection[0] as Position;
+
+            var popup = new Positions_Edit(ViewModel.Position_selectedItem);
             var result = await Shell.Current.ShowPopupAsync(popup);
-            switch (result)
+            if (result is Position)
             {
-                case "Export_not_completed_as_a_text_list":
-                    //if (ViewModel.Positions_undone.Count == 0)
-                    //{
-                    //    await DisplayAlert(Properties.Resources.Export_list,
-                    //        Properties.Resources.List_is_empty, "OK");
-                    //    return;
-                    //}
-                    //await ViewModel.Export_list_textClicked();
-                    break;
+                var position = (Position)result;
+                string new_title = position.Title.Trim();
+                if (string.IsNullOrWhiteSpace(new_title))
+                    return;
+                // Update the title of the position
+                if (ViewModel.Position_selectedItem != null && ViewModel.Position_selectedItem.Id == position.Id)
+                    ViewModel.Position_selectedItem.Title = new_title;
+                {
+                    await ViewModel.EditTitleOfPosition(position, new_title);
+
+
+                    Position tmp_selected_item = ViewModel.Position_selectedItem;
+                    ViewModel.Position_selectedItem = null;
+                    ViewModel.Position_selectedItem = tmp_selected_item;
+
+                    //PositionListView.ScrollTo(0, _lastScrollPosition_undone, ScrollToPosition.Center);
+                    //PositionDoneListView.ScrollTo(0, _lastScrollPosition_done, ScrollToPosition.Center);
+                }
             }
         }
 
@@ -636,26 +676,9 @@ namespace RepeatList
             }
         }
 
-        private async void Category_colorClicked(object sender, TappedEventArgs e)
+        private void OnPositionSelected_new(object sender, SelectedItemChangedEventArgs e)
         {
-            var frame = sender as Frame;
-            //if (button?.CommandParameter is Position position)
-            if (frame.BindingContext is Position position)
-            {
-                if (position == null || position.Title == null || position.Category == null)
-                    return;
 
-                // Hier category color change
-                var categories_list = ViewModel.Positions.Select(x => x.Category).Distinct().OrderBy(x => x).ToObservableCollection();
-
-                var popup = new CategoryPosition_PopUp(ViewModel.m_Categories_listType_list, position.Category);
-                var result = await Shell.Current.ShowPopupAsync(popup);
-                if (result != null)
-                {
-                    await m_CategoryPosition_PopUpViewModel.UpdateOrAdd(position.Title, result.ToString());
-                    await ViewModel.RefreshColors();
-                }
-            }
         }
     }
 

@@ -78,37 +78,62 @@
             <Border.StrokeShape>
                 <RoundRectangle CornerRadius="5" />
             </Border.StrokeShape>
+
+            <!--<ListView 
+                x:Name="PositionListView"
+                ItemsSource="{Binding Positions_undone_filterd}"
+                CachingStrategy="RecycleElement"  
+                SelectedItem="{Binding Position_selectedItem, Mode=OneWay}"
+                ItemSelected="OnPositionSelected_new"    
+                HasUnevenRows="False"
+                RowHeight="60">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid  ColumnDefinitions="30,6*,1*" 
+                               VerticalOptions="Center" 
+                               ColumnSpacing="10" >
+
+                            <Button BackgroundColor="{Binding Category_color}" Grid.Column="0" 
+                                     Clicked="Category_colorClicked" CommandParameter="{Binding}"
+                                     BorderColor="{AppThemeBinding Light=Gray, Dark=LightGray}" />
+                            <Label  Text="{Binding Title, FallbackValue = '?'}" Grid.Column="1"   
+                                     LineBreakMode="TailTruncation" MaxLines="1"
+                                     VerticalTextAlignment="Center"
+                                     TextColor="{AppThemeBinding Light={DynamicResource PrimaryTextColor}, Dark={DynamicResource PrimaryTextColorLight}}"/>
+                            <ImageButton Source="{Binding PositionImageSource, FallbackValue = 'check_box_blank.png'}" 
+                                         Clicked="OnCheckedButtonClicked" CommandParameter="{Binding}" 
+                                         HeightRequest="30" 
+                                         Grid.Column="2"/>
+                                                    --><!--<ImageButton Source="{AppThemeBinding Light=edit_icon_black.png, Dark=edit_icon_white.png}" 
+                                          Clicked="OnEditPositionClicked" CommandParameter="{Binding}" 
+                                          HeightRequest="30" 
+                                          Grid.Column="3"/>
+                             <ImageButton Source="{AppThemeBinding Light=delete_icon_black.png, Dark=delete_icon_white.png}" 
+                                          Clicked="OnDeletePositionClicked" CommandParameter="{Binding}" 
+                                          HeightRequest="30" Grid.Column="4"/>--><!--
+                        </Grid>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>-->
+
+
+
             <CollectionView x:Name="PositionListView"  
                                     ItemSizingStrategy="MeasureFirstItem"
                                     ItemsSource="{Binding Positions_undone_filterd}"                             
                                     SelectedItem="{Binding Position_selectedItem, Mode=OneWayToSource}"                                      
                                     SelectionMode="Single"                                     
                                     SelectionChanged="OnPositionSelected_new"      
-                           
+                                    Scrolled="OnCollectionView_Undone_Scrolled"
+                            
                             >
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
-                        <Grid  ColumnDefinitions="30,6*,1*,1*,1*" VerticalOptions="Center"                              
+                        <Grid  ColumnDefinitions="30,6*,1*" VerticalOptions="Center"                              
                                ColumnSpacing="10" >
                             <Button BackgroundColor="{Binding Category_color}" Grid.Column="0" 
                                     Clicked="Category_colorClicked" CommandParameter="{Binding}"
                                     BorderColor="{AppThemeBinding Light=Gray, Dark=LightGray}" />
-
-                            <!--<Frame  
-                                Grid.Column="0" 
-                                BackgroundColor="{Binding Category_color}"
-                                CornerRadius="4"
-                                HeightRequest="30"
-                                WidthRequest="30"
-                                Padding="0">
-                                <Frame.GestureRecognizers>
-                                    <TapGestureRecognizer 
-                                        Tapped="Category_colorClicked"  
-                                        NumberOfTapsRequired="1" />
-                                </Frame.GestureRecognizers>
-                            </Frame>-->
-
-
 
                             <Label  Text="{Binding Title, FallbackValue = '?'}" Grid.Column="1"   
                                     LineBreakMode="TailTruncation" MaxLines="1"
@@ -117,13 +142,13 @@
                             <ImageButton Source="{Binding PositionImageSource, FallbackValue = 'check_box_blank.png'}" 
                                          Clicked="OnCheckedButtonClicked" CommandParameter="{Binding}" 
                                          HeightRequest="30" Grid.Column="2"/>
-                            <ImageButton Source="{AppThemeBinding Light=edit_icon_black.png, Dark=edit_icon_white.png}" 
+                            <!--<ImageButton Source="{AppThemeBinding Light=edit_icon_black.png, Dark=edit_icon_white.png}" 
                                          Clicked="OnEditPositionClicked" CommandParameter="{Binding}" 
                                          HeightRequest="30" 
                                          Grid.Column="3"/>
                             <ImageButton Source="{AppThemeBinding Light=delete_icon_black.png, Dark=delete_icon_white.png}" 
                                          Clicked="OnDeletePositionClicked" CommandParameter="{Binding}" 
-                                         HeightRequest="30" Grid.Column="4"/>
+                                         HeightRequest="30" Grid.Column="4"/>-->
                         </Grid>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
@@ -195,6 +220,7 @@
                             SelectedItem="{Binding Position_selectedItem, Mode=OneWayToSource}"
                             SelectionMode="Single"
                             SelectionChanged="OnPositionSelected_new" 
+                            Scrolled="OnCollectionView_Done_Scrolled"
                             >
                 <!--HeightRequest="45"-->
                 <CollectionView.ItemTemplate>
