@@ -30,8 +30,11 @@ public partial class Positions_Edit : Popup
     //    //rbDuplicate_entries_replace.IsChecked = !isChecked;
     //}
 
+    private void OnDeleteButtonClicked(object sender, EventArgs e)
+    {
+        Close("delete");
+    }
 
-   
 
     private void CancelButtonClicked(object sender, EventArgs e)
     {

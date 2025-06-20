@@ -153,6 +153,9 @@
   <data name="Create_new_article" xml:space="preserve">
     <value>Crear nuevo artículo</value>
   </data>
+  <data name="delete" xml:space="preserve">
+    <value>Eliminar</value>
+  </data>
   <data name="Delete_list" xml:space="preserve">
     <value>Borrar lista</value>
   </data>

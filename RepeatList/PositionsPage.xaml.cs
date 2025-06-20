@@ -1,5 +1,4 @@
-﻿using AndroidX.Lifecycle;
-using CommunityToolkit.Maui.Alerts;
+﻿using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Maui.Core;
 using CommunityToolkit.Maui.Core.Extensions;
 using CommunityToolkit.Maui.Views;
@@ -22,9 +21,9 @@ namespace RepeatList
 
         private IDispatcherTimer _timer;
 
-        private int _lastScrollPosition_undone = 0;
+        private double _lastScrollPosition_undone = 0;
         private object _lastVisibleItem_undone = null;
-        private int _lastScrollPosition_done = 0;
+        private double _lastScrollPosition_done = 0;
         private object _lastVisibleItem_done = null;
 
         public PositionsPage(Header selectedItem)
@@ -111,7 +110,7 @@ namespace RepeatList
         private void OnCollectionView_Undone_Scrolled(object sender, ItemsViewScrolledEventArgs e)
         {
             // Vertikale Position speichern
-            _lastScrollPosition_undone =(int) e.VerticalOffset;
+            _lastScrollPosition_undone = (int)e.VerticalOffset;
 
             //// Optional: Erstes sichtbares Item speichern
             //if (e.FirstVisibleItemIndex >= 0 && e.FirstVisibleItemIndex < Items.Count)
@@ -400,7 +399,7 @@ namespace RepeatList
 
             try
             {
-                searchBar.Text = "";
+                MySearchBar.Text = "";
 
                 if (sender is Microsoft.Maui.Controls.ImageButton switchControl &&
                     e != null &&
@@ -428,11 +427,14 @@ namespace RepeatList
             if (e.CurrentSelection == null || e.CurrentSelection.Count != 1)
                 return;
 
-            
             ViewModel.Position_selectedItem = e.CurrentSelection[0] as Position;
 
             var popup = new Positions_Edit(ViewModel.Position_selectedItem);
             var result = await Shell.Current.ShowPopupAsync(popup);
+
+            if (result == null)
+                return;
+
             if (result is Position)
             {
                 var position = (Position)result;
@@ -441,17 +443,26 @@ namespace RepeatList
                     return;
                 // Update the title of the position
                 if (ViewModel.Position_selectedItem != null && ViewModel.Position_selectedItem.Id == position.Id)
-                    ViewModel.Position_selectedItem.Title = new_title;
                 {
-                    await ViewModel.EditTitleOfPosition(position, new_title);
+                    ViewModel.Position_selectedItem.Title = new_title;
 
+                    if (await ViewModel.EditTitleOfPosition(position, new_title))
 
-                    Position tmp_selected_item = ViewModel.Position_selectedItem;
-                    ViewModel.Position_selectedItem = null;
-                    ViewModel.Position_selectedItem = tmp_selected_item;
-
-                    //PositionListView.ScrollTo(0, _lastScrollPosition_undone, ScrollToPosition.Center);
-                    //PositionDoneListView.ScrollTo(0, _lastScrollPosition_done, ScrollToPosition.Center);
+                        // Refresh the selected item to update the UI
+                        //PositionListView.ScrollTo(ViewModel.Position_selectedItem, null, ScrollToPosition.MakeVisible, false);
+                        MySearchBar.Text = new_title;
+                }
+            }
+            else if (result.ToString().ToLower() == "delete")
+            {
+                // Delete the position
+                if (ViewModel.Position_selectedItem != null)
+                {
+                    if (await ViewModel.DeletePosition(ViewModel.Position_selectedItem))
+                    {
+                        ViewModel.Position_selectedItem = null;
+                        //PositionListView.ScrollTo(e.CurrentSelection[0], position, ScrollToPosition.Center, false);
+                    }
                 }
             }
         }
@@ -676,9 +687,50 @@ namespace RepeatList
             }
         }
 
-        private void OnPositionSelected_new(object sender, SelectedItemChangedEventArgs e)
+        private async void PositionListView_ItemTapped(object sender, ItemTappedEventArgs e)
         {
+            if (e.Item == null)
+                return;
 
+            ViewModel.Position_selectedItem = e.Item as Position;
+
+            var popup = new Positions_Edit(ViewModel.Position_selectedItem);
+            var result = await Shell.Current.ShowPopupAsync(popup);
+
+            if (result == null)
+                return;
+
+            if (result is Position)
+            {
+                var position = (Position)result;
+                string new_title = position.Title.Trim();
+                if (string.IsNullOrWhiteSpace(new_title))
+                    return;
+                // Update the title of the position
+                if (ViewModel.Position_selectedItem != null && ViewModel.Position_selectedItem.Id == position.Id)
+                {
+                    ViewModel.Position_selectedItem.Title = new_title;
+
+                    if (await ViewModel.EditTitleOfPosition(position, new_title))
+
+                        // Refresh the selected item to update the UI
+                        //PositionListView.ScrollTo(ViewModel.Position_selectedItem, null, ScrollToPosition.MakeVisible, false);
+                        //MySearchBar.Text = new_title;
+                        PositionListView.ScrollTo(ViewModel.Position_selectedItem, ScrollToPosition.Center, true);
+                }
+            }
+            else if (result.ToString().ToLower() == "delete")
+            {
+                // Delete the position
+                if (ViewModel.Position_selectedItem != null)
+                {
+                    if (await ViewModel.DeletePosition(ViewModel.Position_selectedItem))
+                    {
+                        ViewModel.Position_selectedItem = null;
+                        //PositionListView.ScrollTo(e.CurrentSelection[0], position, ScrollToPosition.Center, false);
+                    }
+                }
+            }
         }
     }
 

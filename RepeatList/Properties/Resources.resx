@@ -374,4 +374,7 @@ Do you still want to continue?</value>
   <data name="Unknown" xml:space="preserve">
     <value>Unknown</value>
   </data>
+  <data name="delete" xml:space="preserve">
+    <value>Delete</value>
+  </data>
 </root>

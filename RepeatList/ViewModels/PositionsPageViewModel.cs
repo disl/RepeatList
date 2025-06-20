@@ -1124,7 +1124,7 @@ namespace RepeatList.ViewModels
             IsBusy = false;
         }
 
-        public async Task DeletePosition(Models.Position pos)
+        public async Task<bool> DeletePosition(Models.Position pos)
         {
             Position_selectedItem = pos;
             await _databaseService.DeletePositionAsync(pos.Id);
@@ -1133,6 +1133,8 @@ namespace RepeatList.ViewModels
                 await _supabaseService.DeletePositionAsync(pos);
 
             await LoadPositions();
+
+            return true;
         }
 
         public async Task DeletePositionsByHeaderIdAsync()
@@ -1191,7 +1193,7 @@ namespace RepeatList.ViewModels
             SetFirstItemForHeaders();
         }
 
-        internal async Task EditTitleOfPosition(Position position, string title)
+        internal async Task<bool> EditTitleOfPosition(Position position, string title)
         {
             Position_selectedItem = position;
             await _databaseService.EditPositionsTitleAsync(position, title);
@@ -1200,6 +1202,8 @@ namespace RepeatList.ViewModels
                 await _supabaseService.SyncPositionAsync(position);
 
             await LoadPositions();
+
+            return true;
         }
 
         public async Task ResetPositionsAsync()
