@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<toolkit:Popup 
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    xmlns:models="clr-namespace:RepeatList.Models"
+    xmlns:local="clr-namespace:RepeatList.ViewModels"
+    xmlns:properties="clr-namespace:RepeatList.Properties"
+    x:Class="RepeatList.Positions_EditPopup"
+    
+    
+    >
+    <!--<ContentPage.BindingContext>
+        <local:Positions_EditViewModel />
+    </ContentPage.BindingContext>-->
+    <VerticalStackLayout Padding="10" BackgroundColor="gray">
+        
+        <!-- Edit position -->
+        <Label Text="{x:Static properties:Resources.edit}"  FontSize="Medium" TextColor="White" />
+        <Entry x:Name="PositionNameEntry" 
+               Text="{Binding SelectedItem.Title, Mode=TwoWay}" 
+               Placeholder="{x:Static properties:Resources.Enter_new_position_title}" 
+               TextColor="White" 
+               BackgroundColor="Transparent" />
+        <Button Text="{x:Static properties:Resources.replace}" TextColor="White" Margin="0,5,0,0"  
+               Clicked="OnSavePositionTitle_Clicked"  />
+
+        <!-- Delete position -->
+        <Button Text="{x:Static properties:Resources.delete}" 
+                BackgroundColor="{x:Static models:Constantes.Color_Warning}"
+                TextColor="White" Margin="0,20,0,0"  
+            Clicked="OnDeleteButtonClicked"  />
+
+        <!-- Cancel -->
+        <Button x:Name="CancelButton" 
+          BackgroundColor="{x:Static models:Constantes.Color_Primary}" Margin="0,20,0,0"  
+          Text="{x:Static properties:Resources.close}" TextColor="White" 
+          Clicked="CancelButtonClicked"    />
+
+    </VerticalStackLayout>
+</toolkit:Popup>

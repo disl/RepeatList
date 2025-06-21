@@ -152,6 +152,7 @@
 	  <Compile Remove="MainPage_old.xaml.cs" />
 	  <Compile Remove="Platforms\Android\AdViewRenderer.cs" />
 	  <Compile Remove="Platforms\Android\InAppUpdateManager.cs" />
+	  <Compile Remove="PopupRouter.cs" />
 	  <Compile Remove="Program.cs" />
 	  <Compile Remove="Properties\Resources.es.Designer.cs" />
 	  <Compile Remove="Properties\Resources.fr.Designer.cs" />
