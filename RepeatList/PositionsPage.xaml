@@ -85,7 +85,7 @@
 
             <ListView 
                 x:Name="PositionListView"                
-                
+                SeparatorVisibility="None"
                 ItemsSource="{Binding Positions_undone_filterd}"
                 SelectedItem="{Binding Position_selectedItem, Mode=OneWay}"
                 SelectionMode="Single"
@@ -226,7 +226,7 @@
 
             <ListView 
                x:Name="PositionDoneListView"                
-              
+               SeparatorVisibility="None"
                ItemsSource="{Binding Positions_done_filtered}"
                SelectedItem="{Binding Position_selectedItem, Mode=OneWay}"
                SelectionMode="Single"

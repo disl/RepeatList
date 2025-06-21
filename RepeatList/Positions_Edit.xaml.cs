@@ -16,19 +16,17 @@ public partial class Positions_Edit : Popup
         ViewModel = new Positions_EditViewModel();
         ViewModel.SelectedItem = position_selectedItem;
         BindingContext = ViewModel;
+
+        Device.BeginInvokeOnMainThread(async () =>
+        {
+            await Task.Delay(100); // Kleine Verzögerung, falls UI noch nicht bereit
+            PositionNameEntry.Focus();
+
+            PositionNameEntry.CursorPosition= PositionNameEntry.Text?.Length ?? 0; 
+        });
     }
 
-    //protected override void OnParentSet()
-    //{
-    //    base.OnParentSet();
-
-    //    //Export_not_completed_as_a_text_list_Button.InvalidateMeasure();
-
-    //    //// Set the default value for the checkbox based on the saved preference
-    //    //bool isChecked = Preferences.Get("duplicate_entries_add", true);
-    //    //rbDuplicate_entries_add.IsChecked = isChecked;
-    //    //rbDuplicate_entries_replace.IsChecked = !isChecked;
-    //}
+   
 
     private void OnDeleteButtonClicked(object sender, EventArgs e)
     {

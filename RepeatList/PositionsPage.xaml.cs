@@ -400,7 +400,8 @@ namespace RepeatList
 
             try
             {
-                MySearchBar.Text = "";
+                if (!string.IsNullOrEmpty(MySearchBar.Text))
+                    MySearchBar.Text = "";
 
                 if (sender is Microsoft.Maui.Controls.ImageButton switchControl &&
                     e != null &&
@@ -420,6 +421,10 @@ namespace RepeatList
             {
                 SentrySdk.CaptureException(ex);
                 throw;
+            }
+            finally
+            {
+                ViewModel.IsBusy = false;
             }
         }
 
