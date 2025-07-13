@@ -2,7 +2,7 @@ using CommunityToolkit.Maui.Views;
 
 namespace RepeatList;
 
-public partial class ListPage_Input : Popup
+public partial class ListPage_Input : Popup<string>
 {
     public ListPage_Input()
 	{
@@ -11,12 +11,12 @@ public partial class ListPage_Input : Popup
 
     private void OnCancelClicked(object sender, EventArgs e)
     {
-        Close(null);
+        CloseAsync("");
     }
 
     private void OnOkClicked(object sender, EventArgs e)
     {
         string input = ListNameEditor.Text?.Trim();
-        Close(input);
+        CloseAsync(input);
     }
 }

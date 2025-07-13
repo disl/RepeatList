@@ -4,7 +4,7 @@ using RepeatList.ViewModels;
 
 namespace RepeatList;
 
-public partial class Positions_Edit : Popup
+public partial class Positions_Edit : Popup<object>
 {
 
     public Positions_EditViewModel ViewModel { get; set; }
@@ -30,19 +30,19 @@ public partial class Positions_Edit : Popup
 
     private void OnDeleteButtonClicked(object sender, EventArgs e)
     {
-        Close("delete");
+        CloseAsync("delete");
     }
 
 
     private void CancelButtonClicked(object sender, EventArgs e)
     {
-        Close();
+        CloseAsync();
     }
 
     private void OnSavePositionTitle_Clicked(object sender, EventArgs e)
     {
         PositionNameEntry.Unfocus();
 
-        Close(ViewModel.SelectedItem);
+        CloseAsync(ViewModel.SelectedItem);
     }
 }

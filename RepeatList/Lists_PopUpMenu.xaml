@@ -5,7 +5,11 @@
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     xmlns:models="clr-namespace:RepeatList.Models"
     xmlns:properties="clr-namespace:RepeatList.Properties"
-    x:Class="RepeatList.Lists_PopUpMenu">
+    x:Class="RepeatList.Lists_PopUpMenu"
+    xmlns:system="clr-namespace:System;assembly=System.Runtime"
+    x:TypeArguments="system:String"
+   BackgroundColor="gray"
+    >
     
     <VerticalStackLayout Padding="10"  Spacing="10" BackgroundColor="gray">
         <Label Text="{x:Static properties:Resources.List_manipulation}"  FontSize="Medium" TextColor="White" />

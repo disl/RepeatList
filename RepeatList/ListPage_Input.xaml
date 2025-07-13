@@ -6,27 +6,40 @@
              xmlns:models="clr-namespace:RepeatList.Models"
              xmlns:local="clr-namespace:RepeatList.ViewModels"
              xmlns:controls="clr-namespace:RepeatList.Controls"
-             xmlns:properties="clr-namespace:RepeatList.Properties" >
+             xmlns:properties="clr-namespace:RepeatList.Properties" 
+             xmlns:system="clr-namespace:System;assembly=System.Runtime"
+             x:TypeArguments="system:String"
+             BackgroundColor="Grey"
+             
+                >
 
-    <ScrollView Padding="20" BackgroundColor="Grey">
-        <VerticalStackLayout  Spacing="15"  >
-            <!-- Anleitungstext -->
-            <Label Text="{x:Static properties:Resources.Enter_a_list_name_or_insert_a_ready_made}"  TextColor="{DynamicResource PrimaryTextColorLight}"
+
+    <VerticalStackLayout  Padding="10"  Spacing="10"  >
+        <!-- Anleitungstext -->
+        <Label Text="{x:Static properties:Resources.Enter_a_list_name_or_insert_a_ready_made}"  
+                   TextColor="{DynamicResource PrimaryTextColorLight}"
+                   HorizontalOptions="Center"
                FontSize="Medium"  />
 
-            <!-- Eingabefeld mit MaxLength -->
+        <!-- Eingabefeld mit MaxLength -->
+        <ScrollView MaximumHeightRequest="200">
             <Editor x:Name="ListNameEditor" TextColor="{DynamicResource PrimaryTextColorLight}"                                   
                 AutoSize="TextChanges" />
+        </ScrollView>
 
-            <!-- Buttons -->
-            <HorizontalStackLayout Spacing="10" HorizontalOptions="End">
-                <Button Text="OK"                       
+        <!-- Buttons -->
+        <Grid ColumnSpacing="10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Button Text="OK"     Grid.Column="0"               
                         Clicked="OnOkClicked" />
-                <Button Text="{x:Static properties:Resources.Cancel}" 
+            <Button Text="{x:Static properties:Resources.Cancel}"  Grid.Column="1" 
                         BackgroundColor="{x:Static models:Constantes.Color_Warning}" 
                         Clicked="OnCancelClicked" />
-                
-            </HorizontalStackLayout>
-        </VerticalStackLayout>
-    </ScrollView>
+
+        </Grid>
+    </VerticalStackLayout>
+
 </toolkit:Popup>

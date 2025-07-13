@@ -4,7 +4,7 @@ using RepeatList.ViewModels;
 
 namespace RepeatList;
 
-public partial class Positions_EditPopup : Popup
+public partial class Positions_EditPopup : Popup<object>
 {
     public Positions_EditViewModel ViewModel { get; set; }
 

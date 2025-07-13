@@ -1,10 +1,9 @@
 using CommunityToolkit.Maui.Views;
 using RepeatList.ViewModels;
-using System.Collections.ObjectModel;
 
 namespace RepeatList;
 
-public partial class CategoryPosition_PopUp : Popup
+public partial class CategoryPosition_PopUp : Popup<string>
 {
     private CategoryPosition_PopUpViewModel ViewModel { get; set; }
 
@@ -25,15 +24,15 @@ public partial class CategoryPosition_PopUp : Popup
 
     private void CancelButtonClicked(object sender, EventArgs e)
     {
-        Close();
+        CloseAsync("");
     }
 
     private void OkButton_Clicked(object sender, EventArgs e)
     {
         if (ViewModel.SelectedCategory != null && !string.IsNullOrEmpty(ViewModel.SelectedCategory.Category))
-            Close(ViewModel.SelectedCategory.Category);
+            CloseAsync(ViewModel.SelectedCategory.Category);
         else
-            Close();
+            CloseAsync("");
     }
 
 

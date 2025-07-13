@@ -1,8 +1,8 @@
-﻿using CommunityToolkit.Maui.Alerts;
+﻿using CommunityToolkit.Maui;
+using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Maui.Core;
 using CommunityToolkit.Maui.Core.Extensions;
 using CommunityToolkit.Maui.Extensions;
-using CommunityToolkit.Maui.Views;
 using Newtonsoft.Json;
 using RepeatList.Models;
 using RepeatList.ViewModels;
@@ -436,14 +436,14 @@ namespace RepeatList
             ViewModel.Position_selectedItem = e.CurrentSelection[0] as Position;
 
             var popup = new Positions_Edit(ViewModel.Position_selectedItem);
-            var result = await Shell.Current.ShowPopupAsync(popup);
+            var result = await Shell.Current.ShowPopupAsync<object>(popup);
 
-            if (result == null)
+            if (result == null || result.Result == null)
                 return;
 
-            if (result is Position)
+            if (result.Result is Position)
             {
-                var position = (Position)result;
+                var position = (Position)result.Result;
                 string new_title = position.Title.Trim();
                 if (string.IsNullOrWhiteSpace(new_title))
                     return;
@@ -459,7 +459,7 @@ namespace RepeatList
                         MySearchBar.Text = new_title;
                 }
             }
-            else if (result.ToString().ToLower() == "delete")
+            else if (result.Result is string && result.Result.ToString().ToLower() == "delete")
             {
                 // Delete the position
                 if (ViewModel.Position_selectedItem != null)
@@ -656,8 +656,19 @@ namespace RepeatList
         private async void OpenMenu(object sender, EventArgs e)
         {
             var popup = new Positions_PopUpMenu(ViewModel.SupabaseService_ready);
-            var result = await Shell.Current.ShowPopupAsync(popup);
-            switch (result)
+            var options = new PopupOptions
+            {
+                CanBeDismissedByTappingOutsideOfPopup = true,
+
+            };
+
+            var result = await PopupExtensions.ShowPopupAsync<string>(this, popup, options);
+            //var result = await Shell.Current.ShowPopupAsync<string>(popup, options);
+            //var result = await Application.Current.MainPage.Navigation.ShowPopupAsync<string>(popup, options);
+
+            if (result == null)
+                return;
+            switch (result.Result)
             {
                 case "Export_not_completed_as_a_text_list":
                     if (ViewModel.Positions_undone.Count == 0)
@@ -684,10 +695,10 @@ namespace RepeatList
                 var categories_list = ViewModel.Positions.Select(x => x.Category).Distinct().OrderBy(x => x).ToObservableCollection();
 
                 var popup = new CategoryPosition_PopUp(ViewModel.m_Categories_listType_list, position.Category);
-                var result = await Shell.Current.ShowPopupAsync(popup);
+                var result = await Shell.Current.ShowPopupAsync<string>(popup);
                 if (result != null)
                 {
-                    await m_CategoryPosition_PopUpViewModel.UpdateOrAdd(position.Title, result.ToString());
+                    await m_CategoryPosition_PopUpViewModel.UpdateOrAdd(position.Title, result.Result);
                     await ViewModel.RefreshColors();
                 }
             }

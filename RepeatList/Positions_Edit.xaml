@@ -6,7 +6,12 @@
     xmlns:models="clr-namespace:RepeatList.Models"
     xmlns:local="clr-namespace:RepeatList.ViewModels"
     xmlns:properties="clr-namespace:RepeatList.Properties"
-    x:Class="RepeatList.Positions_Edit">
+    x:Class="RepeatList.Positions_Edit"
+    xmlns:system="clr-namespace:System;assembly=System.Runtime"
+    x:TypeArguments="system:Object"
+    BackgroundColor="gray"
+    >
+    
     <!--<ContentPage.BindingContext>
         <local:Positions_EditViewModel />
     </ContentPage.BindingContext>-->

@@ -196,11 +196,11 @@ namespace RepeatList
                 //if (!string.IsNullOrWhiteSpace(new_list_name))
                 //{
                 var popup = new ListPage_Input();
-                var new_list_name_obj = await Shell.Current.ShowPopupAsync(popup);
-                if (new_list_name_obj == null)
+                var new_list_name_obj = await Shell.Current.ShowPopupAsync<string>(popup);
+                if (string.IsNullOrEmpty(new_list_name_obj.Result))
                     return;
 
-                var new_list_name = new_list_name_obj.ToString();
+                var new_list_name = new_list_name_obj.Result;
 
                 if (Guid.TryParse(new_list_name, out tmp_guid))
                 {
@@ -515,8 +515,8 @@ namespace RepeatList
             if (sender is ImageButton button)
             {
                 var popup = new Lists_PopUpMenu((Header)button.CommandParameter, ViewModel.SupabaseService_ready);
-                var result = await Shell.Current.ShowPopupAsync(popup);
-                switch (result)
+                var result = await Shell.Current.ShowPopupAsync<string>(popup);
+                switch (result.Result)
                 {
                     case "Edit":
                         await OnEditHeaderClicked(button, e); break;
@@ -536,6 +536,8 @@ namespace RepeatList
 
             }
         }
+
+
 
     }
 }

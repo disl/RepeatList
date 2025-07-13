@@ -3,7 +3,7 @@ using RepeatList.Models;
 
 namespace RepeatList;
 
-public partial class Lists_PopUpMenu : Popup
+public partial class Lists_PopUpMenu : Popup<string>
 {
     public Header SelectedItem { get; set; }
 
@@ -25,36 +25,36 @@ public partial class Lists_PopUpMenu : Popup
 
     private void OnEditHeaderClicked(object sender, EventArgs e)
     {
-       Close("Edit");
+       CloseAsync("Edit");
     }
 
     private void OnDeleteHeaderClicked(object sender, EventArgs e)
     {
-        Close("Delete");
+        CloseAsync("Delete");
     }
 
     private void Sync_list_upClicked(object sender, EventArgs e)
     {
-        Close("SyncUp");
+        CloseAsync("SyncUp");
     }
 
     private void Sync_removeClicked(object sender, EventArgs e)
     {
-        Close("SyncDelete");
+        CloseAsync("SyncDelete");
     }
 
     private void CancelButtonClicked(object sender, EventArgs e)
     {
-        Close();
+        CloseAsync("");
     }
 
     private void Export_list_Clicked(object sender, EventArgs e)
     {
-        Close("Export");
+        CloseAsync("Export");
     }
 
     private void Import_list_Clicked(object sender, EventArgs e)
     {
-        Close("Import");
+        CloseAsync("Import");
     }
 }

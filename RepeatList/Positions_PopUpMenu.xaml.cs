@@ -3,7 +3,7 @@ using RepeatList.Models;
 
 namespace RepeatList;
 
-public partial class Positions_PopUpMenu : Popup
+public partial class Positions_PopUpMenu : Popup<string>
 {
     public Position SelectedItem { get; set; }
     private bool _supabaseServiceReady;
@@ -35,7 +35,7 @@ public partial class Positions_PopUpMenu : Popup
 
     private void OnExport_not_completed_as_a_text_listClicked(object sender, EventArgs e)
     {
-        Close("Export_not_completed_as_a_text_list");
+        CloseAsync("Export_not_completed_as_a_text_list");
     }
 
     private void Duplicate_entries_replace(object sender, CheckedChangedEventArgs e)
@@ -50,6 +50,6 @@ public partial class Positions_PopUpMenu : Popup
 
     private void CancelButtonClicked(object sender, EventArgs e)
     {
-        Close();
+        CloseAsync();
     }
 }
