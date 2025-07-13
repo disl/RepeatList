@@ -712,14 +712,14 @@ namespace RepeatList
             ViewModel.Position_selectedItem = e.Item as Position;
 
             var popup = new Positions_Edit(ViewModel.Position_selectedItem);
-            var result = await Shell.Current.ShowPopupAsync(popup);
+            var result = await Shell.Current.ShowPopupAsync<object>(popup);
 
-            if (result == null)
+            if (result == null || result.Result == null)
                 return;
 
-            if (result is Position)
+            if (result.Result is Position)
             {
-                var position = (Position)result;
+                var position = (Position)result.Result;
                 string new_title = position.Title.Trim();
                 if (string.IsNullOrWhiteSpace(new_title))
                     return;
@@ -736,7 +736,7 @@ namespace RepeatList
                         PositionListView.ScrollTo(ViewModel.Position_selectedItem, ScrollToPosition.Center, true);
                 }
             }
-            else if (result.ToString().ToLower() == "delete")
+            else if (result.Result.ToString().ToLower() == "delete")
             {
                 // Delete the position
                 if (ViewModel.Position_selectedItem != null)
