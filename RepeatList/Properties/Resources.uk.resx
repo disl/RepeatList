@@ -132,14 +132,8 @@
   <data name="Are_you_sure" xml:space="preserve">
     <value>Ви впевнені?</value>
   </data>
-  <data name="A_maximum_of_3_synchronised_lists_are_permitted" xml:space="preserve">
-    <value>Дозволено не більше %1 синхронізованих списків</value>
-  </data>
   <data name="Cancel" xml:space="preserve">
     <value>Скасувати</value>
-  </data>
-  <data name="close" xml:space="preserve">
-    <value>Закрити</value>
   </data>
   <data name="collapse" xml:space="preserve">
     <value>Згорнути</value>
@@ -153,14 +147,8 @@
   <data name="Create_new_article" xml:space="preserve">
     <value>Створити новий артикул</value>
   </data>
-  <data name="delete" xml:space="preserve">
-    <value>Видалити</value>
-  </data>
   <data name="Delete_list" xml:space="preserve">
     <value>Видалити список</value>
-  </data>
-  <data name="Delete_Synchronisation" xml:space="preserve">
-    <value>Видалити синхронізацію</value>
   </data>
   <data name="done" xml:space="preserve">
     <value>Готово</value>
@@ -170,9 +158,6 @@
   </data>
   <data name="Do_you_want_to_use_commas_as_list_element_separators" xml:space="preserve">
     <value>Ви хочете використовувати коми («,») для розділення елементів списку?</value>
-  </data>
-  <data name="Duplicate_entries" xml:space="preserve">
-    <value>Дублюючі позиції</value>
   </data>
   <data name="edit" xml:space="preserve">
     <value>Редагувати</value>
@@ -196,9 +181,6 @@
   </data>
   <data name="Export_list" xml:space="preserve">
     <value>Експортувати поточний список</value>
-  </data>
-  <data name="Export_not_completed_as_a_text_list" xml:space="preserve">
-    <value>«Незавершені елементи» у вигляді текстового списку</value>
   </data>
   <data name="help" xml:space="preserve">
     <value>Довідка</value>
@@ -244,9 +226,6 @@
   <data name="List_information_has_wrong_format" xml:space="preserve">
     <value>Інформація в списку має неправильний формат</value>
   </data>
-  <data name="List_is_empty" xml:space="preserve">
-    <value>Список порожній</value>
-  </data>
   <data name="List_manipulation" xml:space="preserve">
     <value>Список</value>
   </data>
@@ -264,10 +243,6 @@
   </data>
   <data name="No_items_to_display" xml:space="preserve">
     <value>Немає елементів для відображення</value>
-  </data>
-  <data name="Old_entries_that_begin_with_the_keyword" xml:space="preserve">
-    <value>Старі записи, що починаються з ключового слова «яблуко» («яблуко червоне 1 кг», «яблуко зелене 2 кг» і т.д.) будуть видалені і замінені новою позицією. Тому, якщо ви хочете зберегти деякі варіанти, будь ласка, використовуйте «яблуко_червоне 1 кг», «яблуко_зелене 2 кг» і т.д.
-Ви все ще хочете продовжити?</value>
   </data>
   <data name="Operation_successfully_completed" xml:space="preserve">
     <value>Операцію успішно завершено</value>
@@ -287,12 +262,6 @@
   <data name="Positions" xml:space="preserve">
     <value>Елементи</value>
   </data>
-  <data name="Rate_app" xml:space="preserve">
-    <value>Оцініть додаток</value>
-  </data>
-  <data name="replace" xml:space="preserve">
-    <value>Замінити</value>
-  </data>
   <data name="Replace_old_list_element_when_inserting" xml:space="preserve">
     <value>Замінити елемент списку при вставці</value>
   </data>
@@ -305,14 +274,8 @@
   <data name="Reset_current_list" xml:space="preserve">
     <value>Скинути поточний список</value>
   </data>
-  <data name="search" xml:space="preserve">
-    <value>Пошук</value>
-  </data>
   <data name="Selected_list_and_list_synchronisations_will_now_be_deleted" xml:space="preserve">
     <value>Вибраний список і синхронізації списків буде видалено, ви згодні?</value>
-  </data>
-  <data name="Select_a_category" xml:space="preserve">
-    <value>Виберіть категорію</value>
   </data>
   <data name="Send_synchronisation" xml:space="preserve">
     <value>Надіслати синхронізацію</value>
@@ -326,14 +289,8 @@
   <data name="sort_by_alphabet" xml:space="preserve">
     <value>За алфавітом</value>
   </data>
-  <data name="sort_by_category" xml:space="preserve">
-    <value>За категоріями</value>
-  </data>
   <data name="sort_by_date" xml:space="preserve">
     <value>За датою</value>
-  </data>
-  <data name="sort_by_time" xml:space="preserve">
-    <value>за часом</value>
   </data>
   <data name="String_is_not_a_valid_list_description" xml:space="preserve">
     <value>Рядок не є коректним описом списку (формат JSON)</value>
@@ -362,9 +319,6 @@
   <data name="undone" xml:space="preserve">
     <value>Не зроблено</value>
   </data>
-  <data name="Unknown" xml:space="preserve">
-    <value>Невідомо</value>
-  </data>
   <data name="Would_you_like_to_overwrite_the_existing_list_with_new_data" xml:space="preserve">
     <value>Ви хочете перезаписати існуючий список новими даними?</value>
   </data>
@@ -376,5 +330,57 @@
   </data>
   <data name="yes" xml:space="preserve">
     <value>Так</value>
+  </data>
+  <data name="search" xml:space="preserve">
+    <value>Пошук</value>
+  </data>
+  <data name="Delete_Synchronisation" xml:space="preserve">
+    <value>Видалити синхронізацію</value>
+  </data>
+  <data name="A_maximum_of_3_synchronised_lists_are_permitted" xml:space="preserve">
+    <value>Дозволено не більше %1 синхронізованих списків</value>
+  </data>
+  <data name="Export_not_completed_as_a_text_list" xml:space="preserve">
+    <value>«Незавершені елементи» у вигляді текстового списку</value>
+  </data>
+  <data name="Duplicate_entries" xml:space="preserve">
+    <value>Дублюючі позиції</value>
+  </data>
+  <data name="replace" xml:space="preserve">
+    <value>Замінити</value>
+  </data>
+  <data name="List_is_empty" xml:space="preserve">
+    <value>Список порожній</value>
+  </data>
+  <data name="Old_entries_that_begin_with_the_keyword" xml:space="preserve">
+    <value>Старі записи, що починаються з ключового слова «яблуко» («яблуко червоне 1 кг», «яблуко зелене 2 кг» і т.д.) будуть видалені і замінені новою позицією. Тому, якщо ви хочете зберегти деякі варіанти, будь ласка, використовуйте «яблуко_червоне 1 кг», «яблуко_зелене 2 кг» і т.д.
+Ви все ще хочете продовжити?</value>
+  </data>
+  <data name="close" xml:space="preserve">
+    <value>Закрити</value>
+  </data>
+  <data name="Rate_app" xml:space="preserve">
+    <value>Оцініть додаток</value>
+  </data>
+  <data name="Select_a_category" xml:space="preserve">
+    <value>Виберіть категорію</value>
+  </data>
+  <data name="sort_by_time" xml:space="preserve">
+    <value>за часом</value>
+  </data>
+  <data name="sort_by_category" xml:space="preserve">
+    <value>За категоріями</value>
+  </data>
+  <data name="Unknown" xml:space="preserve">
+    <value>Невідомо</value>
+  </data>
+  <data name="delete" xml:space="preserve">
+    <value>Видалити</value>
+  </data>
+  <data name="What_would_you_like_to_create_a_chat_based_list_for" xml:space="preserve">
+    <value>Для чого ви хочете створити список на основі чату? Наприклад, «Піца», «Мінестроне», «Паелья» тощо.</value>
+  </data>
+  <data name="description" xml:space="preserve">
+    <value>Опис</value>
   </data>
 </root>

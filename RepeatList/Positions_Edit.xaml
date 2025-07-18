@@ -19,10 +19,11 @@
         
         <!-- Edit position -->
         <Label Text="{x:Static properties:Resources.edit}"  FontSize="Medium" TextColor="White" />
-        <Entry x:Name="PositionNameEntry" 
+        <Editor x:Name="PositionNameEntry" 
                Text="{Binding SelectedItem.Title, Mode=TwoWay}" 
                Placeholder="{x:Static properties:Resources.Enter_new_position_title}" 
                TextColor="White" 
+               AutoSize="TextChanges"
                BackgroundColor="Transparent" />
         <Button Text="{x:Static properties:Resources.replace}" TextColor="White" Margin="0,5,0,0"  
                Clicked="OnSavePositionTitle_Clicked"  />

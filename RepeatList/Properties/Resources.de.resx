@@ -132,14 +132,8 @@
   <data name="Are_you_sure" xml:space="preserve">
     <value>Sind Sie sicher?</value>
   </data>
-  <data name="A_maximum_of_3_synchronised_lists_are_permitted" xml:space="preserve">
-    <value>Maximal %1 synchronisierte Listen sind zulässig</value>
-  </data>
   <data name="Cancel" xml:space="preserve">
     <value>Abbruch</value>
-  </data>
-  <data name="close" xml:space="preserve">
-    <value>Schließen</value>
   </data>
   <data name="collapse" xml:space="preserve">
     <value>falten</value>
@@ -153,14 +147,8 @@
   <data name="Create_new_article" xml:space="preserve">
     <value>Neuen Artikel erfassen</value>
   </data>
-  <data name="delete" xml:space="preserve">
-    <value>Löschen</value>
-  </data>
   <data name="Delete_list" xml:space="preserve">
     <value>Liste löschen</value>
-  </data>
-  <data name="Delete_Synchronisation" xml:space="preserve">
-    <value>Synchronisation löschen</value>
   </data>
   <data name="done" xml:space="preserve">
     <value>Erledigt</value>
@@ -170,9 +158,6 @@
   </data>
   <data name="Do_you_want_to_use_commas_as_list_element_separators" xml:space="preserve">
     <value>Wollen Sie Kommas (",") als Listenelementtrennzeichen verwenden?</value>
-  </data>
-  <data name="Duplicate_entries" xml:space="preserve">
-    <value>Doppelte Einträge</value>
   </data>
   <data name="edit" xml:space="preserve">
     <value>Bearbeiten</value>
@@ -196,9 +181,6 @@
   </data>
   <data name="Export_list" xml:space="preserve">
     <value>Aktuelle Liste exportieren</value>
-  </data>
-  <data name="Export_not_completed_as_a_text_list" xml:space="preserve">
-    <value>'Nicht erledigten Positionen' als Textliste</value>
   </data>
   <data name="help" xml:space="preserve">
     <value>Hilfe</value>
@@ -244,9 +226,6 @@ MENÜPUNKT "DOPPELTE POSITIONEN":
   <data name="List_information_has_wrong_format" xml:space="preserve">
     <value>Listeninformation hat falsches Format</value>
   </data>
-  <data name="List_is_empty" xml:space="preserve">
-    <value>Liste ist leer</value>
-  </data>
   <data name="List_manipulation" xml:space="preserve">
     <value>Liste</value>
   </data>
@@ -264,10 +243,6 @@ MENÜPUNKT "DOPPELTE POSITIONEN":
   </data>
   <data name="No_items_to_display" xml:space="preserve">
     <value>Keine Elemente zum Anzeigen</value>
-  </data>
-  <data name="Old_entries_that_begin_with_the_keyword" xml:space="preserve">
-    <value>Alte Einträge, die mit dem Schlüsselwort z.B. "Apfel" beginnen ("Apfel rot 1 kg", "Apfel grün 2 kg" usw.) werden gelöscht und durch neueR Eintrag ersetzt. Wenn Sie also einige Varianten beibehalten wollen, verwenden Sie bitte "Apfel_rot 1 kg", "Apfel_grün 2 kg" usw. 
-Wollen Sie trotzdem fortfahren?</value>
   </data>
   <data name="Operation_successfully_completed" xml:space="preserve">
     <value>Operation erfolgreich abgeschlossen</value>
@@ -287,12 +262,6 @@ Wollen Sie trotzdem fortfahren?</value>
   <data name="Positions" xml:space="preserve">
     <value>Positionen</value>
   </data>
-  <data name="Rate_app" xml:space="preserve">
-    <value>App bewerten</value>
-  </data>
-  <data name="replace" xml:space="preserve">
-    <value>Ersetzen</value>
-  </data>
   <data name="Replace_old_list_element_when_inserting" xml:space="preserve">
     <value>Listenelement beim Einfügen ersetzen</value>
   </data>
@@ -305,14 +274,8 @@ Wollen Sie trotzdem fortfahren?</value>
   <data name="Reset_current_list" xml:space="preserve">
     <value>Aktuelle Liste zurücksetzen</value>
   </data>
-  <data name="search" xml:space="preserve">
-    <value>Suche</value>
-  </data>
   <data name="Selected_list_and_list_synchronisations_will_now_be_deleted" xml:space="preserve">
     <value>Ausgewählte Liste und Listensynchronisationen werden jetzt gelöscht, sind Sie damit einverstanden?</value>
-  </data>
-  <data name="Select_a_category" xml:space="preserve">
-    <value>Wählen Sie eine Kategorie aus</value>
   </data>
   <data name="Send_synchronisation" xml:space="preserve">
     <value>Synchronisation senden</value>
@@ -326,14 +289,8 @@ Wollen Sie trotzdem fortfahren?</value>
   <data name="sort_by_alphabet" xml:space="preserve">
     <value>Nach Alphabet</value>
   </data>
-  <data name="sort_by_category" xml:space="preserve">
-    <value>Nach Kategorie</value>
-  </data>
   <data name="sort_by_date" xml:space="preserve">
     <value>Nach Datum</value>
-  </data>
-  <data name="sort_by_time" xml:space="preserve">
-    <value>Nach Zeit</value>
   </data>
   <data name="String_is_not_a_valid_list_description" xml:space="preserve">
     <value>Zeichenkette ist keine gültige Listenbeschreibung (JSON-Format)</value>
@@ -362,9 +319,6 @@ Wollen Sie trotzdem fortfahren?</value>
   <data name="undone" xml:space="preserve">
     <value>Nicht erledigt</value>
   </data>
-  <data name="Unknown" xml:space="preserve">
-    <value>Unbekannt</value>
-  </data>
   <data name="Would_you_like_to_overwrite_the_existing_list_with_new_data" xml:space="preserve">
     <value>Möchten Sie die bestehende Liste mit neuen Daten überschreiben?</value>
   </data>
@@ -376,5 +330,57 @@ Wollen Sie trotzdem fortfahren?</value>
   </data>
   <data name="yes" xml:space="preserve">
     <value>Ja</value>
+  </data>
+  <data name="search" xml:space="preserve">
+    <value>Suche</value>
+  </data>
+  <data name="Delete_Synchronisation" xml:space="preserve">
+    <value>Synchronisation löschen</value>
+  </data>
+  <data name="A_maximum_of_3_synchronised_lists_are_permitted" xml:space="preserve">
+    <value>Maximal %1 synchronisierte Listen sind zulässig</value>
+  </data>
+  <data name="Export_not_completed_as_a_text_list" xml:space="preserve">
+    <value>'Nicht erledigten Positionen' als Textliste</value>
+  </data>
+  <data name="Duplicate_entries" xml:space="preserve">
+    <value>Doppelte Einträge</value>
+  </data>
+  <data name="replace" xml:space="preserve">
+    <value>Ersetzen</value>
+  </data>
+  <data name="List_is_empty" xml:space="preserve">
+    <value>Liste ist leer</value>
+  </data>
+  <data name="Old_entries_that_begin_with_the_keyword" xml:space="preserve">
+    <value>Alte Einträge, die mit dem Schlüsselwort z.B. "Apfel" beginnen ("Apfel rot 1 kg", "Apfel grün 2 kg" usw.) werden gelöscht und durch neueR Eintrag ersetzt. Wenn Sie also einige Varianten beibehalten wollen, verwenden Sie bitte "Apfel_rot 1 kg", "Apfel_grün 2 kg" usw. 
+Wollen Sie trotzdem fortfahren?</value>
+  </data>
+  <data name="close" xml:space="preserve">
+    <value>Schließen</value>
+  </data>
+  <data name="Rate_app" xml:space="preserve">
+    <value>App bewerten</value>
+  </data>
+  <data name="Select_a_category" xml:space="preserve">
+    <value>Wählen Sie eine Kategorie aus</value>
+  </data>
+  <data name="sort_by_time" xml:space="preserve">
+    <value>Nach Zeit</value>
+  </data>
+  <data name="sort_by_category" xml:space="preserve">
+    <value>Nach Kategorie</value>
+  </data>
+  <data name="Unknown" xml:space="preserve">
+    <value>Unbekannt</value>
+  </data>
+  <data name="delete" xml:space="preserve">
+    <value>Löschen</value>
+  </data>
+  <data name="What_would_you_like_to_create_a_chat_based_list_for" xml:space="preserve">
+    <value>Wofür möchten Sie eine Liste auf Chat-Basis zu erstellen? Zum Beispiel „Pizza”, „Minestrone”, „Paella” usw.</value>
+  </data>
+  <data name="description" xml:space="preserve">
+    <value>Beschreibung</value>
   </data>
 </root>

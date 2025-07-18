@@ -29,4 +29,10 @@
     <MenuItem Text="{x:Static properties:Resources.Rate_app}" 
               Clicked="OnRateAppClicked" 
               IconImageSource="{AppThemeBinding Light=star_black.png, Dark=star_white.png}"  />
+    <MenuItem x:Name="DeviceIdButton"
+              Text="Device-ID"     
+              IconImageSource="{AppThemeBinding Light=numbers_black.png, Dark=numbers_white.png}"  
+              Clicked="OnDeviceIDClicked" />
+
 </Shell>
+

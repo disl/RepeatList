@@ -196,6 +196,15 @@ namespace RepeatList.Properties {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Description ähnelt.
+        /// </summary>
+        public static string description {
+            get {
+                return ResourceManager.GetString("description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Do you really want to end the synconisation of this list ähnelt.
         /// </summary>
         public static string Do_you_really_want_to_end_the_synchronising_of_this_list {
@@ -764,6 +773,15 @@ namespace RepeatList.Properties {
         public static string Unknown {
             get {
                 return ResourceManager.GetString("Unknown", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die What would you like to create a chat-based list for? For example, ‘pizza’, “minestrone”, ‘paella’, etc. ähnelt.
+        /// </summary>
+        public static string What_would_you_like_to_create_a_chat_based_list_for {
+            get {
+                return ResourceManager.GetString("What_would_you_like_to_create_a_chat_based_list_for", resourceCulture);
             }
         }
         

@@ -5,7 +5,7 @@ namespace RepeatList;
 
 public partial class SetupPage : ContentPage
 {
-    public SetupPageViewModel ViewModel { get; set; }
+    public SetupPageViewModel ViewModel { get; set; }=new SetupPageViewModel();
 
     bool _isStart = true;
     AppTheme _appTheme;

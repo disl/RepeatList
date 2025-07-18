@@ -377,4 +377,10 @@ Do you still want to continue?</value>
   <data name="delete" xml:space="preserve">
     <value>Delete</value>
   </data>
+  <data name="What_would_you_like_to_create_a_chat_based_list_for" xml:space="preserve">
+    <value>What would you like to create a chat-based list for? For example, ‘pizza’, “minestrone”, ‘paella’, etc.</value>
+  </data>
+  <data name="description" xml:space="preserve">
+    <value>Description</value>
+  </data>
 </root>

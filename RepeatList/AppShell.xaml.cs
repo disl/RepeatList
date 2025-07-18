@@ -20,6 +20,8 @@ namespace RepeatList
 
             ViewModel = new ResourcesViewModel();
             BindingContext = ViewModel;
+
+            DeviceIdButton.IsEnabled = DeviceInfo.Platform == DevicePlatform.Android; 
         }
 
         private async void OnRateAppClicked(object sender, EventArgs e)
@@ -36,5 +38,18 @@ namespace RepeatList
             await Launcher.Default.OpenAsync(url);
         }
 
+        private async void OnDeviceIDClicked(object sender, EventArgs e)
+        {
+#if ANDROID
+
+            var deviceId = Android.Provider.Settings.Secure.GetString(
+                Android.App.Application.Context.ContentResolver,
+                Android.Provider.Settings.Secure.AndroidId
+            );
+
+            await Clipboard.Default.SetTextAsync(deviceId);
+            _ = Shell.Current.DisplayAlert("Device-ID: " + deviceId, "Saved to clipboard", "OK");
+#endif
+        }
     }
 }

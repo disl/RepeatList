@@ -220,6 +220,49 @@ namespace RepeatList.ViewModels
 
         #region COMMANDS       
 
+        public async Task<bool> InputHeaderWithPositionsDeepSeek(ChatResponseType.Root input_object)
+        {
+            if (input_object == null)
+            {
+                IsBusy = false;
+                return false;
+            }
+
+            IsBusy = true;
+
+            // Add new header
+            var new_header = await AddHeader(input_object.thema, false);
+            Header_SelectedItem = new_header;
+
+            // Add description
+            var new_pos = new Position
+            {
+                Id = Guid.NewGuid().ToString(),
+                HeaderId = new_header.Id,
+                Title = "_" + Properties.Resources.description.ToUpper() + ": " + input_object.description,
+                IsCompleted = false,
+                UpdatedAt = DateTime.Now.ToUniversalTime()
+            };
+            await AddPosition(new_pos, false, false);
+
+            // Add new positions
+            foreach (var pos in input_object.items)
+            {
+                new_pos = new Position
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    HeaderId = new_header.Id,
+                    Title = pos.item + " " + pos.quantity,
+                    IsCompleted = false,
+                    UpdatedAt = DateTime.Now.ToUniversalTime()
+                };
+                await AddPosition(new_pos, false, false);
+            }
+            IsBusy = false;
+            return false;
+        }
+
+
         //[RelayCommand]
         public async Task<bool> InputHeaderWithPositions(string _input, bool is_json)
         {

@@ -196,22 +196,29 @@ namespace RepeatList
                 //if (!string.IsNullOrWhiteSpace(new_list_name))
                 //{
                 var popup = new ListPage_Input();
-                var new_list_name_obj = await Shell.Current.ShowPopupAsync<string>(popup);
-                if (string.IsNullOrEmpty(new_list_name_obj.Result))
+                var new_list_name_obj = await Shell.Current.ShowPopupAsync<object>(popup);
+                if (new_list_name_obj.Result == null)
                     return;
 
                 var new_list_name = new_list_name_obj.Result;
 
-                if (Guid.TryParse(new_list_name, out tmp_guid))
+                if (new_list_name is ChatResponseType.Root)
                 {
-                    await ViewModel.Sync_list_downClicked(new_list_name);
+                    // DeepSeek-List
+                    await ViewModel.InputHeaderWithPositionsDeepSeek(new_list_name as ChatResponseType.Root);
+                    return;
+
+                }
+                else if (Guid.TryParse(new_list_name.ToString(), out tmp_guid))
+                {
+                    await ViewModel.Sync_list_downClicked(new_list_name.ToString());
                     return;
                 }
 
                 // Check ">>>" (JSON-List)
-                else if (new_list_name.Contains(">>>"))
+                else if (new_list_name.ToString().Contains(">>>"))
                 {
-                    var ind = new_list_name.IndexOf(">>>");
+                    var ind = new_list_name.ToString().IndexOf(">>>");
                     if (ind < 0)
                     {
                         await Application.Current.MainPage.DisplaySnackbar(
@@ -222,12 +229,12 @@ namespace RepeatList
                            }, duration: TimeSpan.FromSeconds(2));
                         return;
                     }
-                    new_list_name = new_list_name.Substring(ind, new_list_name.Length - ind).Replace(">>>", "");
+                    new_list_name = new_list_name.ToString().Substring(ind, new_list_name.ToString().Length - ind).Replace(">>>", "");
 
                     is_json=true;
                 }
 
-                if (!await ViewModel.InputHeaderWithPositions(new_list_name, is_json))
+                if (!await ViewModel.InputHeaderWithPositions(new_list_name.ToString(), is_json))
                 {
                     if (is_json)
                     {
@@ -240,7 +247,7 @@ namespace RepeatList
                         IsBusy = false;
                         return;
                     }
-                    await ViewModel.AddHeader(new_list_name, false);
+                    await ViewModel.AddHeader(new_list_name.ToString(), false);
                 }
                 await Application.Current.MainPage.DisplaySnackbar(Properties.Resources.List_added_successfully,
                     visualOptions: new SnackbarOptions
@@ -537,8 +544,10 @@ namespace RepeatList
             }
         }
 
+        private void OnDeepseekClicked(object sender, EventArgs e)
+        {
 
-
+        }
     }
 }
 
