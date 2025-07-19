@@ -2,6 +2,7 @@
 using CommunityToolkit.Maui.Core;
 using CommunityToolkit.Maui.Extensions;
 using CommunityToolkit.Maui.Views;
+using Microsoft.IdentityModel.Tokens;
 using RepeatList.Models;
 using RepeatList.ViewModels;
 using System.Collections.ObjectModel;
@@ -197,7 +198,7 @@ namespace RepeatList
                 //{
                 var popup = new ListPage_Input();
                 var new_list_name_obj = await Shell.Current.ShowPopupAsync<object>(popup);
-                if (new_list_name_obj.Result == null)
+                if (new_list_name_obj.Result == null || string.IsNullOrEmpty(new_list_name_obj.Result.ToString()))
                     return;
 
                 var new_list_name = new_list_name_obj.Result;
