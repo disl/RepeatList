@@ -9,47 +9,49 @@
              xmlns:properties="clr-namespace:RepeatList.Properties" 
              xmlns:system="clr-namespace:System;assembly=System.Runtime"
              x:TypeArguments="system:Object"
+             MaximumHeightRequest="600"
              BackgroundColor="Grey" >
 
-    <VerticalStackLayout  Padding="10"  Spacing="10"  >
+    <ScrollView>
+        <VerticalStackLayout  Padding="5"  Spacing="5"  >
 
-        <ActivityIndicator x:Name="Activity_Indicator"  />
+            <ActivityIndicator x:Name="Activity_Indicator" />
 
-        <!-- Anleitungstext -->
-        <Label Text="{x:Static properties:Resources.Enter_a_list_name_or_insert_a_ready_made}"  
+            <!-- Anleitungstext -->
+            <Label Text="{x:Static properties:Resources.Enter_a_list_name_or_insert_a_ready_made}"  
                    TextColor="{DynamicResource PrimaryTextColorLight}"
                    HorizontalOptions="Center"
                    FontSize="Medium"  />
 
-        <!-- Eingabefeld mit MaxLength -->
-        <ScrollView MaximumHeightRequest="200">
-            <Editor x:Name="ListNameEditor" 
+            <!-- Eingabefeld mit MaxLength -->
+            <ScrollView MaximumHeightRequest="200">
+                <Editor x:Name="ListNameEditor" 
                     TextColor="{DynamicResource PrimaryTextColorLight}"                                   
                     AutoSize="TextChanges" />
-        </ScrollView>
-        
-        <!-- Buttons -->
-        <Button Text="OK" Grid.Column="0" Clicked="OnOkClicked" />
-        
-        <!-- DeepSeek -->
-        <Label Text="{x:Static properties:Resources.What_would_you_like_to_create_a_chat_based_list_for}"  
+            </ScrollView>
+
+            <!-- Buttons -->
+            <Button Text="OK" Grid.Column="0" Clicked="OnOkClicked" />
+
+            <!-- DeepSeek -->
+            <Label Text="{x:Static properties:Resources.What_would_you_like_to_create_a_chat_based_list_for}"  
             TextColor="{DynamicResource PrimaryTextColorLight}"
             HorizontalOptions="Center"
             Margin="0,20,0,0"
         FontSize="Medium"  />
 
-        <Editor x:Name="DeepSeekEditor" TextColor="{DynamicResource PrimaryTextColorLight}"                                   
+            <Editor x:Name="DeepSeekEditor" TextColor="{DynamicResource PrimaryTextColorLight}"                                   
             AutoSize="TextChanges" />
 
-        <Button Text="OK"    
+            <Button Text="OK"    
                 Grid.Column="0"               
                 Clicked="OnDeepSeekClicked" />
 
-        <!-- Cancel Button -->
-        <Button Text="{x:Static properties:Resources.Cancel}" Margin="0,20,0,0"  
+            <!-- Cancel Button -->
+            <Button Text="{x:Static properties:Resources.Cancel}" Margin="0,20,0,0"  
             Grid.Column="1" 
             BackgroundColor="{x:Static models:Constantes.Color_Warning}" 
             Clicked="OnCancelClicked" />
-    </VerticalStackLayout>
-
+        </VerticalStackLayout>
+    </ScrollView>
 </toolkit:Popup>

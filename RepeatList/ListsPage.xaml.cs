@@ -1,8 +1,6 @@
 ﻿using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Maui.Core;
 using CommunityToolkit.Maui.Extensions;
-using CommunityToolkit.Maui.Views;
-using Microsoft.IdentityModel.Tokens;
 using RepeatList.Models;
 using RepeatList.ViewModels;
 using System.Collections.ObjectModel;
@@ -25,18 +23,26 @@ namespace RepeatList
 
         public ListsPage()
         {
-            InitializeComponent();
+            try
+            {
+                InitializeComponent();
 
-            ViewModel = new ListsPageViewModel();
-            BindingContext = ViewModel;
+                ViewModel = new ListsPageViewModel();
+                BindingContext = ViewModel;
+            }
+            catch (Exception ex)
+            {
+                SentrySdk.CaptureException(ex);
+                throw;
+            }
         }
 
         protected async override void OnAppearing()
         {
-            ViewModel.IsBusy = true;
-
             try
             {
+                ViewModel.IsBusy = true;
+
                 SetupPageViewModel = new SetupPageViewModel();
                 if (SetupPageViewModel.SelectedItem != null)
                 {
@@ -78,7 +84,6 @@ namespace RepeatList
             }
             catch (Exception ex)
             {
-
                 SentrySdk.CaptureException(ex);
                 throw;
             }
@@ -142,8 +147,8 @@ namespace RepeatList
             if (ViewModel.FilteredList == null || ViewModel.FilteredList.Count == 0)
                 return;
 
-            try
-            {
+            //try
+            //{
                 foreach (var header in ViewModel.FilteredList)
                 {
                     if (header.IsSynchronized)
@@ -152,14 +157,13 @@ namespace RepeatList
                         Header.IsSupabaseOk = true;
                     }
                 }
-            }
-            catch (Exception ex)
-            {
-                //SentrySdk.CaptureException(ex);
-                Header.IsSupabaseOk = false;
-                throw;
-            }
-
+            //}
+            //catch (Exception ex)
+            //{
+            //    SentrySdk.CaptureException(ex);
+            //    Header.IsSupabaseOk = false;
+            //    throw;
+            //}
             ViewModel.IsBusy = false;
         }
 
@@ -232,7 +236,7 @@ namespace RepeatList
                     }
                     new_list_name = new_list_name.ToString().Substring(ind, new_list_name.ToString().Length - ind).Replace(">>>", "");
 
-                    is_json=true;
+                    is_json = true;
                 }
 
                 if (!await ViewModel.InputHeaderWithPositions(new_list_name.ToString(), is_json))
@@ -266,26 +270,6 @@ namespace RepeatList
                 throw;
             }
         }
-
-        //private async void HeaderListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        //{
-        //    ViewModel.IsBusy=true;
-        //    ViewModel.HeaderSelected=true;
-
-        //    var _selectedHeader = e.CurrentSelection[0] as Header;
-        //    if (_selectedHeader != null)
-        //    {
-        //        ViewModel.Header_SelectedItem= _selectedHeader;
-
-        //        //await ViewModel.LoadPositions();
-
-        //        await Navigation.PushAsync(new Positions(_selectedHeader));
-
-        //        //await Shell.Current.GoToAsync("Positions");
-        //    }
-        //    ViewModel.IsBusy=false;
-        //}
-
 
         private async Task OnDeleteHeaderClicked(object sender, EventArgs e)
         {
