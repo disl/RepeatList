@@ -1,19 +1,37 @@
-﻿namespace RepeatList.Models
+﻿using Newtonsoft.Json;
+
+namespace RepeatList.Models
 {
     public class ChatResponseType
     {
-        public class Item
+        public partial class Root
         {
-            public string item { get; set; }
-            public string quantity { get; set; }
+            [JsonProperty("Header")]
+            public Header Header { get; set; }
+
+            [JsonProperty("Items")]
+            public Item[] Items { get; set; }
         }
 
-        public class Root
+        public partial class Header
         {
-            public string root { get; set; }
-            public string thema { get; set; }
-            public string description { get; set; }
-            public List<Item> items { get; set; }
+            [JsonProperty("Title")]
+            public string Title { get; set; }
+
+            [JsonProperty("Description")]
+            public string Description { get; set; }
+
+            [JsonProperty("Sequence_text")]
+            public string SequenceText { get; set; }
+        }
+
+        public partial class Item
+        {
+            [JsonProperty("Description")]
+            public string Description { get; set; }
+
+            [JsonProperty("Quantity")]
+            public string Quantity { get; set; }
         }
     }
 }

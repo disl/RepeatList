@@ -231,7 +231,7 @@ namespace RepeatList.ViewModels
             IsBusy = true;
 
             // Add new header
-            var new_header = await AddHeader(input_object.thema, false);
+            var new_header = await AddHeader(input_object.Header.Title, false);
             Header_SelectedItem = new_header;
 
             // Add description
@@ -239,20 +239,20 @@ namespace RepeatList.ViewModels
             {
                 Id = Guid.NewGuid().ToString(),
                 HeaderId = new_header.Id,
-                Title = "_" + Properties.Resources.description.ToUpper() + ": " + input_object.description,
+                Title = "_" + Properties.Resources.description.ToUpper() + ": " + input_object.Header.Description + Environment.NewLine + input_object.Header.SequenceText,
                 IsCompleted = false,
                 UpdatedAt = DateTime.Now.ToUniversalTime()
             };
             await AddPosition(new_pos, false, false);
 
             // Add new positions
-            foreach (var pos in input_object.items)
+            foreach (var pos in input_object.Items)
             {
                 new_pos = new Position
                 {
                     Id = Guid.NewGuid().ToString(),
                     HeaderId = new_header.Id,
-                    Title = pos.item + " " + pos.quantity,
+                    Title = pos.Description + " " + pos.Quantity,
                     IsCompleted = false,
                     UpdatedAt = DateTime.Now.ToUniversalTime()
                 };

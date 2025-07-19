@@ -1,5 +1,5 @@
 ﻿using CommunityToolkit.Maui.Views;
-using IntelliJ.Lang.Annotations;
+using Newtonsoft.Json;
 using RepeatList.Models;
 using RepeatList.Services;
 using System.Text.Json;
@@ -49,11 +49,13 @@ public partial class ListPage_Input : Popup<object>
             case "ru": language = "Russian"; break;
         }
 
-        var prompt = $"JSON list for a {DeepSeekEditor.Text} with the desired nested structure " +
-            $"\"root (thema, description (short sequence or recipe)), items (item + quantity)\", in {language}. Do not translate structure!";
+        var prompt = $"JSON list for a {DeepSeekEditor.Text}. Complete recipe as text with the desired nested structure. " +
+            $"\"Header (Title + Description + Sequence_text) and Items (Description + Quantity)\", in {language}. Do not translate structure!";
 
         Task.Run(async () =>
         {
+            string json;
+
             try
             {
                 string response = await client.GetCompletion(prompt);
@@ -71,9 +73,13 @@ public partial class ListPage_Input : Popup<object>
                             Shell.Current.DisplayAlert("Error", "Invalid response format from DeepSeek.", "OK");
                             return;
                         }
-                        var json = response.Substring(json_start_ind, json_end_ind - json_start_ind);
+                        json = response.Substring(json_start_ind, json_end_ind - json_start_ind);
                         json = json.Replace("json","").Replace("```","").Trim();
-                        var jsonObject = JsonSerializer.Deserialize<ChatResponseType.Root>(json);
+                        //var jsonObject = System.Text.Json.JsonSerializer.Deserialize<ChatResponseType.Root>(json);
+
+
+                        var jsonObject  = JsonConvert.DeserializeObject<ChatResponseType.Root>(json);
+
                         if (jsonObject != null)
                         {
                             CloseAsync(jsonObject);
