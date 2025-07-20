@@ -378,9 +378,16 @@ Wollen Sie trotzdem fortfahren?</value>
     <value>Löschen</value>
   </data>
   <data name="What_would_you_like_to_create_a_chat_based_list_for" xml:space="preserve">
-    <value>Wofür möchten Sie eine Liste auf Chat-Basis zu erstellen? Zum Beispiel „Pizza”, „Minestrone”, „Paella” usw.</value>
+    <value>NUR IN PREMIUM-VERSION! 
+Wofür möchten Sie eine Chat-Liste erstellen? Zum Beispiel „Pizza”, „Minestrone”, „Paella” usw.</value>
   </data>
   <data name="description" xml:space="preserve">
     <value>Beschreibung</value>
+  </data>
+  <data name="Only_available_in_the_premium_version" xml:space="preserve">
+    <value>Nur in der Premiumversion erhältlich</value>
+  </data>
+  <data name="premium_feature" xml:space="preserve">
+    <value>Premium-Funktion</value>
   </data>
 </root>

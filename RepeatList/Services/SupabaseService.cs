@@ -102,5 +102,31 @@ namespace RepeatList.Services
                 return (null, null);
             }
         }
+
+        public async Task<List<DeviceList>?> GetDeviceListAsync()
+        {
+            try
+            {
+                Supabase.Postgrest.Responses.ModeledResponse<DeviceList> headerResponse = await _supabase
+                    .From<DeviceList>()
+                    //.Filter("Id", Supabase.Postgrest.Constants.Operator.Equals, headerId.ToString())
+                    .Get();
+
+                var _header = headerResponse.Models;
+
+                if (_header != null)
+                {
+                    return (_header);
+                }
+                return (null);
+            }
+            catch (Exception ex)
+            {
+                //if (ex != null)
+                //    SentrySdk.CaptureException(ex);
+
+                return (null);
+            }
+        }
     }
 }

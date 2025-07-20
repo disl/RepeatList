@@ -18,7 +18,7 @@ namespace RepeatList.ViewModels
         private DatabaseService _databaseService;
         private SupabaseService? _supabaseService;
 
-
+        [ObservableProperty] public static List<string> deviceList=new();
 
         //public event PropertyChangedEventHandler PropertyChanged;
 
@@ -54,11 +54,31 @@ namespace RepeatList.ViewModels
             CultureInfo.DefaultThreadCurrentUICulture = culture;
 
             _ = LoadHeaders();
+            _ = GetDeviceIDs();
 
             SetFirstItemForHeaders();
             InitSelectedItem_KindOfSorting();
             InitSelectedItem_KindOfSorting_undone();
             SetResetImageSource();
+        }
+
+        private async Task GetDeviceIDs()
+        {
+            IsBusy = true;
+
+            List<DeviceList>? sync_responce = await _supabaseService.GetDeviceListAsync();
+
+            if (sync_responce != null)
+            {
+                foreach (var item in sync_responce)
+                {
+                    if (DeviceList == null)
+                        DeviceList = new List<string>();
+                    if (!DeviceList.Contains(item.DeviceId))
+                        DeviceList.Add(item.DeviceId);
+                }
+            }
+            IsBusy = false;
         }
 
         public void InitLabels()

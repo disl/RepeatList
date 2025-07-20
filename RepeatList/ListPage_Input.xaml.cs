@@ -2,12 +2,14 @@
 using Newtonsoft.Json;
 using RepeatList.Models;
 using RepeatList.Services;
-using System.Text.Json;
+using RepeatList.ViewModels;
 
 namespace RepeatList;
 
 public partial class ListPage_Input : Popup<object>
 {
+    ListsPageViewModel listsPageViewModel = new();
+
     public ListPage_Input()
     {
         InitializeComponent();
@@ -26,6 +28,15 @@ public partial class ListPage_Input : Popup<object>
 
     private void OnDeepSeekClicked(object sender, EventArgs e)
     {
+        var deviceID = GetDeviceID();
+        var userPaidForDeepSeek = IsUserPaidForDeepSeek();
+
+        if ((deviceID != null && !listsPageViewModel.DeviceList.Contains(deviceID)) && !userPaidForDeepSeek)
+        {
+            Shell.Current.DisplayAlert(Properties.Resources.premium_feature, Properties.Resources.Only_available_in_the_premium_version, "OK");
+            return;
+        }
+
         if (string.IsNullOrEmpty(DeepSeekEditor.Text))
             return;
 
@@ -74,11 +85,11 @@ public partial class ListPage_Input : Popup<object>
                             return;
                         }
                         json = response.Substring(json_start_ind, json_end_ind - json_start_ind);
-                        json = json.Replace("json","").Replace("```","").Trim();
+                        json = json.Replace("json", "").Replace("```", "").Trim();
                         //var jsonObject = System.Text.Json.JsonSerializer.Deserialize<ChatResponseType.Root>(json);
 
 
-                        var jsonObject  = JsonConvert.DeserializeObject<ChatResponseType.Root>(json);
+                        var jsonObject = JsonConvert.DeserializeObject<ChatResponseType.Root>(json);
 
                         if (jsonObject != null)
                         {
@@ -111,5 +122,35 @@ public partial class ListPage_Input : Popup<object>
                 Activity_Indicator.IsRunning = false;
             }
         });
+    }
+
+    private bool IsUserPaidForDeepSeek()
+    {
+        // !!!!!!!!!
+        return false;
+    }
+
+    string? GetDeviceID()
+    {
+#if ANDROID
+
+        var deviceId = Android.Provider.Settings.Secure.GetString(
+            Android.App.Application.Context.ContentResolver,
+            Android.Provider.Settings.Secure.AndroidId
+        );
+
+        return deviceId;
+#endif
+
+    }
+
+    private void DeepSeekEditor_Completed(object sender, EventArgs e)
+    {
+        OnDeepSeekClicked(sender, e);
+    }
+
+    private void ListNameEditor_Completed(object sender, EventArgs e)
+    {
+        OnOkClicked(sender, e);
     }
 }

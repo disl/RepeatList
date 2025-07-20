@@ -378,9 +378,16 @@ Do you still want to continue?</value>
     <value>Delete</value>
   </data>
   <data name="What_would_you_like_to_create_a_chat_based_list_for" xml:space="preserve">
-    <value>What would you like to create a chat-based list for? For example, ‘pizza’, “minestrone”, ‘paella’, etc.</value>
+    <value>ONLY IN THE PREMIUM VERSION!
+What would you like to create a chat list for? For example, ‘Pizza’, “Minestrone”, ‘Paella’, etc.</value>
   </data>
   <data name="description" xml:space="preserve">
     <value>Description</value>
+  </data>
+  <data name="Only_available_in_the_premium_version" xml:space="preserve">
+    <value>Only available in the premium version</value>
+  </data>
+  <data name="premium_feature" xml:space="preserve">
+    <value>Premium feature</value>
   </data>
 </root>

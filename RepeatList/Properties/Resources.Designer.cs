@@ -489,6 +489,15 @@ namespace RepeatList.Properties {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Only available in the premium version ähnelt.
+        /// </summary>
+        public static string Only_available_in_the_premium_version {
+            get {
+                return ResourceManager.GetString("Only_available_in_the_premium_version", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Operation successfully completed ähnelt.
         /// </summary>
         public static string Operation_successfully_completed {
@@ -539,6 +548,15 @@ namespace RepeatList.Properties {
         public static string Positions {
             get {
                 return ResourceManager.GetString("Positions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Premium feature ähnelt.
+        /// </summary>
+        public static string premium_feature {
+            get {
+                return ResourceManager.GetString("premium_feature", resourceCulture);
             }
         }
         
@@ -777,7 +795,8 @@ namespace RepeatList.Properties {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die What would you like to create a chat-based list for? For example, ‘pizza’, “minestrone”, ‘paella’, etc. ähnelt.
+        ///   Sucht eine lokalisierte Zeichenfolge, die ONLY IN THE PREMIUM VERSION!
+        ///What would you like to create a chat list for? For example, ‘Pizza’, “Minestrone”, ‘Paella’, etc. ähnelt.
         /// </summary>
         public static string What_would_you_like_to_create_a_chat_based_list_for {
             get {

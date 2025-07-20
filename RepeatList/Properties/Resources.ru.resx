@@ -378,9 +378,16 @@
     <value>Удалить</value>
   </data>
   <data name="What_would_you_like_to_create_a_chat_based_list_for" xml:space="preserve">
-    <value>Для чего вы хотите создать список на основе чата? Например, «Пицца», «Минестроне», «Паэлья» и т. д.</value>
+    <value>ТОЛЬКО В ПРЕМИУМ-ВЕРСИИ! 
+Для чего вы хотите создать список чатов? Например, «Пицца», «Минестроне», «Паэлья» и т. д.</value>
   </data>
   <data name="description" xml:space="preserve">
     <value>Описание</value>
+  </data>
+  <data name="Only_available_in_the_premium_version" xml:space="preserve">
+    <value>Доступно только в премиум-версии</value>
+  </data>
+  <data name="premium_feature" xml:space="preserve">
+    <value>Премиум-функция</value>
   </data>
 </root>
