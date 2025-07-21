@@ -115,6 +115,15 @@ namespace RepeatList.Properties {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Purchase premium subscription 2.99€/month ähnelt.
+        /// </summary>
+        public static string Buy_Premium_Subscription {
+            get {
+                return ResourceManager.GetString("Buy_Premium_Subscription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Cancel ähnelt.
         /// </summary>
         public static string Cancel {
@@ -566,6 +575,15 @@ namespace RepeatList.Properties {
         public static string Rate_app {
             get {
                 return ResourceManager.GetString("Rate_app", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Recipe ähnelt.
+        /// </summary>
+        public static string recipe {
+            get {
+                return ResourceManager.GetString("recipe", resourceCulture);
             }
         }
         

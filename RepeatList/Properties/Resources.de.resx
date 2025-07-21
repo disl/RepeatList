@@ -390,4 +390,10 @@ Wofür möchten Sie eine Chat-Liste erstellen? Zum Beispiel „Pizza”, „Mine
   <data name="premium_feature" xml:space="preserve">
     <value>Premium-Funktion</value>
   </data>
+  <data name="recipe" xml:space="preserve">
+    <value>Rezept</value>
+  </data>
+  <data name="Buy_Premium_Subscription" xml:space="preserve">
+    <value>Premium-Abo kaufen 2,99€/Monat</value>
+  </data>
 </root>

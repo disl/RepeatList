@@ -99,6 +99,8 @@ namespace RepeatList
                     _timer.Tick += _timer_Tick;
                     _timer.Start();
                 }
+
+                //SetHeader();
             }
             catch (Exception ex)
             {
@@ -106,6 +108,32 @@ namespace RepeatList
                 throw;
             }
             finally { ViewModel.IsBusy = false; }
+        }
+
+        private void SetHeader()
+        {
+            ViewModel.IsRezeptVisible = false;
+
+            if (ViewModel.Positions_undone_filterd != null && !string.IsNullOrEmpty(ViewModel.Positions_undone_filterd[0].Title)
+                && ViewModel.Positions_undone_filterd[0].Title.Substring(0, 1) == "_")
+            {
+                RezeptLabel.Text = ViewModel.Positions_undone_filterd[0].Title;
+
+                ViewModel.IsRezeptVisible = true;
+
+                //var headerStack = new StackLayout { Orientation = StackOrientation.Vertical };
+                //headerStack.Children.Add(new Label
+                //{
+                //    Text = ViewModel.Positions_undone_filterd[0].Title,
+                //    TextColor= Application.Current.RequestedTheme == AppTheme.Light
+                //                ? (Color)Application.Current.Resources["PrimaryTextColor"]
+                //                : (Color)Application.Current.Resources["PrimaryTextColorLight"]
+                //});
+
+                //PositionListView.Header = headerStack;
+
+                ViewModel.Positions_undone_filterd.RemoveAt(0);
+            }
         }
 
         private void OnCollectionView_Undone_Scrolled(object sender, ItemsViewScrolledEventArgs e)
@@ -144,6 +172,8 @@ namespace RepeatList
             await ViewModel.Sync_list_downClicked(ViewModel.Header_SelectedItem);
 
             await ViewModel.LoadPositions();
+
+            //SetHeader();
 
             ViewModel.IsBusy = false;
         }
@@ -414,6 +444,8 @@ namespace RepeatList
                                                                    // position.UpdatedAt = DateTime.Now.ToUniversalTime();
                     await ViewModel.UpdatePosition(position);
 
+                    //SetHeader();
+
                     ViewModel.IsBusy = false;
                 }
             }
@@ -481,6 +513,9 @@ namespace RepeatList
                     return;
                 var picker = sender as Picker;
                 await ViewModel.LoadPositions();
+
+                //SetHeader();
+
                 Preferences.Set(ViewModel.SelectedItem_KindOfSorting_key_name, ViewModel.SelectedItem_KindOfSorting.Value);
             }
             catch (Exception ex)
@@ -494,6 +529,9 @@ namespace RepeatList
         {
             var picker = sender as Picker;
             await ViewModel.LoadPositions();
+
+            //SetHeader();
+
             Preferences.Set(ViewModel.SelectedItem_KindOfSorting_key_name_undone, ViewModel.SelectedItem_KindOfSorting_undone.Value);
         }
 
@@ -748,6 +786,13 @@ namespace RepeatList
                     }
                 }
             }
+        }
+
+        private void ExpanderChanged(object sender, ExpandedChangedEventArgs e)
+        {
+
+              ViewModel.IsRezeptExpanded = e.IsExpanded;
+
         }
     }
 

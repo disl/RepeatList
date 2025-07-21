@@ -1,4 +1,5 @@
-﻿using CommunityToolkit.Maui.Alerts;
+﻿using AndroidX.Lifecycle;
+using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Maui.Core;
 using CommunityToolkit.Maui.Core.Extensions;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -29,10 +30,12 @@ namespace RepeatList.ViewModels
         public string SelectedItem_KindOfSorting_key_name_undone = "SelectedItem_KindOfSorting_undone";
         public double ButtonsSize = 25;
 
-        
+      
 
         private static List<CategoryRule>? Categories_list;
-
+        [ObservableProperty]
+        public string collapse_rezept_icon = "expand_icon_white.png";
+           // Application.Current != null && Application.Current.UserAppTheme == AppTheme.Dark ? "expand_icon_white.png" : "expand_icon_black.png";
         [ObservableProperty]
         public string collapse_undone_icon =
             Application.Current != null && Application.Current.UserAppTheme == AppTheme.Dark ? "expand_icon_white.png" : "expand_icon_black.png";
@@ -68,10 +71,22 @@ namespace RepeatList.ViewModels
         [ObservableProperty] public bool isvisible_undone = true;
         [ObservableProperty] public bool isvisible_done = true;
 
+
+        // REZEPT
+        [ObservableProperty] bool isRezeptExpanded = true;
+        partial void OnIsRezeptExpandedChanged(bool value)
+        {
+            Collapse_rezept_icon = value ? "collapse_icon_white.png" : "expand_icon_white.png";
+        }
+        
+        [ObservableProperty] string? rezeptHeaderText = Properties.Resources.description.ToUpper() + " / " + Properties.Resources.recipe.ToUpper();
+        [ObservableProperty] bool isRezeptVisible = false;
+        [ObservableProperty] string? rezeptLabelText;                
+
         [ObservableProperty] public bool? collapse_undone = null;
         partial void OnCollapse_undoneChanged(bool? oldValue, bool? newValue)
         {
-            SetCollapseUndone(newValue);
+            SetCollapseUndone(newValue); 
         }
 
         private void SetCollapseUndone(bool? newValue)
@@ -225,11 +240,11 @@ namespace RepeatList.ViewModels
                 _collapse_undone = Preferences.Get("Collapse_undone", "");
                 Collapse_undone = string.IsNullOrEmpty(_collapse_undone) ? null : Convert.ToBoolean(_collapse_undone);
             }
-            catch 
+            catch
             {
                 Collapse_undone = null;
             }
-            
+
 
         }
 
@@ -467,6 +482,12 @@ namespace RepeatList.ViewModels
 
 
         #region COMMANDS       
+
+        [RelayCommand]
+        public void Rezept_ImageButtonClicked()
+        {
+            IsRezeptExpanded = !IsRezeptExpanded;            
+        }
 
         [RelayCommand]
         public void Undone_ImageButtonClicked()
@@ -795,6 +816,31 @@ namespace RepeatList.ViewModels
                     Positions_undone_filterd = new ObservableCollection<Position>(Positions_undone);
                 if (Positions_done != null)
                     Positions_done_filtered = new ObservableCollection<Position>(Positions_done);
+
+                // Rezept- label
+                RezeptLabelText=null;
+                IsRezeptVisible=false;
+
+                if (Positions_undone_filterd != null && !string.IsNullOrEmpty(Positions_undone_filterd[0].Title)
+                    && Positions_undone_filterd[0].Title.Substring(0, 1) == "_")
+                {
+                    RezeptLabelText = Positions_undone_filterd[0].Title;
+
+                    IsRezeptVisible = true;
+
+                    //var headerStack = new StackLayout { Orientation = StackOrientation.Vertical };
+                    //headerStack.Children.Add(new Label
+                    //{
+                    //    Text = ViewModel.Positions_undone_filterd[0].Title,
+                    //    TextColor= Application.Current.RequestedTheme == AppTheme.Light
+                    //                ? (Color)Application.Current.Resources["PrimaryTextColor"]
+                    //                : (Color)Application.Current.Resources["PrimaryTextColorLight"]
+                    //});
+
+                    //PositionListView.Header = headerStack;
+
+                    Positions_undone_filterd.RemoveAt(0);
+                }
 
                 IsBusy = false;
                 PositionListViewVisible = true;

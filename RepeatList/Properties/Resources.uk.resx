@@ -390,4 +390,10 @@
   <data name="premium_feature" xml:space="preserve">
     <value>Преміум-функція</value>
   </data>
+  <data name="recipe" xml:space="preserve">
+    <value>Рецепт</value>
+  </data>
+  <data name="Buy_Premium_Subscription" xml:space="preserve">
+    <value>Купити преміум-підписку 2,99 €/місяць</value>
+  </data>
 </root>

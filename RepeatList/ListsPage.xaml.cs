@@ -2,6 +2,7 @@
 using CommunityToolkit.Maui.Core;
 using CommunityToolkit.Maui.Extensions;
 using RepeatList.Models;
+using RepeatList.Services;
 using RepeatList.ViewModels;
 using System.Collections.ObjectModel;
 using System.Globalization;
@@ -18,6 +19,7 @@ namespace RepeatList
         private SetupPageViewModel SetupPageViewModel { get; set; }
         private ListsPageViewModel ViewModel { get; set; }
         private ResourcesViewModel ResourcesViewModel { get; set; }
+        private readonly InAppBillingService _billingService = new();
 
         private IDispatcherTimer _timer;
 
@@ -196,11 +198,9 @@ namespace RepeatList
 
             try
             {
-                //string new_list_name = await DisplayPromptAsync(
-                //    Properties.Resources.AddNewList, Properties.Resources.Enter_a_list_name_or_insert_a_ready_made, "OK", Properties.Resources.Cancel);
-                //if (!string.IsNullOrWhiteSpace(new_list_name))
-                //{
-                var popup = new ListPage_Input();
+                var isDeepSeekAllowed = await IsDeepSeekAllowed();
+
+                var popup = new ListPage_Input(isDeepSeekAllowed);
                 var new_list_name_obj = await Shell.Current.ShowPopupAsync<object>(popup);
                 if (new_list_name_obj.Result == null || string.IsNullOrEmpty(new_list_name_obj.Result.ToString()))
                     return;
@@ -269,6 +269,30 @@ namespace RepeatList
                 SentrySdk.CaptureException(ex);
                 throw;
             }
+        }
+
+        async Task<bool> IsDeepSeekAllowed()
+        {
+            var deviceID = GetDeviceID();
+            var istPremium = await _billingService.CheckAktivesAboAsync();
+            return (deviceID != null && ViewModel.DeviceList.Contains(deviceID)) || istPremium;
+
+            //OnDeepSeekButton.IsVisible = isDeepSeekAllowed;
+            //OnPayPremiumButton.IsVisible = !isDeepSeekAllowed;
+        }
+
+        string? GetDeviceID()
+        {
+#if ANDROID
+
+            var deviceId = Android.Provider.Settings.Secure.GetString(
+                Android.App.Application.Context.ContentResolver,
+                Android.Provider.Settings.Secure.AndroidId
+            );
+
+            return deviceId;
+#endif
+
         }
 
         private async Task OnDeleteHeaderClicked(object sender, EventArgs e)

@@ -9,11 +9,28 @@ namespace RepeatList;
 public partial class ListPage_Input : Popup<object>
 {
     ListsPageViewModel listsPageViewModel = new();
+    private readonly InAppBillingService _billingService = new();
+    bool isDeepSeekAllowed = false;
 
-    public ListPage_Input()
+    public ListPage_Input(bool isDeepSeekAllowed)
     {
         InitializeComponent();
+        this.isDeepSeekAllowed=isDeepSeekAllowed;
+
+        OnDeepSeekButton.IsVisible = isDeepSeekAllowed;
+        OnPayPremiumButton.IsVisible = !isDeepSeekAllowed;        
     }
+
+    //async Task IsDeepSeekAllowed()
+    //{
+    //    var deviceID = GetDeviceID();
+    //    var istPremium = await _billingService.CheckAktivesAboAsync();
+
+    //    var not_allowed = deviceID != null && !listsPageViewModel.DeviceList.Contains(deviceID) && !istPremium;
+
+    //    OnDeepSeekButton.IsVisible = isDeepSeekAllowed;
+    //    OnPayPremiumButton.IsVisible = !isDeepSeekAllowed;
+    //}
 
     private void OnCancelClicked(object sender, EventArgs e)
     {
@@ -26,12 +43,12 @@ public partial class ListPage_Input : Popup<object>
         CloseAsync(input);
     }
 
-    private void OnDeepSeekClicked(object sender, EventArgs e)
+    private async void OnDeepSeekClicked(object sender, EventArgs e)
     {
         var deviceID = GetDeviceID();
-        var userPaidForDeepSeek = IsUserPaidForDeepSeek();
+        var istPremium = await _billingService.CheckAktivesAboAsync();
 
-        if ((deviceID != null && !listsPageViewModel.DeviceList.Contains(deviceID)) && !userPaidForDeepSeek)
+        if (deviceID != null && !listsPageViewModel.DeviceList.Contains(deviceID) && !istPremium)
         {
             Shell.Current.DisplayAlert(Properties.Resources.premium_feature, Properties.Resources.Only_available_in_the_premium_version, "OK");
             return;
@@ -61,7 +78,8 @@ public partial class ListPage_Input : Popup<object>
         }
 
         var prompt = $"JSON list for a {DeepSeekEditor.Text}. Complete recipe as text with the desired nested structure. " +
-            $"\"Header (Title + Description + Sequence_text) and Items (Description + Quantity)\", in {language}. Do not translate structure!";
+            $"\"Header (Title + Description + Sequence_text) and Items (Description + Quantity)\", in {language}. Do not translate structure! " +
+            $"If this is a recipe, enter the number of people in the description.";
 
         Task.Run(async () =>
         {
@@ -86,14 +104,14 @@ public partial class ListPage_Input : Popup<object>
                         }
                         json = response.Substring(json_start_ind, json_end_ind - json_start_ind);
                         json = json.Replace("json", "").Replace("```", "").Trim();
-                        //var jsonObject = System.Text.Json.JsonSerializer.Deserialize<ChatResponseType.Root>(json);
-
-
                         var jsonObject = JsonConvert.DeserializeObject<ChatResponseType.Root>(json);
 
                         if (jsonObject != null)
                         {
                             CloseAsync(jsonObject);
+
+                            // Sortierung nach Alphabet
+                            Preferences.Set(listsPageViewModel.SelectedItem_KindOfSorting_key_name_undone, "alpha");
                         }
                         else
                         {
@@ -124,12 +142,6 @@ public partial class ListPage_Input : Popup<object>
         });
     }
 
-    private bool IsUserPaidForDeepSeek()
-    {
-        // !!!!!!!!!
-        return false;
-    }
-
     string? GetDeviceID()
     {
 #if ANDROID
@@ -152,5 +164,10 @@ public partial class ListPage_Input : Popup<object>
     private void ListNameEditor_Completed(object sender, EventArgs e)
     {
         OnOkClicked(sender, e);
+    }
+
+    private async void OnPayPremiumClicked(object sender, EventArgs e)
+    {
+        await _billingService.PayPremiumMonthAsync();
     }
 }

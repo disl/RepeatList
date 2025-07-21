@@ -64,7 +64,7 @@
             <ImageButton Source="{Binding Collapse_undone_icon, FallbackValue = ''}" 
                          Command="{Binding Undone_ImageButtonClickedCommand}" 
                          WidthRequest="30"
-                         Margin="20,0,0,0"
+                         Margin="20,0,0,0"                        
                          IsVisible="{Binding Isvisible_undone}"
                          Grid.Column="4" />
         </Grid>
@@ -81,94 +81,84 @@
                 <RoundRectangle CornerRadius="5" />
             </Border.StrokeShape>
 
-            <ListView 
-                x:Name="PositionListView"                
-                SeparatorVisibility="None"
-                ItemsSource="{Binding Positions_undone_filterd}"
-                SelectedItem="{Binding Position_selectedItem, Mode=OneWay}"
-                SelectionMode="Single"
-                ItemTapped="PositionListView_ItemTapped"
+            <Grid RowDefinitions="Auto,*">
+
+                <!-- For Rezept -->               
+                <toolkit:Expander Grid.Row="0" 
+                                  IsVisible="{Binding IsRezeptVisible}" 
+                                  IsExpanded="{Binding IsRezeptExpanded}" 
+                                  ExpandedChanged="ExpanderChanged"
+                                  BackgroundColor="Gray" 
+                                  MinimumHeightRequest="20"
+                                  Padding="5"
+                                  >
+                    <toolkit:Expander.Header>
+                        <Grid ColumnDefinitions="*,auto" RowDefinitions="50" >
+                            <Label Text="{Binding RezeptHeaderText}" 
+                                   FontAttributes="Bold" 
+                                   VerticalOptions="Center"
+                                   TextColor="White"/>
+                            <ImageButton 
+                                Source="{Binding Collapse_rezept_icon, FallbackValue = ''}" 
+                                WidthRequest="30" 
+                                VerticalOptions="Center"
+                                InputTransparent="True"                               
+                                Grid.Column="1" />
+                        </Grid>
+                    </toolkit:Expander.Header>
+                    <ScrollView HorizontalScrollBarVisibility="Always" >
+                        <Label x:Name="RezeptLabel" 
+                                 Text="{Binding RezeptLabelText}" 
+                                 BackgroundColor="Gray"
+                                 TextColor="White"
+                                 Padding="10"                                  
+                                 IsVisible="{Binding IsRezeptVisible}"
+                     />
+                    </ScrollView>
+                </toolkit:Expander>
+
+                <ListView   Grid.Row="1"
+                            x:Name="PositionListView"                
+                            SeparatorVisibility="None"
+                            ItemsSource="{Binding Positions_undone_filterd}"
+                            SelectedItem="{Binding Position_selectedItem, Mode=OneWay}"
+                            SelectionMode="Single"
+                            ItemTapped="PositionListView_ItemTapped"
                 >
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <ViewCell>
-                            <Grid  ColumnDefinitions="30,6*,1*" 
+
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <Grid  ColumnDefinitions="30,6*,1*" 
                                VerticalOptions="Center" 
                                ColumnSpacing="10" >
 
-                                <Button BackgroundColor="{Binding Category_color}" Grid.Column="0" 
+                                    <Button BackgroundColor="{Binding Category_color}" Grid.Column="0" 
                                      Clicked="Category_colorClicked" CommandParameter="{Binding}"
                                      BorderColor="{AppThemeBinding Light=Gray, Dark=LightGray}" />
-                                <Label  Text="{Binding Title, FallbackValue = '?'}" Grid.Column="1"   
+                                    <Label  Text="{Binding Title, FallbackValue = '?'}" Grid.Column="1"   
                                      LineBreakMode="TailTruncation" MaxLines="1"
                                      VerticalTextAlignment="Center"
                                      TextColor="{AppThemeBinding Light={DynamicResource PrimaryTextColor}, Dark={DynamicResource PrimaryTextColorLight}}"/>
-                                <ImageButton Source="{Binding PositionImageSource, FallbackValue = 'check_box_blank.png'}" 
+                                    <ImageButton Source="{Binding PositionImageSource, FallbackValue = 'check_box_blank.png'}" 
                                          Clicked="OnCheckedButtonClicked" CommandParameter="{Binding}" 
                                          HeightRequest="30" 
                                          Grid.Column="2"/>
-                                <!--<ImageButton Source="{AppThemeBinding Light=edit_icon_black.png, Dark=edit_icon_white.png}" 
+                                    <!--<ImageButton Source="{AppThemeBinding Light=edit_icon_black.png, Dark=edit_icon_white.png}" 
                                           Clicked="OnEditPositionClicked" CommandParameter="{Binding}" 
                                           HeightRequest="30" 
                                           Grid.Column="3"/>-->
-                                <!--<ImageButton Source="{AppThemeBinding Light=delete_icon_black.png, Dark=delete_icon_white.png}" 
+                                    <!--<ImageButton Source="{AppThemeBinding Light=delete_icon_black.png, Dark=delete_icon_white.png}" 
                                           Clicked="OnDeletePositionClicked" CommandParameter="{Binding}" 
                                           HeightRequest="30" Grid.Column="4"/>-->
-                            </Grid>
-                        </ViewCell>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
+                                </Grid>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
 
+            </Grid>
 
-
-            <!--<CollectionView x:Name="PositionListView"  
-                                    ItemSizingStrategy="MeasureFirstItem"
-                                    ItemsSource="{Binding Positions_undone_filterd}"                             
-                                    SelectedItem="{Binding Position_selectedItem, Mode=OneWayToSource}"                                      
-                                    SelectionMode="Single"                                     
-                                    SelectionChanged="OnPositionSelected_new"      
-                                    Scrolled="OnCollectionView_Undone_Scrolled"
-                            >
-                <CollectionView.ItemTemplate>
-                    <DataTemplate>
-                        <Grid  ColumnDefinitions="auto,*,auto" 
-                               VerticalOptions="Center"    
-                               
-                               ColumnSpacing="10" >
-                            <Button BackgroundColor="{Binding Category_color}" Grid.Column="0" 
-                                    Clicked="Category_colorClicked" CommandParameter="{Binding}"
-                                    BorderColor="{AppThemeBinding Light=Gray, Dark=LightGray}" />
-
-                            <Label  Text="{Binding Title, FallbackValue = '?'}" Grid.Column="1"   
-                                    LineBreakMode="TailTruncation" MaxLines="1"
-                                    VerticalTextAlignment="Center"
-                                    TextColor="{AppThemeBinding Light={DynamicResource PrimaryTextColor}, Dark={DynamicResource PrimaryTextColorLight}}"/>
-                            <ImageButton Source="{Binding PositionImageSource, FallbackValue = 'check_box_blank.png'}" 
-                                         Clicked="OnCheckedButtonClicked" CommandParameter="{Binding}" 
-                                         HeightRequest="30" Grid.Column="2"/>
-                            -->
-            <!--<ImageButton Source="{AppThemeBinding Light=edit_icon_black.png, Dark=edit_icon_white.png}" 
-                                         Clicked="OnEditPositionClicked" CommandParameter="{Binding}" 
-                                         HeightRequest="30" 
-                                         Grid.Column="3"/>
-                            <ImageButton Source="{AppThemeBinding Light=delete_icon_black.png, Dark=delete_icon_white.png}" 
-                                         Clicked="OnDeletePositionClicked" CommandParameter="{Binding}" 
-                                         HeightRequest="30" Grid.Column="4"/>-->
-            <!--
-                        </Grid>
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
-                <CollectionView.EmptyView>
-                    <ContentView>
-                        <StackLayout HorizontalOptions="Center" VerticalOptions="Center">
-                            <Label Text="{x:Static properties:Resources.No_items_to_display}" 
-                                   HorizontalOptions="Fill" HorizontalTextAlignment="Center"
-                                   TextColor="{AppThemeBinding Light={DynamicResource PrimaryTextColor}, Dark={DynamicResource PrimaryTextColorLight}}"/>
-                        </StackLayout>
-                    </ContentView>
-                </CollectionView.EmptyView>
-            </CollectionView>-->
         </Border>
 
         <!-- SORTING -->

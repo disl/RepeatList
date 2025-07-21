@@ -9,8 +9,7 @@
              xmlns:properties="clr-namespace:RepeatList.Properties" 
              xmlns:system="clr-namespace:System;assembly=System.Runtime"
              x:TypeArguments="system:Object"
-             MaximumHeightRequest="500"
-            
+             MaximumHeightRequest="550"
              BackgroundColor="Grey" >
 
     <ScrollView>
@@ -48,18 +47,29 @@
                     Completed="DeepSeekEditor_Completed"
                     />-->
 
-            
-                <VerticalStackLayout Spacing="10" Margin="0,20,0,0">
-                    <!-- Kopfzeile mit Icon und Text -->
-                    <Label Text="{x:Static properties:Resources.What_would_you_like_to_create_a_chat_based_list_for}"  
+
+            <VerticalStackLayout Margin="0,20,0,0">
+                <!-- Kopfzeile mit Icon und Text -->
+                <Label Text="{x:Static properties:Resources.What_would_you_like_to_create_a_chat_based_list_for}"  
                            TextColor="{DynamicResource PrimaryTextColorLight}"
                            HorizontalOptions="Center"                          
                            FontSize="Medium"  />
-                    <Entry x:Name="DeepSeekEditor" 
+                <Entry x:Name="DeepSeekEditor" 
                            TextColor="{DynamicResource PrimaryTextColorLight}"  
                            ClearButtonVisibility="WhileEditing"
-                           Completed="DeepSeekEditor_Completed" /> 
-                </VerticalStackLayout>
+                           Completed="DeepSeekEditor_Completed"
+                           
+                       />
+
+                <Button x:Name="OnDeepSeekButton"
+                        Text="OK"  
+                        Clicked="OnDeepSeekClicked" />
+                <Button x:Name="OnPayPremiumButton" 
+                        Text="{x:Static properties:Resources.Buy_Premium_Subscription}"  
+                        BackgroundColor="{x:Static models:Constantes.Color_Warning}" 
+                        Clicked="OnPayPremiumClicked" />
+
+            </VerticalStackLayout>
 
 
 

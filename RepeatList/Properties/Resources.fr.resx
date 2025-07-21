@@ -390,4 +390,10 @@ Pour quoi souhaitez-vous créer une liste de chat ? Par exemple « Pizza », « 
   <data name="premium_feature" xml:space="preserve">
     <value>Fonctionnalité premium</value>
   </data>
+  <data name="recipe" xml:space="preserve">
+    <value>Recette</value>
+  </data>
+  <data name="Buy_Premium_Subscription" xml:space="preserve">
+    <value>Acheter un abonnement Premium 2,99 € / mois</value>
+  </data>
 </root>

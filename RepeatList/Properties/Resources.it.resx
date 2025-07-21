@@ -390,4 +390,10 @@ Per cosa desideri creare una lista chat? Ad esempio “Pizza”, ‘Minestrone�
   <data name="premium_feature" xml:space="preserve">
     <value>Funzionalità premium</value>
   </data>
+  <data name="recipe" xml:space="preserve">
+    <value>Ricetta</value>
+  </data>
+  <data name="Buy_Premium_Subscription" xml:space="preserve">
+    <value>Acquista abbonamento Premium 2,99 € al mese</value>
+  </data>
 </root>

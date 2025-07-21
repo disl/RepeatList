@@ -390,4 +390,10 @@ OPCIÓN DE MENÚ «DUPLICAR ELEMENTOS»:
   <data name="premium_feature" xml:space="preserve">
     <value>Función premium</value>
   </data>
+  <data name="recipe" xml:space="preserve">
+    <value>Receta</value>
+  </data>
+  <data name="Buy_Premium_Subscription" xml:space="preserve">
+    <value>Comprar suscripción Premium 2,99 € al mes</value>
+  </data>
 </root>

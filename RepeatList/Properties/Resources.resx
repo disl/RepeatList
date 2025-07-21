@@ -390,4 +390,10 @@ What would you like to create a chat list for? For example, ‘Pizza’, “Mine
   <data name="premium_feature" xml:space="preserve">
     <value>Premium feature</value>
   </data>
+  <data name="recipe" xml:space="preserve">
+    <value>Recipe</value>
+  </data>
+  <data name="Buy_Premium_Subscription" xml:space="preserve">
+    <value>Purchase premium subscription 2.99€/month</value>
+  </data>
 </root>
