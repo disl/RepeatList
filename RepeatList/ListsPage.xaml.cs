@@ -1,4 +1,5 @@
-﻿using CommunityToolkit.Maui.Alerts;
+﻿using Android.DeviceLock;
+using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Maui.Core;
 using CommunityToolkit.Maui.Extensions;
 using RepeatList.Models;
@@ -273,12 +274,10 @@ namespace RepeatList
 
         async Task<bool> IsDeepSeekAllowed()
         {
-            var deviceID = GetDeviceID();
-            var istPremium = await _billingService.CheckAktivesAboAsync();
-            return (deviceID != null && ViewModel.DeviceList.Contains(deviceID)) || istPremium;
-
-            //OnDeepSeekButton.IsVisible = isDeepSeekAllowed;
-            //OnPayPremiumButton.IsVisible = !isDeepSeekAllowed;
+            //var deviceID = GetDeviceID();
+            var CanExecutePremium = await _billingService.CanExecuteQueryAsync(false);
+            //return (deviceID != null && ViewModel.DeviceList.Contains(deviceID)) || CanExecutePremium;
+            return  CanExecutePremium;
         }
 
         string? GetDeviceID()

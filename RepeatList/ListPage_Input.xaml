@@ -48,7 +48,7 @@
                     />-->
 
 
-            <VerticalStackLayout Margin="0,20,0,0">
+            <VerticalStackLayout Margin="0,20,0,0" Spacing="5">
                 <!-- Kopfzeile mit Icon und Text -->
                 <Label Text="{x:Static properties:Resources.What_would_you_like_to_create_a_chat_based_list_for}"  
                            TextColor="{DynamicResource PrimaryTextColorLight}"
@@ -64,10 +64,35 @@
                 <Button x:Name="OnDeepSeekButton"
                         Text="OK"  
                         Clicked="OnDeepSeekClicked" />
-                <Button x:Name="OnPayPremiumButton" 
+                <!--<Button x:Name="OnPayPremiumButton" 
                         Text="{x:Static properties:Resources.Buy_Premium_Subscription}"  
                         BackgroundColor="{x:Static models:Constantes.Color_Warning}" 
-                        Clicked="OnPayPremiumClicked" />
+                        Clicked="OnPayPremiumClicked" />-->
+
+                <!-- Kaufoptionen -->
+                <!--<Button x:Name="BuySubscriptionButton"
+                        Text="Buy Premium (3.99 €/month)" 
+                        Clicked="OnBuySubscription"
+                        BackgroundColor="#2196F3"
+                        TextColor="White" />-->
+
+                <Button x:Name="BuyTokenPackButton"
+                        Text="Buy 1000 queries (0.99 €)" 
+                        Clicked="OnBuyTokenPack"
+                        BackgroundColor="#FF9800"
+                        TextColor="White" />
+
+                <!--<Button x:Name="RestorePurchasesButton"
+                        Text="Restore Purchases" 
+                        Clicked="OnRestorePurchases"
+                        BackgroundColor="#9E9E9E"
+                        TextColor="White" />-->
+
+                <Label  
+                       TextColor="Red"
+                       HorizontalOptions="Center"
+                       FontSize="Medium"                         
+                       x:Name="StatusLabel" />
 
             </VerticalStackLayout>
 

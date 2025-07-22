@@ -396,4 +396,37 @@ What would you like to create a chat list for? For example, ‘Pizza’, “Mine
   <data name="Buy_Premium_Subscription" xml:space="preserve">
     <value>Purchase premium subscription 2.99€/month</value>
   </data>
+  <data name="Premium_active" xml:space="preserve">
+    <value>Premium active</value>
+  </data>
+  <data name="Tokens_left" xml:space="preserve">
+    <value>Tokens left</value>
+  </data>
+  <data name="Error" xml:space="preserve">
+    <value>Error</value>
+  </data>
+  <data name="Premium_subscription_activated" xml:space="preserve">
+    <value>Premium subscription activated</value>
+  </data>
+  <data name="Purchase_failed_Try_again" xml:space="preserve">
+    <value>The purchase failed. Please try again.</value>
+  </data>
+  <data name="Restore" xml:space="preserve">
+    <value>Restore</value>
+  </data>
+  <data name="Success" xml:space="preserve">
+    <value>Success</value>
+  </data>
+  <data name="Thank You" xml:space="preserve">
+    <value>Thank you</value>
+  </data>
+  <data name="You_received_%1_query_tokens" xml:space="preserve">
+    <value>You have received 1000 query tokens!</value>
+  </data>
+  <data name="No_purchases_found" xml:space="preserve">
+    <value>No purchases found</value>
+  </data>
+  <data name="Premium_restored" xml:space="preserve">
+    <value>Premium restored</value>
+  </data>
 </root>

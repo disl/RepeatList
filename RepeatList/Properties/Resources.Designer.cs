@@ -297,6 +297,15 @@ namespace RepeatList.Properties {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Error ähnelt.
+        /// </summary>
+        public static string Error {
+            get {
+                return ResourceManager.GetString("Error", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die erweiten ähnelt.
         /// </summary>
         public static string expand {
@@ -488,6 +497,15 @@ namespace RepeatList.Properties {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die No purchases found ähnelt.
+        /// </summary>
+        public static string No_purchases_found {
+            get {
+                return ResourceManager.GetString("No_purchases_found", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Old entries that begin with the keyword e.g. ‘apple’ (‘apple red 1 kg’, ‘apple green 2 kg’ etc.) are deleted and replaced by new entries. So if you want to keep some variants, please use ‘apple_red 1 kg’, ‘apple_green 2 kg’ etc.
         ///Do you still want to continue? ähnelt.
         /// </summary>
@@ -561,11 +579,47 @@ namespace RepeatList.Properties {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Premium active ähnelt.
+        /// </summary>
+        public static string Premium_active {
+            get {
+                return ResourceManager.GetString("Premium_active", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Premium feature ähnelt.
         /// </summary>
         public static string premium_feature {
             get {
                 return ResourceManager.GetString("premium_feature", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Premium restored ähnelt.
+        /// </summary>
+        public static string Premium_restored {
+            get {
+                return ResourceManager.GetString("Premium_restored", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Premium subscription activated ähnelt.
+        /// </summary>
+        public static string Premium_subscription_activated {
+            get {
+                return ResourceManager.GetString("Premium_subscription_activated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die The purchase failed. Please try again. ähnelt.
+        /// </summary>
+        public static string Purchase_failed_Try_again {
+            get {
+                return ResourceManager.GetString("Purchase_failed_Try_again", resourceCulture);
             }
         }
         
@@ -629,6 +683,15 @@ namespace RepeatList.Properties {
         public static string ResetPositions {
             get {
                 return ResourceManager.GetString("ResetPositions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Restore ähnelt.
+        /// </summary>
+        public static string Restore {
+            get {
+                return ResourceManager.GetString("Restore", resourceCulture);
             }
         }
         
@@ -741,6 +804,15 @@ namespace RepeatList.Properties {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Success ähnelt.
+        /// </summary>
+        public static string Success {
+            get {
+                return ResourceManager.GetString("Success", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Synchronisation ähnelt.
         /// </summary>
         public static string Synchronisation {
@@ -755,6 +827,15 @@ namespace RepeatList.Properties {
         public static string Synchronisation_of_lists {
             get {
                 return ResourceManager.GetString("Synchronisation_of_lists", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Thank you ähnelt.
+        /// </summary>
+        public static string Thank_You {
+            get {
+                return ResourceManager.GetString("Thank You", resourceCulture);
             }
         }
         
@@ -791,6 +872,15 @@ namespace RepeatList.Properties {
         public static string To_be_able_to_edit_the_list_please_use_the_following_key {
             get {
                 return ResourceManager.GetString("To_be_able_to_edit_the_list_please_use_the_following_key", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Tokens left ähnelt.
+        /// </summary>
+        public static string Tokens_left {
+            get {
+                return ResourceManager.GetString("Tokens_left", resourceCulture);
             }
         }
         
@@ -855,6 +945,15 @@ namespace RepeatList.Properties {
         public static string yes {
             get {
                 return ResourceManager.GetString("yes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die You have received 1000 query tokens! ähnelt.
+        /// </summary>
+        public static string You_received__1_query_tokens {
+            get {
+                return ResourceManager.GetString("You_received_%1_query_tokens", resourceCulture);
             }
         }
     }

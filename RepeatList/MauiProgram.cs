@@ -23,6 +23,7 @@ namespace RepeatList
     .UseSentry(options => {
         // The DSN is the only required setting.
         options.Dsn = "https://b253a0732b2859186cc53692b1a9e625@o4509272206475264.ingest.de.sentry.io/4509272207982672";
+        
 
         // Use debug mode if you want to see what the SDK is doing.
         // Debug messages are written to stdout with Console.Writeline,
@@ -31,6 +32,8 @@ namespace RepeatList
         options.Debug = true;
 
         // Other Sentry options can be set here.
+        //options.TracesSampleRate = 1.0; // Optional: Performance-Tracing aktivieren
+        //options.StackTraceMode = StackTraceMode.Original;
     })
 
 

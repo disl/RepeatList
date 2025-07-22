@@ -396,4 +396,37 @@ Per cosa desideri creare una lista chat? Ad esempio “Pizza”, ‘Minestrone�
   <data name="Buy_Premium_Subscription" xml:space="preserve">
     <value>Acquista abbonamento Premium 2,99 € al mese</value>
   </data>
+  <data name="Premium_active" xml:space="preserve">
+    <value>Premium attivo</value>
+  </data>
+  <data name="Tokens_left" xml:space="preserve">
+    <value>Gettoni rimanenti</value>
+  </data>
+  <data name="Error" xml:space="preserve">
+    <value>Errore</value>
+  </data>
+  <data name="Premium_subscription_activated" xml:space="preserve">
+    <value>Abbonamento Premium attivato</value>
+  </data>
+  <data name="Purchase_failed_Try_again" xml:space="preserve">
+    <value>L'acquisto non è andato a buon fine. Riprova.</value>
+  </data>
+  <data name="Success" xml:space="preserve">
+    <value>Successo</value>
+  </data>
+  <data name="Thank You" xml:space="preserve">
+    <value>Grazie</value>
+  </data>
+  <data name="You_received_%1_query_tokens" xml:space="preserve">
+    <value>Hai ricevuto 1000 token di query!</value>
+  </data>
+  <data name="No_purchases_found" xml:space="preserve">
+    <value>Nessun acquisto trovato</value>
+  </data>
+  <data name="Premium_restored" xml:space="preserve">
+    <value>Premium ripristinato</value>
+  </data>
+  <data name="Restore" xml:space="preserve">
+    <value>Ripristina</value>
+  </data>
 </root>
