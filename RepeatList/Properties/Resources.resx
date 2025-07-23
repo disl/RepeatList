@@ -378,8 +378,8 @@ Do you still want to continue?</value>
     <value>Delete</value>
   </data>
   <data name="What_would_you_like_to_create_a_chat_based_list_for" xml:space="preserve">
-    <value>ONLY IN THE PREMIUM VERSION!
-What would you like to create a chat list for? For example, ‘Pizza’, “Minestrone”, ‘Paella’, etc.</value>
+    <value>PREMIUM FEATURE!
+Let ChatGPT &amp; Co. create a list for you on your desired topic – whether it's ‘pizza,’ ‘minestrone,’ travel ideas, project tasks, or something else entirely.</value>
   </data>
   <data name="description" xml:space="preserve">
     <value>Description</value>
@@ -420,13 +420,22 @@ What would you like to create a chat list for? For example, ‘Pizza’, “Mine
   <data name="Thank You" xml:space="preserve">
     <value>Thank you</value>
   </data>
-  <data name="You_received_%1_query_tokens" xml:space="preserve">
-    <value>You have received 1000 query tokens!</value>
-  </data>
   <data name="No_purchases_found" xml:space="preserve">
     <value>No purchases found</value>
   </data>
   <data name="Premium_restored" xml:space="preserve">
     <value>Premium restored</value>
+  </data>
+  <data name="insufficient_credit" xml:space="preserve">
+    <value>Insufficient credit. Please purchase more to continue using the service.</value>
+  </data>
+  <data name="Buy_requests_099" xml:space="preserve">
+    <value>Buy requests (~1000, €1.99)</value>
+  </data>
+  <data name="The_remaining_credit_is" xml:space="preserve">
+    <value>The remaining credit is: %1</value>
+  </data>
+  <data name="Thank_you_for_your_purchase" xml:space="preserve">
+    <value>Thank you for your purchase!</value>
   </data>
 </root>

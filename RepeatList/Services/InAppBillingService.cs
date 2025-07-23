@@ -1,4 +1,5 @@
 ﻿using Plugin.InAppBilling;
+using System.Globalization;
 
 namespace RepeatList.Services
 {
@@ -8,11 +9,11 @@ namespace RepeatList.Services
         private const string In_app_1000_prompts = "in_app_1000_prompts";
 
         private const string PremiumKey = "HasPremiumSubscription";
-        private const string TokenKey = "QueryTokenCount";
+        //private const string TokenKey = "QueryTokenCount";
         private const string LastQueryDateKey = "QueryDate";
         private const string DailyQueryCountKey = "QueriesToday";
         private const int FreeDailyLimit = 5;
-        private const int TokenPackAmount = 1000;
+        private const decimal TokenPackAmount_199 = 1.99m;
 
         public async Task<bool> PurchaseSubscriptionAsync()
         {
@@ -24,8 +25,9 @@ namespace RepeatList.Services
             bool success = await PurchaseProductAsync(In_app_1000_prompts, ItemType.InAppPurchase);
             if (success)
             {
-                int current = Preferences.Get(TokenKey, 0);
-                Preferences.Set(TokenKey, current + TokenPackAmount);
+                decimal current = Convert.ToDecimal(Preferences.Get(DeepSeekBilling.Preferences_key__user_credit, "0"));
+                var newCredit = current + TokenPackAmount_199;
+                Preferences.Set(DeepSeekBilling.Preferences_key__user_credit, newCredit.ToString(CultureInfo.GetCultureInfo("en-US")));
             }
             return success;
         }
@@ -38,7 +40,7 @@ namespace RepeatList.Services
                 var connected = await billing.ConnectAsync();
                 if (!connected) return false;
 
-                var purchase = await billing.PurchaseAsync(productId, type, "en");
+                InAppBillingPurchase purchase = await billing.PurchaseAsync(productId, type, "en");
 
                 if (purchase?.State == PurchaseState.Purchased)
                 {
@@ -49,7 +51,7 @@ namespace RepeatList.Services
 
                 return false;
             }
-            catch
+            catch(Exception ex)
             {
                 return false;
             }
@@ -86,14 +88,18 @@ namespace RepeatList.Services
 
         public bool HasActiveSubscription() => Preferences.Get(PremiumKey, false);
 
-        public int GetAvailableTokens() => Preferences.Get(TokenKey, 0);
-
-        public void ConsumeToken()
+        public decimal GetAvailableTokens()
         {
-            int tokens = GetAvailableTokens();
-            if (tokens > 0)
-                Preferences.Set(TokenKey, tokens - 1);
+            var tokenString = Preferences.Get(DeepSeekBilling.Preferences_key__user_credit, "0");
+            return Convert.ToDecimal(tokenString, new CultureInfo("en-US"));
         }
+
+        //public void ConsumeToken(bool IsDecrementAktive)
+        //{
+        //    int tokens = GetAvailableTokens();
+        //    if (tokens > 0 && IsDecrementAktive)
+        //        Preferences.Set(DeepSeekBilling.Preferences_key__user_credit, tokens - 1);
+        //}
 
         public bool IsFreeLimitReached()
         {
@@ -126,20 +132,23 @@ namespace RepeatList.Services
             Preferences.Set(DailyQueryCountKey, queriesToday + 1);
         }
 
-        public async Task<bool> CanExecuteQueryAsync(bool IsIncrementFrreUsage)
+        public async Task<bool> CanExecuteQueryAsync(bool IsDecrementAktive)
         {
             if (HasActiveSubscription())
                 return true;
 
             if (GetAvailableTokens() > 0)
             {
-                ConsumeToken();
+                //ConsumeToken(IsDecrementAktive);
                 return true;
             }
 
+
+            // AKTIVIEREN ??????
+
             //if (!IsFreeLimitReached())
             //{
-            //    if (IsIncrementFrreUsage)
+            //    if (IsIncrementUsage)
             //        IncrementFreeUsage();
             //    return true;
             //}

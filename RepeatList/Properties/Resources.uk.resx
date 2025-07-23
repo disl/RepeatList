@@ -378,8 +378,8 @@
     <value>Видалити</value>
   </data>
   <data name="What_would_you_like_to_create_a_chat_based_list_for" xml:space="preserve">
-    <value>ТІЛЬКИ В ПРЕМІУМ-ВЕРСІЇ! 
-Для чого ви хочете створити список чатів? Наприклад, «Піца», «Мінестроне», «Паелья» тощо.</value>
+    <value>ПРЕМІУМ-ФУНКЦІЯ!
+Дозвольте ChatGPT &amp; Co. створити список на бажану тему – будь то «піца», «мінестроне», ідеї для подорожей, завдання проекту або щось зовсім інше.</value>
   </data>
   <data name="description" xml:space="preserve">
     <value>Опис</value>
@@ -417,9 +417,6 @@
   <data name="Thank You" xml:space="preserve">
     <value>Дякуємо</value>
   </data>
-  <data name="You_received_%1_query_tokens" xml:space="preserve">
-    <value>Ви отримали 1000 токенів запиту!</value>
-  </data>
   <data name="No_purchases_found" xml:space="preserve">
     <value>Покупок не знайдено</value>
   </data>
@@ -428,5 +425,17 @@
   </data>
   <data name="Restore" xml:space="preserve">
     <value>Відновити</value>
+  </data>
+  <data name="insufficient_credit" xml:space="preserve">
+    <value>Недостатній кредит. Будь ласка, придбайте більше, щоб продовжити користуватися послугою.</value>
+  </data>
+  <data name="Buy_requests_099" xml:space="preserve">
+    <value>Купити запити (~1000, 1,99€)</value>
+  </data>
+  <data name="The_remaining_credit_is" xml:space="preserve">
+    <value>Залишок кредиту становить: %1</value>
+  </data>
+  <data name="Thank_you_for_your_purchase" xml:space="preserve">
+    <value>Дякуємо за покупку!</value>
   </data>
 </root>

@@ -378,8 +378,8 @@
     <value>Удалить</value>
   </data>
   <data name="What_would_you_like_to_create_a_chat_based_list_for" xml:space="preserve">
-    <value>ТОЛЬКО В ПРЕМИУМ-ВЕРСИИ! 
-Для чего вы хотите создать список чатов? Например, «Пицца», «Минестроне», «Паэлья» и т. д.</value>
+    <value>ПРЕМИУМ-ФУНКЦИЯ!
+Попросите ChatGPT &amp; Co. составить список по интересующей вас теме — будь то «пицца», «минестроне», идеи для путешествий, задачи проекта или что-то совсем другое.</value>
   </data>
   <data name="description" xml:space="preserve">
     <value>Описание</value>
@@ -417,9 +417,6 @@
   <data name="Thank You" xml:space="preserve">
     <value>Спасибо</value>
   </data>
-  <data name="You_received_%1_query_tokens" xml:space="preserve">
-    <value>Вы получили 1000 токенов запроса!</value>
-  </data>
   <data name="No_purchases_found" xml:space="preserve">
     <value>Покупок не найдено</value>
   </data>
@@ -428,5 +425,17 @@
   </data>
   <data name="Restore" xml:space="preserve">
     <value>Восстановить</value>
+  </data>
+  <data name="insufficient_credit" xml:space="preserve">
+    <value>Недостаточно средств на счете. Пожалуйста, пополните счет, чтобы продолжить пользоваться услугой.</value>
+  </data>
+  <data name="Buy_requests_099" xml:space="preserve">
+    <value>Купить запросы (~1000, 1,99€)</value>
+  </data>
+  <data name="The_remaining_credit_is" xml:space="preserve">
+    <value>Остаток кредита составляет: %1</value>
+  </data>
+  <data name="Thank_you_for_your_purchase" xml:space="preserve">
+    <value>Спасибо за покупку!</value>
   </data>
 </root>

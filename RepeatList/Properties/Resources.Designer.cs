@@ -124,6 +124,15 @@ namespace RepeatList.Properties {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Buy requests (~1000, €1.99) ähnelt.
+        /// </summary>
+        public static string Buy_requests_099 {
+            get {
+                return ResourceManager.GetString("Buy_requests_099", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Cancel ähnelt.
         /// </summary>
         public static string Cancel {
@@ -394,6 +403,15 @@ namespace RepeatList.Properties {
         public static string InputTextWithMicrophoneViewModel_PlaceholderText {
             get {
                 return ResourceManager.GetString("InputTextWithMicrophoneViewModel_PlaceholderText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Insufficient credit. Please purchase more to continue using the service. ähnelt.
+        /// </summary>
+        public static string insufficient_credit {
+            get {
+                return ResourceManager.GetString("insufficient_credit", resourceCulture);
             }
         }
         
@@ -840,6 +858,15 @@ namespace RepeatList.Properties {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Thank you for your purchase! ähnelt.
+        /// </summary>
+        public static string Thank_you_for_your_purchase {
+            get {
+                return ResourceManager.GetString("Thank_you_for_your_purchase", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die The clipboard is empty ähnelt.
         /// </summary>
         public static string The_clipboard_is_empty {
@@ -854,6 +881,15 @@ namespace RepeatList.Properties {
         public static string The_list_was_saved_as_a_string_in_the_clipboard {
             get {
                 return ResourceManager.GetString("The_list_was_saved_as_a_string_in_the_clipboard", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die The remaining credit is: %1 ähnelt.
+        /// </summary>
+        public static string The_remaining_credit_is {
+            get {
+                return ResourceManager.GetString("The_remaining_credit_is", resourceCulture);
             }
         }
         
@@ -903,8 +939,8 @@ namespace RepeatList.Properties {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die ONLY IN THE PREMIUM VERSION!
-        ///What would you like to create a chat list for? For example, ‘Pizza’, “Minestrone”, ‘Paella’, etc. ähnelt.
+        ///   Sucht eine lokalisierte Zeichenfolge, die PREMIUM FEATURE!
+        ///Let ChatGPT &amp; Co. create a list for you on your desired topic – whether it&apos;s ‘pizza,’ ‘minestrone,’ travel ideas, project tasks, or something else entirely. ähnelt.
         /// </summary>
         public static string What_would_you_like_to_create_a_chat_based_list_for {
             get {
@@ -945,15 +981,6 @@ namespace RepeatList.Properties {
         public static string yes {
             get {
                 return ResourceManager.GetString("yes", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die You have received 1000 query tokens! ähnelt.
-        /// </summary>
-        public static string You_received__1_query_tokens {
-            get {
-                return ResourceManager.GetString("You_received_%1_query_tokens", resourceCulture);
             }
         }
     }

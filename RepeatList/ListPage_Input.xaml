@@ -9,7 +9,7 @@
              xmlns:properties="clr-namespace:RepeatList.Properties" 
              xmlns:system="clr-namespace:System;assembly=System.Runtime"
              x:TypeArguments="system:Object"
-             MaximumHeightRequest="550"
+             MaximumHeightRequest="600"
              BackgroundColor="Grey" >
 
     <ScrollView>
@@ -48,7 +48,7 @@
                     />-->
 
 
-            <VerticalStackLayout Margin="0,20,0,0" Spacing="5">
+            <VerticalStackLayout Margin="0,20,0,0" Spacing="3">
                 <!-- Kopfzeile mit Icon und Text -->
                 <Label Text="{x:Static properties:Resources.What_would_you_like_to_create_a_chat_based_list_for}"  
                            TextColor="{DynamicResource PrimaryTextColorLight}"
@@ -77,7 +77,7 @@
                         TextColor="White" />-->
 
                 <Button x:Name="BuyTokenPackButton"
-                        Text="Buy 1000 queries (0.99 €)" 
+                        Text="{x:Static properties:Resources.Buy_requests_099}" 
                         Clicked="OnBuyTokenPack"
                         BackgroundColor="#FF9800"
                         TextColor="White" />
@@ -88,12 +88,16 @@
                         BackgroundColor="#9E9E9E"
                         TextColor="White" />-->
 
-                <Label  
-                       TextColor="Red"
+               
+                <Label  Margin="0,5,0,0" 
+                    BackgroundColor="Crimson"                       
+                       TextColor="White"
                        HorizontalOptions="Center"
-                       FontSize="Medium"                         
+                       FontAttributes="Bold"
+                       FontSize="Medium"           
+                       Text="test"
                        x:Name="StatusLabel" />
-
+                
             </VerticalStackLayout>
 
 

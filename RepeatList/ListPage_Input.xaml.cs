@@ -8,7 +8,7 @@ namespace RepeatList;
 
 public partial class ListPage_Input : Popup<object>
 {
-    ListsPageViewModel listsPageViewModel = new();    
+    ListsPageViewModel listsPageViewModel = new();
     private readonly InAppBillingService _billing = new();
     bool isDeepSeekAllowed = false;
 
@@ -81,28 +81,35 @@ public partial class ListPage_Input : Popup<object>
             $"\"Header (Title + Description + Sequence_text) and Items (Description + Quantity)\", in {language}. Do not translate structure! " +
             $"If this is a recipe, enter the number of people in the description.";
 
-        Task.Run(async () =>
-        {
-            string json;
+        //Task.Run(async () =>
+        //{
+        string json;
 
-            try
+        try
+        {
+            var response = await client.GetCompletionAsync(prompt);
+
+            if (response == null || string.IsNullOrEmpty(response.Content))
             {
-                string response = await client.GetCompletion(prompt);
-                MainThread.BeginInvokeOnMainThread(() =>
+                await Shell.Current.DisplayAlert("Error", "No response from DeepSeek.", "OK");
+                return;
+            }
+
+            MainThread.BeginInvokeOnMainThread(() =>
                 {
                     try
                     {
-                        if (!response.Contains("```json"))
+                        if (!response.Content.Contains("```json"))
                             return;
 
-                        var json_start_ind = response.IndexOf("```json");
-                        var json_end_ind = response.LastIndexOf("```");
+                        var json_start_ind = response.Content.IndexOf("```json");
+                        var json_end_ind = response.Content.LastIndexOf("```");
                         if (json_start_ind < 0 || json_end_ind < 0 || json_end_ind <= json_start_ind)
                         {
                             Shell.Current.DisplayAlert("Error", "Invalid response format from DeepSeek.", "OK");
                             return;
                         }
-                        json = response.Substring(json_start_ind, json_end_ind - json_start_ind);
+                        json = response.Content.Substring(json_start_ind, json_end_ind - json_start_ind);
                         json = json.Replace("json", "").Replace("```", "").Trim();
                         var jsonObject = JsonConvert.DeserializeObject<ChatResponseType.Root>(json);
 
@@ -126,20 +133,29 @@ public partial class ListPage_Input : Popup<object>
                         });
                     }
                 });
-            }
-            catch (Exception ex)
+        }
+        catch (Exception ex)
+        {
+            
+
+            MainThread.BeginInvokeOnMainThread(() =>
             {
-                MainThread.BeginInvokeOnMainThread(() =>
-                {
-                    Shell.Current.DisplayAlert("Error", ex.Message, "OK");
-                });
-            }
-            finally
+                Shell.Current.DisplayAlert("Error", ex.Message, "OK");
+            });
+
+            if (ex.Message == Properties.Resources.insufficient_credit)
             {
-                Activity_Indicator.IsEnabled = false;
-                Activity_Indicator.IsRunning = false;
+                DeepSeekEditor.IsEnabled = false;
             }
-        });
+        }
+        finally
+        {
+            Activity_Indicator.IsEnabled = false;
+            Activity_Indicator.IsRunning = false;
+
+            UpdateStatusLabel();
+        }
+        //});
     }
 
     string? GetDeviceID()
@@ -183,18 +199,33 @@ public partial class ListPage_Input : Popup<object>
 
     private async void OnBuyTokenPack(object sender, EventArgs e)
     {
-        if (await _billing.PurchaseTokenPackAsync())
-            await Shell.Current.DisplayAlert(Properties.Resources.Thank_You, Properties.Resources.You_received__1_query_tokens.Replace("%1", "1000"), "OK");
-        else
-            await Shell.Current.DisplayAlert(Properties.Resources.Error, Properties.Resources.Purchase_failed_Try_again, "OK");
-
-        UpdateStatusLabel();
+        try
+        {
+            if (await _billing.PurchaseTokenPackAsync())
+            {
+                await Shell.Current.DisplayAlert(Properties.Resources.Thank_You, Properties.Resources.Thank_you_for_your_purchase, "OK");
+                DeepSeekEditor.IsEnabled = true;
+            }
+            else
+            {
+                await Shell.Current.DisplayAlert(Properties.Resources.Error, Properties.Resources.Purchase_failed_Try_again, "OK");
+                DeepSeekEditor.IsEnabled = false;
+            }
+            UpdateStatusLabel();
+        }
+        catch (Exception ex)
+        {
+            MainThread.BeginInvokeOnMainThread(() =>
+            {
+                Shell.Current.DisplayAlert("Error", ex.Message, "OK");
+            });
+        }
     }
 
     private async void OnRestorePurchases(object sender, EventArgs e)
     {
         bool restored = await _billing.RestorePurchasesAsync();
-        await Shell.Current.DisplayAlert(Properties.Resources.Restore, 
+        await Shell.Current.DisplayAlert(Properties.Resources.Restore,
             restored ? Properties.Resources.Premium_restored : Properties.Resources.No_purchases_found, "OK");
         UpdateStatusLabel();
     }
@@ -202,8 +233,8 @@ public partial class ListPage_Input : Popup<object>
     private void UpdateStatusLabel()
     {
         string status = _billing.HasActiveSubscription()
-            ? "🌟 " + Properties.Resources.Premium_active
-            : $" 🔄 {Properties.Resources.Premium_active}: {_billing.GetAvailableTokens()}";
+            ? Properties.Resources.Premium_active
+            : $"{Properties.Resources.The_remaining_credit_is.Replace("%1", _billing.GetAvailableTokens().ToString())}";
 
         StatusLabel.Text = status;
     }
