@@ -1,5 +1,4 @@
-﻿using AndroidX.Lifecycle;
-using CommunityToolkit.Maui.Alerts;
+﻿using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Maui.Core;
 using CommunityToolkit.Maui.Core.Extensions;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -30,12 +29,12 @@ namespace RepeatList.ViewModels
         public string SelectedItem_KindOfSorting_key_name_undone = "SelectedItem_KindOfSorting_undone";
         public double ButtonsSize = 25;
 
-      
+
 
         private static List<CategoryRule>? Categories_list;
         [ObservableProperty]
         public string collapse_rezept_icon = "expand_icon_white.png";
-           // Application.Current != null && Application.Current.UserAppTheme == AppTheme.Dark ? "expand_icon_white.png" : "expand_icon_black.png";
+        // Application.Current != null && Application.Current.UserAppTheme == AppTheme.Dark ? "expand_icon_white.png" : "expand_icon_black.png";
         [ObservableProperty]
         public string collapse_undone_icon =
             Application.Current != null && Application.Current.UserAppTheme == AppTheme.Dark ? "expand_icon_white.png" : "expand_icon_black.png";
@@ -78,15 +77,15 @@ namespace RepeatList.ViewModels
         {
             Collapse_rezept_icon = value ? "collapse_icon_white.png" : "expand_icon_white.png";
         }
-        
+
         [ObservableProperty] string? rezeptHeaderText = Properties.Resources.description.ToUpper() + " / " + Properties.Resources.recipe.ToUpper();
         [ObservableProperty] bool isRezeptVisible = false;
-        [ObservableProperty] string? rezeptLabelText;                
+        [ObservableProperty] string? rezeptLabelText;
 
         [ObservableProperty] public bool? collapse_undone = null;
         partial void OnCollapse_undoneChanged(bool? oldValue, bool? newValue)
         {
-            SetCollapseUndone(newValue); 
+            SetCollapseUndone(newValue);
         }
 
         private void SetCollapseUndone(bool? newValue)
@@ -486,7 +485,7 @@ namespace RepeatList.ViewModels
         [RelayCommand]
         public void Rezept_ImageButtonClicked()
         {
-            IsRezeptExpanded = !IsRezeptExpanded;            
+            IsRezeptExpanded = !IsRezeptExpanded;
         }
 
         [RelayCommand]
@@ -824,7 +823,18 @@ namespace RepeatList.ViewModels
                 if (Positions_undone_filterd != null && !string.IsNullOrEmpty(Positions_undone_filterd[0].Title)
                     && Positions_undone_filterd[0].Title.Substring(0, 1) == "_")
                 {
-                    RezeptLabelText = Positions_undone_filterd[0].Title;
+                    var ind_ = Positions_undone_filterd[0].Title.IndexOf("_");
+                    var ind_dp = Positions_undone_filterd[0].Title.IndexOf(":");
+                    if (ind_dp > ind_)
+                        RezeptLabelText = Positions_undone_filterd[0].Title.Substring(
+                            ind_dp + 1, Positions_undone_filterd[0].Title.Length - ind_dp + ind_  - 1);
+                    else
+                        RezeptLabelText = Positions_undone_filterd[0].Title;
+
+
+                    //RezeptLabelText = Positions_undone_filterd[0].Title;
+
+
 
                     IsRezeptVisible = true;
 

@@ -430,12 +430,12 @@ Lassen Sie sich von ChatGPT &amp; Co. eine Liste zu Ihrem Wunschthema erstellen 
     <value>Premium wiederhergestellt</value>
   </data>
   <data name="insufficient_credit" xml:space="preserve">
-    <value>Insufficient credit. Please purchase more to continue using the service.</value>
+    <value>Unzureichendes Guthaben. Bitte kaufen Sie mehr, um den Dienst weiter nutzen zu können.</value>
   </data>
   <data name="Buy_requests_099" xml:space="preserve">
-    <value>Anfragen kaufen (~1000, 1,99 €)</value>
+    <value>Anfragen kaufen (~700, 1,99 €)</value>
   </data>
   <data name="The_remaining_credit_is" xml:space="preserve">
-    <value>Restlicher Credit ist: %1</value>
+    <value>Restlicher Credit: %1</value>
   </data>
 </root>

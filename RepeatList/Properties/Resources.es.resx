@@ -433,10 +433,10 @@ Deje que ChatGPT &amp; Co. le cree una lista sobre el tema que desee, ya sea «p
     <value>Crédito insuficiente. Por favor, compre más para continuar utilizando el servicio.</value>
   </data>
   <data name="Buy_requests_099" xml:space="preserve">
-    <value>Comprar consultas (~1000, 1,99 €)</value>
+    <value>Comprar consultas (~700, 1,99 €)</value>
   </data>
   <data name="The_remaining_credit_is" xml:space="preserve">
-    <value>El crédito restante es: %1</value>
+    <value>Crédito restante: %1</value>
   </data>
   <data name="Thank_you_for_your_purchase" xml:space="preserve">
     <value>¡Gracias por tu compra!</value>

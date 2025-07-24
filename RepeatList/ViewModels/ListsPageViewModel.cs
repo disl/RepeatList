@@ -18,7 +18,7 @@ namespace RepeatList.ViewModels
         private DatabaseService _databaseService;
         private SupabaseService? _supabaseService;
 
-        [ObservableProperty] public static List<string> deviceList=new();
+        [ObservableProperty] public static List<string> deviceList = new();
 
         //public event PropertyChangedEventHandler PropertyChanged;
 
@@ -27,6 +27,21 @@ namespace RepeatList.ViewModels
         public string SelectedItem_KindOfSorting_key_name = "SelectedItem_KindOfSorting";
         public string SelectedItem_KindOfSorting_key_name_undone = "SelectedItem_KindOfSorting_undone";
         public double ButtonsSize = 25;
+
+       // [ObservableProperty] public bool deepSeekAllowed;
+       //partial void OnDeepSeekAllowedChanged(bool oldValue, bool newValue)
+       // {
+       //     if (newValue)
+       //     {
+       //         deepSeekNotAllowed = false;
+       //     }
+       //     else
+       //     {
+       //         deepSeekNotAllowed = true;
+       //     }
+       // }
+
+       // [ObservableProperty] public bool deepSeekNotAllowed;
 
         [ObservableProperty] public string resetImageSource;
         [ObservableProperty] public bool supabaseService_ready;

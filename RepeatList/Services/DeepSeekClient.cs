@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using RepeatList.Models;
+using System.Text;
 using System.Text.Json;
 
 namespace RepeatList.Services
@@ -56,12 +57,15 @@ namespace RepeatList.Services
             cost = cost * 2;
 
 
+
             // TEST
             //cost=1.9863450m;
 
+
+
             if (!DeepSeekBilling.DeductFromUserCredit(cost))
             {
-                throw new Exception(Properties.Resources.insufficient_credit);
+                throw new CreditIsInsufficientError(777, Properties.Resources.insufficient_credit);
             }
 
             return new CompletionResult

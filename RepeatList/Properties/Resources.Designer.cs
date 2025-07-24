@@ -124,7 +124,7 @@ namespace RepeatList.Properties {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die Buy requests (~1000, €1.99) ähnelt.
+        ///   Sucht eine lokalisierte Zeichenfolge, die Buy requests (~700, €1.99) ähnelt.
         /// </summary>
         public static string Buy_requests_099 {
             get {
@@ -885,7 +885,7 @@ namespace RepeatList.Properties {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die The remaining credit is: %1 ähnelt.
+        ///   Sucht eine lokalisierte Zeichenfolge, die Remaining credit: %1 ähnelt.
         /// </summary>
         public static string The_remaining_credit_is {
             get {

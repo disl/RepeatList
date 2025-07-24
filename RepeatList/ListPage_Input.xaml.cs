@@ -10,7 +10,8 @@ public partial class ListPage_Input : Popup<object>
 {
     ListsPageViewModel listsPageViewModel = new();
     private readonly InAppBillingService _billing = new();
-    bool isDeepSeekAllowed = false;
+
+    bool m_isDeepSeekAllowed = false;
 
     public ListPage_Input()
     {
@@ -21,13 +22,7 @@ public partial class ListPage_Input : Popup<object>
     {
         InitializeComponent();
 
-        this.isDeepSeekAllowed=isDeepSeekAllowed;
-        OnDeepSeekButton.IsVisible = isDeepSeekAllowed;
-        //BuySubscriptionButton.IsVisible = !isDeepSeekAllowed;
-        BuyTokenPackButton.IsVisible = !isDeepSeekAllowed;
-        //RestorePurchasesButton.IsVisible = !isDeepSeekAllowed;
-
-        DeepSeekEditor.IsEnabled = isDeepSeekAllowed;
+        m_isDeepSeekAllowed=isDeepSeekAllowed;
 
         UpdateStatusLabel();
     }
@@ -79,7 +74,7 @@ public partial class ListPage_Input : Popup<object>
 
         var prompt = $"JSON list for a {DeepSeekEditor.Text}. Complete recipe as text with the desired nested structure. " +
             $"\"Header (Title + Description + Sequence_text) and Items (Description + Quantity)\", in {language}. Do not translate structure! " +
-            $"If this is a recipe, enter the number of people in the description.";
+            $"Only if it is a cooking recipe, state the number of people the recipe is intended for in the description.";
 
         //Task.Run(async () =>
         //{
@@ -123,6 +118,8 @@ public partial class ListPage_Input : Popup<object>
                         else
                         {
                             Shell.Current.DisplayAlert("Error", "Invalid JSON structure from DeepSeek.", "OK");
+
+                            m_isDeepSeekAllowed =false;
                         }
                     }
                     catch (Exception ex)
@@ -134,19 +131,20 @@ public partial class ListPage_Input : Popup<object>
                     }
                 });
         }
-        catch (Exception ex)
+        catch (CreditIsInsufficientError)
         {
-            
-
+            m_isDeepSeekAllowed = false;
             MainThread.BeginInvokeOnMainThread(() =>
             {
-                Shell.Current.DisplayAlert("Error", ex.Message, "OK");
+                Shell.Current.DisplayAlert(Properties.Resources.Error, Properties.Resources.insufficient_credit, "OK");
             });
-
-            if (ex.Message == Properties.Resources.insufficient_credit)
+        }
+        catch (Exception ex)
+        {
+            MainThread.BeginInvokeOnMainThread(() =>
             {
-                DeepSeekEditor.IsEnabled = false;
-            }
+                Shell.Current.DisplayAlert(Properties.Resources.Error, ex.Message, "OK");
+            });
         }
         finally
         {
@@ -155,7 +153,6 @@ public partial class ListPage_Input : Popup<object>
 
             UpdateStatusLabel();
         }
-        //});
     }
 
     string? GetDeviceID()
@@ -204,12 +201,12 @@ public partial class ListPage_Input : Popup<object>
             if (await _billing.PurchaseTokenPackAsync())
             {
                 await Shell.Current.DisplayAlert(Properties.Resources.Thank_You, Properties.Resources.Thank_you_for_your_purchase, "OK");
-                DeepSeekEditor.IsEnabled = true;
+                m_isDeepSeekAllowed = true;
             }
             else
             {
                 await Shell.Current.DisplayAlert(Properties.Resources.Error, Properties.Resources.Purchase_failed_Try_again, "OK");
-                DeepSeekEditor.IsEnabled = false;
+                m_isDeepSeekAllowed=false;
             }
             UpdateStatusLabel();
         }
@@ -232,10 +229,25 @@ public partial class ListPage_Input : Popup<object>
 
     private void UpdateStatusLabel()
     {
+        var available_tokens = _billing.GetAvailableTokens();
+        var available_tokens_percent = Convert.ToDouble(available_tokens / InAppBillingService.TokenPackAmount_199);
+
         string status = _billing.HasActiveSubscription()
             ? Properties.Resources.Premium_active
-            : $"{Properties.Resources.The_remaining_credit_is.Replace("%1", _billing.GetAvailableTokens().ToString())}";
+            : $"{Properties.Resources.The_remaining_credit_is.Replace("%1", (available_tokens_percent * 100.0).ToString("N3")) + "%"}";
 
         StatusLabel.Text = status;
+
+        OnDeepSeekButton.IsVisible = m_isDeepSeekAllowed;
+        BuyTokenPackButton.IsVisible = !m_isDeepSeekAllowed;
+        DeepSeekEditor.IsEnabled = m_isDeepSeekAllowed;
+
+        if (!m_isDeepSeekAllowed)
+        {
+            DeepSeekEditor.Text = string.Empty;
+        }
+
+        //BuySubscriptionButton.IsVisible = !isDeepSeekAllowed;
+        //RestorePurchasesButton.IsVisible = !isDeepSeekAllowed;                
     }
 }
