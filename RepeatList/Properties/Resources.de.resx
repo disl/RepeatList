@@ -436,6 +436,6 @@ Lassen Sie sich von ChatGPT &amp; Co. eine Liste zu Ihrem Wunschthema erstellen 
     <value>Anfragen kaufen (~700, 1,99 €)</value>
   </data>
   <data name="The_remaining_credit_is" xml:space="preserve">
-    <value>Restlicher Credit: %1</value>
+    <value>Credit: %1</value>
   </data>
 </root>

@@ -885,7 +885,7 @@ namespace RepeatList.Properties {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die Remaining credit: %1 ähnelt.
+        ///   Sucht eine lokalisierte Zeichenfolge, die Credit: %1 ähnelt.
         /// </summary>
         public static string The_remaining_credit_is {
             get {

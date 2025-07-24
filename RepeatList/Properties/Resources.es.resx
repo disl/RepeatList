@@ -436,7 +436,7 @@ Deje que ChatGPT &amp; Co. le cree una lista sobre el tema que desee, ya sea «p
     <value>Comprar consultas (~700, 1,99 €)</value>
   </data>
   <data name="The_remaining_credit_is" xml:space="preserve">
-    <value>Crédito restante: %1</value>
+    <value>Crédito: %1</value>
   </data>
   <data name="Thank_you_for_your_purchase" xml:space="preserve">
     <value>¡Gracias por tu compra!</value>
