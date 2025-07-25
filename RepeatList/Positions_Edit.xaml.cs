@@ -28,21 +28,21 @@ public partial class Positions_Edit : Popup<object>
 
    
 
-    private void OnDeleteButtonClicked(object sender, EventArgs e)
+    private async void OnDeleteButtonClicked(object sender, EventArgs e)
     {
-        CloseAsync("delete");
+        await CloseAsync("delete");
     }
 
 
-    private void CancelButtonClicked(object sender, EventArgs e)
+    private async void CancelButtonClicked(object sender, EventArgs e)
     {
-        CloseAsync();
+        await CloseAsync();
     }
 
-    private void OnSavePositionTitle_Clicked(object sender, EventArgs e)
+    private async void OnSavePositionTitle_Clicked(object sender, EventArgs e)
     {
         PositionNameEntry.Unfocus();
 
-        CloseAsync(ViewModel.SelectedItem);
+        await CloseAsync(ViewModel.SelectedItem);
     }
 }

@@ -26,8 +26,7 @@
             <!-- Eingabefeld mit MaxLength -->
             <ScrollView MaximumHeightRequest="200">
                 <Editor x:Name="ListNameEditor" 
-                    TextColor="{DynamicResource PrimaryTextColorLight}"     
-                    Completed="ListNameEditor_Completed"                        
+                    TextColor="{DynamicResource PrimaryTextColorLight}"                          
                     AutoSize="TextChanges" />
             </ScrollView>
 

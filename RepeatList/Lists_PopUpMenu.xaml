@@ -17,6 +17,7 @@
         <Button  Text="{x:Static properties:Resources.edit}" TextColor="White"
                 Clicked="OnEditHeaderClicked"  CommandParameter="{Binding}"  />
         <Button  Text="{x:Static properties:Resources.Delete_list}" TextColor="White" 
+                 BackgroundColor="{x:Static models:Constantes.Color_Warning}"
                 Clicked="OnDeleteHeaderClicked"  CommandParameter="{Binding}" />
         
         <Label Text="{x:Static properties:Resources.Import_export_of_lists}"  FontSize="Medium" TextColor="White" />

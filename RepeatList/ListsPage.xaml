@@ -59,7 +59,6 @@
                         SelectionMode="Single" 
                         SelectedItem="{Binding Header_SelectedItem}" 
                         ItemSizingStrategy="MeasureAllItems"
-                        SelectionChanged="OnHeaderListViewSelected" 
                        >
                 <CollectionView.ItemTemplate>
                     <DataTemplate>

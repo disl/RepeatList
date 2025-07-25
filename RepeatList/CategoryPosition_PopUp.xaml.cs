@@ -22,17 +22,17 @@ public partial class CategoryPosition_PopUp : Popup<string>
         BindingContext = ViewModel;
     }
 
-    private void CancelButtonClicked(object sender, EventArgs e)
+    private async void CancelButtonClicked(object sender, EventArgs e)
     {
-        CloseAsync("");
+        await CloseAsync("");
     }
 
-    private void OkButton_Clicked(object sender, EventArgs e)
+    private async void OkButton_Clicked(object sender, EventArgs e)
     {
         if (ViewModel.SelectedCategory != null && !string.IsNullOrEmpty(ViewModel.SelectedCategory.Category))
-            CloseAsync(ViewModel.SelectedCategory.Category);
+            await CloseAsync(ViewModel.SelectedCategory.Category);
         else
-            CloseAsync("");
+            await CloseAsync("");
     }
 
 

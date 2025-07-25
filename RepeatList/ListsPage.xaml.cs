@@ -1,7 +1,9 @@
 ﻿using Android.DeviceLock;
+using CommunityToolkit.Maui;
 using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Maui.Core;
 using CommunityToolkit.Maui.Extensions;
+using Microsoft.Maui.Controls.PlatformConfiguration;
 using RepeatList.Models;
 using RepeatList.Services;
 using RepeatList.ViewModels;
@@ -202,7 +204,14 @@ namespace RepeatList
                 var isDeepSeekAllowed = await IsDeepSeekAllowed();
 
                 var popup = new ListPage_Input(isDeepSeekAllowed);
-                var new_list_name_obj = await Shell.Current.ShowPopupAsync<object>(popup);
+                //var new_list_name_obj = await Shell.Current.ShowPopupAsync<object>(popup);
+
+                var options = new PopupOptions
+                {
+                    CanBeDismissedByTappingOutsideOfPopup = true,
+                };
+                var new_list_name_obj = await PopupExtensions.ShowPopupAsync<object>(this, popup, options);
+
                 if (new_list_name_obj.Result == null || string.IsNullOrEmpty(new_list_name_obj.Result.ToString()))
                     return;
 
@@ -263,10 +272,18 @@ namespace RepeatList
                     }, duration: TimeSpan.FromSeconds(2));
 
                 ViewModel.SetFirstItemForHeaders();
-
             }
             catch (Exception ex)
             {
+#if DEBUG
+                await DisplayAlert(Properties.Resources.Error, ex.Message + Environment.NewLine +
+                    "--- Stack Trace ---" + Environment.NewLine + ex.StackTrace,
+                        Properties.Resources.yes);
+#else
+                await DisplayAlert(Properties.Resources.Error, ex.Message,
+                        Properties.Resources.yes);
+#endif
+
                 SentrySdk.CaptureException(ex);
                 throw;
             }
@@ -482,29 +499,43 @@ namespace RepeatList
 
         private async void OnItemTapped(object sender, TappedEventArgs e)
         {
-            //ViewModel.IsBusy=true;
-
-            //ViewModel.HeaderSelected=true;
-
-            //var _selectedHeader = e. CurrentSelection[0] as Header;
-            //if (_selectedHeader != null)
-            if (sender is Border border && border.BindingContext is Header selectedItem)
+            try
             {
+                //ViewModel.IsBusy=true;
 
-                ViewModel.Header_SelectedItem = selectedItem;
+                //ViewModel.HeaderSelected=true;
 
-                //await ViewModel.LoadPositions();
+                //var _selectedHeader = e. CurrentSelection[0] as Header;
+                //if (_selectedHeader != null)
+                if (sender is Border border && border.BindingContext is Header selectedItem)
+                {
 
-                await Navigation.PushAsync(new PositionsPage(selectedItem));
+                    ViewModel.Header_SelectedItem = selectedItem;
+
+                    //await ViewModel.LoadPositions();
+
+                    await Navigation.PushAsync(new PositionsPage(selectedItem));
+                }
+
+                //ViewModel.IsBusy=false;
             }
-
-            //ViewModel.IsBusy=false;
+            catch(Exception ex)
+            {
+#if DEBUG
+                await DisplayAlert(Properties.Resources.Error, ex.Message + Environment.NewLine +
+                    "--- Stack Trace ---" + Environment.NewLine + ex.StackTrace,
+                        Properties.Resources.yes);
+#else
+                await DisplayAlert(Properties.Resources.Error, ex.Message,
+                        Properties.Resources.yes);
+#endif
+            }
         }
 
-        private void OnHeaderListViewSelected(object sender, SelectionChangedEventArgs e)
-        {
+        //private void OnHeaderListViewSelected(object sender, SelectionChangedEventArgs e)
+        //{
 
-        }
+        //}
 
         private void OnSearchTextChanged(object sender, TextChangedEventArgs e)
         {

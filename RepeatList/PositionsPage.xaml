@@ -133,13 +133,14 @@
                                VerticalOptions="Center" 
                                ColumnSpacing="10" >
 
-                                    <Button BackgroundColor="{Binding Category_color}" Grid.Column="0" 
-                                     Clicked="Category_colorClicked" CommandParameter="{Binding}"
-                                     BorderColor="{AppThemeBinding Light=Gray, Dark=LightGray}" />
+                                    <Button BackgroundColor="{Binding Category_color}" Grid.Column="0"                                            
+                                         Clicked="Category_colorClicked" CommandParameter="{Binding}"
+                                            WidthRequest="30"    HeightRequest="30"    CornerRadius="15"
+                                         BorderColor="{AppThemeBinding Light=Gray, Dark=LightGray}" />
                                     <Label  Text="{Binding Title, FallbackValue = '?'}" Grid.Column="1"   
-                                     LineBreakMode="TailTruncation" MaxLines="1"
-                                     VerticalTextAlignment="Center"
-                                     TextColor="{AppThemeBinding Light={DynamicResource PrimaryTextColor}, Dark={DynamicResource PrimaryTextColorLight}}"/>
+                                         LineBreakMode="TailTruncation" MaxLines="1"
+                                         VerticalTextAlignment="Center"
+                                         TextColor="{AppThemeBinding Light={DynamicResource PrimaryTextColor}, Dark={DynamicResource PrimaryTextColorLight}}"/>
                                     <ImageButton Source="{Binding PositionImageSource, FallbackValue = 'check_box_blank.png'}" 
                                          Clicked="OnCheckedButtonClicked" CommandParameter="{Binding}" 
                                          HeightRequest="30" 
@@ -229,6 +230,7 @@
                             >
                                 <Button BackgroundColor="{Binding Category_color}" Grid.Column="0" 
                                         Clicked="Category_colorClicked" CommandParameter="{Binding}"
+                                         WidthRequest="30"    HeightRequest="30"    CornerRadius="15"
                                         BorderColor="{AppThemeBinding Light=Gray, Dark=LightGray}"/>
                                 <Label Text="{Binding Title}" Grid.Column="1"
                                        VerticalOptions="Center" 

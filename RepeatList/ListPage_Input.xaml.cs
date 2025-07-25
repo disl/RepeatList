@@ -13,6 +13,8 @@ public partial class ListPage_Input : Popup<object>
 
     bool m_isDeepSeekAllowed = false;
 
+    public bool IsOKClicked { get; private set; }
+
     public ListPage_Input()
     {
         InitializeComponent();
@@ -27,16 +29,17 @@ public partial class ListPage_Input : Popup<object>
         UpdateStatusLabel();
     }
 
-    private void OnCancelClicked(object sender, EventArgs e)
+    private async void OnCancelClicked(object sender, EventArgs e)
     {
-        CloseAsync("");
+        await this.CloseAsync("");
     }
 
-    private void OnOkClicked(object sender, EventArgs e)
+    private async void OnOkClicked(object sender, EventArgs e)
     {
         string input = ListNameEditor.Text?.Trim();
-        CloseAsync(input);
+        await this.CloseAsync(input);       
     }
+
 
     private async void OnDeepSeekClicked(object sender, EventArgs e)
     {
@@ -90,7 +93,7 @@ public partial class ListPage_Input : Popup<object>
                 return;
             }
 
-            MainThread.BeginInvokeOnMainThread(() =>
+            MainThread.BeginInvokeOnMainThread(async () =>
                 {
                     try
                     {
@@ -110,7 +113,7 @@ public partial class ListPage_Input : Popup<object>
 
                         if (jsonObject != null)
                         {
-                            CloseAsync(jsonObject);
+                            await this.CloseAsync(jsonObject);
 
                             // Sortierung nach Alphabet
                             Preferences.Set(listsPageViewModel.SelectedItem_KindOfSorting_key_name_undone, "alpha");
@@ -176,6 +179,8 @@ public partial class ListPage_Input : Popup<object>
 
     private void ListNameEditor_Completed(object sender, EventArgs e)
     {
+        if(IsOKClicked) return;
+
         OnOkClicked(sender, e);
     }
 

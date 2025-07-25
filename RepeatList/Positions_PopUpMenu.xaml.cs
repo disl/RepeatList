@@ -33,9 +33,9 @@ public partial class Positions_PopUpMenu : Popup<string>
     }
 
 
-    private void OnExport_not_completed_as_a_text_listClicked(object sender, EventArgs e)
+    private async void OnExport_not_completed_as_a_text_listClicked(object sender, EventArgs e)
     {
-        CloseAsync("Export_not_completed_as_a_text_list");
+        await CloseAsync("Export_not_completed_as_a_text_list");
     }
 
     private void Duplicate_entries_replace(object sender, CheckedChangedEventArgs e)
@@ -48,8 +48,8 @@ public partial class Positions_PopUpMenu : Popup<string>
         Preferences.Set("duplicate_entries_add", true);
     }
 
-    private void CancelButtonClicked(object sender, EventArgs e)
+    private async void CancelButtonClicked(object sender, EventArgs e)
     {
-        CloseAsync();
+        await CloseAsync();
     }
 }

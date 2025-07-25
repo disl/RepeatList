@@ -820,7 +820,7 @@ namespace RepeatList.ViewModels
                 RezeptLabelText=null;
                 IsRezeptVisible=false;
 
-                if (Positions_undone_filterd != null && !string.IsNullOrEmpty(Positions_undone_filterd[0].Title)
+                if (Positions_undone_filterd != null && Positions_undone_filterd.Count > 0 && !string.IsNullOrEmpty(Positions_undone_filterd[0].Title)
                     && Positions_undone_filterd[0].Title.Substring(0, 1) == "_")
                 {
                     var ind_ = Positions_undone_filterd[0].Title.IndexOf("_");

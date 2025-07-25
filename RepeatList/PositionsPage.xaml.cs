@@ -705,13 +705,13 @@ namespace RepeatList
                 CanBeDismissedByTappingOutsideOfPopup = true,
 
             };
-
             var result = await PopupExtensions.ShowPopupAsync<string>(this, popup, options);
             //var result = await Shell.Current.ShowPopupAsync<string>(popup, options);
             //var result = await Application.Current.MainPage.Navigation.ShowPopupAsync<string>(popup, options);
 
             if (result == null)
                 return;
+
             switch (result.Result)
             {
                 case "Export_not_completed_as_a_text_list":
@@ -724,6 +724,9 @@ namespace RepeatList
                     await ViewModel.Export_list_textClicked();
                     break;
             }
+
+            await popup.CloseAsync();
+
             ViewModel.Duplicate_entries_add = Preferences.Get("duplicate_entries_add", true);
         }
 
