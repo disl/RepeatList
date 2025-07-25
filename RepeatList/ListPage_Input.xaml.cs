@@ -12,6 +12,7 @@ public partial class ListPage_Input : Popup<object>
     private readonly InAppBillingService _billing = new();
 
     bool m_isDeepSeekAllowed = false;
+    private bool m_byChat;
 
     public bool IsOKClicked { get; private set; }
 
@@ -20,11 +21,12 @@ public partial class ListPage_Input : Popup<object>
         InitializeComponent();
     }
 
-    public ListPage_Input(bool isDeepSeekAllowed)
+    public ListPage_Input(bool isDeepSeekAllowed, bool byChat)
     {
         InitializeComponent();
 
         m_isDeepSeekAllowed=isDeepSeekAllowed;
+        m_byChat = byChat;
 
         UpdateStatusLabel();
     }
@@ -48,7 +50,7 @@ public partial class ListPage_Input : Popup<object>
 
         if (deviceID != null && !listsPageViewModel.DeviceList.Contains(deviceID) && !CanExecutePremium)
         {
-            Shell.Current.DisplayAlert(Properties.Resources.premium_feature, Properties.Resources.Only_available_in_the_premium_version, "OK");
+            await Shell.Current.DisplayAlert(Properties.Resources.premium_feature, Properties.Resources.Only_available_in_the_premium_version, "OK");
             return;
         }
 
@@ -104,7 +106,7 @@ public partial class ListPage_Input : Popup<object>
                         var json_end_ind = response.Content.LastIndexOf("```");
                         if (json_start_ind < 0 || json_end_ind < 0 || json_end_ind <= json_start_ind)
                         {
-                            Shell.Current.DisplayAlert("Error", "Invalid response format from DeepSeek.", "OK");
+                            await Shell.Current.DisplayAlert("Error", "Invalid response format from DeepSeek.", "OK");
                             return;
                         }
                         json = response.Content.Substring(json_start_ind, json_end_ind - json_start_ind);
@@ -120,7 +122,7 @@ public partial class ListPage_Input : Popup<object>
                         }
                         else
                         {
-                            Shell.Current.DisplayAlert("Error", "Invalid JSON structure from DeepSeek.", "OK");
+                            await Shell.Current.DisplayAlert("Error", "Invalid JSON structure from DeepSeek.", "OK");
 
                             m_isDeepSeekAllowed =false;
                         }

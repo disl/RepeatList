@@ -438,4 +438,13 @@ Demandez à ChatGPT &amp; Co. de vous créer une liste sur le thème de votre ch
   <data name="Thank_you_for_your_purchase" xml:space="preserve">
     <value>Merci pour votre achat !</value>
   </data>
+  <data name="add_list" xml:space="preserve">
+    <value>Ajouter à la liste</value>
+  </data>
+  <data name="create" xml:space="preserve">
+    <value>Créer</value>
+  </data>
+  <data name="create_list" xml:space="preserve">
+    <value>Créer une liste</value>
+  </data>
 </root>

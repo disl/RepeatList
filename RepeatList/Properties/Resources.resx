@@ -438,4 +438,13 @@ Let ChatGPT &amp; Co. create a list for you on your desired topic – whether it
   <data name="Thank_you_for_your_purchase" xml:space="preserve">
     <value>Thank you for your purchase!</value>
   </data>
+  <data name="add_list" xml:space="preserve">
+    <value>Add list</value>
+  </data>
+  <data name="create" xml:space="preserve">
+    <value>Create</value>
+  </data>
+  <data name="create_list" xml:space="preserve">
+    <value>Create list</value>
+  </data>
 </root>

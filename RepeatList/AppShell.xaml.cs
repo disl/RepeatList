@@ -48,7 +48,7 @@ namespace RepeatList
             );
 
             await Clipboard.Default.SetTextAsync(deviceId);
-            _ = Shell.Current.DisplayAlert("Device-ID: " + deviceId, "Saved to clipboard", "OK");
+            await Shell.Current.DisplayAlert("Device-ID: " + deviceId, "Saved to clipboard", "OK");
 #endif
         }
     }

@@ -79,6 +79,15 @@ namespace RepeatList.Properties {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Add list ähnelt.
+        /// </summary>
+        public static string add_list {
+            get {
+                return ResourceManager.GetString("add_list", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Add Items ähnelt.
         /// </summary>
         public static string AddNewItem {
@@ -174,6 +183,24 @@ namespace RepeatList.Properties {
         public static string Copy_list_to_clipboard {
             get {
                 return ResourceManager.GetString("Copy_list_to_clipboard", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Create ähnelt.
+        /// </summary>
+        public static string create {
+            get {
+                return ResourceManager.GetString("create", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Create list ähnelt.
+        /// </summary>
+        public static string create_list {
+            get {
+                return ResourceManager.GetString("create_list", resourceCulture);
             }
         }
         

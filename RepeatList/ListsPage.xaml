@@ -6,6 +6,7 @@
              xmlns:local="clr-namespace:RepeatList.ViewModels"
              xmlns:controls="clr-namespace:RepeatList.Controls"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"        
+              xmlns:properties="clr-namespace:RepeatList.Properties" 
              Title="{Binding Title}" 
              >
     <!--xmlns:admob="clr-namespace:Plugin.AdMob;assembly=Plugin.AdMob"-->
@@ -46,9 +47,14 @@
                    TextColor="{AppThemeBinding Light={DynamicResource PrimaryTextColor}, Dark={DynamicResource PrimaryTextColorLight}}"
                    PlaceholderColor="{AppThemeBinding Light=Gray, Dark=LightGray}"
                    TextChanged="OnSearchTextChanged" ClearButtonVisibility="WhileEditing" />
-            <ImageButton Source="{AppThemeBinding Light=add_icon.png, Dark=add_icon_white.png}" 
-                         Clicked="OnAddHeaderClicked" Grid.Column="2"
-                         MaximumWidthRequest="{Binding ImageButton_size}" MaximumHeightRequest="{Binding ImageButton_size}" />
+            <Button Text="{x:Static properties:Resources.create_list}"
+                    MaximumHeightRequest="{Binding ImageButton_size}"
+                    BackgroundColor="{x:Static models:Constantes.Color_Primary}"
+                    TextColor="{DynamicResource PrimaryTextColorLight}"
+                    Clicked="OnAddHeaderByChatClicked" Grid.Column="2" />
+            <!--<ImageButton Source="{AppThemeBinding Light=add_icon.png, Dark=add_icon_white.png}" 
+                         Clicked="OnAddHeaderClicked" Grid.Column="3"
+                         MaximumWidthRequest="{Binding ImageButton_size}" MaximumHeightRequest="{Binding ImageButton_size}" />-->
         </Grid>
         <Border Stroke="{AppThemeBinding Light=#00BCD4, Dark=#80DEEA}" StrokeThickness="1" Padding="5"  Grid.Row="2" >
             <Border.StrokeShape>
@@ -65,7 +71,7 @@
                         <Border Stroke="Black" StrokeThickness="0" Padding="3" >
                             <Grid ColumnDefinitions="auto,*,auto,auto" Padding="3" ColumnSpacing="10" >
 
-                                <toolkit:AvatarView Grid.Column="0" HeightRequest="48" Text="{Binding AvatarName}" WidthRequest="48" BackgroundColor="Gray" TextColor="White"  />
+                                <toolkit:AvatarView Grid.Column="0" HeightRequest="48" Text="{Binding AvatarName}" WidthRequest="48" BackgroundColor="Gray" TextColor="{DynamicResource PrimaryTextColorLight}"  />
 
                                 <Label Text="{Binding ListName, FallbackValue = '?'}"  VerticalOptions="Center" FontSize="Medium"   Grid.Column="1" 
                                        TextColor="{AppThemeBinding Light={DynamicResource PrimaryTextColor}, Dark={DynamicResource PrimaryTextColorLight}}"/>
@@ -93,6 +99,7 @@
                         <VerticalStackLayout HorizontalOptions="Center">
                             <Button Clicked="OnAddHeaderClicked" VerticalOptions="Center"
                                 BackgroundColor="{x:Static models:Constantes.Color_Primary}"
+                                    TextColor="{DynamicResource PrimaryTextColorLight}"
                                 Text="{Binding Please_create_a_first_list, FallbackValue = '?'}"  />
                         </VerticalStackLayout>
                     </ContentView>

@@ -191,10 +191,15 @@ namespace RepeatList
 
         private async void OnAddHeaderClicked(object sender, EventArgs e)
         {
-            await ForOnAddHeaderClicked();
+            await ForOnAddHeaderClicked(false);
         }
 
-        private async Task ForOnAddHeaderClicked()
+        private async void OnAddHeaderByChatClicked(object sender, EventArgs e)
+        {
+            await ForOnAddHeaderClicked(true);
+        }
+
+        private async Task ForOnAddHeaderClicked(bool ByChat)
         {
             Guid tmp_guid = Guid.Empty;
             bool is_json = false;
@@ -203,7 +208,7 @@ namespace RepeatList
             {
                 var isDeepSeekAllowed = await IsDeepSeekAllowed();
 
-                var popup = new ListPage_Input(isDeepSeekAllowed);
+                var popup = new ListPage_Input(isDeepSeekAllowed, ByChat);
                 //var new_list_name_obj = await Shell.Current.ShowPopupAsync<object>(popup);
 
                 var options = new PopupOptions
@@ -575,7 +580,7 @@ namespace RepeatList
                         await Sync_deleteClicked(button, e); break;
 
                     case "Import":
-                        await ForOnAddHeaderClicked(); break;
+                        await ForOnAddHeaderClicked(false); break;
                     case "Export":
                         await ViewModel.Export_list_Clicked(); break;
                 }
@@ -587,6 +592,8 @@ namespace RepeatList
         {
 
         }
+
+        
     }
 }
 

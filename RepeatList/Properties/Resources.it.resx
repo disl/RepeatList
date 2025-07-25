@@ -438,4 +438,13 @@ Lascia che ChatGPT &amp; Co. crei un elenco sul tema che desideri, che si tratti
   <data name="Thank_you_for_your_purchase" xml:space="preserve">
     <value>Grazie per l'acquisto!</value>
   </data>
+  <data name="add_list" xml:space="preserve">
+    <value>Aggiungi alla lista</value>
+  </data>
+  <data name="create" xml:space="preserve">
+    <value>Crea</value>
+  </data>
+  <data name="create_list" xml:space="preserve">
+    <value>Crea elenco</value>
+  </data>
 </root>

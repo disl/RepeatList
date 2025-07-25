@@ -12,7 +12,7 @@ namespace RepeatList.Services
         //private const string TokenKey = "QueryTokenCount";
         private const string LastQueryDateKey = "QueryDate";
         private const string DailyQueryCountKey = "QueriesToday";
-        private const int FreeDailyLimit = 5;
+        private const int FreeDailyLimit = 3;
         public const decimal TokenPackAmount_199 = 1.99m;
 
         public async Task<bool> PurchaseSubscriptionAsync()
@@ -148,7 +148,7 @@ namespace RepeatList.Services
 
             //if (!IsFreeLimitReached())
             //{
-            //    if (IsIncrementUsage)
+            //    if (IsDecrementAktive)
             //        IncrementFreeUsage();
             //    return true;
             //}

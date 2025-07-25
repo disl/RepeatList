@@ -438,4 +438,13 @@ Lassen Sie sich von ChatGPT &amp; Co. eine Liste zu Ihrem Wunschthema erstellen 
   <data name="The_remaining_credit_is" xml:space="preserve">
     <value>Credit: %1</value>
   </data>
+  <data name="add_list" xml:space="preserve">
+    <value>Liste hinzufügen</value>
+  </data>
+  <data name="create" xml:space="preserve">
+    <value>Erstellen</value>
+  </data>
+  <data name="create_list" xml:space="preserve">
+    <value>Liste erstellen</value>
+  </data>
 </root>
