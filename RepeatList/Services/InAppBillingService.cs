@@ -51,7 +51,7 @@ namespace RepeatList.Services
 
                 return false;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return false;
             }
@@ -103,6 +103,12 @@ namespace RepeatList.Services
 
         public bool IsFreeLimitReached()
         {
+
+            // TEST !!!!!!!
+            //Preferences.Remove(DailyQueryCountKey);
+            //Preferences.Remove(LastQueryDateKey);
+
+
             DateTime today = DateTime.Today;
             string storedDate = Preferences.Get(LastQueryDateKey, "");
             int queriesToday = Preferences.Get(DailyQueryCountKey, 0);
@@ -123,7 +129,7 @@ namespace RepeatList.Services
                 return false;
             }
 
-            return queriesToday >= FreeDailyLimit;
+            return queriesToday > FreeDailyLimit;
         }
 
         public void IncrementFreeUsage()
@@ -132,7 +138,7 @@ namespace RepeatList.Services
             Preferences.Set(DailyQueryCountKey, queriesToday + 1);
         }
 
-        public async Task<bool> CanExecuteQueryAsync(bool IsDecrementAktive)
+        public async Task<bool> CanExecuteQueryAsync()
         {
             if (HasActiveSubscription())
                 return true;
@@ -152,6 +158,20 @@ namespace RepeatList.Services
             //        IncrementFreeUsage();
             //    return true;
             //}
+
+            return false; // Blocked: no tokens and free limit reached
+        }
+
+        public async Task<bool> CanExecuteQueryForFreeAsync(bool IsDecrementAktive)
+        {
+            // AKTIVIEREN ??????
+
+            if (!IsFreeLimitReached())
+            {
+                if (IsDecrementAktive)
+                    IncrementFreeUsage();
+                return true;
+            }
 
             return false; // Blocked: no tokens and free limit reached
         }

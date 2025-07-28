@@ -369,6 +369,24 @@ namespace RepeatList.Properties {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Free daily limit reached ähnelt.
+        /// </summary>
+        public static string Free_daily_limit_reached {
+            get {
+                return ResourceManager.GetString("Free_daily_limit_reached", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Free queries ähnelt.
+        /// </summary>
+        public static string Free_queries {
+            get {
+                return ResourceManager.GetString("Free_queries", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Help ähnelt.
         /// </summary>
         public static string help {
@@ -967,7 +985,7 @@ namespace RepeatList.Properties {
         
         /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die PREMIUM FEATURE!
-        ///Let ChatGPT &amp; Co. create a list for you on your desired topic – whether it&apos;s ‘pizza,’ ‘minestrone,’ travel ideas, project tasks, or something else entirely. ähnelt.
+        ///Let ChatGPT &amp; Co. create a list for you on your desired topic – whether it&apos;s ‘pizza’, ‘minestrone’, travel ideas, project tasks or something else entirely. You can make three free queries per day. ähnelt.
         /// </summary>
         public static string What_would_you_like_to_create_a_chat_based_list_for {
             get {

@@ -379,7 +379,7 @@ Do you still want to continue?</value>
   </data>
   <data name="What_would_you_like_to_create_a_chat_based_list_for" xml:space="preserve">
     <value>PREMIUM FEATURE!
-Let ChatGPT &amp; Co. create a list for you on your desired topic – whether it's ‘pizza,’ ‘minestrone,’ travel ideas, project tasks, or something else entirely.</value>
+Let ChatGPT &amp; Co. create a list for you on your desired topic – whether it's ‘pizza’, ‘minestrone’, travel ideas, project tasks or something else entirely. You can make three free queries per day.</value>
   </data>
   <data name="description" xml:space="preserve">
     <value>Description</value>
@@ -446,5 +446,11 @@ Let ChatGPT &amp; Co. create a list for you on your desired topic – whether it
   </data>
   <data name="create_list" xml:space="preserve">
     <value>Create list</value>
+  </data>
+  <data name="Free_daily_limit_reached" xml:space="preserve">
+    <value>Free daily limit reached</value>
+  </data>
+  <data name="Free_queries" xml:space="preserve">
+    <value>Free queries</value>
   </data>
 </root>

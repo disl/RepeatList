@@ -123,7 +123,7 @@
                             ItemsSource="{Binding Positions_undone_filterd}"
                             SelectedItem="{Binding Position_selectedItem, Mode=OneWay}"
                             SelectionMode="Single"
-                            ItemTapped="PositionListView_ItemTapped"
+                            ItemTapped="PositionListView_ItemTapped"                            
                 >
 
                     <ListView.ItemTemplate>

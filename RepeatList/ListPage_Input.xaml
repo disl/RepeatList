@@ -79,6 +79,7 @@
                         Text="{x:Static properties:Resources.Buy_requests_099}" 
                         Clicked="OnBuyTokenPack"
                         BackgroundColor="#FF9800"
+                        Margin="0,15,0,0"
                         TextColor="White" />
 
                 <ActivityIndicator x:Name="Activity_Indicator" HeightRequest="30" Color="Crimson" />
@@ -90,14 +91,25 @@
                         BackgroundColor="#9E9E9E"
                         TextColor="White" />-->
 
-                <Label  Margin="0,5,0,0" 
-                    BackgroundColor="Crimson"                       
+                <HorizontalStackLayout Spacing="10" HorizontalOptions="Center" >
+                    <Label  Margin="0,5,0,0" 
+                    BackgroundColor="Green"                       
                        TextColor="White"
                        HorizontalOptions="Center"
                        FontAttributes="Bold"
                        FontSize="Medium"           
                        Text="test"
                        x:Name="StatusLabel" />
+
+                    <Label  Margin="0,5,0,0" 
+                    BackgroundColor="Green"                       
+                       TextColor="White"
+                       HorizontalOptions="Center"
+                       FontAttributes="Bold"
+                       FontSize="Medium"           
+                       Text="test"
+                       x:Name="FreeStatusLabel" />
+                </HorizontalStackLayout>
 
             </VerticalStackLayout>
 

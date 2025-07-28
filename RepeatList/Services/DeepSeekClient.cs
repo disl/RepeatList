@@ -8,6 +8,7 @@ namespace RepeatList.Services
     {
         private readonly string _apiKey;
         private readonly HttpClient _httpClient;
+        private const string DailyQueryCountKey = "QueriesToday";
 
         public DeepSeekClient(string apiKey)
         {
@@ -58,12 +59,13 @@ namespace RepeatList.Services
 
 
 
-            // TEST
-            //cost=1.9863450m;
+            // TEST !!!!!!!!
+            cost=1.9863450m;
 
 
+            var DailyQueryCount = Preferences.Get("QueriesToday", 0);
 
-            if (!DeepSeekBilling.DeductFromUserCredit(cost))
+            if (!DeepSeekBilling.DeductFromUserCredit(cost) && DailyQueryCount > 3)
             {
                 throw new CreditIsInsufficientError(777, Properties.Resources.insufficient_credit);
             }

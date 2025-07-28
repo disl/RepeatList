@@ -8,6 +8,8 @@ namespace RepeatList;
 
 public partial class ListPage_Input : Popup<object>
 {
+    private const string DailyQueryCountKey = "QueriesToday";
+
     ListsPageViewModel listsPageViewModel = new();
     private readonly InAppBillingService _billing = new();
 
@@ -39,16 +41,24 @@ public partial class ListPage_Input : Popup<object>
     private async void OnOkClicked(object sender, EventArgs e)
     {
         string input = ListNameEditor.Text?.Trim();
-        await this.CloseAsync(input);       
+        await this.CloseAsync(input);
     }
 
 
     private async void OnDeepSeekClicked(object sender, EventArgs e)
     {
         var deviceID = GetDeviceID();
-        var CanExecutePremium = await _billing.CanExecuteQueryAsync(true);
+        var CanExecutePremium = await _billing.CanExecuteQueryAsync();
+        var CanExecuteQueryForFree = await _billing.CanExecuteQueryForFreeAsync(true);
 
-        if (deviceID != null && !listsPageViewModel.DeviceList.Contains(deviceID) && !CanExecutePremium)
+
+        if (!CanExecuteQueryForFree && !CanExecutePremium)
+        {
+            await Shell.Current.DisplayAlert(Properties.Resources.Error, Properties.Resources.Free_daily_limit_reached, "OK");
+            return;
+        }
+
+        if (deviceID != null && !listsPageViewModel.DeviceList.Contains(deviceID) && !CanExecutePremium && !CanExecuteQueryForFree)
         {
             await Shell.Current.DisplayAlert(Properties.Resources.premium_feature, Properties.Resources.Only_available_in_the_premium_version, "OK");
             return;
@@ -181,7 +191,7 @@ public partial class ListPage_Input : Popup<object>
 
     private void ListNameEditor_Completed(object sender, EventArgs e)
     {
-        if(IsOKClicked) return;
+        if (IsOKClicked) return;
 
         OnOkClicked(sender, e);
     }
@@ -241,18 +251,33 @@ public partial class ListPage_Input : Popup<object>
 
         string status = _billing.HasActiveSubscription()
             ? Properties.Resources.Premium_active
-            : $"{Properties.Resources.The_remaining_credit_is.Replace("%1", (available_tokens_percent * 100.0).ToString("N3")) + "%"}";
+            : $"{Properties.Resources.The_remaining_credit_is.Replace("%1", (available_tokens_percent * 100.0).ToString("N0")) + "%"}";
 
+        StatusLabel.IsVisible = true;
         StatusLabel.Text = status;
+        FreeStatusLabel.IsVisible = false;
+        FreeStatusLabel.Text="";
+        OnDeepSeekButton.IsVisible = m_isDeepSeekAllowed;  // Ok-Button 
 
-        OnDeepSeekButton.IsVisible = m_isDeepSeekAllowed;
-        BuyTokenPackButton.IsVisible = !m_isDeepSeekAllowed;
-        DeepSeekEditor.IsEnabled = m_isDeepSeekAllowed;
+        var DailyQueryCount = Preferences.Get(DailyQueryCountKey, 0);
 
-        if (!m_isDeepSeekAllowed)
+        //if(available_tokens_percent == 0 && DailyQueryCount )
+
+        if (DailyQueryCount >= 0 && DailyQueryCount < 3)
         {
-            DeepSeekEditor.Text = string.Empty;
+            FreeStatusLabel.Text = $"{Properties.Resources.Free_queries}: {(3 - DailyQueryCount).ToString()}";
+            FreeStatusLabel.IsVisible = true;
+            StatusLabel.IsVisible = false;
         }
+
+        OnDeepSeekButton.IsVisible =  StatusLabel.IsVisible;  //m_isDeepSeekAllowed && (DailyQueryCount < 3);  // Ok-Button        
+        DeepSeekEditor.IsVisible =  OnDeepSeekButton.IsVisible;
+        if (!DeepSeekEditor.IsVisible)
+            DeepSeekEditor.Text = string.Empty;
+
+        BuyTokenPackButton.IsVisible = !OnDeepSeekButton.IsVisible;
+
+       
 
         //BuySubscriptionButton.IsVisible = !isDeepSeekAllowed;
         //RestorePurchasesButton.IsVisible = !isDeepSeekAllowed;                

@@ -379,7 +379,7 @@ Wollen Sie trotzdem fortfahren?</value>
   </data>
   <data name="What_would_you_like_to_create_a_chat_based_list_for" xml:space="preserve">
     <value>PREMIUM-FUNKTION!
-Lassen Sie sich von ChatGPT &amp; Co. eine Liste zu Ihrem Wunschthema erstellen – egal ob "Pizza", "Minestrone", Reiseideen, Projektaufgaben oder etwas ganz anderes.</value>
+Lassen Sie sich von ChatGPT &amp; Co. eine Liste zu Ihrem Wunschthema erstellen – egal, ob es sich um „Pizza”, „Minestrone”, Reiseideen, Projektaufgaben oder etwas ganz anderes handelt. Pro Tag dürfen Sie drei freie Abfragen stellen.</value>
   </data>
   <data name="description" xml:space="preserve">
     <value>Beschreibung</value>
@@ -436,7 +436,7 @@ Lassen Sie sich von ChatGPT &amp; Co. eine Liste zu Ihrem Wunschthema erstellen 
     <value>Anfragen kaufen (~700, 1,99 €)</value>
   </data>
   <data name="The_remaining_credit_is" xml:space="preserve">
-    <value>Credit: %1</value>
+    <value>Gutschrift: %1</value>
   </data>
   <data name="add_list" xml:space="preserve">
     <value>Liste hinzufügen</value>
@@ -446,5 +446,11 @@ Lassen Sie sich von ChatGPT &amp; Co. eine Liste zu Ihrem Wunschthema erstellen 
   </data>
   <data name="create_list" xml:space="preserve">
     <value>Liste erstellen</value>
+  </data>
+  <data name="Free_daily_limit_reached" xml:space="preserve">
+    <value>Freies Tageslimit erreicht</value>
+  </data>
+  <data name="Free_queries" xml:space="preserve">
+    <value>Freie Anfragen</value>
   </data>
 </root>

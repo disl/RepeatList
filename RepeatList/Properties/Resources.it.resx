@@ -379,7 +379,7 @@ Volete ancora continuare?</value>
   </data>
   <data name="What_would_you_like_to_create_a_chat_based_list_for" xml:space="preserve">
     <value>FUNZIONE PREMIUM!
-Lascia che ChatGPT &amp; Co. crei un elenco sul tema che desideri, che si tratti di “pizza”, “minestrone”, idee di viaggio, attività di progetto o qualcos'altro.</value>
+Lasciate che ChatGPT &amp; Co. creino un elenco sul tema che desiderate, che si tratti di “pizza”, “minestrone”, idee di viaggio, compiti di progetto o qualcos'altro. Potete effettuare tre ricerche gratuite al giorno.</value>
   </data>
   <data name="description" xml:space="preserve">
     <value>Descrizione</value>
@@ -446,5 +446,11 @@ Lascia che ChatGPT &amp; Co. crei un elenco sul tema che desideri, che si tratti
   </data>
   <data name="create_list" xml:space="preserve">
     <value>Crea elenco</value>
+  </data>
+  <data name="Free_daily_limit_reached" xml:space="preserve">
+    <value>Limite giornaliero gratuito raggiunto.</value>
+  </data>
+  <data name="Free_queries" xml:space="preserve">
+    <value>Richieste libere</value>
   </data>
 </root>

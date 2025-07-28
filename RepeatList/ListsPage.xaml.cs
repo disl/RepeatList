@@ -297,9 +297,11 @@ namespace RepeatList
         async Task<bool> IsDeepSeekAllowed()
         {
             //var deviceID = GetDeviceID();
-            var CanExecutePremium = await _billingService.CanExecuteQueryAsync(false);
-            //return (deviceID != null && ViewModel.DeviceList.Contains(deviceID)) || CanExecutePremium;
-            return  CanExecutePremium;
+            var CanExecutePremium = await _billingService.CanExecuteQueryAsync();
+            var IsFreeLimitReached =  _billingService.IsFreeLimitReached();
+            //////return (deviceID != null && ViewModel.DeviceList.Contains(deviceID)) || CanExecutePremium;
+            //return  CanExecutePremium;
+            return CanExecutePremium || !IsFreeLimitReached;
         }
 
         string? GetDeviceID()

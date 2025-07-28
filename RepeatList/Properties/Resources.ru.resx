@@ -379,7 +379,7 @@
   </data>
   <data name="What_would_you_like_to_create_a_chat_based_list_for" xml:space="preserve">
     <value>ПРЕМИУМ-ФУНКЦИЯ!
-Попросите ChatGPT &amp; Co. составить список по интересующей вас теме — будь то «пицца», «минестроне», идеи для путешествий, задачи проекта или что-то совсем другое.</value>
+Попросите ChatGPT &amp; Co. составить список по интересующей вас теме — будь то «пицца», «минестроне», идеи для путешествий, задачи проекта или что-то совсем другое. В день вы можете сделать три бесплатных запроса.</value>
   </data>
   <data name="description" xml:space="preserve">
     <value>Описание</value>
@@ -446,5 +446,11 @@
   </data>
   <data name="create_list" xml:space="preserve">
     <value>Создать список</value>
+  </data>
+  <data name="Free_daily_limit_reached" xml:space="preserve">
+    <value>Достигнут дневной лимит.</value>
+  </data>
+  <data name="Free_queries" xml:space="preserve">
+    <value>Бесплатные запросы</value>
   </data>
 </root>
