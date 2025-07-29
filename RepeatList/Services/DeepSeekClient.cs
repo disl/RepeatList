@@ -60,7 +60,7 @@ namespace RepeatList.Services
 
 
             // TEST !!!!!!!!
-            cost=1.9863450m;
+            //cost=1.9863450m;
 
 
             var DailyQueryCount = Preferences.Get("QueriesToday", 0);

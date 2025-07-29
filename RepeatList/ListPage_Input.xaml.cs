@@ -261,7 +261,8 @@ public partial class ListPage_Input : Popup<object>
 
         var DailyQueryCount = Preferences.Get(DailyQueryCountKey, 0);
 
-        //if(available_tokens_percent == 0 && DailyQueryCount )
+        // TEST !!!
+        //DailyQueryCount = 3; // For testing purposes, set to 3
 
         if (DailyQueryCount >= 0 && DailyQueryCount < 3)
         {
@@ -270,7 +271,7 @@ public partial class ListPage_Input : Popup<object>
             StatusLabel.IsVisible = false;
         }
 
-        OnDeepSeekButton.IsVisible =  StatusLabel.IsVisible;  //m_isDeepSeekAllowed && (DailyQueryCount < 3);  // Ok-Button        
+        OnDeepSeekButton.IsVisible =  m_isDeepSeekAllowed || !StatusLabel.IsVisible;  //m_isDeepSeekAllowed && (DailyQueryCount < 3);  // Ok-Button        
         DeepSeekEditor.IsVisible =  OnDeepSeekButton.IsVisible;
         if (!DeepSeekEditor.IsVisible)
             DeepSeekEditor.Text = string.Empty;
