@@ -709,7 +709,7 @@ namespace RepeatList
             //var result = await Shell.Current.ShowPopupAsync<string>(popup, options);
             //var result = await Application.Current.MainPage.Navigation.ShowPopupAsync<string>(popup, options);
 
-            if (result == null)
+            if (result == null || result.Result == null)
                 return;
 
             switch (result.Result)
@@ -725,7 +725,7 @@ namespace RepeatList
                     break;
             }
 
-            await popup.CloseAsync();
+            //await popup.CloseAsync();
 
             ViewModel.Duplicate_entries_add = Preferences.Get("duplicate_entries_add", true);
         }
