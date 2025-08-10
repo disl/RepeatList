@@ -24,18 +24,48 @@ public partial class CategoryPosition_PopUp : Popup<string>
 
     private async void CancelButtonClicked(object sender, EventArgs e)
     {
-        await CloseAsync("");
+        // await CloseAsync("");
+        await CloseMe("");
     }
 
     private async void OkButton_Clicked(object sender, EventArgs e)
     {
+        dynamic ret_val;
+
         if (ViewModel.SelectedCategory != null && !string.IsNullOrEmpty(ViewModel.SelectedCategory.Category))
-            await CloseAsync(ViewModel.SelectedCategory.Category);
+            ret_val = ViewModel.SelectedCategory.Category;
         else
-            await CloseAsync("");
+            ret_val = "";
+
+        //await CloseAsync(ret_val);
+        await CloseMe(ret_val);
     }
 
+    async Task CloseMe(dynamic param)
+    {
+        // Popup zuerst schlieﬂen
+        if (Handler != null)
+        {
+            CloseAsync(param); // Bei Popup<TResult> -> kein await, sofort Ergebnis setzen
+        }
 
+        // Danach Navigation
+        if (Navigation.ModalStack.Any())
+        {
+            await Navigation.PopModalAsync();
+        }
 
-
+        //if (!Navigation.ModalStack.Any())
+        //{
+        //    await CloseAsync(param);
+        //}
+        //else
+        //{
+        //    await Navigation.PopModalAsync();
+        //    await CloseAsync(param);
+        //}
+    }
 }
+
+
+

@@ -35,7 +35,8 @@ public partial class Positions_PopUpMenu : Popup<string>
 
     private async void OnExport_not_completed_as_a_text_listClicked(object sender, EventArgs e)
     {
-        await CloseAsync("Export_not_completed_as_a_text_list");
+        //await CloseAsync("Export_not_completed_as_a_text_list");
+        await CloseMe("Export_not_completed_as_a_text_list");
     }
 
     private void Duplicate_entries_replace(object sender, CheckedChangedEventArgs e)
@@ -50,6 +51,32 @@ public partial class Positions_PopUpMenu : Popup<string>
 
     private async void CancelButtonClicked(object sender, EventArgs e)
     {
-        await CloseAsync();
+        //await CloseAsync();
+        await CloseMe(null);
+    }
+
+    async Task CloseMe(dynamic param)
+    {
+        // Popup zuerst schlieﬂen
+        if (Handler != null)
+        {
+            CloseAsync(param); // Bei Popup<TResult> -> kein await, sofort Ergebnis setzen
+        }
+
+        // Danach Navigation
+        if (Navigation.ModalStack.Any())
+        {
+            await Navigation.PopModalAsync();
+        }
+
+        //if (!Navigation.ModalStack.Any())
+        //{
+        //    await CloseAsync(param);
+        //}
+        //else
+        //{
+        //    await Navigation.PopModalAsync();
+        //    await CloseAsync(param);
+        //}
     }
 }

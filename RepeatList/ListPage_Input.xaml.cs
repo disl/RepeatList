@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using RepeatList.Models;
 using RepeatList.Services;
 using RepeatList.ViewModels;
+using static Android.Renderscripts.ScriptGroup;
 
 namespace RepeatList;
 
@@ -27,7 +28,7 @@ public partial class ListPage_Input : Popup<object>
     {
         InitializeComponent();
 
-        m_isDeepSeekAllowed=isDeepSeekAllowed;
+        m_isDeepSeekAllowed = isDeepSeekAllowed;
         m_byChat = byChat;
 
         UpdateStatusLabel();
@@ -35,15 +36,14 @@ public partial class ListPage_Input : Popup<object>
 
     private async void OnCancelClicked(object sender, EventArgs e)
     {
-        await this.CloseAsync("");
+        await CloseMe("");
     }
 
     private async void OnOkClicked(object sender, EventArgs e)
     {
         string input = ListNameEditor.Text?.Trim();
-        await this.CloseAsync(input);
+        await CloseMe(input);
     }
-
 
     private async void OnDeepSeekClicked(object sender, EventArgs e)
     {
@@ -125,7 +125,7 @@ public partial class ListPage_Input : Popup<object>
 
                         if (jsonObject != null)
                         {
-                            await this.CloseAsync(jsonObject);
+                            await CloseMe(jsonObject);
 
                             // Sortierung nach Alphabet
                             Preferences.Set(listsPageViewModel.SelectedItem_KindOfSorting_key_name_undone, "alpha");
@@ -134,7 +134,7 @@ public partial class ListPage_Input : Popup<object>
                         {
                             await Shell.Current.DisplayAlert("Error", "Invalid JSON structure from DeepSeek.", "OK");
 
-                            m_isDeepSeekAllowed =false;
+                            m_isDeepSeekAllowed = false;
                         }
                     }
                     catch (Exception ex)
@@ -223,7 +223,7 @@ public partial class ListPage_Input : Popup<object>
             else
             {
                 await Shell.Current.DisplayAlert(Properties.Resources.Error, Properties.Resources.Purchase_failed_Try_again, "OK");
-                m_isDeepSeekAllowed=false;
+                m_isDeepSeekAllowed = false;
             }
             UpdateStatusLabel();
         }
@@ -256,7 +256,7 @@ public partial class ListPage_Input : Popup<object>
         StatusLabel.IsVisible = true;
         StatusLabel.Text = status;
         FreeStatusLabel.IsVisible = false;
-        FreeStatusLabel.Text="";
+        FreeStatusLabel.Text = "";
         OnDeepSeekButton.IsVisible = m_isDeepSeekAllowed;  // Ok-Button 
 
         var DailyQueryCount = Preferences.Get(DailyQueryCountKey, 0);
@@ -271,16 +271,41 @@ public partial class ListPage_Input : Popup<object>
             StatusLabel.IsVisible = false;
         }
 
-        OnDeepSeekButton.IsVisible =  m_isDeepSeekAllowed || !StatusLabel.IsVisible;  //m_isDeepSeekAllowed && (DailyQueryCount < 3);  // Ok-Button        
-        DeepSeekEditor.IsVisible =  OnDeepSeekButton.IsVisible;
+        OnDeepSeekButton.IsVisible = m_isDeepSeekAllowed || !StatusLabel.IsVisible;  //m_isDeepSeekAllowed && (DailyQueryCount < 3);  // Ok-Button        
+        DeepSeekEditor.IsVisible = OnDeepSeekButton.IsVisible;
         if (!DeepSeekEditor.IsVisible)
             DeepSeekEditor.Text = string.Empty;
 
         BuyTokenPackButton.IsVisible = !OnDeepSeekButton.IsVisible;
 
-       
+
 
         //BuySubscriptionButton.IsVisible = !isDeepSeekAllowed;
         //RestorePurchasesButton.IsVisible = !isDeepSeekAllowed;                
+    }
+
+    async Task CloseMe(dynamic param)
+    {
+        // Popup zuerst schließen
+        if (Handler != null)
+        {
+            CloseAsync(param); // Bei Popup<TResult> -> kein await, sofort Ergebnis setzen
+        }
+
+        // Danach Navigation
+        if (Navigation.ModalStack.Any())
+        {
+            await Navigation.PopModalAsync();
+        }
+
+        //if (!Navigation.ModalStack.Any())
+        //{
+        //    await CloseAsync(param);
+        //}
+        //else
+        //{
+        //    await Navigation.PopModalAsync();
+        //    await CloseAsync(param);
+        //}
     }
 }

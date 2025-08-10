@@ -28,19 +28,48 @@ public partial class Positions_EditPopup : Popup<object>
 
     private async void OnDeleteButtonClicked(object sender, EventArgs e)
     {
-        await CloseAsync("delete");
+        //await CloseAsync("delete");
+        await CloseMe("delete");
     }
 
 
     private async void CancelButtonClicked(object sender, EventArgs e)
     {
-        await CloseAsync(null);
+        //await CloseAsync(null);
+        await CloseMe(null);
     }
 
     private async void OnSavePositionTitle_Clicked(object sender, EventArgs e)
     {
         PositionNameEntry.Unfocus();
 
-        await CloseAsync(ViewModel.SelectedItem);
+        //await CloseAsync(ViewModel.SelectedItem);
+        await CloseMe(ViewModel.SelectedItem);
+
+    }
+
+    async Task CloseMe(dynamic param)
+    {
+        // Popup zuerst schlieﬂen
+        if (Handler != null)
+        {
+            CloseAsync(param); // Bei Popup<TResult> -> kein await, sofort Ergebnis setzen
+        }
+
+        // Danach Navigation
+        if (Navigation.ModalStack.Any())
+        {
+            await Navigation.PopModalAsync();
+        }
+
+        //if (!Navigation.ModalStack.Any())
+        //{
+        //    await CloseAsync(param);
+        //}
+        //else
+        //{
+        //    await Navigation.PopModalAsync();
+        //    await CloseAsync(param);
+        //}
     }
 }

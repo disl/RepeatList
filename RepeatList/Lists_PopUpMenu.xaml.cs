@@ -25,36 +25,68 @@ public partial class Lists_PopUpMenu : Popup<string>
 
     private async void OnEditHeaderClicked(object sender, EventArgs e)
     {
-       await CloseAsync("Edit");
+        //await CloseAsync("Edit");
+        await CloseMe("Edit");
     }
 
     private async void OnDeleteHeaderClicked(object sender, EventArgs e)
     {
-        await CloseAsync("Delete");
+        //await CloseAsync("Delete");
+        await CloseMe("Delete");
     }
 
     private async void Sync_list_upClicked(object sender, EventArgs e)
     {
-        await CloseAsync("SyncUp");
+        //await CloseAsync("SyncUp");
+        await CloseMe("SyncUp");
     }
 
     private async void Sync_removeClicked(object sender, EventArgs e)
     {
-        await CloseAsync("SyncDelete");
+        //await CloseAsync("SyncDelete");
+        await CloseMe("SyncDelete");
     }
 
     private async void CancelButtonClicked(object sender, EventArgs e)
     {
-        await CloseAsync("");
+        //await CloseAsync("");
+        await CloseMe("");
     }
 
     private async void Export_list_Clicked(object sender, EventArgs e)
     {
-       await CloseAsync("Export");
+        //await CloseAsync("Export");
+        await CloseMe("Export");
     }
 
     private async void Import_list_Clicked(object sender, EventArgs e)
     {
-        await CloseAsync("Import");
+        //await CloseAsync("Import");
+        await CloseMe("Import");
+    }
+
+    async Task CloseMe(dynamic param)
+    {
+        // Popup zuerst schlieﬂen
+        if (Handler != null)
+        {
+            CloseAsync(param); // Bei Popup<TResult> -> kein await, sofort Ergebnis setzen
+        }
+
+        // Danach Navigation
+        if (Navigation.ModalStack.Any())
+        {
+            await Navigation.PopModalAsync();
+        }
+
+        //if (!Navigation.ModalStack.Any())
+        //{
+        //    await CloseAsync(param);
+        //}
+        //else
+        //{
+        //    await Navigation.PopModalAsync();
+        //    await CloseAsync(param);
+        //}
     }
 }
