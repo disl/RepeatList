@@ -49,16 +49,37 @@ public partial class Positions_Edit : Popup<object>
         await CloseMe(ViewModel.SelectedItem);
     }
 
-    async Task CloseMe(dynamic? param)
+    async Task CloseMe(object? param)
     {
-        if (!Navigation.ModalStack.Any())
+        try
         {
             await CloseAsync(param);
         }
-        else
+        catch (Exception ex)
         {
-            await Navigation.PopModalAsync();
-            await CloseAsync(param);
+            SentrySdk.CaptureException(ex);
+            throw;
         }
     }
+
+    //async Task CloseMe(dynamic? param)
+    //{
+    //    try
+    //    {
+    //        if (!Navigation.ModalStack.Any())
+    //        {
+    //            await CloseAsync(param);
+    //        }
+    //        else
+    //        {
+    //            await Navigation.PopModalAsync();
+    //            await CloseAsync(param);
+    //        }
+    //    }
+    //    catch (Exception ex)
+    //    {
+    //        SentrySdk.CaptureException(ex);
+    //        throw;
+    //    }
+    //}
 }

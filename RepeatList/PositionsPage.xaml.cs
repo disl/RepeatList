@@ -3,6 +3,7 @@ using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Maui.Core;
 using CommunityToolkit.Maui.Core.Extensions;
 using CommunityToolkit.Maui.Extensions;
+using CommunityToolkit.Maui.Views;
 using Newtonsoft.Json;
 using RepeatList.Models;
 using RepeatList.ViewModels;
@@ -751,49 +752,70 @@ namespace RepeatList
             }
         }
 
+
+        private Positions_Edit? _currentPopup_Positions_Edit;
+
+
         private async void PositionListView_ItemTapped(object sender, ItemTappedEventArgs e)
         {
-            if (e.Item == null)
-                return;
-
-            ViewModel.Position_selectedItem = e.Item as Position;
-
-            var popup = new Positions_Edit(ViewModel.Position_selectedItem);
-            var result = await Shell.Current.ShowPopupAsync<object>(popup);
-
-            if (result == null || result.Result == null)
-                return;
-
-            if (result.Result is Position)
+            try
             {
-                var position = (Position)result.Result;
-                string new_title = position.Title.Trim();
-                if (string.IsNullOrWhiteSpace(new_title))
+                if (e.Item == null)
                     return;
-                // Update the title of the position
-                if (ViewModel.Position_selectedItem != null && ViewModel.Position_selectedItem.Id == position.Id)
-                {
-                    ViewModel.Position_selectedItem.Title = new_title;
 
-                    if (await ViewModel.EditTitleOfPosition(position, new_title))
+                ViewModel.Position_selectedItem = e.Item as Position;
 
-                        // Refresh the selected item to update the UI
-                        //PositionListView.ScrollTo(ViewModel.Position_selectedItem, null, ScrollToPosition.MakeVisible, false);
-                        //MySearchBar.Text = new_title;
-                        PositionListView.ScrollTo(ViewModel.Position_selectedItem, ScrollToPosition.Center, true);
-                }
-            }
-            else if (result.Result.ToString().ToLower() == "delete")
-            {
-                // Delete the position
-                if (ViewModel.Position_selectedItem != null)
+                if (_currentPopup_Positions_Edit == null)
                 {
-                    if (await ViewModel.DeletePosition(ViewModel.Position_selectedItem))
+
+                    _currentPopup_Positions_Edit = new Positions_Edit(ViewModel.Position_selectedItem);
+
+                    //var popup = new Positions_Edit(ViewModel.Position_selectedItem);
+                    var result = await this.ShowPopupAsync<object>(_currentPopup_Positions_Edit);
+
+                    // Nach dem Schließen Instanz vergessen
+                    _currentPopup_Positions_Edit = null;
+
+                    if (result == null || result.Result == null)
+                        return;
+
+                    if (result.Result is Position)
                     {
-                        ViewModel.Position_selectedItem = null;
-                        //PositionListView.ScrollTo(e.CurrentSelection[0], position, ScrollToPosition.Center, false);
+                        var position = (Position)result.Result;
+                        string new_title = position.Title.Trim();
+                        if (string.IsNullOrWhiteSpace(new_title))
+                            return;
+                        // Update the title of the position
+                        if (ViewModel.Position_selectedItem != null && ViewModel.Position_selectedItem.Id == position.Id)
+                        {
+                            ViewModel.Position_selectedItem.Title = new_title;
+
+                            if (await ViewModel.EditTitleOfPosition(position, new_title))
+
+                                // Refresh the selected item to update the UI
+                                //PositionListView.ScrollTo(ViewModel.Position_selectedItem, null, ScrollToPosition.MakeVisible, false);
+                                //MySearchBar.Text = new_title;
+                                PositionListView.ScrollTo(ViewModel.Position_selectedItem, ScrollToPosition.Center, true);
+                        }
+                    }
+                    else if (result.Result.ToString().ToLower() == "delete")
+                    {
+                        // Delete the position
+                        if (ViewModel.Position_selectedItem != null)
+                        {
+                            if (await ViewModel.DeletePosition(ViewModel.Position_selectedItem))
+                            {
+                                ViewModel.Position_selectedItem = null;
+                                //PositionListView.ScrollTo(e.CurrentSelection[0], position, ScrollToPosition.Center, false);
+                            }
+                        }
                     }
                 }
+            }
+            catch (Exception ex)
+            {
+                SentrySdk.CaptureException(ex);
+                throw;
             }
         }
 
