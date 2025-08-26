@@ -87,12 +87,11 @@ public partial class ListPage_Input : Popup<object>
             case "ru": language = "Russian"; break;
         }
 
-        var prompt = $"JSON list for a {DeepSeekEditor.Text}. Complete recipe as text with the desired nested structure. " +
+        var prompt = $"JSON list for a '{DeepSeekEditor.Text}'. Complete recipe as text with the desired nested structure. " +
             $"\"Header (Title + Description + Sequence_text) and Items (Description + Quantity)\", in {language}. Do not translate structure! " +
-            $"Only if it is a cooking recipe, state the number of people the recipe is intended for in the description.";
+            $"Only if it is a cooking recipe, state the number of people the recipe is intended for in the description. " +
+            $"JSON must not contain any strings that interfere with JSON parsing.";
 
-        //Task.Run(async () =>
-        //{
         string json;
 
         try
@@ -125,10 +124,12 @@ public partial class ListPage_Input : Popup<object>
 
                         if (jsonObject != null)
                         {
-                            await CloseMe(jsonObject);
-
                             // Sortierung nach Alphabet
                             Preferences.Set(listsPageViewModel.SelectedItem_KindOfSorting_key_name_undone, "alpha");
+
+                            UpdateStatusLabel();
+
+                            await CloseMe(jsonObject); 
                         }
                         else
                         {
@@ -166,7 +167,7 @@ public partial class ListPage_Input : Popup<object>
             Activity_Indicator.IsEnabled = false;
             Activity_Indicator.IsRunning = false;
 
-            UpdateStatusLabel();
+            //UpdateStatusLabel();
         }
     }
 
