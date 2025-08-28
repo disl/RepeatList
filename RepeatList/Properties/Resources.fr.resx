@@ -453,4 +453,7 @@ Demandez à ChatGPT &amp; Co. de vous créer une liste sur le thème de votre ch
   <data name="Free_queries" xml:space="preserve">
     <value>Requêtes libres</value>
   </data>
+  <data name="The_chat_response_was_unsuccessful" xml:space="preserve">
+    <value>La réponse au chat n'a pas abouti. Veuillez modifier l'invite et réessayer.</value>
+  </data>
 </root>

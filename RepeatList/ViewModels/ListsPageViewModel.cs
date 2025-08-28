@@ -257,7 +257,7 @@ namespace RepeatList.ViewModels
 
         public async Task<bool> InputHeaderWithPositionsDeepSeek(ChatResponseType.Root input_object)
         {
-            if (input_object == null)
+            if (input_object == null || input_object.Header == null)
             {
                 IsBusy = false;
                 return false;

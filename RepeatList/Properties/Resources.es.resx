@@ -456,4 +456,7 @@ Deje que ChatGPT &amp; Co. le cree una lista sobre el tema que desee, ya sea «p
   <data name="Free_queries" xml:space="preserve">
     <value>Consultas libres</value>
   </data>
+  <data name="The_chat_response_was_unsuccessful" xml:space="preserve">
+    <value>La respuesta del chat no se ha realizado correctamente. Cambie el mensaje y vuelva a intentarlo.</value>
+  </data>
 </root>

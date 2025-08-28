@@ -90,7 +90,7 @@ public partial class ListPage_Input : Popup<object>
         var prompt = $"JSON list for a '{DeepSeekEditor.Text}'. Complete recipe as text with the desired nested structure. " +
             $"\"Header (Title + Description + Sequence_text) and Items (Description + Quantity)\", in {language}. Do not translate structure! " +
             $"Only if it is a cooking recipe, state the number of people the recipe is intended for in the description. " +
-            $"JSON must not contain any strings that interfere with JSON parsing.";
+            $"JSON must not contain any strings that interfere with JSON parsing.Do not use sublists.";
 
         string json;
 

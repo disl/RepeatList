@@ -453,4 +453,7 @@ Let ChatGPT &amp; Co. create a list for you on your desired topic – whether it
   <data name="Free_queries" xml:space="preserve">
     <value>Free queries</value>
   </data>
+  <data name="The_chat_response_was_unsuccessful" xml:space="preserve">
+    <value>The chat response was unsuccessful. Please change the prompt and try again.</value>
+  </data>
 </root>

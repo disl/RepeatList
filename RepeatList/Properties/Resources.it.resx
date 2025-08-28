@@ -453,4 +453,7 @@ Lasciate che ChatGPT &amp; Co. creino un elenco sul tema che desiderate, che si 
   <data name="Free_queries" xml:space="preserve">
     <value>Richieste libere</value>
   </data>
+  <data name="The_chat_response_was_unsuccessful" xml:space="preserve">
+    <value>La risposta alla chat non ha avuto esito positivo. Modifica il prompt e riprova.</value>
+  </data>
 </root>

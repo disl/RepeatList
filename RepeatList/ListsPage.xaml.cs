@@ -225,6 +225,19 @@ namespace RepeatList
                 if (new_list_name is ChatResponseType.Root)
                 {
                     // DeepSeek-List
+                    var deeepseek_obj = new_list_name as ChatResponseType.Root;
+                    if (deeepseek_obj != null && (deeepseek_obj.Header == null || deeepseek_obj.Items == null))
+                    {                         
+                        await Application.Current.MainPage.DisplaySnackbar(Properties.Resources.The_chat_response_was_unsuccessful,
+                                    visualOptions: new SnackbarOptions
+                                    {
+                                        BackgroundColor = Color.FromArgb(Constantes.Color_Warning_string),
+                                        TextColor = Colors.White
+                                    }, duration: TimeSpan.FromSeconds(7));
+                        IsBusy = false;
+                        return;
+                    }
+
                     await ViewModel.InputHeaderWithPositionsDeepSeek(new_list_name as ChatResponseType.Root);
                     return;
 

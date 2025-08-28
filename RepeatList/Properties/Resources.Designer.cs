@@ -912,6 +912,15 @@ namespace RepeatList.Properties {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die The chat response was unsuccessful. Please change the prompt and try again. ähnelt.
+        /// </summary>
+        public static string The_chat_response_was_unsuccessful {
+            get {
+                return ResourceManager.GetString("The_chat_response_was_unsuccessful", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die The clipboard is empty ähnelt.
         /// </summary>
         public static string The_clipboard_is_empty {

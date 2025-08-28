@@ -453,4 +453,7 @@
   <data name="Free_queries" xml:space="preserve">
     <value>Бесплатные запросы</value>
   </data>
+  <data name="The_chat_response_was_unsuccessful" xml:space="preserve">
+    <value>Ответ в чате не удался. Измените запрос и попробуйте еще раз.</value>
+  </data>
 </root>

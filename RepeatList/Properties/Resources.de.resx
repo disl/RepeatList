@@ -453,4 +453,7 @@ Lassen Sie sich von ChatGPT &amp; Co. eine Liste zu Ihrem Wunschthema erstellen 
   <data name="Free_queries" xml:space="preserve">
     <value>Freie Anfragen</value>
   </data>
+  <data name="The_chat_response_was_unsuccessful" xml:space="preserve">
+    <value>Die Chat-Antwort war nicht erfolgreich. Bitte ändern Sie die Eingabeaufforderung und versuchen Sie es erneut.</value>
+  </data>
 </root>
