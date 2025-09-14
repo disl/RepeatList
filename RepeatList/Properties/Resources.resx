@@ -456,4 +456,10 @@ Let ChatGPT &amp; Co. create a list for you on your desired topic – whether it
   <data name="The_chat_response_was_unsuccessful" xml:space="preserve">
     <value>The chat response was unsuccessful. Please change the prompt and try again.</value>
   </data>
+  <data name="Create_Spotify_playlist" xml:space="preserve">
+    <value>Create Spotify playlist</value>
+  </data>
+  <data name="Export_to_Spotify" xml:space="preserve">
+    <value>Export to Spotify</value>
+  </data>
 </root>

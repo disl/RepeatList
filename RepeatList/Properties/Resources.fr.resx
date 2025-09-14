@@ -411,6 +411,9 @@ Demandez à ChatGPT &amp; Co. de vous créer une liste sur le thème de votre ch
   <data name="Purchase_failed_Try_again" xml:space="preserve">
     <value>L'achat a échoué. Veuillez réessayer.</value>
   </data>
+  <data name="Restore" xml:space="preserve">
+    <value>Restaurer</value>
+  </data>
   <data name="Success" xml:space="preserve">
     <value>Succès</value>
   </data>
@@ -422,9 +425,6 @@ Demandez à ChatGPT &amp; Co. de vous créer une liste sur le thème de votre ch
   </data>
   <data name="Premium_restored" xml:space="preserve">
     <value>Premium restauré</value>
-  </data>
-  <data name="Restore" xml:space="preserve">
-    <value>Restaurer</value>
   </data>
   <data name="insufficient_credit" xml:space="preserve">
     <value>Crédit insuffisant. Veuillez acheter davantage pour continuer à utiliser le service.</value>
@@ -455,5 +455,11 @@ Demandez à ChatGPT &amp; Co. de vous créer une liste sur le thème de votre ch
   </data>
   <data name="The_chat_response_was_unsuccessful" xml:space="preserve">
     <value>La réponse au chat n'a pas abouti. Veuillez modifier l'invite et réessayer.</value>
+  </data>
+  <data name="Create_Spotify_playlist" xml:space="preserve">
+    <value>Créer une liste Spotify</value>
+  </data>
+  <data name="Export_to_Spotify" xml:space="preserve">
+    <value>Exporter vers Spotify</value>
   </data>
 </root>

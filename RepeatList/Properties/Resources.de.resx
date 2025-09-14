@@ -396,11 +396,14 @@ Lassen Sie sich von ChatGPT &amp; Co. eine Liste zu Ihrem Wunschthema erstellen 
   <data name="Buy_Premium_Subscription" xml:space="preserve">
     <value>Premium-Abo kaufen 2,99€/Monat</value>
   </data>
-  <data name="Error" xml:space="preserve">
-    <value>Fehler</value>
-  </data>
   <data name="Premium_active" xml:space="preserve">
     <value>Premium aktiv</value>
+  </data>
+  <data name="Tokens_left" xml:space="preserve">
+    <value>Verbleibende Tokens</value>
+  </data>
+  <data name="Error" xml:space="preserve">
+    <value>Fehler</value>
   </data>
   <data name="Premium_subscription_activated" xml:space="preserve">
     <value>Premium-Abonnement aktiviert</value>
@@ -408,20 +411,14 @@ Lassen Sie sich von ChatGPT &amp; Co. eine Liste zu Ihrem Wunschthema erstellen 
   <data name="Purchase_failed_Try_again" xml:space="preserve">
     <value>Der Kauf ist fehlgeschlagen. Versuchen Sie es erneut.</value>
   </data>
+  <data name="Restore" xml:space="preserve">
+    <value>Wiederherstellen</value>
+  </data>
   <data name="Success" xml:space="preserve">
     <value>Erfolg</value>
   </data>
   <data name="Thank You" xml:space="preserve">
     <value>Danke</value>
-  </data>
-  <data name="Tokens_left" xml:space="preserve">
-    <value>Verbleibende Tokens</value>
-  </data>
-  <data name="Thank_you_for_your_purchase" xml:space="preserve">
-    <value>Danke für den Kauf!</value>
-  </data>
-  <data name="Restore" xml:space="preserve">
-    <value>Wiederherstellen</value>
   </data>
   <data name="No_purchases_found" xml:space="preserve">
     <value>Keine Einkäufe gefunden</value>
@@ -437,6 +434,9 @@ Lassen Sie sich von ChatGPT &amp; Co. eine Liste zu Ihrem Wunschthema erstellen 
   </data>
   <data name="The_remaining_credit_is" xml:space="preserve">
     <value>Gutschrift: %1</value>
+  </data>
+  <data name="Thank_you_for_your_purchase" xml:space="preserve">
+    <value>Danke für den Kauf!</value>
   </data>
   <data name="add_list" xml:space="preserve">
     <value>Liste hinzufügen</value>
@@ -455,5 +455,11 @@ Lassen Sie sich von ChatGPT &amp; Co. eine Liste zu Ihrem Wunschthema erstellen 
   </data>
   <data name="The_chat_response_was_unsuccessful" xml:space="preserve">
     <value>Die Chat-Antwort war nicht erfolgreich. Bitte ändern Sie die Eingabeaufforderung und versuchen Sie es erneut.</value>
+  </data>
+  <data name="Create_Spotify_playlist" xml:space="preserve">
+    <value>Spotify-Liste erstellen</value>
+  </data>
+  <data name="Export_to_Spotify" xml:space="preserve">
+    <value>Nach Spotify exportieren</value>
   </data>
 </root>

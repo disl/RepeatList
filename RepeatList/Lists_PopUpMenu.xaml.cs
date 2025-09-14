@@ -1,11 +1,13 @@
 using CommunityToolkit.Maui.Views;
 using RepeatList.Models;
+using RepeatList.Services;
 
 namespace RepeatList;
 
 public partial class Lists_PopUpMenu : Popup<string>
 {
     public Header SelectedItem { get; set; }
+    private readonly SpotifyService _spotifyService = new SpotifyService();
 
     public Lists_PopUpMenu()
     {
@@ -88,5 +90,10 @@ public partial class Lists_PopUpMenu : Popup<string>
         //    await Navigation.PopModalAsync();
         //    await CloseAsync(param);
         //}
+    }
+
+    private async void Export_list_spotifyClicked(object sender, EventArgs e)
+    {
+       await CloseAsync("ExportSpotify");
     }
 }

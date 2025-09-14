@@ -17,8 +17,22 @@
 		 <!--<meta-data android:name="com.google.android.gms.ads.APPLICATION_ID"	
 				   android:value="ca-app-pub-3940256099942544~6300978111"/>-->
 			<meta-data android:name="com.google.android.gms.ads.APPLICATION_ID"	
-				   android:value="ca-app-pub-9459821903521146~5965979832"/>   
+				   android:value="ca-app-pub-9459821903521146~5965979832"/>
+
+
+
+		<activity android:name=".AuthActivity" android:exported="true">
+			<intent-filter>
+				<action android:name="android.intent.action.VIEW" />
+				<category android:name="android.intent.category.DEFAULT" />
+				<category android:name="android.intent.category.BROWSABLE" />
+				<data android:scheme="com.companyname.repeatlist" android:host="auth" />
+			</intent-filter>
+		</activity>
+		
 	</application>
+
+	
 
 
 </manifest>

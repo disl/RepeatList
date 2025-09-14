@@ -20,12 +20,18 @@
                  BackgroundColor="{x:Static models:Constantes.Color_Warning}"
                 Clicked="OnDeleteHeaderClicked"  CommandParameter="{Binding}" />
         
+        <!-- Import-Export -->
         <Label Text="{x:Static properties:Resources.Import_export_of_lists}"  FontSize="Medium" TextColor="White" />
         <Button  Text="{x:Static properties:Resources.Export_list}" TextColor="White" 
                 Clicked="Export_list_Clicked"  CommandParameter="{Binding}"  />
+        <Button  Text="{x:Static properties:Resources.Export_to_Spotify}" TextColor="White" 
+                Clicked="Export_list_spotifyClicked"  CommandParameter="{Binding}"  />
         <Button  Text="{x:Static properties:Resources.import_liste}" TextColor="White" 
                 Clicked="Import_list_Clicked"  CommandParameter="{Binding}"  />
+        
+        
 
+        <!-- Synchronisation -->
         <Label x:Name="Synchronisation_of_listsLabel" Text="{x:Static properties:Resources.Synchronisation_of_lists}"  FontSize="Medium" TextColor="White" />
         <Button x:Name="Send_synchronisationButton" Text="{x:Static properties:Resources.Send_synchronisation}" TextColor="White" 
                 Clicked="Sync_list_upClicked"  CommandParameter="{Binding}"   />

@@ -214,6 +214,15 @@ namespace RepeatList.Properties {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Create Spotify playlist ähnelt.
+        /// </summary>
+        public static string Create_Spotify_playlist {
+            get {
+                return ResourceManager.GetString("Create_Spotify_playlist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Delete ähnelt.
         /// </summary>
         public static string delete {
@@ -365,6 +374,15 @@ namespace RepeatList.Properties {
         public static string Export_not_completed_as_a_text_list {
             get {
                 return ResourceManager.GetString("Export_not_completed_as_a_text_list", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Export to Spotify ähnelt.
+        /// </summary>
+        public static string Export_to_Spotify {
+            get {
+                return ResourceManager.GetString("Export_to_Spotify", resourceCulture);
             }
         }
         

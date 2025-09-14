@@ -9,11 +9,11 @@
              xmlns:properties="clr-namespace:RepeatList.Properties" 
              xmlns:system="clr-namespace:System;assembly=System.Runtime"
              x:TypeArguments="system:Object"
-             MaximumHeightRequest="600"
+             MaximumHeightRequest="550"
              BackgroundColor="Grey" >
 
     <ScrollView>
-        <VerticalStackLayout    >
+        <VerticalStackLayout  >
 
 
 
@@ -21,17 +21,19 @@
             <Label Text="{x:Static properties:Resources.Enter_a_list_name_or_insert_a_ready_made}"  
                    TextColor="{DynamicResource PrimaryTextColorLight}"
                    HorizontalOptions="Center"
-                   FontSize="Medium"  />
+                   FontSize="15"  />
 
-            <!-- Eingabefeld mit MaxLength -->
-            <ScrollView MaximumHeightRequest="200">
-                <Editor x:Name="ListNameEditor" 
+            <Grid ColumnDefinitions="*,auto" ColumnSpacing="3"  >
+                <!-- Eingabefeld mit MaxLength -->
+                <ScrollView MaximumHeightRequest="200" Grid.Column="0">
+                    <Editor x:Name="ListNameEditor" 
                     TextColor="{DynamicResource PrimaryTextColorLight}"                          
                     AutoSize="TextChanges" />
-            </ScrollView>
+                </ScrollView>
 
-            <!-- Buttons -->
-            <Button Text="OK" Grid.Column="0" Clicked="OnOkClicked" />
+                <!-- Buttons -->
+                <Button Text="OK" Grid.Column="1"  Clicked="OnOkClicked" />
+            </Grid>
 
             <!-- DeepSeek -->
 
@@ -47,22 +49,30 @@
                     />-->
 
 
-            <VerticalStackLayout Margin="0,20,0,0" Spacing="3">
+            <VerticalStackLayout Margin="0,5,0,0" Spacing="3">
                 <!-- Kopfzeile mit Icon und Text -->
                 <Label Text="{x:Static properties:Resources.What_would_you_like_to_create_a_chat_based_list_for}"  
                            TextColor="{DynamicResource PrimaryTextColorLight}"
                            HorizontalOptions="Center"                          
-                           FontSize="Medium"  />
+                           FontSize="15"  />
                 <Entry x:Name="DeepSeekEditor" 
                            TextColor="{DynamicResource PrimaryTextColorLight}"  
                            ClearButtonVisibility="WhileEditing"
-                           Completed="DeepSeekEditor_Completed"
-                           
-                       />
 
-                <Button x:Name="OnDeepSeekButton"
+                       />
+                <!--Completed="DeepSeekEditor_Completed"-->
+                <Grid ColumnDefinitions="*,*" ColumnSpacing="3"  >
+                    <Button x:Name="OnDeepSeekButton"
                         Text="OK" 
+                            Grid.Column="0"
                         Clicked="OnDeepSeekClicked" />
+
+                    <Button x:Name="OnDeepSeek_SpotifyButton"
+                        Text="{x:Static properties:Resources.Create_Spotify_playlist}" 
+                             Grid.Column="1"
+                        Clicked="OnDeepSeek_SpotifyClicked" />
+                </Grid>
+
                 <!--<Button x:Name="OnPayPremiumButton" 
                         Text="{x:Static properties:Resources.Buy_Premium_Subscription}"  
                         BackgroundColor="{x:Static models:Constantes.Color_Warning}" 
@@ -79,7 +89,7 @@
                         Text="{x:Static properties:Resources.Buy_requests_099}" 
                         Clicked="OnBuyTokenPack"
                         BackgroundColor="#FF9800"
-                        Margin="0,15,0,0"
+                        Margin="0,5,0,0"
                         TextColor="White" />
 
                 <ActivityIndicator x:Name="Activity_Indicator" HeightRequest="30" Color="Crimson" />

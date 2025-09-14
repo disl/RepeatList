@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using RepeatList.Models;
 using RepeatList.Services;
 using RepeatList.ViewModels;
+using System.ComponentModel.Design;
 using static Android.Renderscripts.ScriptGroup;
 
 namespace RepeatList;
@@ -10,6 +11,13 @@ namespace RepeatList;
 public partial class ListPage_Input : Popup<object>
 {
     private const string DailyQueryCountKey = "QueriesToday";
+    private enum DeepSeekType
+    {
+        Unknown,
+        General,
+        Spotify,
+
+    }
 
     ListsPageViewModel listsPageViewModel = new();
     private readonly InAppBillingService _billing = new();
@@ -47,6 +55,16 @@ public partial class ListPage_Input : Popup<object>
 
     private async void OnDeepSeekClicked(object sender, EventArgs e)
     {
+        bool flowControl = await ForOnDeepSeekClicked(DeepSeekType.General);
+        if (!flowControl)
+        {
+            return;
+        }
+    }
+
+    private async Task<bool> ForOnDeepSeekClicked(DeepSeekType Mode)
+    {
+        string prompt = string.Empty;
         var deviceID = GetDeviceID();
         var CanExecutePremium = await _billing.CanExecuteQueryAsync();
         var CanExecuteQueryForFree = await _billing.CanExecuteQueryForFreeAsync(true);
@@ -55,20 +73,20 @@ public partial class ListPage_Input : Popup<object>
         if (!CanExecuteQueryForFree && !CanExecutePremium)
         {
             await Shell.Current.DisplayAlert(Properties.Resources.Error, Properties.Resources.Free_daily_limit_reached, "OK");
-            return;
+            return false;
         }
 
         if (deviceID != null && !listsPageViewModel.DeviceList.Contains(deviceID) && !CanExecutePremium && !CanExecuteQueryForFree)
         {
             await Shell.Current.DisplayAlert(Properties.Resources.premium_feature, Properties.Resources.Only_available_in_the_premium_version, "OK");
-            return;
+            return false;
         }
 
         if (string.IsNullOrEmpty(DeepSeekEditor.Text))
-            return;
+            return false;
 
         if (Thread.CurrentThread.CurrentCulture == null)
-            return;
+            return false;
 
         Activity_Indicator.IsEnabled = true;
         Activity_Indicator.IsRunning = true;
@@ -87,12 +105,19 @@ public partial class ListPage_Input : Popup<object>
             case "ru": language = "Russian"; break;
         }
 
-        var prompt = $"JSON list for a '{DeepSeekEditor.Text}'. Complete recipe as text with the desired nested structure. " +
+        if (Mode == DeepSeekType.Spotify)
+            prompt = $"Create a JSON list for a Spotify playlist based on the following description: '{DeepSeekEditor.Text}'. " +
+                $"The JSON should have a \"Header\" (title, description), and an \"Items\" array with each track's (artist, title). " +
+                $"Format the response in English. Do not translate the JSON structure! " +
+                $"Ensure the JSON is properly formatted and does not contain any extraneous text or characters that could interfere with parsing. " +
+                $"Do not use sublists.";
+        else
+            prompt = $"JSON list for a '{DeepSeekEditor.Text}'. Complete recipe as text with the desired nested structure. " +
             $"\"Header (Title + Description + Sequence_text) and Items (Description + Quantity)\", in {language}. Do not translate structure! " +
             $"Only if it is a cooking recipe, state the number of people the recipe is intended for in the description. " +
             $"JSON must not contain any strings that interfere with JSON parsing.Do not use sublists.";
 
-        string json;
+        string json=string.Empty;
 
         try
         {
@@ -101,16 +126,18 @@ public partial class ListPage_Input : Popup<object>
             if (response == null || string.IsNullOrEmpty(response.Content))
             {
                 await Shell.Current.DisplayAlert("Error", "No response from DeepSeek.", "OK");
-                return;
+                return false;
             }
 
             MainThread.BeginInvokeOnMainThread(async () =>
+            {
+                try
                 {
-                    try
-                    {
-                        if (!response.Content.Contains("```json"))
-                            return;
+                    if (!response.Content.Contains("```json") && !IsJSONString(response.Content))
+                        return;
 
+                    if (Mode == DeepSeekType.General)
+                    {
                         var json_start_ind = response.Content.IndexOf("```json");
                         var json_end_ind = response.Content.LastIndexOf("```");
                         if (json_start_ind < 0 || json_end_ind < 0 || json_end_ind <= json_start_ind)
@@ -120,32 +147,52 @@ public partial class ListPage_Input : Popup<object>
                         }
                         json = response.Content.Substring(json_start_ind, json_end_ind - json_start_ind);
                         json = json.Replace("json", "").Replace("```", "").Trim();
-                        var jsonObject = JsonConvert.DeserializeObject<ChatResponseType.Root>(json);
-
-                        if (jsonObject != null)
-                        {
-                            // Sortierung nach Alphabet
-                            Preferences.Set(listsPageViewModel.SelectedItem_KindOfSorting_key_name_undone, "alpha");
-
-                            UpdateStatusLabel();
-
-                            await CloseMe(jsonObject); 
-                        }
-                        else
-                        {
-                            await Shell.Current.DisplayAlert("Error", "Invalid JSON structure from DeepSeek.", "OK");
-
-                            m_isDeepSeekAllowed = false;
-                        }
                     }
-                    catch (Exception ex)
+                    else if (IsJSONString(response.Content))
                     {
-                        MainThread.BeginInvokeOnMainThread(() =>
-                        {
-                            Shell.Current.DisplayAlert("Error", ex.Message, "OK");
-                        });
+                        json = response.Content;
                     }
-                });
+                    else
+                    {
+                        await Shell.Current.DisplayAlert("Error", "Invalid response format from DeepSeek (2).", "OK");
+                        return;
+                    }
+
+                    dynamic? jsonObject = null;
+                    switch (Mode)
+                    {
+                        case DeepSeekType.Spotify:
+                            jsonObject = JsonConvert.DeserializeObject<ChatResponse_SpotifyType.Root>(json);
+                            break;
+                        case DeepSeekType.General:
+                            jsonObject = JsonConvert.DeserializeObject<ChatResponseType.Root>(json);
+                            break;
+                    }
+
+                    if (jsonObject != null)
+                    {
+                        // Sortierung nach Alphabet
+                        Preferences.Set(listsPageViewModel.SelectedItem_KindOfSorting_key_name_undone, "alpha");
+
+                        UpdateStatusLabel();
+
+                        await CloseMe(jsonObject);
+                    }
+                    else
+                    {
+                        await Shell.Current.DisplayAlert("Error", "Invalid JSON structure from DeepSeek.", "OK");
+
+                        m_isDeepSeekAllowed = false;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MainThread.BeginInvokeOnMainThread(() =>
+                    {
+                        Shell.Current.DisplayAlert("Error", ex.Message, "OK");
+                    });
+                }
+            });
         }
         catch (CreditIsInsufficientError)
         {
@@ -169,6 +216,23 @@ public partial class ListPage_Input : Popup<object>
 
             //UpdateStatusLabel();
         }
+
+        return true;
+    }
+
+    private bool IsJSONString(string content)
+    {
+        bool ret_val = false;
+        try
+        {
+            var obj = JsonConvert.DeserializeObject(content);
+            ret_val = true;
+        }
+        catch
+        {
+            ret_val = false;
+        }
+        return ret_val;
     }
 
     string? GetDeviceID()
@@ -187,7 +251,7 @@ public partial class ListPage_Input : Popup<object>
 
     private void DeepSeekEditor_Completed(object sender, EventArgs e)
     {
-        OnDeepSeekClicked(sender, e);
+        //OnDeepSeekClicked(sender, e);
     }
 
     private void ListNameEditor_Completed(object sender, EventArgs e)
@@ -308,5 +372,14 @@ public partial class ListPage_Input : Popup<object>
         //    await Navigation.PopModalAsync();
         //    await CloseAsync(param);
         //}
+    }
+
+    private async void OnDeepSeek_SpotifyClicked(object sender, EventArgs e)
+    {
+        bool flowControl = await ForOnDeepSeekClicked(DeepSeekType.Spotify);
+        if (!flowControl)
+        {
+            return;
+        }
     }
 }

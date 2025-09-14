@@ -242,6 +242,24 @@ namespace RepeatList
                     return;
 
                 }
+                else if (new_list_name is ChatResponse_SpotifyType.Root)
+                {
+                    // Spotify-List
+                    var spotify_obj = new_list_name as ChatResponse_SpotifyType.Root;
+                    if (spotify_obj != null && (spotify_obj.Header == null || spotify_obj.Items == null))
+                    {
+                        await Application.Current.MainPage.DisplaySnackbar(Properties.Resources.The_chat_response_was_unsuccessful,
+                                    visualOptions: new SnackbarOptions
+                                    {
+                                        BackgroundColor = Color.FromArgb(Constantes.Color_Warning_string),
+                                        TextColor = Colors.White
+                                    }, duration: TimeSpan.FromSeconds(7));
+                        IsBusy = false;
+                        return;
+                    }
+                    await ViewModel.InputHeaderWithPositionsSpotify(new_list_name as ChatResponse_SpotifyType.Root);
+                    return;
+                }
                 else if (Guid.TryParse(new_list_name.ToString(), out tmp_guid))
                 {
                     await ViewModel.Sync_list_downClicked(new_list_name.ToString());
