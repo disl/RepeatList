@@ -154,14 +154,14 @@ namespace RepeatList
 
             //try
             //{
-                foreach (var header in ViewModel.FilteredList)
+            foreach (var header in ViewModel.FilteredList)
+            {
+                if (header.IsSynchronized)
                 {
-                    if (header.IsSynchronized)
-                    {
-                        await ViewModel.Sync_list_downClicked(header.Id);
-                        Header.IsSupabaseOk = true;
-                    }
+                    await ViewModel.Sync_list_downClicked(header.Id);
+                    Header.IsSupabaseOk = true;
                 }
+            }
             //}
             //catch (Exception ex)
             //{
@@ -227,7 +227,7 @@ namespace RepeatList
                     // DeepSeek-List
                     var deeepseek_obj = new_list_name as ChatResponseType.Root;
                     if (deeepseek_obj != null && (deeepseek_obj.Header == null || deeepseek_obj.Items == null))
-                    {                         
+                    {
                         await Application.Current.MainPage.DisplaySnackbar(Properties.Resources.The_chat_response_was_unsuccessful,
                                     visualOptions: new SnackbarOptions
                                     {
@@ -329,7 +329,7 @@ namespace RepeatList
         {
             //var deviceID = GetDeviceID();
             var CanExecutePremium = await _billingService.CanExecuteQueryAsync();
-            var IsFreeLimitReached =  _billingService.IsFreeLimitReached();
+            var IsFreeLimitReached = _billingService.IsFreeLimitReached();
             //////return (deviceID != null && ViewModel.DeviceList.Contains(deviceID)) || CanExecutePremium;
             //return  CanExecutePremium;
             return CanExecutePremium || !IsFreeLimitReached;
@@ -557,7 +557,7 @@ namespace RepeatList
 
                 //ViewModel.IsBusy=false;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
 #if DEBUG
                 await DisplayAlert(Properties.Resources.Error, ex.Message + Environment.NewLine +
@@ -616,6 +616,8 @@ namespace RepeatList
                         await ForOnAddHeaderClicked(false); break;
                     case "Export":
                         await ViewModel.Export_list_Clicked(); break;
+                    case "ExportSpotify":
+                        await ViewModel.Export_list_Spotify_Clicked(); break;
                 }
 
             }
@@ -626,7 +628,7 @@ namespace RepeatList
 
         }
 
-        
+
     }
 }
 

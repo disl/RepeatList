@@ -640,6 +640,36 @@ namespace RepeatList.ViewModels
         }
 
         [RelayCommand]
+        public async Task Export_list_Spotify_Clicked()
+        {
+            Lists = (await _databaseService.GetPositionsAsync(Header_SelectedItem.Id)).ToObservableCollection();
+            if (Lists == null || Lists.Count == 0 || Header == null)
+            {
+                IsBusy = false;
+                return;
+            }
+            IsBusy = true;
+
+            Header header = Header_SelectedItem;
+            header.Positions = Lists.ToList();
+
+
+
+
+
+
+            //var settings = new JsonSerializerSettings();
+            //settings.Converters.Add(new OnlyPositionsJsonConverter());
+            //var json = JsonConvert.SerializeObject(header, settings);
+
+            //var send_text = Properties.Resources.Please_copy_this_text_to_the_clipboard_and_import_it_via_the_hamburger_menu.Replace("%1", json);
+
+            //await Utilities.ShareTextAsync(send_text);
+
+            IsBusy = false;
+        }
+
+        [RelayCommand]
         public void Reset_current_list_Clicked()
         {
             int trail = 1;
