@@ -9,7 +9,7 @@
              xmlns:properties="clr-namespace:RepeatList.Properties" 
              xmlns:system="clr-namespace:System;assembly=System.Runtime"
              x:TypeArguments="system:Object"
-             MaximumHeightRequest="550"
+             MaximumHeightRequest="500"
              BackgroundColor="Grey" >
 
     <ScrollView>

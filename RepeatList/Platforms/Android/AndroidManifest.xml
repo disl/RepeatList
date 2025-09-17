@@ -20,15 +20,26 @@
 				   android:value="ca-app-pub-9459821903521146~5965979832"/>
 
 
+		<activity android:name="RepeatList.Platforms.Android.WebAuthenticatorCallbackActivity" 
+				  android:noHistory="true"
+				  android:launchMode="singleTop"
+				  android:exported="true">
+			<intent-filter>
+				<action android:name="android.intent.action.VIEW" />
+				<category android:name="android.intent.category.DEFAULT" />
+				<category android:name="android.intent.category.BROWSABLE" />
+				<data android:scheme="repeatlist" android:host="callback" />
+			</intent-filter>
+		</activity>
 
-		<activity android:name=".AuthActivity" android:exported="true">
+		<!--<activity android:name=".AuthActivity" android:exported="true">
 			<intent-filter>
 				<action android:name="android.intent.action.VIEW" />
 				<category android:name="android.intent.category.DEFAULT" />
 				<category android:name="android.intent.category.BROWSABLE" />
 				<data android:scheme="com.companyname.repeatlist" android:host="auth" />
 			</intent-filter>
-		</activity>
+		</activity>-->
 		
 	</application>
 

@@ -17,6 +17,7 @@ namespace RepeatList.ViewModels
     {
         private DatabaseService _databaseService;
         private SupabaseService? _supabaseService;
+        private readonly SpotifyService _spotifyService = new SpotifyService();
 
         [ObservableProperty] public static List<string> deviceList = new();
 
@@ -653,7 +654,7 @@ namespace RepeatList.ViewModels
             Header header = Header_SelectedItem;
             header.Positions = Lists.ToList();
 
-
+            await _spotifyService.AuthenticateAsync();
 
 
 

@@ -596,30 +596,43 @@ namespace RepeatList
 
         private async void OnBurgerMenuTapped(object sender, TappedEventArgs e)
         {
-            if (sender is ImageButton button)
+            try
             {
-                var popup = new Lists_PopUpMenu((Header)button.CommandParameter, ViewModel.SupabaseService_ready);
-                var result = await Shell.Current.ShowPopupAsync<string>(popup);
-                switch (result.Result)
+                if (sender is ImageButton button)
                 {
-                    case "Edit":
-                        await OnEditHeaderClicked(button, e); break;
-                    case "Delete":
-                        await OnDeleteHeaderClicked(button, e); break;
+                    var popup = new Lists_PopUpMenu((Header)button.CommandParameter, ViewModel.SupabaseService_ready);
+                    var result = await Shell.Current.ShowPopupAsync<string>(popup);
+                    switch (result.Result)
+                    {
+                        case "Edit":
+                            await OnEditHeaderClicked(button, e); break;
+                        case "Delete":
+                            await OnDeleteHeaderClicked(button, e); break;
 
-                    case "SyncUp":
-                        await Sync_list_upClicked(button, e); break;
-                    case "SyncDelete":
-                        await Sync_deleteClicked(button, e); break;
+                        case "SyncUp":
+                            await Sync_list_upClicked(button, e); break;
+                        case "SyncDelete":
+                            await Sync_deleteClicked(button, e); break;
 
-                    case "Import":
-                        await ForOnAddHeaderClicked(false); break;
-                    case "Export":
-                        await ViewModel.Export_list_Clicked(); break;
-                    case "ExportSpotify":
-                        await ViewModel.Export_list_Spotify_Clicked(); break;
+                        case "Import":
+                            await ForOnAddHeaderClicked(false); break;
+                        case "Export":
+                            await ViewModel.Export_list_Clicked(); break;
+                        case "ExportSpotify":
+                            await ViewModel.Export_list_Spotify_Clicked(); break;
+                    }
                 }
-
+            }
+            catch (Exception ex)
+            {
+#if DEBUG
+                await DisplayAlert(Properties.Resources.Error, ex.Message + Environment.NewLine +
+                    "--- Stack Trace ---" + Environment.NewLine + ex.StackTrace,
+                        Properties.Resources.yes);
+#else
+                await DisplayAlert(Properties.Resources.Error, ex.Message,
+                        Properties.Resources.yes);
+#endif
             }
         }
 

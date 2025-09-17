@@ -7,8 +7,8 @@ namespace RepeatList.Services
     public class SpotifyService
     {
         // developer.spotify.com/dashboard/applications 
-        private readonly string _clientId = "79d0aca896f242759bf9c8b435075efd"; // Ersetze mit deiner Client ID
-        private readonly string _redirectUri = "com.companyname.repeatlist://auth";  //"myapp://callback"; // Muss im Spotify Dashboard eingetragen sein
+        private readonly string _clientId = "5ab07e8eb1c84d3486dccd60767bb282";  // "79d0aca896f242759bf9c8b435075efd"; // Ersetze mit deiner Client ID
+        private readonly string _redirectUri = "repeatlist://callback";  //"myapp://callback"; // Muss im Spotify Dashboard eingetragen sein
         private SpotifyClient _spotify;
         private PKCEAuthenticator _authenticator;
 
