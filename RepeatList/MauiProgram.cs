@@ -9,6 +9,7 @@ namespace RepeatList
     using RepeatList.Controls;
 #if ANDROID
     using RepeatList.Platforms.Android;
+    using RepeatList.Services;
 #endif
 
     public static class MauiProgram
@@ -71,6 +72,10 @@ namespace RepeatList
             builder.Services.AddSingleton<HelpPage>();
 
             builder.Services.AddSingleton<Header>();
+
+            // Export file service
+            builder.Services.AddSingleton<IFileExportService, FileExportService>();
+   
 
 
             //builder.Services.AddSingleton<Header>();  // Falls global

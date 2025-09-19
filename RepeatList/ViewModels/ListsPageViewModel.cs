@@ -9,6 +9,7 @@ using RepeatList.Services;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Globalization;
+using System.Text;
 using Position = RepeatList.Models.Position;
 
 namespace RepeatList.ViewModels
@@ -21,7 +22,12 @@ namespace RepeatList.ViewModels
 
         [ObservableProperty] public static List<string> deviceList = new();
 
-        //public event PropertyChangedEventHandler PropertyChanged;
+        // File export
+        private readonly FileExportService _fileExportService;
+
+        [ObservableProperty] private bool _isExporting;
+
+        [ObservableProperty] private string _exportStatus;
 
         private SetupPageViewModel? setupPageViewModel;
 
@@ -29,20 +35,20 @@ namespace RepeatList.ViewModels
         public string SelectedItem_KindOfSorting_key_name_undone = "SelectedItem_KindOfSorting_undone";
         public double ButtonsSize = 25;
 
-       // [ObservableProperty] public bool deepSeekAllowed;
-       //partial void OnDeepSeekAllowedChanged(bool oldValue, bool newValue)
-       // {
-       //     if (newValue)
-       //     {
-       //         deepSeekNotAllowed = false;
-       //     }
-       //     else
-       //     {
-       //         deepSeekNotAllowed = true;
-       //     }
-       // }
+        // [ObservableProperty] public bool deepSeekAllowed;
+        //partial void OnDeepSeekAllowedChanged(bool oldValue, bool newValue)
+        // {
+        //     if (newValue)
+        //     {
+        //         deepSeekNotAllowed = false;
+        //     }
+        //     else
+        //     {
+        //         deepSeekNotAllowed = true;
+        //     }
+        // }
 
-       // [ObservableProperty] public bool deepSeekNotAllowed;
+        // [ObservableProperty] public bool deepSeekNotAllowed;
 
         [ObservableProperty] public string resetImageSource;
         [ObservableProperty] public bool supabaseService_ready;
@@ -50,6 +56,7 @@ namespace RepeatList.ViewModels
         public ListsPageViewModel()
         {
             _databaseService = new DatabaseService();
+            _fileExportService = new ();
 
             try
             {
@@ -77,6 +84,85 @@ namespace RepeatList.ViewModels
             InitSelectedItem_KindOfSorting_undone();
             SetResetImageSource();
         }
+
+        #region File export
+
+
+        [RelayCommand]
+        public async Task ExportListAsync(IEnumerable<string> items)
+        {
+            if (items == null || !items.Any())
+            {
+                await Shell.Current.DisplayAlert("Fehler", "Keine Daten zum Exportieren", "OK");
+                return;
+            }
+
+            IsExporting = true;
+            ExportStatus = "Exportiere...";
+
+            try
+            {
+                var timestamp = DateTime.Now.ToString("yyyyMMdd_HHmmss");
+                var filename = $"meine_liste_{timestamp}.txt";
+
+                var success = await _fileExportService.ExportToDownloadsAsync(filename, items);
+
+                if (success)
+                {
+                    ExportStatus = "Export erfolgreich!";
+                    await Shell.Current.DisplayAlert("Erfolg",
+                        $"Datei wurde im Downloads-Ordner gespeichert:\n{filename}", "OK");
+                }
+                else
+                {
+                    ExportStatus = "Export fehlgeschlagen";
+                    await Shell.Current.DisplayAlert("Fehler", "Export konnte nicht durchgeführt werden", "OK");
+                }
+            }
+            catch (Exception ex)
+            {
+                ExportStatus = "Fehler beim Export";
+                await Shell.Current.DisplayAlert("Fehler", $"Export fehlgeschlagen: {ex.Message}", "OK");
+            }
+            finally
+            {
+                IsExporting = false;
+            }
+        }
+
+        // Für komplexe Objekte
+        //[RelayCommand]
+        public async Task ExportAsCsvAsync<T>(IEnumerable<T> items, string filename = "export.csv")
+        {
+            try
+            {
+                var csvContent = new StringBuilder();
+
+                // Header
+                var properties = typeof(T).GetProperties();
+                var header = string.Join(",", properties.Select(p => p.Name));
+                csvContent.AppendLine(header);
+
+                // Daten
+                foreach (var item in items)
+                {
+                    var values = properties.Select(p =>
+                        $"\"{p.GetValue(item)?.ToString()?.Replace("\"", "\"\"")}\"");
+                    csvContent.AppendLine(string.Join(",", values));
+                }
+
+                await _fileExportService.ExportToDownloadsAsync(filename, csvContent.ToString());
+            }
+            catch (Exception ex)
+            {
+                await Shell.Current.DisplayAlert("Fehler", ex.Message, "OK");
+            }
+        }
+
+
+
+        #endregion
+
 
         private async Task GetDeviceIDs()
         {
@@ -654,9 +740,34 @@ namespace RepeatList.ViewModels
             Header header = Header_SelectedItem;
             header.Positions = Lists.ToList();
 
-            await _spotifyService.AuthenticateAsync();
+            // ChatGPT Spotify
+            // Authentifizierung
+            string YOUR_CLIENT_ID = "5ab07e8eb1c84d3486dccd60767bb282";
+
+            var authUrl = "https://accounts.spotify.com/authorize" +
+              $"?client_id={YOUR_CLIENT_ID}" +
+              "&response_type=code" +
+              "&redirect_uri=myapp://callback" +
+              "&scope=playlist-modify-private%20playlist-modify-public";
+
+            var result = await WebAuthenticator.Default.AuthenticateAsync(
+                new Uri(authUrl),
+                new Uri("myapp://callback")
+            );
+
+            var accessToken = result.Properties["code"];
+
+            await CreatePlaylistOnSpotify(accessToken);
 
 
+
+
+            // await _spotifyService.AuthenticateAsync();
+
+            // File export
+            //var timestamp = DateTime.Now.ToString("yyyyMMdd_HHmmss");
+            //var filename = $"spotify_list_{timestamp}.txt";
+            //var success = await _fileExportService.ExportToDownloadsAsync(filename, header.Positions.Where(s => !s.Title.StartsWith("_")).Select(x=>x.Title));
 
 
             //var settings = new JsonSerializerSettings();
@@ -668,6 +779,36 @@ namespace RepeatList.ViewModels
             //await Utilities.ShareTextAsync(send_text);
 
             IsBusy = false;
+        }
+
+        private async Task CreatePlaylistOnSpotify(string accessToken)
+        {
+            using var client = new HttpClient();
+            client.DefaultRequestHeaders.Authorization =
+                new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", accessToken);
+
+            var userResponse = await client.GetStringAsync("https://api.spotify.com/v1/me");
+            var user = System.Text.Json.JsonDocument.Parse(userResponse);
+            var userId = user.RootElement.GetProperty("id").GetString();
+
+            var newPlaylist = new
+            {
+                name = "Meine Importierte Playlist",
+                description = "Importiert aus playlist.txt",
+                @public = false
+            };
+
+            var content = new StringContent(
+                System.Text.Json.JsonSerializer.Serialize(newPlaylist),
+                Encoding.UTF8,
+                "application/json"
+            );
+
+            var response = await client.PostAsync($"https://api.spotify.com/v1/users/{userId}/playlists", content);
+            var playlistJson = await response.Content.ReadAsStringAsync();
+            var playlist = System.Text.Json.JsonDocument.Parse(playlistJson);
+            var playlistId = playlist.RootElement.GetProperty("id").GetString();
+
         }
 
         [RelayCommand]

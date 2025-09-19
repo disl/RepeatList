@@ -1,9 +1,7 @@
-﻿using Android.DeviceLock;
-using CommunityToolkit.Maui;
+﻿using CommunityToolkit.Maui;
 using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Maui.Core;
 using CommunityToolkit.Maui.Extensions;
-using Microsoft.Maui.Controls.PlatformConfiguration;
 using RepeatList.Models;
 using RepeatList.Services;
 using RepeatList.ViewModels;
