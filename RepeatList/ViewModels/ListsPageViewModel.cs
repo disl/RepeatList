@@ -3,6 +3,7 @@ using CommunityToolkit.Maui.Core;
 using CommunityToolkit.Maui.Core.Extensions;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using RepeatList.Models;
 using RepeatList.Services;
@@ -56,7 +57,7 @@ namespace RepeatList.ViewModels
         public ListsPageViewModel()
         {
             _databaseService = new DatabaseService();
-            _fileExportService = new ();
+            _fileExportService = new();
 
             try
             {
@@ -83,6 +84,8 @@ namespace RepeatList.ViewModels
             InitSelectedItem_KindOfSorting();
             InitSelectedItem_KindOfSorting_undone();
             SetResetImageSource();
+
+            spotifyInfo = AppSettings.Load().Result.SpotifyInfo;
         }
 
         #region File export
@@ -325,6 +328,9 @@ namespace RepeatList.ViewModels
 
         [ObservableProperty] private string inputText;
         [ObservableProperty] private string inputText_placeholder;
+
+        private SpotifyInfo spotifyInfo;
+        private HttpClient m_client;
 
         partial void OnIsExpander_listsExpendedChanged(bool oldValue, bool newValue)
         {
@@ -726,13 +732,16 @@ namespace RepeatList.ViewModels
             IsBusy = false;
         }
 
+
+
         [RelayCommand]
         public async Task Export_list_Spotify_Clicked()
         {
             Lists = (await _databaseService.GetPositionsAsync(Header_SelectedItem.Id)).ToObservableCollection();
-            if (Lists == null || Lists.Count == 0 || Header == null)
+            if (Lists == null || Lists.Count == 0 || Header_SelectedItem == null)
             {
                 IsBusy = false;
+                await Application.Current.MainPage.DisplayAlert("Fehler", "Keine Tracks oder Header vorhanden.", "OK");
                 return;
             }
             IsBusy = true;
@@ -740,76 +749,654 @@ namespace RepeatList.ViewModels
             Header header = Header_SelectedItem;
             header.Positions = Lists.ToList();
 
-            // ChatGPT Spotify
-            // Authentifizierung
-            string YOUR_CLIENT_ID = "5ab07e8eb1c84d3486dccd60767bb282";
+            try
+            {
+                // OAuth-Flow
+                var authUrl = "https://accounts.spotify.com/authorize" +
+                    $"?client_id={spotifyInfo.ClientId}" +
+                    "&response_type=code" +
+                    "&redirect_uri=myapp://callback" +
+                    "&scope=user-read-private%20user-read-email%20playlist-modify-private%20playlist-modify-public";
 
-            var authUrl = "https://accounts.spotify.com/authorize" +
-              $"?client_id={YOUR_CLIENT_ID}" +
-              "&response_type=code" +
-              "&redirect_uri=myapp://callback" +
-              "&scope=playlist-modify-private%20playlist-modify-public";
+                var result = await WebAuthenticator.Default.AuthenticateAsync(
+                    new Uri(authUrl),
+                    new Uri("myapp://callback")
+                );
 
-            var result = await WebAuthenticator.Default.AuthenticateAsync(
-                new Uri(authUrl),
-                new Uri("myapp://callback")
-            );
+                var code = result.Properties["code"];
+                var (accessToken, refreshToken) = await GetAccessTokenFromCode(
+                    code,
+                    spotifyInfo.ClientId,
+                    spotifyInfo.ClientSecret,
+                    "myapp://callback"
+                );
+                await SecureStorage.SetAsync("refresh_token", refreshToken); // Speichere Refresh Token
 
-            var accessToken = result.Properties["code"];
+                // Erstelle Playlist
+                var playlistId = await CreatePlaylistOnSpotify(accessToken);
+                if (string.IsNullOrEmpty(playlistId))
+                {
+                    await Application.Current.MainPage.DisplayAlert("Fehler", "Playlist konnte nicht erstellt werden.", "OK");
+                    IsBusy = false;
+                    return;
+                }
 
-            await CreatePlaylistOnSpotify(accessToken);
+                // Tracks aus header.Positions sammeln
+                var trackTitles = header.Positions
+                    .Where(p => !p.Title.StartsWith("_")) // Filtere Beschreibungen
+                    .Select(p => p.Title)
+                    .ToList();
 
+                if (!trackTitles.Any())
+                {
+                    await Application.Current.MainPage.DisplayAlert("Fehler", "Keine gültigen Tracks gefunden.", "OK");
+                    IsBusy = false;
+                    return;
+                }
 
+                var trackUris = new List<string>();
+                foreach (var track in trackTitles)
+                {
+                    // Verbessere Suchanfrage (z. B. Titel und Künstler splitten)
+                    var parts = track.Split('-').Select(s => s.Trim()).ToArray();
+                    var query = parts.Length > 1 ? $"artist:{parts[0]} track:{parts[1]}" : track;
+                    var searchResponse = await SpotifyApiClient.ExecuteWithTokenRefresh(
+                        async client => await client.GetAsync($"https://api.spotify.com/v1/search?q={Uri.EscapeDataString(query)}&type=track&limit=1"),
+                        accessToken,
+                        RefreshAccessToken
+                    );
 
+                    if (searchResponse.IsSuccessStatusCode)
+                    {
+                        var searchJson = await searchResponse.Content.ReadAsStringAsync();
+                        var searchResult = System.Text.Json.JsonDocument.Parse(searchJson);
+                        var items = searchResult.RootElement.GetProperty("tracks").GetProperty("items");
+                        if (items.GetArrayLength() > 0)
+                        {
+                            var trackId = items[0].GetProperty("id").GetString();
+                            trackUris.Add($"spotify:track:{trackId}");
+                        }
+                        else
+                        {
+                            Console.WriteLine($"Kein Treffer für Track: {track}");
+                        }
+                    }
+                    else
+                    {
+                        var errorContent = await searchResponse.Content.ReadAsStringAsync();
+                        Console.WriteLine($"Fehler bei Track-Suche für '{track}': {searchResponse.StatusCode}, Details: {errorContent}");
+                    }
+                    await Task.Delay(1000); // Rate-Limit respektieren
+                }
 
-            // await _spotifyService.AuthenticateAsync();
+                // Tracks zur Playlist hinzufügen
+                if (trackUris.Any())
+                {
+                    var batches = trackUris.Chunk(100); // Max. 100 Tracks pro Request
+                    foreach (var batch in batches)
+                    {
+                        var content = new StringContent(
+                            System.Text.Json.JsonSerializer.Serialize(new { uris = batch }),
+                            System.Text.Encoding.UTF8,
+                            "application/json"
+                        );
+                        var response = await SpotifyApiClient.ExecuteWithTokenRefresh(
+                            async client => await client.PostAsync($"https://api.spotify.com/v1/playlists/{playlistId}/tracks", content),
+                            accessToken,
+                            RefreshAccessToken
+                        );
+                        if (!response.IsSuccessStatusCode)
+                        {
+                            var errorContent = await response.Content.ReadAsStringAsync();
+                            await Application.Current.MainPage.DisplayAlert("Fehler", $"Tracks konnten nicht hinzugefügt werden: {errorContent}", "OK");
+                            IsBusy = false;
+                            return;
+                        }
+                    }
+                    Console.WriteLine($"{trackUris.Count} Tracks erfolgreich zur Playlist '{playlistId}' hinzugefügt.");
+                }
+                else
+                {
+                    await Application.Current.MainPage.DisplayAlert("Warnung", "Keine Tracks gefunden, leere Playlist erstellt.", "OK");
+                }
 
-            // File export
-            //var timestamp = DateTime.Now.ToString("yyyyMMdd_HHmmss");
-            //var filename = $"spotify_list_{timestamp}.txt";
-            //var success = await _fileExportService.ExportToDownloadsAsync(filename, header.Positions.Where(s => !s.Title.StartsWith("_")).Select(x=>x.Title));
-
-
-            //var settings = new JsonSerializerSettings();
-            //settings.Converters.Add(new OnlyPositionsJsonConverter());
-            //var json = JsonConvert.SerializeObject(header, settings);
-
-            //var send_text = Properties.Resources.Please_copy_this_text_to_the_clipboard_and_import_it_via_the_hamburger_menu.Replace("%1", json);
-
-            //await Utilities.ShareTextAsync(send_text);
-
-            IsBusy = false;
+                // Playlist öffnen
+                string spotifyUri = $"spotify:playlist:{playlistId}";
+                string httpsUri = $"https://open.spotify.com/playlist/{playlistId}";
+                try
+                {
+                    await Launcher.OpenAsync(httpsUri);
+                }
+                catch (Exception ex)
+                {
+                    await Application.Current.MainPage.DisplayAlert("Fehler", $"Fehler beim Öffnen der Playlist: {ex.Message}", "OK");
+                }
+            }
+            catch (Exception ex)
+            {
+                await Application.Current.MainPage.DisplayAlert("Fehler", $"Fehler: {ex.Message}", "OK");
+            }
+            finally
+            {
+                IsBusy = false;
+            }
         }
 
-        private async Task CreatePlaylistOnSpotify(string accessToken)
+        private async Task<(string AccessToken, string RefreshToken)> GetAccessTokenFromCode(
+            string code, string clientId, string clientSecret, string redirectUri)
         {
+            using var client = new HttpClient();
+            var requestBody = new Dictionary<string, string>
+            {
+                { "grant_type", "authorization_code" },
+                { "code", code },
+                { "redirect_uri", redirectUri },
+                { "client_id", clientId },
+                { "client_secret", clientSecret }
+            };
+            var content = new FormUrlEncodedContent(requestBody);
+            var response = await client.PostAsync("https://accounts.spotify.com/api/token", content);
+            if (!response.IsSuccessStatusCode)
+            {
+                var errorContent = await response.Content.ReadAsStringAsync();
+                throw new HttpRequestException($"Fehler beim Token-Austausch: {response.StatusCode}, Details: {errorContent}");
+            }
+            var json = await response.Content.ReadAsStringAsync();
+            var tokenData = System.Text.Json.JsonDocument.Parse(json);
+            var accessToken = tokenData.RootElement.GetProperty("access_token").GetString();
+            var refreshToken = tokenData.RootElement.GetProperty("refresh_token").GetString();
+            return (accessToken, refreshToken);
+        }
+
+        private async Task<string> RefreshAccessToken(string refreshToken)
+        {
+            using var client = new HttpClient();
+            var requestBody = new Dictionary<string, string>
+            {
+                { "grant_type", "refresh_token" },
+                { "refresh_token", refreshToken },
+                { "client_id", spotifyInfo.ClientId },
+                { "client_secret", spotifyInfo.ClientSecret }
+            };
+            var content = new FormUrlEncodedContent(requestBody);
+            var response = await client.PostAsync("https://accounts.spotify.com/api/token", content);
+            if (!response.IsSuccessStatusCode)
+            {
+                var errorContent = await response.Content.ReadAsStringAsync();
+                throw new HttpRequestException($"Fehler beim Token-Refresh: {response.StatusCode}, Details: {errorContent}");
+            }
+            var json = await response.Content.ReadAsStringAsync();
+            var tokenData = System.Text.Json.JsonDocument.Parse(json);
+            var newAccessToken = tokenData.RootElement.GetProperty("access_token").GetString();
+            if (tokenData.RootElement.TryGetProperty("refresh_token", out var newRefreshToken))
+            {
+                await SecureStorage.SetAsync("refresh_token", newRefreshToken.GetString());
+            }
+            return newAccessToken;
+        }
+
+        // Singleton HttpClient (wie zuvor empfohlen)
+        public static class SpotifyApiClient
+        {
+            private static readonly HttpClient _client = new HttpClient
+            {
+                Timeout = TimeSpan.FromSeconds(30)
+            };
+
+            public static async Task<HttpResponseMessage> ExecuteWithTokenRefresh(
+                Func<HttpClient, Task<HttpResponseMessage>> apiCall,
+                string accessToken,
+                Func<string, Task<string>> refreshTokenFunc)
+            {
+                _client.DefaultRequestHeaders.Authorization =
+                    new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", accessToken.Trim());
+
+                var response = await apiCall(_client);
+
+                if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+                {
+                    var refreshToken = await SecureStorage.GetAsync("refresh_token");
+                    if (string.IsNullOrEmpty(refreshToken))
+                        throw new Exception("Refresh Token nicht verfügbar.");
+                    var newAccessToken = await refreshTokenFunc(refreshToken);
+                    _client.DefaultRequestHeaders.Authorization =
+                        new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", newAccessToken.Trim());
+                    response = await apiCall(_client);
+                }
+
+                return response;
+            }
+        }
+
+
+
+
+        //[RelayCommand]
+        //public async Task Export_list_Spotify_Clicked()
+        //{
+        //    Lists = (await _databaseService.GetPositionsAsync(Header_SelectedItem.Id)).ToObservableCollection();
+        //    if (Lists == null || Lists.Count == 0 || Header == null)
+        //    {
+        //        IsBusy = false;
+        //        return;
+        //    }
+        //    IsBusy = true;
+
+        //    Header header = Header_SelectedItem;
+        //    header.Positions = Lists.ToList();
+
+        //    // ChatGPT Spotify            
+        //    var authUrl = "https://accounts.spotify.com/authorize" +
+        //      $"?client_id={spotifyInfo.ClientId}" +
+        //      "&response_type=code" +
+        //      "&redirect_uri=myapp://callback" +
+        //      "&scope=user-read-private%20user-read-email%20playlist-modify-private%20playlist-modify-public";
+
+        //    var result = await WebAuthenticator.Default.AuthenticateAsync(
+        //        new Uri(authUrl),
+        //        new Uri("myapp://callback")
+        //    );
+
+        //    //var accessToken = result.Properties["code"];
+        //    //await CreatePlaylistOnSpotify(accessToken);
+
+
+        //    // Hole den Authorization Code
+        //    var code = result.Properties["code"];
+
+        //    // Tausche den Code gegen einen Access Token
+        //    var accessToken = await GetAccessTokenFromCode(
+        //        code,
+        //        spotifyInfo.ClientId,
+        //        spotifyInfo.ClientSecret, // Stelle sicher, dass ClientSecret verfügbar ist
+        //        "myapp://callback"
+        //    );
+
+        //    // Rufe die Methode mit dem korrekten Access Token auf
+        //    var playlistId = await CreatePlaylistOnSpotify(accessToken);
+
+        //    if (playlistId == null)
+        //    {
+        //        await Application.Current.MainPage.DisplayAlert("Fehler", "Playlist konnte nicht erstellt werden.", "OK");
+        //        return;
+        //    }
+
+        //    // Füge Songs zur Playlist hinzu
+        //    // Hier solltest du die Spotify URIs deiner Songs sammeln
+        //    var trackUris = header.Positions
+        //        .Where(p => !p.Title.StartsWith("_")) // Filtere Beschreibungen aus
+        //        .Select(p => p.Title) // Hier solltest du die Logik anpassen, um die korrekten Spotify URIs zu erhalten
+        //        .ToList();
+
+        //    // var trackUris = new List<string>();
+        //    foreach (var track in trackUris)
+        //    {
+        //        var searchResponse = await m_client.GetAsync($"https://api.spotify.com/v1/search?q={Uri.EscapeDataString(track)}&type=track&limit=1");
+        //        if (searchResponse.IsSuccessStatusCode)
+        //        {
+        //            var searchJson = await searchResponse.Content.ReadAsStringAsync();
+        //            var searchResult = System.Text.Json.JsonDocument.Parse(searchJson);
+        //            var trackId = searchResult.RootElement.GetProperty("tracks").GetProperty("items")[0].GetProperty("id").GetString();
+        //            trackUris.Add($"spotify:track:{trackId}");
+        //        }
+        //        else
+        //        {
+        //            var refreshToken = await SecureStorage.GetAsync("refresh_token");
+        //            accessToken = await RefreshAccessToken(refreshToken);
+
+        //            using var client = new HttpClient();
+        //            client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", accessToken);
+        //            searchResponse = await client.GetAsync($"https://api.spotify.com/v1/search?q={Uri.EscapeDataString(track)}&type=track&limit=1");
+        //        }
+        //        await Task.Delay(500); // Rate-Limit respektieren
+        //    }
+        //    var tracksContent = new StringContent(
+        //        System.Text.Json.JsonSerializer.Serialize(new { uris = trackUris }),
+        //        System.Text.Encoding.UTF8,
+        //        "application/json"
+        //    );
+        //    await m_client.PostAsync($"https://api.spotify.com/v1/playlists/{playlistId}/tracks", tracksContent);
+
+
+        //    await Launcher.OpenAsync($"https://open.spotify.com/playlist/{playlistId}");
+
+        //    IsBusy = false;
+        //}
+
+        //// await _spotifyService.AuthenticateAsync();
+
+        //// File export
+        ////var timestamp = DateTime.Now.ToString("yyyyMMdd_HHmmss");
+        ////var filename = $"spotify_list_{timestamp}.txt";
+        ////var success = await _fileExportService.ExportToDownloadsAsync(filename, header.Positions.Where(s => !s.Title.StartsWith("_")).Select(x=>x.Title));
+
+
+        ////var settings = new JsonSerializerSettings();
+        ////settings.Converters.Add(new OnlyPositionsJsonConverter());
+        ////var json = JsonConvert.SerializeObject(header, settings);
+
+        ////var send_text = Properties.Resources.Please_copy_this_text_to_the_clipboard_and_import_it_via_the_hamburger_menu.Replace("%1", json);
+
+        ////await Utilities.ShareTextAsync(send_text);
+
+
+
+
+        //async Task<string> RefreshAccessToken(string refreshToken)
+        //{
+        //    using var client = new HttpClient();
+        //    var requestBody = new Dictionary<string, string>
+        //    {
+        //        { "grant_type", "refresh_token" },
+        //        { "refresh_token", refreshToken },
+        //        { "client_id", spotifyInfo.ClientId },
+        //        { "client_secret", spotifyInfo.ClientSecret }
+        //    };
+        //    var content = new FormUrlEncodedContent(requestBody);
+        //    var response = await client.PostAsync("https://accounts.spotify.com/api/token", content);
+        //    if (!response.IsSuccessStatusCode)
+        //    {
+        //        var errorContent = await response.Content.ReadAsStringAsync();
+        //        throw new HttpRequestException($"Fehler beim Token-Refresh: {response.StatusCode}, Details: {errorContent}");
+        //    }
+        //    var json = await response.Content.ReadAsStringAsync();
+        //    var tokenData = System.Text.Json.JsonDocument.Parse(json);
+        //    return tokenData.RootElement.GetProperty("access_token").GetString();
+        //}
+
+        private async Task AddSongsToPlaylistFromAlbum(string accessToken, string albumId, string playlistFilePath)
+        {
+            if (string.IsNullOrEmpty(accessToken))
+                throw new ArgumentException("Access Token ist leer oder null.");
+            if (string.IsNullOrEmpty(albumId))
+                throw new ArgumentException("Album-ID ist leer oder null.");
+
             using var client = new HttpClient();
             client.DefaultRequestHeaders.Authorization =
                 new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", accessToken);
 
-            var userResponse = await client.GetStringAsync("https://api.spotify.com/v1/me");
-            var user = System.Text.Json.JsonDocument.Parse(userResponse);
-            var userId = user.RootElement.GetProperty("id").GetString();
-
-            var newPlaylist = new
+            try
             {
-                name = "Meine Importierte Playlist",
-                description = "Importiert aus playlist.txt",
-                @public = false
-            };
+                // Benutzer-ID abrufen
+                var userResponse = await client.GetAsync("https://api.spotify.com/v1/me");
+                if (!userResponse.IsSuccessStatusCode)
+                {
+                    var errorContent = await userResponse.Content.ReadAsStringAsync();
+                    if (userResponse.StatusCode == System.Net.HttpStatusCode.Forbidden &&
+                        errorContent.Contains("user may not be registered"))
+                    {
+                        throw new UnauthorizedAccessException(
+                            "Zugriff verweigert: Benutzer nicht im Spotify Developer Dashboard registriert. " +
+                            "Gehe zu https://developer.spotify.com/dashboard > Users and Access und füge den Benutzer hinzu.");
+                    }
+                    throw new HttpRequestException($"Fehler beim Abrufen der Benutzer-ID: {userResponse.StatusCode}, Details: {errorContent}");
+                }
+                var userContent = await userResponse.Content.ReadAsStringAsync();
+                var user = System.Text.Json.JsonDocument.Parse(userContent);
+                var userId = user.RootElement.GetProperty("id").GetString();
 
-            var content = new StringContent(
-                System.Text.Json.JsonSerializer.Serialize(newPlaylist),
-                Encoding.UTF8,
-                "application/json"
-            );
+                // Tracks des Albums abrufen
+                var albumResponse = await client.GetAsync($"https://api.spotify.com/v1/albums/{albumId}/tracks");
+                if (!albumResponse.IsSuccessStatusCode)
+                {
+                    var errorContent = await albumResponse.Content.ReadAsStringAsync();
+                    throw new HttpRequestException($"Fehler beim Abrufen der Album-Tracks: {albumResponse.StatusCode}, Details: {errorContent}");
+                }
+                var albumJson = await albumResponse.Content.ReadAsStringAsync();
+                var albumTracks = System.Text.Json.JsonDocument.Parse(albumJson);
+                var trackUris = albumTracks.RootElement.GetProperty("items")
+                    .EnumerateArray()
+                    .Select(item => item.GetProperty("uri").GetString())
+                    .ToList();
 
-            var response = await client.PostAsync($"https://api.spotify.com/v1/users/{userId}/playlists", content);
-            var playlistJson = await response.Content.ReadAsStringAsync();
-            var playlist = System.Text.Json.JsonDocument.Parse(playlistJson);
-            var playlistId = playlist.RootElement.GetProperty("id").GetString();
+                // Playlist erstellen
+                var newPlaylist = new
+                {
+                    name = "Meine Importierte Playlist",
+                    description = "A celebratory music selection for a 60-year-old man's birthday, featuring classic rock, pop, and hits from his youth.",
+                    @public = false
+                };
+                var content = new StringContent(
+                    System.Text.Json.JsonSerializer.Serialize(newPlaylist),
+                    System.Text.Encoding.UTF8,
+                    "application/json"
+                );
+                var playlistResponse = await client.PostAsync($"https://api.spotify.com/v1/users/{userId}/playlists", content);
+                if (!playlistResponse.IsSuccessStatusCode)
+                {
+                    var errorContent = await playlistResponse.Content.ReadAsStringAsync();
+                    throw new HttpRequestException($"Fehler beim Erstellen der Playlist: {playlistResponse.StatusCode}, Details: {errorContent}");
+                }
+                var playlistJson = await playlistResponse.Content.ReadAsStringAsync();
+                var playlist = System.Text.Json.JsonDocument.Parse(playlistJson);
+                var playlistId = playlist.RootElement.GetProperty("id").GetString();
 
+                // Album-Tracks zur Playlist hinzufügen
+                var tracksContent = new StringContent(
+                    System.Text.Json.JsonSerializer.Serialize(new { uris = trackUris }),
+                    System.Text.Encoding.UTF8,
+                    "application/json"
+                );
+                await client.PostAsync($"https://api.spotify.com/v1/playlists/{playlistId}/tracks", tracksContent);
+
+                // Zusätzliche Tracks aus playlist.txt hinzufügen
+                if (!string.IsNullOrEmpty(playlistFilePath) && File.Exists(playlistFilePath))
+                {
+                    var additionalTracks = File.ReadAllLines(playlistFilePath);
+                    var additionalTrackUris = new List<string>();
+                    foreach (var track in additionalTracks)
+                    {
+                        var searchResponse = await client.GetAsync($"https://api.spotify.com/v1/search?q={Uri.EscapeDataString(track)}&type=track&limit=1");
+                        if (searchResponse.IsSuccessStatusCode)
+                        {
+                            var searchJson = await searchResponse.Content.ReadAsStringAsync();
+                            var searchResult = System.Text.Json.JsonDocument.Parse(searchJson);
+                            var trackId = searchResult.RootElement.GetProperty("tracks").GetProperty("items")[0].GetProperty("id").GetString();
+                            additionalTrackUris.Add($"spotify:track:{trackId}");
+                        }
+                        await Task.Delay(200); // Rate-Limit respektieren
+                    }
+                    if (additionalTrackUris.Any())
+                    {
+                        var additionalTracksContent = new StringContent(
+                            System.Text.Json.JsonSerializer.Serialize(new { uris = additionalTrackUris }),
+                            System.Text.Encoding.UTF8,
+                            "application/json"
+                        );
+                        await client.PostAsync($"https://api.spotify.com/v1/playlists/{playlistId}/tracks", additionalTracksContent);
+                    }
+                }
+
+                // Playlist in Spotify-App öffnen
+                string spotifyUri = $"spotify:playlist:{playlistId}";
+                string httpsUri = $"https://open.spotify.com/playlist/{playlistId}";
+                try
+                {
+                    if (await Launcher.CanOpenAsync(httpsUri))
+                    {
+                        await Launcher.OpenAsync(httpsUri); // HTTPS bevorzugen
+                    }
+                    else if (await Launcher.CanOpenAsync(spotifyUri))
+                    {
+                        await Launcher.OpenAsync(spotifyUri);
+                    }
+                    else
+                    {
+                        throw new Exception("Spotify-App oder Browser nicht verfügbar.");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Fehler beim Öffnen der Playlist: {ex.Message}");
+                    throw;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Fehler: {ex.Message}");
+                throw;
+            }
         }
+
+        private async Task<string?> CreatePlaylistOnSpotify(string accessToken)
+        {
+            if (string.IsNullOrEmpty(accessToken))
+            {
+                throw new ArgumentException("Access Token ist leer oder null.");
+            }
+
+            using var client = new HttpClient();
+            client.DefaultRequestHeaders.Authorization =
+                new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", accessToken);
+
+            try
+            {
+                // Benutzer-ID abrufen
+                var userResponse = await client.GetAsync("https://api.spotify.com/v1/me");
+                if (!userResponse.IsSuccessStatusCode)
+                {
+                    var errorContent = await userResponse.Content.ReadAsStringAsync();
+                    throw new HttpRequestException($"Fehler beim Abrufen der Benutzer-ID: {userResponse.StatusCode}, Details: {errorContent}");
+                }
+                var userContent = await userResponse.Content.ReadAsStringAsync();
+                var user = System.Text.Json.JsonDocument.Parse(userContent);
+                var userId = user.RootElement.GetProperty("id").GetString();
+
+                var listName = Header_SelectedItem.ListName;
+                string listDescription = string.Empty;
+
+                var listDescription_1 = Header_SelectedItem.Positions.FirstOrDefault(x => x.Title.StartsWith("_"));
+                if (listDescription_1 != null && !string.IsNullOrEmpty(listDescription_1.Title)  && listDescription_1.Title.StartsWith("_"))
+                {
+                    int ind_dp = listDescription_1.Title.IndexOf(":");
+                    if (ind_dp > 0 && listDescription_1.Title.Length > ind_dp+1)
+                        listDescription = listDescription_1.Title.Substring(ind_dp+1, listDescription_1.Title.Length - ind_dp - 1).Trim();
+                }
+
+                // Playlist erstellen
+                var newPlaylist = new
+                {
+                    name = listName,
+                    description = listDescription,
+                    @public = false
+                };
+
+                var content = new StringContent(
+                    System.Text.Json.JsonSerializer.Serialize(newPlaylist),
+                    Encoding.UTF8,
+                    "application/json"
+                );
+
+                var response = await client.PostAsync($"https://api.spotify.com/v1/users/{userId}/playlists", content);
+                if (!response.IsSuccessStatusCode)
+                {
+                    var errorContent = await response.Content.ReadAsStringAsync();
+                    throw new HttpRequestException($"Fehler beim Erstellen der Playlist: {response.StatusCode}, Details: {errorContent}");
+                }
+
+                var playlistJson = await response.Content.ReadAsStringAsync();
+                var playlist = System.Text.Json.JsonDocument.Parse(playlistJson);
+                var playlistId = playlist.RootElement.GetProperty("id").GetString();
+                Console.WriteLine($"Playlist erstellt mit ID: {playlistId}");
+
+                return playlistId;
+            }
+            catch (HttpRequestException ex)
+            {
+                Console.WriteLine($"Fehler bei der Spotify API: {ex.Message}");
+                throw;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Unerwarteter Fehler: {ex.Message}");
+                throw;
+            }
+        }
+
+
+        //private async Task CreatePlaylistOnSpotify(string accessToken)
+        //{
+        //    using var client = new HttpClient();
+        //    client.DefaultRequestHeaders.Authorization =
+        //        new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", accessToken);
+
+        //    //var userResponse = await client.GetStringAsync("https://api.spotify.com/v1/me");    
+        //    //var user = System.Text.Json.JsonDocument.Parse(userResponse);
+        //    //var userId = user.RootElement.GetProperty("id").GetString();
+
+        //    var userResponse = await client.GetAsync("https://api.spotify.com/v1/me");
+        //    if (!userResponse.IsSuccessStatusCode)
+        //    {
+        //        var errorContent = await userResponse.Content.ReadAsStringAsync();
+        //        throw new HttpRequestException($"Fehler beim Abrufen der Benutzer-ID: {userResponse.StatusCode}, Details: {errorContent}");
+        //    }
+        //    var userContent = await userResponse.Content.ReadAsStringAsync();
+        //    var user = System.Text.Json.JsonDocument.Parse(userContent);
+        //    var userId = user.RootElement.GetProperty("id").GetString();
+
+        //    var newPlaylist = new
+        //    {
+        //        name = "Meine Importierte Playlist",
+        //        description = "Importiert aus playlist.txt",
+        //        @public = false
+        //    };
+
+        //    var content = new StringContent(
+        //        System.Text.Json.JsonSerializer.Serialize(newPlaylist),
+        //        Encoding.UTF8,
+        //        "application/json"
+        //    );
+
+        //    var response = await client.PostAsync($"https://api.spotify.com/v1/users/{userId}/playlists", content);
+        //    var playlistJson = await response.Content.ReadAsStringAsync();
+        //    var playlist = System.Text.Json.JsonDocument.Parse(playlistJson);
+        //    var playlistId = playlist.RootElement.GetProperty("id").GetString();
+        //}
+
+        //private async Task<string> GetAccessTokenFromCode(string code, string clientId, string clientSecret, string redirectUri)
+        //{
+        //    m_client = new HttpClient();
+        //    var content = new FormUrlEncodedContent(new[]
+        //    {
+        //        new KeyValuePair<string, string>("grant_type", "authorization_code"),
+        //        new KeyValuePair<string, string>("code", code),
+        //        new KeyValuePair<string, string>("redirect_uri", redirectUri),
+        //        new KeyValuePair<string, string>("client_id", clientId),
+        //        new KeyValuePair<string, string>("client_secret", clientSecret)
+        //    });
+
+        //    var response = await m_client.PostAsync("https://accounts.spotify.com/api/token", content);
+        //    response.EnsureSuccessStatusCode();
+        //    var responseContent = await response.Content.ReadAsStringAsync();
+        //    var tokenData = System.Text.Json.JsonDocument.Parse(responseContent);
+        //    var accessToken = tokenData.RootElement.GetProperty("access_token").GetString();
+
+        //    // Refresh tocken
+        //    if (tokenData.RootElement.TryGetProperty("refresh_token", out var newRefreshToken))
+        //    {
+        //        await SecureStorage.SetAsync("refresh_token", newRefreshToken.GetString());
+        //    }
+
+        //    return accessToken;
+        //}
+
+        //async Task<string> RefreshAccessToken(string refreshToken, string clientId, string clientSecret)
+        //{
+        //    using var client = new HttpClient();
+        //    var content = new FormUrlEncodedContent(new[]
+        //    {
+        //        new KeyValuePair<string, string>("grant_type", "refresh_token"),
+        //        new KeyValuePair<string, string>("refresh_token", refreshToken),
+        //        new KeyValuePair<string, string>("client_id", clientId),
+        //        new KeyValuePair<string, string>("client_secret", clientSecret)
+        //    });
+
+        //    var response = await client.PostAsync("https://accounts.spotify.com/api/token", content);
+        //    response.EnsureSuccessStatusCode();
+        //    var responseContent = await response.Content.ReadAsStringAsync();
+        //    var json = System.Text.Json.JsonDocument.Parse(responseContent);
+        //    return json.RootElement.GetProperty("access_token").GetString();
+        //}
 
         [RelayCommand]
         public void Reset_current_list_Clicked()

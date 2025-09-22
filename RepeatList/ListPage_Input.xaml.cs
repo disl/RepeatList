@@ -109,6 +109,7 @@ public partial class ListPage_Input : Popup<object>
             prompt = $"Create a JSON list for a Spotify playlist based on the following description: '{DeepSeekEditor.Text}'. " +
                 $"The JSON should have a \"Header\" (title, description), and an \"Items\" array with each track's (artist, title). " +
                 $"Format the response in English. Do not translate the JSON structure! " +
+                $"The fields 'artist' and 'title' must not contain any '-'. These would then have to be replaced with ' '. " +
                 $"Ensure the JSON is properly formatted and does not contain any extraneous text or characters that could interfere with parsing. " +
                 $"Do not use sublists.";
         else

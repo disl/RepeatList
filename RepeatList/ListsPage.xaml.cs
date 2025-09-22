@@ -1,4 +1,5 @@
-﻿using CommunityToolkit.Maui;
+﻿using AndroidX.Lifecycle;
+using CommunityToolkit.Maui;
 using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Maui.Core;
 using CommunityToolkit.Maui.Extensions;
@@ -7,6 +8,7 @@ using RepeatList.Services;
 using RepeatList.ViewModels;
 using System.Collections.ObjectModel;
 using System.Globalization;
+using static Android.Provider.MediaStore.Audio;
 using Header = RepeatList.Models.Header;
 
 
@@ -596,8 +598,12 @@ namespace RepeatList
         {
             try
             {
+                ViewModel.IsBusy = true;
+
                 if (sender is ImageButton button)
                 {
+                    ViewModel.Header_SelectedItem = button.CommandParameter as Header;
+
                     var popup = new Lists_PopUpMenu((Header)button.CommandParameter, ViewModel.SupabaseService_ready);
                     var result = await Shell.Current.ShowPopupAsync<string>(popup);
                     switch (result.Result)
@@ -631,6 +637,10 @@ namespace RepeatList
                 await DisplayAlert(Properties.Resources.Error, ex.Message,
                         Properties.Resources.yes);
 #endif
+            }
+            finally
+            {
+                ViewModel.IsBusy = false;
             }
         }
 
