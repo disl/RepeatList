@@ -62,7 +62,7 @@ public partial class ListPage_Input : Popup<object>
         }
     }
 
-    private async Task<bool> ForOnDeepSeekClicked(DeepSeekType Mode)
+    private async Task<bool> ForOnDeepSeekClicked(DeepSeekType Mode= DeepSeekType.Unknown)
     {
         string prompt = string.Empty;
         var deviceID = GetDeviceID();
@@ -130,70 +130,7 @@ public partial class ListPage_Input : Popup<object>
                 return false;
             }
 
-            MainThread.BeginInvokeOnMainThread(async () =>
-            {
-                try
-                {
-                    if (!response.Content.Contains("```json") && !IsJSONString(response.Content))
-                        return;
-
-                    if (Mode == DeepSeekType.General)
-                    {
-                        var json_start_ind = response.Content.IndexOf("```json");
-                        var json_end_ind = response.Content.LastIndexOf("```");
-                        if (json_start_ind < 0 || json_end_ind < 0 || json_end_ind <= json_start_ind)
-                        {
-                            await Shell.Current.DisplayAlert("Error", "Invalid response format from DeepSeek.", "OK");
-                            return;
-                        }
-                        json = response.Content.Substring(json_start_ind, json_end_ind - json_start_ind);
-                        json = json.Replace("json", "").Replace("```", "").Trim();
-                    }
-                    else if (IsJSONString(response.Content))
-                    {
-                        json = response.Content;
-                    }
-                    else
-                    {
-                        await Shell.Current.DisplayAlert("Error", "Invalid response format from DeepSeek (2).", "OK");
-                        return;
-                    }
-
-                    dynamic? jsonObject = null;
-                    switch (Mode)
-                    {
-                        case DeepSeekType.Spotify:
-                            jsonObject = JsonConvert.DeserializeObject<ChatResponse_SpotifyType.Root>(json);
-                            break;
-                        case DeepSeekType.General:
-                            jsonObject = JsonConvert.DeserializeObject<ChatResponseType.Root>(json);
-                            break;
-                    }
-
-                    if (jsonObject != null)
-                    {
-                        // Sortierung nach Alphabet
-                        Preferences.Set(listsPageViewModel.SelectedItem_KindOfSorting_key_name_undone, "alpha");
-
-                        UpdateStatusLabel();
-
-                        await CloseMe(jsonObject);
-                    }
-                    else
-                    {
-                        await Shell.Current.DisplayAlert("Error", "Invalid JSON structure from DeepSeek.", "OK");
-
-                        m_isDeepSeekAllowed = false;
-                    }
-                }
-                catch (Exception ex)
-                {
-                    MainThread.BeginInvokeOnMainThread(() =>
-                    {
-                        Shell.Current.DisplayAlert("Error", ex.Message, "OK");
-                    });
-                }
-            });
+            json=ForForOnDeepSeekClicked(Mode, json, response);
         }
         catch (CreditIsInsufficientError)
         {
@@ -219,6 +156,78 @@ public partial class ListPage_Input : Popup<object>
         }
 
         return true;
+    }
+
+    private string ForForOnDeepSeekClicked(DeepSeekType Mode, string json, CompletionResult response)
+    {
+
+
+        MainThread.BeginInvokeOnMainThread(async () =>
+        {
+            dynamic? jsonObject = null;
+
+            try
+            {
+                if (!response.Content.Contains("```json") && !IsJSONString(response.Content))
+                    return;
+
+                if (Mode == DeepSeekType.General || Mode == DeepSeekType.Spotify)
+                {
+                    var json_start_ind = response.Content.IndexOf("```json");
+                    var json_end_ind = response.Content.LastIndexOf("```");
+                    if (json_start_ind < 0 || json_end_ind < 0 || json_end_ind <= json_start_ind)
+                    {
+                        await Shell.Current.DisplayAlert("Error", "Invalid response format from DeepSeek.", "OK");
+                        return;
+                    }
+                    json = response.Content.Substring(json_start_ind, json_end_ind - json_start_ind);
+                    json = json.Replace("json", "").Replace("```", "").Trim();
+                    
+                    switch (Mode)
+                    {
+                        case DeepSeekType.Spotify:
+                            jsonObject = JsonConvert.DeserializeObject<ChatResponse_SpotifyType.Root>(json);
+                            break;
+                        case DeepSeekType.General:
+                            jsonObject = JsonConvert.DeserializeObject<ChatResponseType.Root>(json);
+                            break;
+                    }
+                }
+                else if (IsJSONString(response.Content))
+                {
+                    json = response.Content;
+                }
+                else
+                {
+                    await Shell.Current.DisplayAlert("Error", "Invalid response format from DeepSeek (2).", "OK");
+                    return;
+                }
+               
+                if (jsonObject != null)
+                {
+                    // Sortierung nach Alphabet
+                    Preferences.Set(listsPageViewModel.SelectedItem_KindOfSorting_key_name_undone, "alpha");
+
+                    UpdateStatusLabel();
+
+                    await CloseMe(jsonObject);
+                }
+                else
+                {
+                    await Shell.Current.DisplayAlert("Error", "Invalid JSON structure from DeepSeek.", "OK");
+
+                    m_isDeepSeekAllowed = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                MainThread.BeginInvokeOnMainThread(() =>
+                {
+                    Shell.Current.DisplayAlert("Error", ex.Message, "OK");
+                });
+            }
+        });
+        return json;
     }
 
     private bool IsJSONString(string content)
@@ -337,17 +346,12 @@ public partial class ListPage_Input : Popup<object>
             StatusLabel.IsVisible = false;
         }
 
-        OnDeepSeekButton.IsVisible = m_isDeepSeekAllowed || !StatusLabel.IsVisible;  //m_isDeepSeekAllowed && (DailyQueryCount < 3);  // Ok-Button        
+        OnDeepSeekButton.IsVisible = m_isDeepSeekAllowed || !StatusLabel.IsVisible;  //m_isDeepSeekAllowed && (DailyQueryCount < 3);  // Ok-Button
+        OnDeepSeek_SpotifyButton.IsVisible = m_isDeepSeekAllowed || !StatusLabel.IsVisible;                                                             //
         DeepSeekEditor.IsVisible = OnDeepSeekButton.IsVisible;
         if (!DeepSeekEditor.IsVisible)
             DeepSeekEditor.Text = string.Empty;
-
-        BuyTokenPackButton.IsVisible = !OnDeepSeekButton.IsVisible;
-
-
-
-        //BuySubscriptionButton.IsVisible = !isDeepSeekAllowed;
-        //RestorePurchasesButton.IsVisible = !isDeepSeekAllowed;                
+        BuyTokenPackButton.IsVisible = !OnDeepSeekButton.IsVisible;            
     }
 
     async Task CloseMe(dynamic param)

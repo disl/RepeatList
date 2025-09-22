@@ -598,14 +598,15 @@ namespace RepeatList
         {
             try
             {
-                ViewModel.IsBusy = true;
-
                 if (sender is ImageButton button)
                 {
                     ViewModel.Header_SelectedItem = button.CommandParameter as Header;
 
                     var popup = new Lists_PopUpMenu((Header)button.CommandParameter, ViewModel.SupabaseService_ready);
                     var result = await Shell.Current.ShowPopupAsync<string>(popup);
+
+                    ViewModel.IsBusy = true;
+
                     switch (result.Result)
                     {
                         case "Edit":

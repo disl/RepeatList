@@ -50,8 +50,8 @@
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net9.0-android|AnyCPU'">
 	  <EmbedAssembliesIntoApk>False</EmbedAssembliesIntoApk>
-	  <ApplicationDisplayVersion>1.0.110</ApplicationDisplayVersion>
-	  <ApplicationVersion>110</ApplicationVersion>
+	  <ApplicationDisplayVersion>1.0.111</ApplicationDisplayVersion>
+	  <ApplicationVersion>111</ApplicationVersion>
 	  <AndroidKeyStore>False</AndroidKeyStore>
 	</PropertyGroup>
 
@@ -66,8 +66,8 @@
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net9.0-android|AnyCPU'">
-	  <ApplicationDisplayVersion>1.0.110</ApplicationDisplayVersion>
-	  <ApplicationVersion>110</ApplicationVersion>
+	  <ApplicationDisplayVersion>1.0.111</ApplicationDisplayVersion>
+	  <ApplicationVersion>111</ApplicationVersion>
 	  <AndroidLinkTool>r8</AndroidLinkTool>
 	  <AndroidKeyStore>False</AndroidKeyStore>
 	  <RunAOTCompilation>True</RunAOTCompilation>
@@ -147,7 +147,6 @@
 
 	<ItemGroup>
 	  <Compile Remove="CategoryPositionPage.xaml.cs" />
-	  <Compile Remove="Controls\ActivityProgressBar.xaml.cs" />
 	  <Compile Remove="InputPromptPage.cs" />
 	  <Compile Remove="InputTextWithMicrophone.xaml.cs" />
 	  <Compile Remove="MainPage_old.xaml.cs" />
@@ -174,7 +173,6 @@
 
 	<ItemGroup>
 	  <MauiXaml Remove="CategoryPositionPage.xaml" />
-	  <MauiXaml Remove="Controls\ActivityProgressBar.xaml" />
 	  <MauiXaml Remove="MainPage_old.xaml" />
 	</ItemGroup>
 
@@ -235,6 +233,9 @@
 	</ItemGroup>-->
 
 	<ItemGroup>
+		<MauiXaml Update="Controls\ActivityProgressBar.xaml">
+		  <Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
 		<MauiXaml Update="Controls\FlyoutHeader.xaml">
 		  <Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
