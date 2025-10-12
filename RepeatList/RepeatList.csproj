@@ -50,8 +50,8 @@
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net9.0-android|AnyCPU'">
 	  <EmbedAssembliesIntoApk>False</EmbedAssembliesIntoApk>
-	  <ApplicationDisplayVersion>1.0.111</ApplicationDisplayVersion>
-	  <ApplicationVersion>111</ApplicationVersion>
+	  <ApplicationDisplayVersion>1.0.112</ApplicationDisplayVersion>
+	  <ApplicationVersion>112</ApplicationVersion>
 	  <AndroidKeyStore>False</AndroidKeyStore>
 	</PropertyGroup>
 
@@ -66,8 +66,8 @@
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net9.0-android|AnyCPU'">
-	  <ApplicationDisplayVersion>1.0.111</ApplicationDisplayVersion>
-	  <ApplicationVersion>111</ApplicationVersion>
+	  <ApplicationDisplayVersion>1.0.112</ApplicationDisplayVersion>
+	  <ApplicationVersion>112</ApplicationVersion>
 	  <AndroidLinkTool>r8</AndroidLinkTool>
 	  <AndroidKeyStore>False</AndroidKeyStore>
 	  <RunAOTCompilation>True</RunAOTCompilation>
@@ -212,7 +212,7 @@
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="9.0.9" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
 		<PackageReference Include="Plugin.InAppBilling" Version="9.1.0" />
-		<PackageReference Include="Sentry.Maui" Version="5.15.0" />
+		<PackageReference Include="Sentry.Maui" Version="5.16.0" />
 		<PackageReference Include="SpotifyAPI.Web" Version="7.2.1" />
 		<PackageReference Include="SpotifyAPI.Web.Auth" Version="7.2.1" />
 		<PackageReference Include="SQLitePCLRaw.bundle_e_sqlite3" Version="3.0.2" />
