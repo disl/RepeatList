@@ -1,4 +1,6 @@
-﻿using RepeatList.Models;
+﻿using Newtonsoft.Json;
+using RepeatList.Models;
+using System.Net.Http.Json;
 using System.Text;
 using System.Text.Json;
 
@@ -30,7 +32,7 @@ namespace RepeatList.Services
             };
 
             var jsonContent = new StringContent(
-                JsonSerializer.Serialize(requestBody),
+                System.Text.Json.JsonSerializer.Serialize(requestBody),
                 Encoding.UTF8,
                 "application/json"
             );
@@ -45,7 +47,7 @@ namespace RepeatList.Services
 
             // Deserialisieren
             var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
-            var responseData = JsonSerializer.Deserialize<DeepSeekResponse>(responseContent, options);
+            var responseData = System.Text.Json.JsonSerializer.Deserialize<DeepSeekResponse>(responseContent, options);
 
             string content = responseData?.choices?[0]?.message?.content?.Trim() ?? "";
             int promptTokens = responseData?.usage?.prompt_tokens ?? 0;
@@ -78,30 +80,68 @@ namespace RepeatList.Services
         }
 
 
+        // Audio recognation methods
+        public async Task<string> TranscribeToShoppingList(string audioFilePath)
+        {
+            try
+            {
+                // 1. Audio zu Text transkribieren
+                var transcription = await TranscribeAudio(audioFilePath);
 
-        //public async Task<string> GetCompletion(string prompt)
-        //{
-        //    var requestBody = new
-        //    {
-        //        model = "deepseek-chat",
-        //        messages = new[]
-        //        {
-        //        new { role = "user", content = prompt }
-        //    }
-        //    };
+                // 2. Text zu Einkaufsliste verarbeiten
+                return await CreateShoppingList(transcription);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"DeepSeek API Fehler: {ex.Message}");
+            }
+        }
 
-        //    var json = Newtonsoft.Json.JsonConvert.SerializeObject(requestBody);
-        //    var content = new StringContent(json, Encoding.UTF8, "application/json");
+        private async Task<string> TranscribeAudio(string filePath)
+        {
+            // DeepSeek Audio API Aufruf
+            var audioBytes = await File.ReadAllBytesAsync(filePath);
+            var base64Audio = Convert.ToBase64String(audioBytes);
 
-        //    var response = await _httpClient.PostAsync("chat/completions", content);
-        //    response.EnsureSuccessStatusCode();
+            var request = new
+            {
+                audio = base64Audio,
+                model = "deepseek-audio",
+                response_format = "text"
+            };
 
-        //    var responseJson = await response.Content.ReadAsStringAsync();
-        //    dynamic responseData = Newtonsoft.Json.JsonConvert.DeserializeObject(responseJson);
+            var response = await _httpClient.PostAsJsonAsync("https://api.deepseek.com/chat/completions", request);
+            var content = await response.Content.ReadAsStringAsync();
 
-        //    return responseData.choices[0].message.content;
-        //}
+            return JsonConvert.DeserializeObject<TranscriptionResponse>(content)?.text ?? "";
+        }
+
+        private async Task<string> CreateShoppingList(string text)
+        {
+            // DeepSeek Chat API für Listen-Erstellung
+            var prompt = $"Erstelle aus folgendem Text eine Einkaufsliste im Format 'item1; item2; item3'. Nur die Liste ausgeben, sonst nichts:\n\n{text}";
+
+            var request = new
+            {
+                model = "deepseek-chat",
+                messages = new[] { new { role = "user", content = prompt } },
+                max_tokens = 500
+            };
+
+            var response = await _httpClient.PostAsJsonAsync("https://api.deepseek.com/chat/completions", request);
+            var content = await response.Content.ReadAsStringAsync();
+
+            var apiResponse = JsonConvert.DeserializeObject<DeepSeekResponse>(content);
+            return apiResponse?.choices?.FirstOrDefault()?.message?.content?.Trim() ?? "Keine Liste erkannt";
+        }
+
     }
+
+    // Response-Klassen
+    public class TranscriptionResponse { public string text { get; set; } }
+    //public class DeepSeekResponse { public List<Choice> Choices { get; set; } }
+    //public class Choice { public Message Message { get; set; } }
+    //public class Message { public string Content { get; set; } }
 
     public class CompletionResult
     {

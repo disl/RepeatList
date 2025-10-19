@@ -9,6 +9,7 @@ using RepeatList.Models;
 using RepeatList.ViewModels;
 using System.Collections.ObjectModel;
 using System.Globalization;
+using static Android.Icu.Text.Transliterator;
 using Position = RepeatList.Models.Position;
 
 
@@ -824,6 +825,16 @@ namespace RepeatList
 
             ViewModel.IsRezeptExpanded = e.IsExpanded;
 
+        }
+
+        private async void OnAudioRecognationButton_Clicked(object sender, EventArgs e)
+        {
+            var popup = new SpeechRecognition();
+            var result = await Shell.Current.ShowPopupAsync<string>(popup);
+            if (result != null)
+            {
+                
+            }
         }
     }
 

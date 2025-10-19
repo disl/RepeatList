@@ -269,6 +269,9 @@
 		<MauiXaml Update="SetupPage.xaml">
 		  <Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
+		<MauiXaml Update="SpeechRecognition.xaml">
+		  <Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
 	</ItemGroup>
 
 
