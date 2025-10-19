@@ -19,12 +19,15 @@ namespace RepeatList
             var builder = MauiApp.CreateBuilder();
             builder
                 .UseMauiApp<App>()
+                .UseMauiCommunityToolkit()
+                .UseMauiCommunityToolkitMediaElement()
 
     // Add this section anywhere on the builder:
-    .UseSentry(options => {
+    .UseSentry(options =>
+    {
         // The DSN is the only required setting.
         options.Dsn = "https://b253a0732b2859186cc53692b1a9e625@o4509272206475264.ingest.de.sentry.io/4509272207982672";
-        
+
 
         // Use debug mode if you want to see what the SDK is doing.
         // Debug messages are written to stdout with Console.Writeline,
@@ -47,8 +50,7 @@ namespace RepeatList
 #endif
 
                 })
-                .UseMauiCommunityToolkit()
-        
+
 
 
 
@@ -73,9 +75,11 @@ namespace RepeatList
 
             builder.Services.AddSingleton<Header>();
 
+
+
             // Export file service
             builder.Services.AddSingleton<IFileExportService, FileExportService>();
-   
+
 
 
             //builder.Services.AddSingleton<Header>();  // Falls global

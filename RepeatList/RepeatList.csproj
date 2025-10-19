@@ -157,6 +157,7 @@
 	  <Compile Remove="Properties\Resources.es.Designer.cs" />
 	  <Compile Remove="Properties\Resources.fr.Designer.cs" />
 	  <Compile Remove="Services\SpeechService.cs" />
+	  <Compile Remove="Services\SpeechToTextService.cs" />
 	  <Compile Remove="ViewModels\InputTextWithMicrophoneViewModel.cs" />
 	</ItemGroup>
 
@@ -205,6 +206,7 @@
 
 	<ItemGroup>
 		<PackageReference Include="CommunityToolkit.Maui" Version="12.2.0" />
+		<PackageReference Include="CommunityToolkit.Maui.MediaElement" Version="6.1.2" />
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
 		<PackageReference Include="Microsoft.Data.Sqlite.Core" Version="9.0.9" />
 		<PackageReference Include="Microsoft.Extensions.Http" Version="9.0.9" />

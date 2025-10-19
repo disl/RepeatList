@@ -27,17 +27,17 @@
                    Completed="OnAddManualItem"/>-->
 
             <!-- Aufnahme-Buttons -->
-            <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+            <Grid ColumnDefinitions="*" ColumnSpacing="10">
                 <Button x:Name="RecordButton" 
                         Text="🎤 Aufnahme starten" 
                         Clicked="OnRecordButtonClicked"
                         Grid.Column="0"/>
 
-                <Button x:Name="StopButton" 
+                <!--<Button x:Name="StopButton" 
                         Text="⏹️ Stoppen" 
                         Clicked="OnStopButtonClicked"
                         IsEnabled="False"
-                        Grid.Column="1"/>
+                        Grid.Column="1"/>-->
             </Grid>
 
             <Label x:Name="StatusLabel" 

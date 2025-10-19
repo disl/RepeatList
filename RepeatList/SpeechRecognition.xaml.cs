@@ -20,21 +20,42 @@ public partial class SpeechRecognition : Popup<string>
     {
         try
         {
-            // Berechtigung prüfen
+            if (_isRecording)
+            {
+                // Aufnahme stoppen
+                await StopRecordingAsync();
+            }
+            else
+            {
+                // Aufnahme starten
+                await StartRecordingAsync();
+            }
+        }
+        catch (Exception ex)
+        {
+            await Application.Current.MainPage.DisplayAlert("Fehler", ex.Message, "OK");
+        }
+    }
+
+    private async Task StartRecordingAsync()
+    {
+        try
+        {
+            // Nur Mikrofon-Berechtigung prüfen
             var status = await Permissions.RequestAsync<Permissions.Microphone>();
             if (status != PermissionStatus.Granted)
             {
-                await Application.Current.MainPage.DisplayAlert("Fehler", "Mikrofon-Berechtigung benötigt", "OK");
+                await Application.Current.MainPage.DisplayAlert("Berechtigung", "Mikrofon-Zugriff benötigt", "OK");
                 return;
             }
 
-            // Aufnahme starten
             _audioRecorder.StartRecording();
             _isRecording = true;
 
-            RecordButton.IsEnabled = false;
-            StopButton.IsEnabled = true;
-            StatusLabel.Text = "🎤 Aufnahme läuft... sprich jetzt!";
+            // UI aktualisieren
+            RecordButton.Text = "⏹️ Stoppen";
+            StatusLabel.Text = "🎤 Aufnahme läuft...";
+            RecordButton.BackgroundColor = Colors.Red;
         }
         catch (Exception ex)
         {
@@ -42,49 +63,40 @@ public partial class SpeechRecognition : Popup<string>
         }
     }
 
-    private async void OnStopButtonClicked(object sender, EventArgs e)
+    private async Task StopRecordingAsync()
     {
-        if (!_isRecording) return;
-
         try
         {
-            // Aufnahme stoppen
             var audioFilePath = _audioRecorder.StopRecording();
             _isRecording = false;
 
-            RecordButton.IsEnabled = true;
-            StopButton.IsEnabled = false;
-            StatusLabel.Text = "🔄 Verarbeite Sprache...";
+            // UI aktualisieren
+            RecordButton.Text = "🎤 Aufnahme starten";
+            StatusLabel.Text = "🔄 Verarbeite Audio...";
+            RecordButton.BackgroundColor = Colors.Green;
 
-            // Transkribieren mit DeepSeek
-            var shoppingList = await _deepSeekClient.TranscribeToShoppingList(audioFilePath);
-
-            // Ergebnis anzeigen
-            ResultLabel.Text = shoppingList;
-            StatusLabel.Text = "✅ Liste erstellt!";
+            // Audio verarbeiten
+            await ProcessAudioFile(audioFilePath);
         }
         catch (Exception ex)
         {
             await Application.Current.MainPage.DisplayAlert("Fehler", ex.Message, "OK");
-            StatusLabel.Text = "Fehler bei Verarbeitung";
         }
     }
 
-    //private void OnAddManualItem(object sender, EventArgs e)
-    //{
-    //    if (!string.IsNullOrWhiteSpace(InputEntry.Text))
-    //    {
-    //        ResultLabel.Text = InputEntry.Text;
-    //        InputEntry.Text = string.Empty;
-    //    }
-    //}
-
-    private async void OnCopyListClicked(object sender, EventArgs e)
+    private async Task ProcessAudioFile(string audioFilePath)
     {
-        await CloseMe(ResultLabel.Text);
+        if (File.Exists(audioFilePath))
+        {
+            var fileInfo = new FileInfo(audioFilePath);
+            StatusLabel.Text = $"✅ Audio gespeichert ({fileInfo.Length / 1024} KB)";
 
-        //await Clipboard.Default.SetTextAsync(ResultLabel.Text);
-        //await Application.Current.MainPage.DisplayAlert("Erfolg", "Liste kopiert!", "OK");
+
+            var new_list = await _deepSeekClient.TranscribeToShoppingList(audioFilePath);
+
+            // Hier Ihre Speech-to-Text Logik
+            // await YourSpeechToTextService.ProcessAsync(audioFilePath);
+        }
     }
 
     async Task CloseMe(dynamic param)
@@ -107,5 +119,20 @@ public partial class SpeechRecognition : Popup<string>
     private async void OnCancelClicked(object sender, EventArgs e)
     {
         await CloseMe("");
+    }
+
+    //private async Task OnStopButtonClicked(object sender, EventArgs e)
+    //{
+    //    await StopRecordingAsync();
+    //}
+
+    private void OnStopButtonClicked(object sender, EventArgs e)
+    {
+        _ =StopRecordingAsync();
+    }
+
+    private void OnCopyListClicked(object sender, EventArgs e)
+    {
+
     }
 }

@@ -10,7 +10,7 @@ namespace RepeatList.Services
     {
         private readonly string _apiKey;
         private readonly HttpClient _httpClient;
-        private const string DailyQueryCountKey = "QueriesToday";
+        //private const string DailyQueryCountKey = "QueriesToday";
 
         public DeepSeekClient(string apiKey)
         {
@@ -89,7 +89,7 @@ namespace RepeatList.Services
                 var transcription = await TranscribeAudio(audioFilePath);
 
                 // 2. Text zu Einkaufsliste verarbeiten
-                return await CreateShoppingList(transcription);
+               return await CreateShoppingList(transcription);
             }
             catch (Exception ex)
             {
