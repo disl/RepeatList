@@ -9,6 +9,7 @@ namespace RepeatList
     using RepeatList.Controls;
 #if ANDROID
     using RepeatList.Platforms.Android;
+    using RepeatList.Platforms.Android.Services;
     using RepeatList.Services;
 #endif
 
@@ -102,6 +103,17 @@ namespace RepeatList
             //#else
             //            builder.Services.AddSingleton<ISpeechToText>(SpeechToText.Default);
             //#endif
+
+#if ANDROID
+            builder.Services.AddSingleton<IAudioTranscriber, AndroidTranscriber>();
+#elif IOS || MACCATALYST
+        builder.Services.AddSingleton<IAudioTranscriber, iOSTranscriber>();
+#elif WINDOWS
+        builder.Services.AddSingleton<IAudioTranscriber, WindowsTranscriber>();
+#endif
+
+            //builder.Services.AddTransient<MainPageViewModel>();
+            builder.Services.AddTransient<DeepSeekClient>();
 
 
             return builder.Build();

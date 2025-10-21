@@ -1,19 +1,30 @@
 ﻿using CommunityToolkit.Maui.Views;
+using RepeatList.Models;
+using RepeatList.Platforms.Android.Services;
 using RepeatList.Services;
+using RepeatList.ViewModels;
 
 namespace RepeatList;
 
 public partial class SpeechRecognition : Popup<string>
 {
-    private readonly AudioRecorderService _audioRecorder;
+    private readonly AudioRecorderService _audioRecorder;    
     private readonly DeepSeekClient _deepSeekClient;
+    private readonly PositionsPageViewModel _positionsPageViewModel;
+
     private bool _isRecording = false;
+    private readonly IAudioTranscriber _transcriber;
+    private string _transcribedText;
+
 
     public SpeechRecognition()
     {
         InitializeComponent();
         _audioRecorder = new AudioRecorderService();
         _deepSeekClient = new DeepSeekClient("sk-a3240964efda4aa1aa6cf6ffcf9713b2");
+
+        _transcriber = new AndroidTranscriber();
+        _positionsPageViewModel = new PositionsPageViewModel(_transcriber);
     }
 
     private async void OnRecordButtonClicked(object sender, EventArgs e)
@@ -37,11 +48,16 @@ public partial class SpeechRecognition : Popup<string>
         }
     }
 
+ 
+
     private async Task StartRecordingAsync()
     {
         try
         {
-            // Nur Mikrofon-Berechtigung prüfen
+
+
+
+            //// Nur Mikrofon-Berechtigung prüfen
             var status = await Permissions.RequestAsync<Permissions.Microphone>();
             if (status != PermissionStatus.Granted)
             {
@@ -49,10 +65,16 @@ public partial class SpeechRecognition : Popup<string>
                 return;
             }
 
-            _audioRecorder.StartRecording();
+            ////_audioRecorder.StartRecording();
+            ///
+            await _positionsPageViewModel.StartTranscription();
+
+            ////_audioRecorder = new AudioRecorderService();
+            //_audioRecorder.StartRecording();
+
             _isRecording = true;
 
-            // UI aktualisieren
+            //// UI aktualisieren
             RecordButton.Text = "⏹️ Stoppen";
             StatusLabel.Text = "🎤 Aufnahme läuft...";
             RecordButton.BackgroundColor = Colors.Red;
@@ -67,16 +89,40 @@ public partial class SpeechRecognition : Popup<string>
     {
         try
         {
-            var audioFilePath = _audioRecorder.StopRecording();
+             _positionsPageViewModel.StopTranscription();
+
+            //var audioFilePath = _audioRecorder.StopRecording();
+
+            _audioRecorder.StopRecording();
+            //string audioFilePath = _audioRecorder.GetFilePath();
+
             _isRecording = false;
 
             // UI aktualisieren
             RecordButton.Text = "🎤 Aufnahme starten";
-            StatusLabel.Text = "🔄 Verarbeite Audio...";
+            //StatusLabel.Text = "🔄 Verarbeite Audio...";
+            _positionsPageViewModel.TranscribedText = "🔄 Verarbeite Audio...";
             RecordButton.BackgroundColor = Colors.Green;
 
             // Audio verarbeiten
-            await ProcessAudioFile(audioFilePath);
+            //await ProcessAudioFile(audioFilePath);
+
+
+
+            ////var audioFilePath = _audioRecorder.StopRecording();
+
+            //_audioRecorder.StopRecording();
+            //string audioFilePath = _audioRecorder.GetFilePath();
+
+            //_isRecording = false;
+
+            //// UI aktualisieren
+            //RecordButton.Text = "🎤 Aufnahme starten";
+            //StatusLabel.Text = "🔄 Verarbeite Audio...";
+            //RecordButton.BackgroundColor = Colors.Green;
+
+            //// Audio verarbeiten
+            //await ProcessAudioFile(audioFilePath);
         }
         catch (Exception ex)
         {
@@ -89,7 +135,7 @@ public partial class SpeechRecognition : Popup<string>
         if (File.Exists(audioFilePath))
         {
             var fileInfo = new FileInfo(audioFilePath);
-            StatusLabel.Text = $"✅ Audio gespeichert ({fileInfo.Length / 1024} KB)";
+            //StatusLabel.Text = $"✅ Audio gespeichert ({fileInfo.Length / 1024} KB)";
 
 
             var new_list = await _deepSeekClient.TranscribeToShoppingList(audioFilePath);

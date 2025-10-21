@@ -16,6 +16,12 @@ namespace RepeatList.ViewModels
 {
     public partial class PositionsPageViewModel : ObservableObject
     {
+        private readonly IAudioTranscriber _transcriber;
+        [ObservableProperty]
+        private string _transcribedText= "Bereit für Aufnahme";
+        [ObservableProperty]
+        private string _finalText;
+
         private DatabaseService _databaseService;
         public SupabaseService _supabaseService;
         //static MLContext mlContext;
@@ -188,6 +194,46 @@ namespace RepeatList.ViewModels
         public PositionsPageViewModel()
         {
 
+        }
+
+        public PositionsPageViewModel(IAudioTranscriber transcriber)
+        {
+            _transcriber = transcriber;
+            _transcriber.TranscriptionReceived += OnTranscriptionReceived;
+            _transcriber.CompleteTranscriptionReceived += OnCompleteTranscriptionReceived;
+        }
+
+        // Finales Ergebnis nach StopRecording
+        private void OnCompleteTranscriptionReceived(object sender, string text)
+        {
+            MainThread.BeginInvokeOnMainThread(() =>
+            {
+                FinalText = text;
+                TranscribedText = text; // Optional: auch im Live-Feld anzeigen
+            });
+        }
+
+        [RelayCommand]
+        public async Task StartTranscription()
+        {
+            var hasPermission = await _transcriber.RequestPermissionsAsync();
+            if (hasPermission)
+            {
+                await _transcriber.StartRecordingAsync();
+            }
+        }
+
+        [RelayCommand]
+        public async void StopTranscription()
+        {
+            _transcriber.StopRecording();
+
+            await Task.Delay(1000);
+        }
+
+        private void OnTranscriptionReceived(object sender, string text)
+        {
+            TranscribedText = text;
         }
 
         public PositionsPageViewModel(Header selectedItem)

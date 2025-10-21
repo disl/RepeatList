@@ -122,7 +122,7 @@ public partial class ListPage_Input : Popup<object>
 
         try
         {
-            var response = await client.GetCompletionAsync(prompt);
+            var response = await client.GetCompletionAsync(prompt, "application/json");
 
             if (response == null || string.IsNullOrEmpty(response.Content))
             {

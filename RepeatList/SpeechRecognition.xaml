@@ -52,7 +52,7 @@
                     StrokeShape="RoundRectangle 8">
                 <VerticalStackLayout>
                     <Label Text="Result:" FontAttributes="Bold"/>
-                    <Label x:Name="ResultLabel" Text="Noch keine Liste erstellt"/>
+                    <Label x:Name="ResultLabel" Text="{Binding FinalText }"/>
                 </VerticalStackLayout>
             </Border>
 

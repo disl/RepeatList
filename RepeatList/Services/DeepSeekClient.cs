@@ -1,20 +1,22 @@
-﻿using Android.Content;
-using Android.Hardware.Lights;
-using Android.Health.Connect.DataTypes.Units;
+﻿using Android.Speech;
 using Newtonsoft.Json;
 using RepeatList.Models;
-using System.Net.Http.Json;
+using RepeatList.Platforms.Android.Services;
+using RepeatList.ViewModels;
 using System.Text;
 using System.Text.Json;
-using Whisper.net;
 
 namespace RepeatList.Services
 {
     class DeepSeekClient
     {
+        private const string m_c_model_file_name = "ggml_tiny.bin";  // wurde nicht erfolgreich verwendet, wurde "ggml_tiny.bin" verwendet
         private readonly string _apiKey;
         private readonly HttpClient _httpClient;
+        PositionsPageViewModel _positionsPageViewModel;
         //private const string DailyQueryCountKey = "QueriesToday";
+        private readonly IAudioTranscriber _transcriber;
+        private string _transcribedText;
 
         public DeepSeekClient(string apiKey)
         {
@@ -27,9 +29,20 @@ namespace RepeatList.Services
             _httpClient = new HttpClient(handler) { Timeout=TimeSpan.FromMinutes(3) };
             _httpClient.BaseAddress = new Uri("https://api.deepseek.com/v1/");
             _httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {_apiKey}");
+
+            _transcriber = new AndroidTranscriber();
+            _positionsPageViewModel = new PositionsPageViewModel(_transcriber);
+
+            //_transcriber = DependencyService.Get<IAudioTranscriber>();
+            _transcriber.TranscriptionReceived += OnTranscriptionReceived;
         }
 
-        public async Task<CompletionResult> GetCompletionAsync(string prompt)
+        private void OnTranscriptionReceived(object sender, string text)
+        {
+            _transcribedText = text;
+        }
+
+        public async Task<CompletionResult> GetCompletionAsync(string prompt, string type = "application/json")
         {
             var requestBody = new
             {
@@ -43,7 +56,7 @@ namespace RepeatList.Services
             var jsonContent = new StringContent(
                 System.Text.Json.JsonSerializer.Serialize(requestBody),
                 Encoding.UTF8,
-                "application/json"
+                type
             );
 
             var response = await _httpClient.PostAsync("chat/completions", jsonContent);
@@ -66,8 +79,7 @@ namespace RepeatList.Services
             decimal cost = (promptTokens * 0.0015m / 1000) + (completionTokens * 0.0020m / 1000);
 
             // Korrigieren der Kostenberechnung
-            cost = cost * 2;
-
+            cost = cost * 1.7m;
 
 
             // TEST !!!!!!!!
@@ -106,63 +118,169 @@ namespace RepeatList.Services
             }
         }
 
-        //private async Task<string> TranscribeAudio(string filePath)
-        //{
-        //    // DeepSeek Audio API Aufruf
-        //    var audioBytes = await File.ReadAllBytesAsync(filePath);
-        //    var base64Audio = Convert.ToBase64String(audioBytes);
-
-        //    var request = new
-        //    {
-        //        audio = base64Audio,
-        //        model = "deepseek-audio",
-        //        response_format = "text"
-        //    };
-
-        //    var response = await _httpClient.PostAsJsonAsync("https://api.deepseek.com/chat/completions", request);
-        //    var content = await response.Content.ReadAsStringAsync();
-
-        //    return JsonConvert.DeserializeObject<TranscriptionResponse>(content)?.text ?? "";
-        //}
-
-        public async Task<string> TranscribeWithWhisperNet(string audioFile, string Language="de")
+        public async Task<string> TranscribeWithWhisperNet(string audioFile, string language = "de")
         {
-            var sb = new StringBuilder();
-            string modelFilePath;
+            // Verwende die sichere Audio-Vorbereitung
+            string processedAudioFile = await PrepareAudioSafeAsync(audioFile);
+
+            try
+            {
+                var sb = new StringBuilder();
+                string modelFilePath;
+
+                if (string.IsNullOrEmpty(processedAudioFile))
+                    throw new Exception("Failed to prepare audio file for transcription.");
+
+                // Verwende OpenAI Whisper API für die Transkription
+                //var transcriptionText = await TranscribeAudioWithWhisper(processedAudioFile);
+
+                var speechRecognizer = SpeechRecognizer.CreateSpeechRecognizer(Platform.AppContext);
+
+                var hasPermission = await _transcriber.RequestPermissionsAsync();
+                if (hasPermission)
+                {
+                    await _transcriber.StartRecordingAsync();
+                }
+
+                //
+                // Whisper.net  Code auskommentiert, aber eigentlich funktioniert es auch so.
+                //
+                //#if ANDROID
+                //                modelFilePath = await CopyModelToCacheAsync(m_c_model_file_name);
+                //#else
+                //        modelFilePath = Path.Combine(FileSystem.AppDataDirectory, m_c_model_file_name);
+                //#endif
+
+                //                using var whisperFactory = WhisperFactory.FromPath(modelFilePath);
+                //                using var processor = whisperFactory
+                //                    .CreateBuilder()
+                //                    .WithLanguage(language)
+                //                    .Build();
+
+                //                using var fileStream = File.OpenRead(processedAudioFile);
+
+                //                await foreach (var segment in processor.ProcessAsync(fileStream))
+                //                {
+                //                    if (!string.IsNullOrWhiteSpace(segment.Text))
+                //                        sb.AppendLine(segment.Text.Trim());
+                //                }
+
+                return sb.ToString().Trim();
+            }
+            finally
+            {
+                // Aufräumen
+                if (processedAudioFile != audioFile && File.Exists(processedAudioFile))
+                {
+                    try { File.Delete(processedAudioFile); } catch { }
+                }
+            }
+        }
 
 #if ANDROID
-            using var assetStream = Android.App.Application.Context.Assets.Open("ggml_tiny.bin");
-            var tempPath = Path.Combine(FileSystem.CacheDirectory, "ggml_tiny.bin");
+        private async Task<string> CopyModelToCacheAsync(string modelFileName)
+        {
+            var tempPath = Path.Combine(FileSystem.CacheDirectory, modelFileName);
 
-            // Kopiere sie, falls noch nicht vorhanden
             if (!File.Exists(tempPath))
             {
+                using var assetStream = Android.App.Application.Context.Assets.Open(modelFileName);
                 using var fileStream = File.Create(tempPath);
                 await assetStream.CopyToAsync(fileStream);
             }
-            modelFilePath = tempPath;
-#else
-    modelFilePath = Path.Combine(FileSystem.AppDataDirectory, "ggml-small.bin");
+
+            return tempPath;
+        }
 #endif
 
+        private async Task<string> PrepareAudioSafeAsync(string audioFilePath)
+        {
+            if (!File.Exists(audioFilePath))
+                throw new FileNotFoundException($"Audio file not found: {audioFilePath}");
 
+            // Prüfe ob es bereits eine gültige WAV-Datei ist
+            if (await IsValidWhisperAudioAsync(audioFilePath))
+                return audioFilePath;
 
-            using var whisperFactory = WhisperFactory.FromPath(modelFilePath);
+            // Versuche verschiedene Konvertierungsmethoden
+            return await ConvertAudioMultipleMethodsAsync(audioFilePath);
+        }
 
-            using var processor = whisperFactory
-                .CreateBuilder()
-                .WithLanguage(Language)
-                .Build();
-
-            using var fileStream = File.OpenRead(audioFile);
-
-            // Hier wichtig: await foreach, nicht await
-            await foreach (var segment in processor.ProcessAsync(fileStream))
+        private async Task<string> ConvertAudioMultipleMethodsAsync(string inputFilePath)
+        {
+            // Methode 1: Einfache Format-Konvertierung
+            try
             {
-                sb.AppendLine(segment.Text);
+                return await ConvertUsingBasicWaveFormat(inputFilePath);
+            }
+            catch (Exception ex1)
+            {
+                Console.WriteLine($"Method 1 failed: {ex1.Message}");
             }
 
-            return sb.ToString();
+            // Methode 2: Block-based Resampling
+            try
+            {
+                return await ConvertUsingBlockResampling(inputFilePath);
+            }
+            catch (Exception ex2)
+            {
+                Console.WriteLine($"Method 2 failed: {ex2.Message}");
+            }
+
+            // Methode 3: Verwende originale Datei (letzter Ausweg)
+            Console.WriteLine("Using original file as fallback - may not work");
+            return inputFilePath;
+        }
+
+        private async Task<string> ConvertUsingBasicWaveFormat(string inputFilePath)
+        {
+            string outputFilePath = Path.Combine(Path.GetTempPath(), Guid.NewGuid() + ".wav");
+
+            using var reader = new NAudio.Wave.AudioFileReader(inputFilePath);
+
+            // Konvertiere zu 16-bit PCM ohne Sample-Rate Änderung
+            var outputFormat = new NAudio.Wave.WaveFormat(reader.WaveFormat.SampleRate, 16, 1);
+
+            using var conversionStream = new NAudio.Wave.WaveFormatConversionStream(outputFormat, reader);
+            NAudio.Wave.WaveFileWriter.CreateWaveFile(outputFilePath, conversionStream);
+
+            return outputFilePath;
+        }
+
+        private async Task<string> ConvertUsingBlockResampling(string inputFilePath)
+        {
+            string outputFilePath = Path.Combine(Path.GetTempPath(), Guid.NewGuid() + ".wav");
+
+            using var reader = new NAudio.Wave.AudioFileReader(inputFilePath);
+
+            // Resampling in kleinen Blöcken
+            var targetFormat = new NAudio.Wave.WaveFormat(16000, 16, 1);
+            using var writer = new NAudio.Wave.WaveFileWriter(outputFilePath, targetFormat);
+
+            byte[] buffer = new byte[reader.WaveFormat.AverageBytesPerSecond / 10]; // 100ms Blöcke
+            int bytesRead;
+
+            while ((bytesRead = reader.Read(buffer, 0, buffer.Length)) > 0)
+            {
+                writer.Write(buffer, 0, bytesRead);
+            }
+
+            return outputFilePath;
+        }
+
+        private async Task<bool> IsValidWhisperAudioAsync(string filePath)
+        {
+            try
+            {
+                using var reader = new NAudio.Wave.WaveFileReader(filePath);
+                return reader.WaveFormat.Encoding == NAudio.Wave.WaveFormatEncoding.Pcm &&
+                       reader.WaveFormat.BitsPerSample == 16;
+            }
+            catch
+            {
+                return false;
+            }
         }
 
         public async Task<string> TranscribeAudioWithWhisper(string filePath)
@@ -188,9 +306,9 @@ namespace RepeatList.Services
         {
             public string id { get; set; }
             public string @object { get; set; }
-            public long created { get; set; }
+            public int created { get; set; }
             public string model { get; set; }
-            public Choice[] choices { get; set; }
+            public List<Choice> choices { get; set; }
             public Usage usage { get; set; }  // Das fehlt!
             public string system_fingerprint { get; set; }
         }
@@ -199,6 +317,7 @@ namespace RepeatList.Services
         {
             public int index { get; set; }
             public Message message { get; set; }
+            public object logprobs { get; set; }
             public string finish_reason { get; set; }
         }
 
@@ -208,13 +327,21 @@ namespace RepeatList.Services
             public string content { get; set; }
         }
 
+        public class PromptTokensDetails
+        {
+            public int cached_tokens { get; set; }
+        }
+
         public class Usage
         {
             public int prompt_tokens { get; set; }
             public int completion_tokens { get; set; }
             public int total_tokens { get; set; }
-            public PromptCacheUsage prompt_cache_hit_tokens { get; set; }
-            public PromptCacheUsage prompt_cache_miss_tokens { get; set; }
+            //public PromptCacheUsage prompt_cache_hit_tokens { get; set; }
+            //public PromptCacheUsage prompt_cache_miss_tokens { get; set; }
+            public int prompt_cache_hit_tokens { get; set; }
+            public int prompt_cache_miss_tokens { get; set; }
+            public PromptTokensDetails prompt_tokens_details { get; set; }
         }
 
         public class PromptCacheUsage
@@ -223,20 +350,33 @@ namespace RepeatList.Services
             public int output_tokens { get; set; }
         }
 
-        private async Task<string> CreateShoppingList(string text)
+        private async Task<string?> CreateShoppingList(string text)
         {
             // DeepSeek Chat API für Listen-Erstellung
-            var prompt = $"Erstelle aus folgendem Text eine Einkaufsliste im Format 'item1; item2; item3'. Nur die Liste ausgeben, sonst nichts:\n\n{text}";
+            var prompt = $"Create a list from the following text in the format “item1; item2; item3”.  The list must be created in German. " +
+                $"The individual elements are separated by the word “Next”. The list looks like this: '{text}'";
 
-            var request = new
+            var response = await GetCompletionAsync(prompt);
+
+            if (response == null || string.IsNullOrEmpty(response.Content))
             {
-                model = "deepseek-chat",
-                messages = new[] { new { role = "user", content = prompt } },
-                max_tokens = 500
-            };
+                await Shell.Current.DisplayAlert("Error", "No response from DeepSeek.", "OK");
+                return null;
+            }
 
-            var response = await _httpClient.PostAsJsonAsync("https://api.deepseek.com/chat/completions", request);
-            var content = await response.Content.ReadAsStringAsync();
+            //var json=ForForOnDeepSeekClicked(Mode, json, response);
+
+            //var request = new
+            //{
+            //    model = "deepseek-chat",
+            //    messages = new[] { new { role = "user", content = prompt } },
+            //    max_tokens = 1000
+            //};
+
+            //var response = await _httpClient.PostAsJsonAsync("https://api.deepseek.com/chat/completions", request);
+            //var content = await response.Content.ReadAsStringAsync();
+
+            var content = response.Content;
 
             var apiResponse = JsonConvert.DeserializeObject<DeepSeekResponse>(content);
             return apiResponse?.choices?.FirstOrDefault()?.message?.content?.Trim() ?? "Keine Liste erkannt";
