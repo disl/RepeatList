@@ -40,16 +40,21 @@ namespace RepeatList.Platforms.Android.Services
             _speechIntent.PutExtra(RecognizerIntent.ExtraLanguageModel, RecognizerIntent.LanguageModelFreeForm);
             _speechIntent.PutExtra(RecognizerIntent.ExtraLanguage, Java.Util.Locale.German);
             _speechIntent.PutExtra(RecognizerIntent.ExtraCallingPackage, Platform.AppContext.PackageName);
+
+            // Wichtig für kontinuierliche Erkennung
             _speechIntent.PutExtra(RecognizerIntent.ExtraPartialResults, true);
 
-            // Wichtig für komplette Ergebnisse
+            // Timeout-Einstellungen anpassen
+            _speechIntent.PutExtra(RecognizerIntent.ExtraSpeechInputCompleteSilenceLengthMillis, 2500);
+            _speechIntent.PutExtra(RecognizerIntent.ExtraSpeechInputPossiblyCompleteSilenceLengthMillis, 1500);
+            _speechIntent.PutExtra(RecognizerIntent.ExtraSpeechInputMinimumLengthMillis, 5000);
 
-            _speechIntent.PutExtra(RecognizerIntent.ExtraSpeechInputCompleteSilenceLengthMillis, 5000);  // 5 Sekunden
-            _speechIntent.PutExtra(RecognizerIntent.ExtraSpeechInputPossiblyCompleteSilenceLengthMillis, 3000);  // 3 Sekunden
-            _speechIntent.PutExtra(RecognizerIntent.ExtraSpeechInputMinimumLengthMillis, 10000);  // 10 Sekunden Minimum
+            // Mehr Ergebnisse anfordern
+            _speechIntent.PutExtra(RecognizerIntent.ExtraMaxResults, 10);
 
-
-            _speechIntent.PutExtra(RecognizerIntent.ExtraMaxResults, 5);
+            // Optional: Sprach-Erkennung verbessern
+            _speechIntent.PutExtra(RecognizerIntent.ExtraPreferOffline, false);
+            _speechIntent.PutExtra(RecognizerIntent.ExtraPrompt, "Sprechen Sie jetzt...");
         }
 
         public async Task<bool> RequestPermissionsAsync()
@@ -112,71 +117,140 @@ namespace RepeatList.Platforms.Android.Services
             _isRecording = false;
             System.Diagnostics.Debug.WriteLine($"Speech recognition error: {error}");
 
-            // Bei bestimmten Fehlern automatisch neu starten
-            if (_shouldContinue && _isRecording &&
-                (error == SpeechRecognizerError.NoMatch ||
-                 error == SpeechRecognizerError.SpeechTimeout))
-            {
-                System.Diagnostics.Debug.WriteLine("Restarting after error");
-                System.Threading.Thread.Sleep(100); // Kurze Pause
-                _speechRecognizer.StartListening(_speechIntent);
-            }
-            else
-            {
-                _isRecording = false;
-            }
-
-            // Detaillierte Error-Meldungen
             string errorMessage = error switch
             {
-                SpeechRecognizerError.NoMatch => "Keine Übereinstimmung gefunden",
+                SpeechRecognizerError.NoMatch => "Keine Übereinstimmung gefunden - möglicherweise zu leise oder unverständlich",
                 SpeechRecognizerError.Network => "Netzwerkfehler",
                 SpeechRecognizerError.NetworkTimeout => "Netzwerk-Timeout",
-                SpeechRecognizerError.Audio => "Audio-Fehler",
+                SpeechRecognizerError.Audio => "Audio-Fehler - Mikrofon nicht verfügbar",
                 SpeechRecognizerError.Server => "Server-Fehler",
                 SpeechRecognizerError.Client => "Client-Fehler",
-                SpeechRecognizerError.SpeechTimeout => "Sprach-Timeout",
+                SpeechRecognizerError.SpeechTimeout => "Sprach-Timeout - zu lange Pause",
                 SpeechRecognizerError.InsufficientPermissions => "Keine Berechtigung",
+                SpeechRecognizerError.LanguageNotSupported => "Sprache nicht unterstützt",
+                SpeechRecognizerError.LanguageUnavailable => "Sprache nicht verfügbar",
                 _ => $"Unbekannter Fehler: {error}"
             };
 
-            System.Diagnostics.Debug.WriteLine(errorMessage);
+            System.Diagnostics.Debug.WriteLine($"Detailed error: {errorMessage}");
+
+            // Bei bestimmten Fehlern neu starten
+            if (_shouldContinue &&
+                (error == SpeechRecognizerError.NoMatch ||
+                 error == SpeechRecognizerError.SpeechTimeout ||
+                 error == SpeechRecognizerError.Client))
+            {
+                System.Diagnostics.Debug.WriteLine("Attempting to restart after error...");
+                Task.Delay(500).ContinueWith(_ =>
+                {
+                    try
+                    {
+                        _speechRecognizer.StartListening(_speechIntent);
+                        _isRecording = true;
+                    }
+                    catch (Exception ex)
+                    {
+                        System.Diagnostics.Debug.WriteLine($"Restart failed: {ex.Message}");
+                    }
+                });
+            }
+        }
+
+        private void DebugBundleContents(Bundle bundle)
+        {
+            System.Diagnostics.Debug.WriteLine("=== Bundle Contents ===");
+            foreach (var key in bundle.KeySet())
+            {
+                var value = bundle.Get(key);
+                System.Diagnostics.Debug.WriteLine($"Key: {key}, Type: {value?.GetType().Name}, Value: {value}");
+            }
+            System.Diagnostics.Debug.WriteLine("=======================");
         }
 
         public void OnResults(Bundle? results)
         {
-            var matches = results?.GetStringArrayList(SpeechRecognizer.ResultsRecognition);
-            if (matches != null && matches.Count > 0)
+            if (results == null)
             {
-                var finalTranscription = matches[0];
-
-                if (!string.IsNullOrEmpty(finalTranscription))
-                {
-                    // Text anfügen statt zu ersetzen
-                    if (_completeText.Length > 0)
-                    {
-                        _completeText.Append(" ");
-                    }
-                    _completeText.Append(finalTranscription);
-
-                    // Zwischenergebnis senden
-                    TranscriptionReceived?.Invoke(this, _completeText.ToString());
-                }
+                System.Diagnostics.Debug.WriteLine("OnResults: Bundle is null");
+                return;
             }
 
-            // Automatisch neu starten wenn noch am Aufnehmen
+            // Debug-Ausgabe
+            DebugBundleContents(results);
+
+            try
+            {
+                var matches = results.GetStringArrayList(SpeechRecognizer.ResultsRecognition);
+
+                if (matches == null)
+                {
+                    System.Diagnostics.Debug.WriteLine("OnResults: matches ArrayList is null");
+                    // Alternative Methode versuchen
+                    matches = GetResultsFromBundle(results);
+                }
+
+                if (matches != null && matches.Count > 0)
+                {
+                    var finalTranscription = matches[0];
+
+                    if (!string.IsNullOrEmpty(finalTranscription))
+                    {
+                        if (_completeText.Length > 0)
+                        {
+                            _completeText.Append(" ");
+                        }
+                        _completeText.Append(finalTranscription);
+
+                        TranscriptionReceived?.Invoke(this, _completeText.ToString());
+                        System.Diagnostics.Debug.WriteLine($"OnResults: {finalTranscription}");
+                    }
+                }
+                else
+                {
+                    System.Diagnostics.Debug.WriteLine("OnResults: No matches found");
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"OnResults error: {ex.Message}");
+            }
+
+            // Automatisch neu starten
             if (_shouldContinue && _isRecording)
             {
                 System.Diagnostics.Debug.WriteLine("Restarting recognition for continuous recording");
-                _speechRecognizer.StartListening(_speechIntent);
+                // Kurze Pause bevor Neustart
+                Task.Delay(100).ContinueWith(_ =>
+                {
+                    _speechRecognizer.StartListening(_speechIntent);
+                });
             }
             else
             {
                 _isRecording = false;
-                // Finales Ergebnis senden
                 CompleteTranscriptionReceived?.Invoke(this, _completeText.ToString().Trim());
             }
         }
+
+        // Alternative Methode um Ergebnisse aus Bundle zu extrahieren
+        private List<string>? GetResultsFromBundle(Bundle results)
+        {
+            try
+            {
+                // Verschiedene mögliche Keys probieren
+                var matches = results.GetStringArrayList(SpeechRecognizer.ResultsRecognition)
+                            ?? results.GetStringArrayList("results")
+                            ?? results.GetStringArrayList("matches");
+
+                return matches.ToList();
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"GetResultsFromBundle error: {ex.Message}");
+                return null;
+            }
+        }
+
 
         //public void OnResults(Bundle? results)
         //{

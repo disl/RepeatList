@@ -26,7 +26,9 @@ namespace RepeatList
 
         private IDispatcherTimer _timer;
 
-        public ListsPage()
+        private readonly ISpeechToText _speechToText;
+
+        public ListsPage(ISpeechToText speechToText)
         {
             try
             {
@@ -34,12 +36,16 @@ namespace RepeatList
 
                 ViewModel = new ListsPageViewModel();
                 BindingContext = ViewModel;
+
+                _speechToText = speechToText;
             }
             catch (Exception ex)
             {
                 SentrySdk.CaptureException(ex);
                 throw;
             }
+
+            _speechToText=speechToText;
         }
 
         protected async override void OnAppearing()
@@ -552,7 +558,7 @@ namespace RepeatList
 
                     //await ViewModel.LoadPositions();
 
-                    await Navigation.PushAsync(new PositionsPage(selectedItem));
+                    await Navigation.PushAsync(new PositionsPage(selectedItem, _speechToText));
                 }
 
                 //ViewModel.IsBusy=false;

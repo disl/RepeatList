@@ -3,6 +3,9 @@ using Microsoft.Extensions.Logging;
 using RepeatList.Models;
 using RepeatList.ViewModels;
 using SQLitePCL;
+#if ANDROID
+using Microsoft.Maui;
+#endif
 
 namespace RepeatList
 {
@@ -98,11 +101,35 @@ namespace RepeatList
             // **SQLite initialisieren**
             Batteries.Init();
 
-            //#if ANDROID
-            //        builder.Services.AddSingleton<ISpeechToText>(new Android.SpeechToTextImplementation());
-            //#else
-            //            builder.Services.AddSingleton<ISpeechToText>(SpeechToText.Default);
-            //#endif
+
+            // Für die plattformspezifische Implementierung von ISpeechToText den MauiApp und IMauiContext registrieren
+            builder.Services.AddSingleton<Microsoft.Maui.Hosting.MauiApp>(provider =>
+                        {
+                            return provider.GetRequiredService<MauiApp>();
+                        });
+
+
+            builder.Services.AddSingleton<Microsoft.Maui.IMauiContext>(provider =>
+            {
+                var mauiApp = provider.GetRequiredService<MauiApp>();
+                return mauiApp.Services.GetRequiredService<Microsoft.Maui.IMauiContext>();
+            });
+
+
+#if ANDROID
+            builder.Services.AddSingleton<ISpeechToText>(provider =>
+            {
+                var mauiContext = provider.GetRequiredService<IMauiContext>();
+                return new SpeechToTextImplementation(mauiContext);
+            });
+#else
+                        builder.Services.AddSingleton<ISpeechToText>(SpeechToText.Default);
+#endif
+
+            // Für die plattformspezifische Implementierung von ISpeechToText den MauiApp und IMauiContext registrieren -- ENDE
+
+
+
 
 #if ANDROID
             builder.Services.AddSingleton<IAudioTranscriber, AndroidTranscriber>();

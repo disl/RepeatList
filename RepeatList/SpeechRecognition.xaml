@@ -1,10 +1,77 @@
-<?xml version="1.0" encoding="utf-8" ?>
-<!--<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="RepeatList.SpeechRecognition"
-             Title="SpeechRecognition">-->
+  
+    <toolkit:Popup 
+        xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+        xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+        xmlns:models="clr-namespace:RepeatList.Models"
+        xmlns:properties="clr-namespace:RepeatList.Properties"
+        x:Class="RepeatList.SpeechRecognition"
+        xmlns:system="clr-namespace:System;assembly=System.Runtime"
+        x:TypeArguments="system:String"
+        BackgroundColor="LightGray"
+        MaximumWidthRequest="300"
+        MaximumHeightRequest="350"
+    >
 
-<toolkit:Popup 
+    <ScrollView>
+        <VerticalStackLayout Spacing="10" Padding="10">
+
+            <!-- Aufnahme-Button -->
+            <Button x:Name="RecordButton" 
+                    Text="🎤 Aufnahme starten" 
+                    Clicked="OnRecordButtonClicked"
+                    BackgroundColor="Green"
+                    TextColor="White"
+                    HeightRequest="50"/>
+
+            <!-- Status-Anzeige -->
+            <Label x:Name="StatusLabel" 
+                   Text="Bereit für Aufnahme" 
+                   HorizontalOptions="Center"
+                   FontSize="14"
+                   TextColor="DarkBlue"/>
+
+            <!-- Ergebnis-Anzeige -->
+            <Border BackgroundColor="#f0f8ff" 
+                    Padding="15"
+                    Stroke="LightGray"
+                    StrokeThickness="1"
+                    StrokeShape="RoundRectangle 8">
+                <VerticalStackLayout>
+                    <Label Text="Erkannte Einkaufsliste:" 
+                           FontAttributes="Bold"
+                           FontSize="16"/>
+                    <Label x:Name="ResultLabel" 
+                           Text="{Binding FinalText}"
+                           FontSize="14"
+                           LineBreakMode="WordWrap"/>
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- Aktionen -->
+            <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                <Button x:Name="OkButton"
+                        Text="✅ Übernehmen" 
+                        Clicked="OnCopyListClicked"
+                        Grid.Column="0"
+                        BackgroundColor="Blue"
+                        TextColor="White"/>
+
+                <Button x:Name="CancelButton"
+                        Text="❌ Abbrechen" 
+                        Clicked="OnCancelClicked"
+                        Grid.Column="1"
+                        BackgroundColor="LightGray"
+                        TextColor="Black"/>
+            </Grid>
+
+        </VerticalStackLayout>
+    </ScrollView>
+</toolkit:Popup>
+
+
+
+<!--<toolkit:Popup 
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
@@ -19,32 +86,38 @@
     <ScrollView>
         <VerticalStackLayout Spacing="10" Padding="10">
 
-            <!-- Eingabe -->
-            <!--<Label Text="Sprach-Einkaufsliste" FontSize="24" HorizontalOptions="Center"/>
+            -->
+<!-- Eingabe -->
+<!--<Label Text="Sprach-Einkaufsliste" FontSize="24" HorizontalOptions="Center"/>
 
             <Entry x:Name="InputEntry" 
                    Placeholder="Oder manuell eingeben: Apfel; Banane; Brot"
                    Completed="OnAddManualItem"/>-->
 
-            <!-- Aufnahme-Buttons -->
+<!-- Aufnahme-Buttons -->
+<!--
             <Grid ColumnDefinitions="*" ColumnSpacing="10">
                 <Button x:Name="RecordButton" 
                         Text="🎤 Aufnahme starten" 
                         Clicked="OnRecordButtonClicked"
                         Grid.Column="0"/>
 
-                <!--<Button x:Name="StopButton" 
+                -->
+<!--<Button x:Name="StopButton" 
                         Text="⏹️ Stoppen" 
                         Clicked="OnStopButtonClicked"
                         IsEnabled="False"
                         Grid.Column="1"/>-->
+<!--
             </Grid>
 
             <Label x:Name="StatusLabel" 
                    Text="Bereit für Aufnahme" 
                    HorizontalOptions="Center"/>
 
-            <!-- Ergebnis -->
+            -->
+<!-- Ergebnis -->
+<!--
             <Border BackgroundColor="#f0f8ff" 
                     Padding="15"
                     Stroke="LightGray"
@@ -56,7 +129,9 @@
                 </VerticalStackLayout>
             </Border>
 
-            <!-- Aktionen -->
+            -->
+<!-- Aktionen -->
+<!--
             <Button Text="Ok" 
                     Clicked="OnCopyListClicked"/>
             <Button Text="Cancel" 
@@ -64,4 +139,4 @@
 
         </VerticalStackLayout>
     </ScrollView>
-</toolkit:Popup>
+</toolkit:Popup>-->

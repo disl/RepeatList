@@ -29,13 +29,22 @@ namespace RepeatList
         private double _lastScrollPosition_done = 0;
         private object _lastVisibleItem_done = null;
 
-        public PositionsPage(Header selectedItem)
+        private readonly ISpeechToText _speechToText;
+
+        public PositionsPage(ISpeechToText speechToText)
+        {
+            InitializeComponent();
+            _speechToText = speechToText;
+        }
+
+        public PositionsPage(Header selectedItem, ISpeechToText speechToText)
         {
             InitializeComponent();
 
             ViewModel = new PositionsPageViewModel(selectedItem);
             BindingContext = ViewModel;
             SetupPageViewModel = new SetupPageViewModel();
+            _speechToText=speechToText;
         }
 
         protected async override void OnAppearing()
@@ -829,7 +838,8 @@ namespace RepeatList
 
         private async void OnAudioRecognationButton_Clicked(object sender, EventArgs e)
         {
-            var popup = new SpeechRecognition();
+
+            var popup = new SpeechRecognition(_speechToText);
             var result = await Shell.Current.ShowPopupAsync<string>(popup);
             if (result != null && !string.IsNullOrEmpty(result.Result))
             {
