@@ -17,6 +17,8 @@ namespace RepeatList.Platforms.Android.Services
         public bool IsRecording => _isRecording;
         public event EventHandler<string> TranscriptionReceived;
         public event EventHandler<string> CompleteTranscriptionReceived;
+        private bool _shouldContinue = true; // Für kontinuierliche Aufnahme
+
 
         public AndroidTranscriber()
         {
@@ -25,6 +27,12 @@ namespace RepeatList.Platforms.Android.Services
 
         private void InitializeSpeechRecognizer()
         {
+            if (!SpeechRecognizer.IsRecognitionAvailable(Platform.AppContext))
+            {
+                System.Diagnostics.Debug.WriteLine("Speech recognition not available!");
+                return;
+            }
+
             _speechRecognizer = SpeechRecognizer.CreateSpeechRecognizer(Platform.AppContext);
             _speechRecognizer.SetRecognitionListener(this);
 
@@ -35,9 +43,12 @@ namespace RepeatList.Platforms.Android.Services
             _speechIntent.PutExtra(RecognizerIntent.ExtraPartialResults, true);
 
             // Wichtig für komplette Ergebnisse
-            _speechIntent.PutExtra(RecognizerIntent.ExtraSpeechInputCompleteSilenceLengthMillis, 3000);
-            _speechIntent.PutExtra(RecognizerIntent.ExtraSpeechInputPossiblyCompleteSilenceLengthMillis, 3000);
-            _speechIntent.PutExtra(RecognizerIntent.ExtraSpeechInputMinimumLengthMillis, 5000);
+
+            _speechIntent.PutExtra(RecognizerIntent.ExtraSpeechInputCompleteSilenceLengthMillis, 5000);  // 5 Sekunden
+            _speechIntent.PutExtra(RecognizerIntent.ExtraSpeechInputPossiblyCompleteSilenceLengthMillis, 3000);  // 3 Sekunden
+            _speechIntent.PutExtra(RecognizerIntent.ExtraSpeechInputMinimumLengthMillis, 10000);  // 10 Sekunden Minimum
+
+
             _speechIntent.PutExtra(RecognizerIntent.ExtraMaxResults, 5);
         }
 
@@ -51,7 +62,8 @@ namespace RepeatList.Platforms.Android.Services
         {
             if (!_isRecording)
             {
-                _completeText.Clear(); // Text zurücksetzen
+                _completeText.Clear();
+                _shouldContinue = true;
                 _speechRecognizer.StartListening(_speechIntent);
                 _isRecording = true;
             }
@@ -62,10 +74,10 @@ namespace RepeatList.Platforms.Android.Services
         {
             if (_isRecording)
             {
+                _shouldContinue = false; // Kein Auto-Restart mehr
                 _speechRecognizer.StopListening();
                 _isRecording = false;
 
-                // Finalen Text senden
                 var finalText = _completeText.ToString().Trim();
                 if (!string.IsNullOrEmpty(finalText))
                 {
@@ -99,6 +111,36 @@ namespace RepeatList.Platforms.Android.Services
         {
             _isRecording = false;
             System.Diagnostics.Debug.WriteLine($"Speech recognition error: {error}");
+
+            // Bei bestimmten Fehlern automatisch neu starten
+            if (_shouldContinue && _isRecording &&
+                (error == SpeechRecognizerError.NoMatch ||
+                 error == SpeechRecognizerError.SpeechTimeout))
+            {
+                System.Diagnostics.Debug.WriteLine("Restarting after error");
+                System.Threading.Thread.Sleep(100); // Kurze Pause
+                _speechRecognizer.StartListening(_speechIntent);
+            }
+            else
+            {
+                _isRecording = false;
+            }
+
+            // Detaillierte Error-Meldungen
+            string errorMessage = error switch
+            {
+                SpeechRecognizerError.NoMatch => "Keine Übereinstimmung gefunden",
+                SpeechRecognizerError.Network => "Netzwerkfehler",
+                SpeechRecognizerError.NetworkTimeout => "Netzwerk-Timeout",
+                SpeechRecognizerError.Audio => "Audio-Fehler",
+                SpeechRecognizerError.Server => "Server-Fehler",
+                SpeechRecognizerError.Client => "Client-Fehler",
+                SpeechRecognizerError.SpeechTimeout => "Sprach-Timeout",
+                SpeechRecognizerError.InsufficientPermissions => "Keine Berechtigung",
+                _ => $"Unbekannter Fehler: {error}"
+            };
+
+            System.Diagnostics.Debug.WriteLine(errorMessage);
         }
 
         public void OnResults(Bundle? results)
@@ -106,21 +148,56 @@ namespace RepeatList.Platforms.Android.Services
             var matches = results?.GetStringArrayList(SpeechRecognizer.ResultsRecognition);
             if (matches != null && matches.Count > 0)
             {
-                // Das beste Ergebnis nehmen
                 var finalTranscription = matches[0];
 
                 if (!string.IsNullOrEmpty(finalTranscription))
                 {
-                    _completeText.Clear();
+                    // Text anfügen statt zu ersetzen
+                    if (_completeText.Length > 0)
+                    {
+                        _completeText.Append(" ");
+                    }
                     _completeText.Append(finalTranscription);
 
-                    // Finales Ergebnis senden
-                    CompleteTranscriptionReceived?.Invoke(this, finalTranscription);
-                    TranscriptionReceived?.Invoke(this, finalTranscription);
+                    // Zwischenergebnis senden
+                    TranscriptionReceived?.Invoke(this, _completeText.ToString());
                 }
             }
-            _isRecording = false;
+
+            // Automatisch neu starten wenn noch am Aufnehmen
+            if (_shouldContinue && _isRecording)
+            {
+                System.Diagnostics.Debug.WriteLine("Restarting recognition for continuous recording");
+                _speechRecognizer.StartListening(_speechIntent);
+            }
+            else
+            {
+                _isRecording = false;
+                // Finales Ergebnis senden
+                CompleteTranscriptionReceived?.Invoke(this, _completeText.ToString().Trim());
+            }
         }
+
+        //public void OnResults(Bundle? results)
+        //{
+        //    var matches = results?.GetStringArrayList(SpeechRecognizer.ResultsRecognition);
+        //    if (matches != null && matches.Count > 0)
+        //    {
+        //        // Das beste Ergebnis nehmen
+        //        var finalTranscription = matches[0];
+
+        //        if (!string.IsNullOrEmpty(finalTranscription))
+        //        {
+        //            _completeText.Clear();
+        //            _completeText.Append(finalTranscription);
+
+        //            // Finales Ergebnis senden
+        //            CompleteTranscriptionReceived?.Invoke(this, finalTranscription);
+        //            TranscriptionReceived?.Invoke(this, finalTranscription);
+        //        }
+        //    }
+        //    _isRecording = false;
+        //}
 
         public void OnPartialResults(Bundle? partialResults)
         {

@@ -831,7 +831,7 @@ namespace RepeatList
         {
             var popup = new SpeechRecognition();
             var result = await Shell.Current.ShowPopupAsync<string>(popup);
-            if (result != null)
+            if (result != null && !string.IsNullOrEmpty(result.Result))
             {
                 
             }
