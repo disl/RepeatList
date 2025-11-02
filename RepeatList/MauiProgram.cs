@@ -116,28 +116,28 @@ namespace RepeatList
             });
 
 
-#if ANDROID
-            builder.Services.AddSingleton<ISpeechToText>(provider =>
-            {
-                var mauiContext = provider.GetRequiredService<IMauiContext>();
-                return new SpeechToTextImplementation(mauiContext);
-            });
-#else
-                        builder.Services.AddSingleton<ISpeechToText>(SpeechToText.Default);
-#endif
+//#if ANDROID
+//            builder.Services.AddSingleton<ISpeechToText>(provider =>
+//            {
+//                var mauiContext = provider.GetRequiredService<IMauiContext>();
+//                return new SpeechToTextImplementation(mauiContext);
+//            });
+//#else
+//                        builder.Services.AddSingleton<ISpeechToText>(SpeechToText.Default);
+//#endif
 
             // Für die plattformspezifische Implementierung von ISpeechToText den MauiApp und IMauiContext registrieren -- ENDE
 
 
 
 
-#if ANDROID
-            builder.Services.AddSingleton<IAudioTranscriber, AndroidTranscriber>();
-#elif IOS || MACCATALYST
-        builder.Services.AddSingleton<IAudioTranscriber, iOSTranscriber>();
-#elif WINDOWS
-        builder.Services.AddSingleton<IAudioTranscriber, WindowsTranscriber>();
-#endif
+//#if ANDROID
+//            builder.Services.AddSingleton<IAudioTranscriber, AndroidTranscriber>();
+//#elif IOS || MACCATALYST
+//        builder.Services.AddSingleton<IAudioTranscriber, iOSTranscriber>();
+//#elif WINDOWS
+//        builder.Services.AddSingleton<IAudioTranscriber, WindowsTranscriber>();
+//#endif
 
             //builder.Services.AddTransient<MainPageViewModel>();
             builder.Services.AddTransient<DeepSeekClient>();

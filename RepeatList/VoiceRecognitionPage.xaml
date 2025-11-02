@@ -1,0 +1,23 @@
+<toolkit:Popup 
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    xmlns:models="clr-namespace:RepeatList.Models"
+    xmlns:properties="clr-namespace:RepeatList.Properties"
+    x:Class="RepeatList.VoiceRecognitionPage"
+    xmlns:system="clr-namespace:System;assembly=System.Runtime"
+    x:TypeArguments="system:String"
+   BackgroundColor="gray"
+    >
+    <VerticalStackLayout Padding="20" Spacing="20">
+        <Label Text="Sprich deine Einkaufsliste:" FontSize="18" />
+        <Editor x:Name="txtResult" HeightRequest="300" Placeholder="Dein Text erscheint hier..."  />
+
+        <HorizontalStackLayout Spacing="10" HorizontalOptions="Center">
+            <Button Text="🎤 START" Clicked="OnStartListeningClicked" FontSize="Body" 
+                         />
+            <Button Text="⏹ STOP" Clicked="OnStopListeningClicked" FontSize="Body"
+                         />
+        </HorizontalStackLayout>
+    </VerticalStackLayout>
+</toolkit:Popup>

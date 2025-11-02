@@ -150,14 +150,17 @@
 	  <Compile Remove="InputPromptPage.cs" />
 	  <Compile Remove="InputTextWithMicrophone.xaml.cs" />
 	  <Compile Remove="MainPage_old.xaml.cs" />
+	  <Compile Remove="Models\SpeechToText.cs" />
 	  <Compile Remove="Platforms\Android\AdViewRenderer.cs" />
 	  <Compile Remove="Platforms\Android\InAppUpdateManager.cs" />
+	  <Compile Remove="Platforms\Android\Services\SpeechToTextImplementation.cs" />
 	  <Compile Remove="PopupRouter.cs" />
 	  <Compile Remove="Program.cs" />
 	  <Compile Remove="Properties\Resources.es.Designer.cs" />
 	  <Compile Remove="Properties\Resources.fr.Designer.cs" />
 	  <Compile Remove="Services\SpeechService.cs" />
 	  <Compile Remove="Services\SpeechToTextService.cs" />
+	  <Compile Remove="SpeechRecognition.xaml.cs" />
 	  <Compile Remove="ViewModels\InputTextWithMicrophoneViewModel.cs" />
 	</ItemGroup>
 
@@ -179,6 +182,7 @@
 	<ItemGroup>
 	  <MauiXaml Remove="CategoryPositionPage.xaml" />
 	  <MauiXaml Remove="MainPage_old.xaml" />
+	  <MauiXaml Remove="SpeechRecognition.xaml" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -279,7 +283,7 @@
 		<MauiXaml Update="SetupPage.xaml">
 		  <Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
-		<MauiXaml Update="SpeechRecognition.xaml">
+		<MauiXaml Update="VoiceRecognitionPage.xaml">
 		  <Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
 	</ItemGroup>

@@ -3,13 +3,12 @@ using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Maui.Core;
 using CommunityToolkit.Maui.Core.Extensions;
 using CommunityToolkit.Maui.Extensions;
-using CommunityToolkit.Maui.Views;
 using Newtonsoft.Json;
 using RepeatList.Models;
+using RepeatList.Services;
 using RepeatList.ViewModels;
 using System.Collections.ObjectModel;
 using System.Globalization;
-using static Android.Icu.Text.Transliterator;
 using Position = RepeatList.Models.Position;
 
 
@@ -22,6 +21,8 @@ namespace RepeatList
         private PositionsPageViewModel ViewModel { get; set; }
         private CategoryPosition_PopUpViewModel m_CategoryPosition_PopUpViewModel = new CategoryPosition_PopUpViewModel();
 
+        //var client = new DeepSeekClient("sk-a3240964efda4aa1aa6cf6ffcf9713b2");
+
         private IDispatcherTimer _timer;
 
         private double _lastScrollPosition_undone = 0;
@@ -29,22 +30,15 @@ namespace RepeatList
         private double _lastScrollPosition_done = 0;
         private object _lastVisibleItem_done = null;
 
-        private readonly ISpeechToText _speechToText;
+        //private readonly ISpeechToText _speechToText;
 
-        public PositionsPage(ISpeechToText speechToText)
-        {
-            InitializeComponent();
-            _speechToText = speechToText;
-        }
-
-        public PositionsPage(Header selectedItem, ISpeechToText speechToText)
+        public PositionsPage(Header selectedItem)
         {
             InitializeComponent();
 
             ViewModel = new PositionsPageViewModel(selectedItem);
             BindingContext = ViewModel;
             SetupPageViewModel = new SetupPageViewModel();
-            _speechToText=speechToText;
         }
 
         protected async override void OnAppearing()
@@ -839,13 +833,18 @@ namespace RepeatList
         private async void OnAudioRecognationButton_Clicked(object sender, EventArgs e)
         {
 
-            var popup = new SpeechRecognition(_speechToText);
+            var popup = new VoiceRecognitionPage();
             var result = await Shell.Current.ShowPopupAsync<string>(popup);
             if (result != null && !string.IsNullOrEmpty(result.Result))
             {
-                
+                var client = new DeepSeekClient();
+
+                var list_text = await client.TranscribeToShoppingList(result.Result.Replace("\n", ""));
+                if (!string.IsNullOrEmpty(list_text))
+                {
+                    await InputPositions(list_text);
+                }
             }
         }
     }
-
 }

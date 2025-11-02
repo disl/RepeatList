@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace RepeatList.Models
 {
-    public interface ISpeechToText
-    {
-        Task<string> RecognizeSpeechAsync();
-    }
+    //public interface ISpeechToText
+    //{
+    //    Task<string> RecognizeSpeechAsync();
+    //}
 }

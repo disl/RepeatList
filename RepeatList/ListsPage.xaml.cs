@@ -26,9 +26,9 @@ namespace RepeatList
 
         private IDispatcherTimer _timer;
 
-        private readonly ISpeechToText _speechToText;
+        //private readonly ISpeechToText _speechToText;
 
-        public ListsPage(ISpeechToText speechToText)
+        public ListsPage()
         {
             try
             {
@@ -37,7 +37,7 @@ namespace RepeatList
                 ViewModel = new ListsPageViewModel();
                 BindingContext = ViewModel;
 
-                _speechToText = speechToText;
+                //_speechToText = speechToText;
             }
             catch (Exception ex)
             {
@@ -45,7 +45,7 @@ namespace RepeatList
                 throw;
             }
 
-            _speechToText=speechToText;
+            //_speechToText=speechToText;
         }
 
         protected async override void OnAppearing()
@@ -558,7 +558,7 @@ namespace RepeatList
 
                     //await ViewModel.LoadPositions();
 
-                    await Navigation.PushAsync(new PositionsPage(selectedItem, _speechToText));
+                    await Navigation.PushAsync(new PositionsPage(selectedItem));
                 }
 
                 //ViewModel.IsBusy=false;

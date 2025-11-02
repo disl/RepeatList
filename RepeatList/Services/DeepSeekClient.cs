@@ -1,4 +1,5 @@
 ﻿using Android.Speech;
+using IntelliJ.Lang.Annotations;
 using Newtonsoft.Json;
 using RepeatList.Models;
 using RepeatList.Platforms.Android.Services;
@@ -10,15 +11,13 @@ namespace RepeatList.Services
 {
     class DeepSeekClient
     {
-        private const string m_c_model_file_name = "ggml_tiny.bin";  // wurde nicht erfolgreich verwendet, wurde "ggml_tiny.bin" verwendet
         private readonly string _apiKey;
         private readonly HttpClient _httpClient;
         PositionsPageViewModel _positionsPageViewModel;
-        //private const string DailyQueryCountKey = "QueriesToday";
         private readonly IAudioTranscriber _transcriber;
         private string _transcribedText;
 
-        public DeepSeekClient(string apiKey)
+        public DeepSeekClient(string apiKey = "sk-a3240964efda4aa1aa6cf6ffcf9713b2")
         {
             _apiKey = apiKey;
 
@@ -26,7 +25,7 @@ namespace RepeatList.Services
             {
                 AutomaticDecompression = System.Net.DecompressionMethods.GZip | System.Net.DecompressionMethods.Deflate
             };
-            _httpClient = new HttpClient(handler) { Timeout=TimeSpan.FromMinutes(3) };
+            _httpClient = new HttpClient(handler) { Timeout = TimeSpan.FromMinutes(3) };
             _httpClient.BaseAddress = new Uri("https://api.deepseek.com/v1/");
             _httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {_apiKey}");
 
@@ -102,19 +101,22 @@ namespace RepeatList.Services
 
 
         // Audio recognation methods
-        public async Task<string> TranscribeToShoppingList(string audioFilePath)
+        public async Task<string> TranscribeToShoppingList(string transcription)  //string audioFilePath)
         {
             try
             {
                 // 1. Audio zu Text transkribieren
-                var transcription = await TranscribeWithWhisperNet(audioFilePath);
+                //var transcription = await TranscribeWithWhisperNet(audioFilePath);
 
                 // 2. Text zu Einkaufsliste verarbeiten
-                return await CreateShoppingList(transcription);
+                if (!string.IsNullOrEmpty(transcription))
+                    return await CreateShoppingList(transcription);
+
+                return string.Empty;
             }
             catch (Exception ex)
             {
-                throw new Exception($"DeepSeek API Fehler: {ex.Message}");
+                throw new Exception($"API Fehler: {ex.Message}");
             }
         }
 
@@ -352,17 +354,31 @@ namespace RepeatList.Services
 
         private async Task<string?> CreateShoppingList(string text)
         {
+            string language = "English";
+            switch (Thread.CurrentThread.CurrentCulture.TwoLetterISOLanguageName)
+            {
+                case "en": language = "English"; break;
+                case "es": language = "Spanish"; break;
+                case "fr": language = "French"; break;
+                case "de": language = "German"; break;
+                case "it": language = "Italian"; break;
+                case "uk": language = "Ukrainian"; break;
+                case "ru": language = "Russian"; break;
+            }
+
             // DeepSeek Chat API für Listen-Erstellung
-            var prompt = $"Create a list from the following text in the format “item1; item2; item3”.  The list must be created in German. " +
-                $"The individual elements are separated by the word “Next”. The list looks like this: '{text}'";
+            var prompt = $"Create a list from the following text in the format ‘Element1 quantity1; Element2 quantity2; Element3 quantity3’. " +
+                $"The list must be created in {language}.  The text looks like this: '{text}'";
 
             var response = await GetCompletionAsync(prompt);
 
             if (response == null || string.IsNullOrEmpty(response.Content))
             {
-                await Shell.Current.DisplayAlert("Error", "No response from DeepSeek.", "OK");
+                await Shell.Current.DisplayAlert("Error", "No response from API.", "OK");
                 return null;
             }
+
+            return response.Content;
 
             //var json=ForForOnDeepSeekClicked(Mode, json, response);
 
@@ -376,10 +392,10 @@ namespace RepeatList.Services
             //var response = await _httpClient.PostAsJsonAsync("https://api.deepseek.com/chat/completions", request);
             //var content = await response.Content.ReadAsStringAsync();
 
-            var content = response.Content;
 
-            var apiResponse = JsonConvert.DeserializeObject<DeepSeekResponse>(content);
-            return apiResponse?.choices?.FirstOrDefault()?.message?.content?.Trim() ?? "Keine Liste erkannt";
+
+            //var apiResponse = JsonConvert.DeserializeObject<DeepSeekResponse>(content);
+            //return apiResponse?.choices?.FirstOrDefault()?.message?.content?.Trim() ?? "No list found";
         }
 
         public void Dispose()

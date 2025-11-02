@@ -91,7 +91,7 @@ public partial class ListPage_Input : Popup<object>
         Activity_Indicator.IsEnabled = true;
         Activity_Indicator.IsRunning = true;
 
-        var client = new DeepSeekClient("sk-a3240964efda4aa1aa6cf6ffcf9713b2");
+        var client = new DeepSeekClient();
         var language = "English";
 
         switch (Thread.CurrentThread.CurrentCulture.TwoLetterISOLanguageName)
