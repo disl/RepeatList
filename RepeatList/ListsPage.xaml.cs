@@ -545,23 +545,13 @@ namespace RepeatList
         {
             try
             {
-                //ViewModel.IsBusy=true;
-
-                //ViewModel.HeaderSelected=true;
-
-                //var _selectedHeader = e. CurrentSelection[0] as Header;
-                //if (_selectedHeader != null)
                 if (sender is Border border && border.BindingContext is Header selectedItem)
                 {
 
                     ViewModel.Header_SelectedItem = selectedItem;
 
-                    //await ViewModel.LoadPositions();
-
                     await Navigation.PushAsync(new PositionsPage(selectedItem));
                 }
-
-                //ViewModel.IsBusy=false;
             }
             catch (Exception ex)
             {
@@ -575,11 +565,6 @@ namespace RepeatList
 #endif
             }
         }
-
-        //private void OnHeaderListViewSelected(object sender, SelectionChangedEventArgs e)
-        //{
-
-        //}
 
         private void OnSearchTextChanged(object sender, TextChangedEventArgs e)
         {

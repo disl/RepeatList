@@ -367,8 +367,9 @@ namespace RepeatList.Services
             }
 
             // DeepSeek Chat API für Listen-Erstellung
-            var prompt = $"Create a list from the following text in the format ‘Element1 quantity1; Element2 quantity2; Element3 quantity3’. " +
-                $"The list must be created in {language}.  The text looks like this: '{text}'";
+            var prompt = $"Create a list from the following text in the format “Item1 Quantity1;Item2 Quantity2;Item3 Quantity3” if it is a shopping list, " +
+                $"for example. Otherwise, create a simple list in the format “Item1;Item2;Item3;”. The list must be created in {language}. " +
+                $"The text looks like this: “{text}”. Repetitions are not allowed.";
 
             var response = await GetCompletionAsync(prompt);
 

@@ -708,6 +708,30 @@ namespace RepeatList.ViewModels
         }
 
         [RelayCommand]
+        //public async Task Export_list_Clicked()
+        //{
+        //    Lists = (await _databaseService.GetPositionsAsync(Header_SelectedItem.Id)).ToObservableCollection();
+        //    if (Lists == null || Lists.Count == 0 || Header == null)
+        //    {
+        //        IsBusy = false;
+        //        return;
+        //    }
+        //    IsBusy = true;
+
+        //    Header header = Header_SelectedItem;
+        //    header.Positions = Lists.ToList();
+
+        //    var settings = new JsonSerializerSettings();
+        //    settings.Converters.Add(new OnlyPositionsJsonConverter());
+        //    var json = JsonConvert.SerializeObject(header, settings);
+
+        //    var send_text = Properties.Resources.Please_copy_this_text_to_the_clipboard_and_import_it_via_the_hamburger_menu.Replace("%1", json);
+
+        //    await Utilities.ShareTextAsync(send_text);
+
+        //    IsBusy = false;
+        //}
+
         public async Task Export_list_Clicked()
         {
             Lists = (await _databaseService.GetPositionsAsync(Header_SelectedItem.Id)).ToObservableCollection();
@@ -718,18 +742,105 @@ namespace RepeatList.ViewModels
             }
             IsBusy = true;
 
-            Header header = Header_SelectedItem;
-            header.Positions = Lists.ToList();
+            try
+            {
+                Header header = Header_SelectedItem;
+                header.Positions = Lists.ToList();
 
-            var settings = new JsonSerializerSettings();
-            settings.Converters.Add(new OnlyPositionsJsonConverter());
-            var json = JsonConvert.SerializeObject(header, settings);
+                var settings = new JsonSerializerSettings();
+                settings.Converters.Add(new OnlyPositionsJsonConverter());
+                var json = JsonConvert.SerializeObject(header, settings);
 
-            var send_text = Properties.Resources.Please_copy_this_text_to_the_clipboard_and_import_it_via_the_hamburger_menu.Replace("%1", json);
+                // 1. JSON-Datei erstellen
+                string fileName = $"MiniList_Export.txt";
+                string filePath = await CreateJsonFile(json, fileName);
 
-            await Utilities.ShareTextAsync(send_text);
+                if (!string.IsNullOrEmpty(filePath))
+                {
+                    // 2. Datei teilen über WhatsApp oder andere Apps
+                    await ShareFileAsync(filePath, "Datenexport", "application/json");
+                }
+                else
+                {
+                    // Fallback: Text teilen (wie bisher)
+                    var send_text = Properties.Resources.Please_copy_this_text_to_the_clipboard_and_import_it_via_the_hamburger_menu.Replace("%1", json);
+                    await Utilities.ShareTextAsync(send_text);
+                }
+            }
+            catch (Exception ex)
+            {
+                // Fehlerbehandlung
+                await Application.Current.MainPage.DisplayAlert("Fehler", $"Export fehlgeschlagen: {ex.Message}", "OK");
+            }
+            finally
+            {
+                IsBusy = false;
+            }
+        }
 
-            IsBusy = false;
+        private async Task<string> CreateJsonFile(string jsonContent, string fileName)
+        {
+            try
+            {
+                // Für Android
+                if (DeviceInfo.Platform == DevicePlatform.Android)
+                {
+                    // Temporäres Verzeichnis verwenden
+                    var tempDir = FileSystem.CacheDirectory;
+                    var filePath = Path.Combine(tempDir, fileName);
+
+                    if(File.Exists(filePath))
+                        File.Delete(filePath);
+
+                    await File.WriteAllTextAsync(filePath, jsonContent);
+                    return filePath;
+                }
+                // Für iOS
+                else if (DeviceInfo.Platform == DevicePlatform.iOS)
+                {
+                    var tempDir = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+                    var filePath = Path.Combine(tempDir, fileName);
+
+                    await File.WriteAllTextAsync(filePath, jsonContent);
+                    return filePath;
+                }
+                // Für Windows
+                else if (DeviceInfo.Platform == DevicePlatform.WinUI)
+                {
+                    var tempDir = Path.GetTempPath();
+                    var filePath = Path.Combine(tempDir, fileName);
+
+                    await File.WriteAllTextAsync(filePath, jsonContent);
+                    return filePath;
+                }
+
+                return null;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Fehler beim Erstellen der JSON-Datei: {ex.Message}");
+                return null;
+            }
+        }
+
+        private async Task ShareFileAsync(string filePath, string title, string contentType)
+        {
+            try
+            {
+                await Share.Default.RequestAsync(new ShareFileRequest
+                {
+                    Title = title,
+                    File = new ShareFile(filePath, contentType)
+                });
+            }
+            catch (Exception ex)
+            {
+                // Fallback auf Text-Sharing
+                Console.WriteLine($"Datei-Sharing fehlgeschlagen: {ex.Message}");
+                var jsonContent = await File.ReadAllTextAsync(filePath);
+                var send_text = Properties.Resources.Please_copy_this_text_to_the_clipboard_and_import_it_via_the_hamburger_menu.Replace("%1", jsonContent);
+                await Utilities.ShareTextAsync(send_text);
+            }
         }
 
 

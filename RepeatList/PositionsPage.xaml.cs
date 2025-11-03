@@ -832,7 +832,6 @@ namespace RepeatList
 
         private async void OnAudioRecognationButton_Clicked(object sender, EventArgs e)
         {
-
             var popup = new VoiceRecognitionPage();
             var result = await Shell.Current.ShowPopupAsync<string>(popup);
             if (result != null && !string.IsNullOrEmpty(result.Result))
