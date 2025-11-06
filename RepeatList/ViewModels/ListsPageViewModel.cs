@@ -1,9 +1,9 @@
-﻿using CommunityToolkit.Maui.Alerts;
+﻿using AndroidX.Lifecycle;
+using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Maui.Core;
 using CommunityToolkit.Maui.Core.Extensions;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using RepeatList.Models;
 using RepeatList.Services;
@@ -449,8 +449,6 @@ namespace RepeatList.ViewModels
             {
                 var settings = new JsonSerializerSettings();
                 settings.Converters.Add(new OnlyPositionsJsonConverter());
-                //var json = JsonConvert.SerializeObject(header, settings);
-
                 json = JsonConvert.DeserializeObject<Header>(_input, settings);
             }
             catch (Exception ex)
@@ -752,7 +750,7 @@ namespace RepeatList.ViewModels
                 var json = JsonConvert.SerializeObject(header, settings);
 
                 // 1. JSON-Datei erstellen
-                string fileName = $"MiniList_Export.txt";
+                string fileName = $"MiniList_Export.json";
                 string filePath = await CreateJsonFile(json, fileName);
 
                 if (!string.IsNullOrEmpty(filePath))
@@ -776,6 +774,72 @@ namespace RepeatList.ViewModels
             {
                 IsBusy = false;
             }
+        }
+
+        public async Task Import_list_fileAsync()
+        {
+            try
+            {
+                var jsonFileType = new FilePickerFileType(new Dictionary<DevicePlatform, IEnumerable<string>>
+                {
+                    { DevicePlatform.Android, new[] { "application/json" } },
+                    { DevicePlatform.WinUI, new[] { ".json" } },
+                    { DevicePlatform.iOS, new[] { "public.json" } }
+                });
+
+                var result = await FilePicker.Default.PickAsync(new PickOptions
+                {
+                    PickerTitle = "JSON-Datei auswählen",
+                    FileTypes = jsonFileType
+                });
+
+                //if (result != null)
+                //{
+                //    using var stream = await result.OpenReadAsync();
+                //    using var reader = new StreamReader(stream);
+                //    string json = await reader.ReadToEndAsync();
+
+                //    //var importedItems = JsonSerializer.Deserialize<List<Item>>(json);
+
+                //    //if (importedItems != null)
+                //    //{
+                //    //    Items.Clear();
+                //    //    foreach (var item in importedItems)
+                //    //        Items.Add(item);
+                //    //}
+                //}
+            }
+            catch (Exception ex)
+            {
+                await App.Current.MainPage.DisplayAlert("Fehler", ex.Message, "OK");
+            }
+        }
+
+        public async Task LoadItemsFromJson(string json)
+        {
+            if (!await InputHeaderWithPositions(json, true))
+            {
+                //if (is_json)
+                //{
+                //    await Application.Current.MainPage.DisplaySnackbar(Properties.Resources.String_is_not_a_valid_list_description,
+                //                visualOptions: new SnackbarOptions
+                //                {
+                //                    BackgroundColor = Color.FromArgb(Constantes.Color_Error_string),
+                //                    TextColor = Colors.White
+                //                }, duration: TimeSpan.FromSeconds(3));
+                //    IsBusy = false;
+                //    return;
+                //}
+                await AddHeader(json, false);
+            }
+            await Application.Current.MainPage.DisplaySnackbar(Properties.Resources.List_added_successfully,
+                visualOptions: new SnackbarOptions
+                {
+                    BackgroundColor = Color.FromArgb(Constantes.Color_Success_string),
+                    TextColor = Colors.White
+                }, duration: TimeSpan.FromSeconds(2));
+
+            SetFirstItemForHeaders();
         }
 
         private async Task<string> CreateJsonFile(string jsonContent, string fileName)

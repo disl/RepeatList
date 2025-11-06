@@ -462,4 +462,7 @@
   <data name="Export_to_Spotify" xml:space="preserve">
     <value>Экспорт в Spotify</value>
   </data>
+  <data name="import_liste_file" xml:space="preserve">
+    <value>Импорт файла списка</value>
+  </data>
 </root>

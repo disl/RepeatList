@@ -5,10 +5,28 @@ using Android.Gms.Ads;
 using Android.OS;
 using AndroidX.Core.App;
 using AndroidX.Core.Content;
+using RepeatList.ViewModels;
 
 namespace RepeatList
 {
-    [Activity(Theme = "@style/Maui.SplashTheme", MainLauncher = true, LaunchMode = LaunchMode.SingleTop, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation | ConfigChanges.UiMode | ConfigChanges.ScreenLayout | ConfigChanges.SmallestScreenSize | ConfigChanges.Density)]
+    //[Activity(
+    //    Theme = "@style/Maui.SplashTheme", 
+    //    MainLauncher = true, 
+    //    LaunchMode = LaunchMode.SingleTop, 
+    //    ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation | ConfigChanges.UiMode | ConfigChanges.ScreenLayout | ConfigChanges.SmallestScreenSize | ConfigChanges.Density)
+    //]
+
+    [Activity(
+        Exported = true,
+        Theme = "@style/Maui.SplashTheme",
+        MainLauncher = true,
+        LaunchMode = LaunchMode.SingleTop,
+        ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation | ConfigChanges.UiMode | ConfigChanges.ScreenLayout | ConfigChanges.SmallestScreenSize | ConfigChanges.Density)
+    ]
+    [IntentFilter(new[] { Android.Content.Intent.ActionView },
+              Categories = new[] { Android.Content.Intent.CategoryDefault, Android.Content.Intent.CategoryBrowsable },
+              DataMimeType = "application/json",
+              DataSchemes = new[] { "content", "file" })]
     public class MainActivity : MauiAppCompatActivity
     {
         const int RequestRecordAudioId = 101;
@@ -26,6 +44,23 @@ namespace RepeatList
             //Microsoft.Maui.ApplicationModel.Platform.CurrentActivity?.Window?.SetDecorFitsSystemWindows(false);
 
             Platform.Init(this, savedInstanceState);
+
+            // JSON-file Serializer Optionen setzen
+            if (Intent?.Data != null)
+            {
+                var uri = Intent.Data;
+                using var stream = ContentResolver.OpenInputStream(uri);
+                using var reader = new StreamReader(stream);
+                string json = reader.ReadToEnd();
+
+                // ViewModel holen, mit neuer API und Null-Prüfung
+                var services = (IServiceProvider?)IPlatformApplication.Current?.Services;
+                var vm = services?.GetService(typeof(ListsPageViewModel)) as ListsPageViewModel;
+                vm?.LoadItemsFromJson(json);
+
+                //var list = JsonSerializer.Deserialize<List<Item>>(json);
+                // Liste ins ViewModel übernehmen
+            }
         }
 
         void CheckAudioPermission()
@@ -52,6 +87,8 @@ namespace RepeatList
                 }
             }
         }
+
+
     }
 
 

@@ -612,6 +612,8 @@ namespace RepeatList
 
                         case "Import":
                             await ForOnAddHeaderClicked(false); break;
+                        case "Import_list_file":
+                            await ForOnAddHeader_list_fileClicked(); break;
                         case "Export":
                             await ViewModel.Export_list_Clicked(); break;
                         case "ExportSpotify":
@@ -634,6 +636,16 @@ namespace RepeatList
             {
                 ViewModel.IsBusy = false;
             }
+        }
+
+        private async Task ForOnAddHeader_list_fileClicked()
+        {
+            await ViewModel.Import_list_fileAsync();
+        }
+
+        private async Task ForOnAddHeader_JSONClicked(bool v)
+        {
+            throw new NotImplementedException();
         }
 
         private void OnDeepseekClicked(object sender, EventArgs e)

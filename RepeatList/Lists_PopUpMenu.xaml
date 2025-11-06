@@ -28,6 +28,8 @@
                 Clicked="Export_list_spotifyClicked"  CommandParameter="{Binding}"  />
         <Button  Text="{x:Static properties:Resources.import_liste}" TextColor="White" 
                 Clicked="Import_list_Clicked"  CommandParameter="{Binding}"  />
+        <Button  Text="{x:Static properties:Resources.import_liste_file}" TextColor="White" 
+                Clicked="Import_list_file_Clicked"  CommandParameter="{Binding}"  />
         
         
 

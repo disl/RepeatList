@@ -96,4 +96,9 @@ public partial class Lists_PopUpMenu : Popup<string>
     {
        await CloseAsync("ExportSpotify");
     }
+
+    private async void Import_list_file_Clicked(object sender, EventArgs e)
+    {
+        await CloseAsync("Import_list_file");
+    }
 }

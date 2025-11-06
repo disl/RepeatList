@@ -462,4 +462,7 @@ Lasciate che ChatGPT &amp; Co. creino un elenco sul tema che desiderate, che si 
   <data name="Export_to_Spotify" xml:space="preserve">
     <value>Esporta su Spotify</value>
   </data>
+  <data name="import_liste_file" xml:space="preserve">
+    <value>Importa file elenco</value>
+  </data>
 </root>

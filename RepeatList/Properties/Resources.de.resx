@@ -462,4 +462,7 @@ Lassen Sie sich von ChatGPT &amp; Co. eine Liste zu Ihrem Wunschthema erstellen 
   <data name="Export_to_Spotify" xml:space="preserve">
     <value>Nach Spotify exportieren</value>
   </data>
+  <data name="import_liste_file" xml:space="preserve">
+    <value>Listendatei importieren</value>
+  </data>
 </root>

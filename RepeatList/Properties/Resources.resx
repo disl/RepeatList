@@ -462,4 +462,10 @@ Let ChatGPT &amp; Co. create a list for you on your desired topic – whether it
   <data name="Export_to_Spotify" xml:space="preserve">
     <value>Export to Spotify</value>
   </data>
+  <data name="Import_JSON" xml:space="preserve">
+    <value />
+  </data>
+  <data name="import_liste_file" xml:space="preserve">
+    <value>Import list file</value>
+  </data>
 </root>

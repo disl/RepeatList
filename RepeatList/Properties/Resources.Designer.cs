@@ -423,11 +423,29 @@ namespace RepeatList.Properties {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die  ähnelt.
+        /// </summary>
+        public static string Import_JSON {
+            get {
+                return ResourceManager.GetString("Import_JSON", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Import list ähnelt.
         /// </summary>
         public static string import_liste {
             get {
                 return ResourceManager.GetString("import_liste", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Import list file ähnelt.
+        /// </summary>
+        public static string import_liste_file {
+            get {
+                return ResourceManager.GetString("import_liste_file", resourceCulture);
             }
         }
         

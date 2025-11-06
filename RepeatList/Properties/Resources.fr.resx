@@ -462,4 +462,7 @@ Demandez à ChatGPT &amp; Co. de vous créer une liste sur le thème de votre ch
   <data name="Export_to_Spotify" xml:space="preserve">
     <value>Exporter vers Spotify</value>
   </data>
+  <data name="import_liste_file" xml:space="preserve">
+    <value>Fichier de liste d'importation</value>
+  </data>
 </root>
