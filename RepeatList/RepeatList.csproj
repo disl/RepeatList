@@ -253,37 +253,37 @@
 		<MauiXaml Update="Controls\FlyoutHeader.xaml">
 		  <Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
-		<MauiXaml Update="HelpPage.xaml">
+		<MauiXaml Update="Pages\HelpPage.xaml">
 		  <Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
 		<MauiXaml Update="InputTextWithMicrophone.xaml">
 		  <Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
-		<MauiXaml Update="ListPage_Input.xaml">
+		<MauiXaml Update="Pages\ListPage_Input.xaml">
 		  <Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
-		<MauiXaml Update="ListsPage.xaml">
+		<MauiXaml Update="Pages\ListsPage.xaml">
 		  <Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
-		<MauiXaml Update="CategoryPosition_PopUp.xaml">
+		<MauiXaml Update="Pages\CategoryPosition_PopUp.xaml">
 		  <Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
-		<MauiXaml Update="Positions_Edit.xaml">
+		<MauiXaml Update="Pages\Positions_Edit.xaml">
 		  <Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
-		<MauiXaml Update="Positions_PopUpMenu.xaml">
+		<MauiXaml Update="Pages\Positions_PopUpMenu.xaml">
 		  <Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
-		<MauiXaml Update="Lists_PopUpMenu.xaml">
+		<MauiXaml Update="Pages\Lists_PopUpMenu.xaml">
 		  <Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
-		<MauiXaml Update="PositionsPage.xaml">
+		<MauiXaml Update="Pages\PositionsPage.xaml">
 		  <Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
-		<MauiXaml Update="SetupPage.xaml">
+		<MauiXaml Update="Pages\SetupPage.xaml">
 		  <Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
-		<MauiXaml Update="VoiceRecognitionPage.xaml">
+		<MauiXaml Update="Pages\VoiceRecognitionPage.xaml">
 		  <Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
 	</ItemGroup>
@@ -291,19 +291,19 @@
 
 
 	<ItemGroup>
-	  <Compile Update="ListsPage.xaml.cs">
+	  <Compile Update="Pages\ListsPage.xaml.cs">
 	    <DependentUpon>ListsPage.xaml</DependentUpon>
 	  </Compile>
-	  <Compile Update="CategoryPosition_PopUp.xaml.cs">
+	  <Compile Update="Pages\CategoryPosition_PopUp.xaml.cs">
 	    <DependentUpon>CategoryPosition_PopUp.xaml</DependentUpon>
 	  </Compile>
-	  <Compile Update="Positions_Edit.xaml.cs">
+	  <Compile Update="Pages\Positions_Edit.xaml.cs">
 	    <DependentUpon>Positions_Edit.xaml</DependentUpon>
 	  </Compile>
-	  <Compile Update="Positions_PopUpMenu.xaml.cs">
+	  <Compile Update="Pages\Positions_PopUpMenu.xaml.cs">
 	    <DependentUpon>Positions_PopUpMenu.xaml</DependentUpon>
 	  </Compile>
-	  <Compile Update="PositionsPage.xaml.cs">
+	  <Compile Update="Pages\PositionsPage.xaml.cs">
 	    <DependentUpon>PositionsPage.xaml</DependentUpon>
 	  </Compile>
 	  <Compile Update="Properties\Resources.Designer.cs">
@@ -341,7 +341,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="Pages\" />
 	  <Folder Include="Platforms\Android\Resources\layout\" />
 	</ItemGroup>
 

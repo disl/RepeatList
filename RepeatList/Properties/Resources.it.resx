@@ -465,4 +465,13 @@ Lasciate che ChatGPT &amp; Co. creino un elenco sul tema che desiderate, che si 
   <data name="import_liste_file" xml:space="preserve">
     <value>Importa file elenco</value>
   </data>
+  <data name="Say_your_shopping_list" xml:space="preserve">
+    <value>Pronuncia la tua lista (della spesa):</value>
+  </data>
+  <data name="Your_text_appears_here" xml:space="preserve">
+    <value>Il tuo testo apparirà qui. Non preoccuparti se qualcosa non va bene. L'IA cercherà di adattare la tua lista.</value>
+  </data>
+  <data name="rename" xml:space="preserve">
+    <value>Rinomina</value>
+  </data>
 </root>

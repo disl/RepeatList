@@ -423,15 +423,6 @@ namespace RepeatList.Properties {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die  ähnelt.
-        /// </summary>
-        public static string Import_JSON {
-            get {
-                return ResourceManager.GetString("Import_JSON", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Import list ähnelt.
         /// </summary>
         public static string import_liste {
@@ -741,6 +732,15 @@ namespace RepeatList.Properties {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Rename ähnelt.
+        /// </summary>
+        public static string rename {
+            get {
+                return ResourceManager.GetString("rename", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Replace ähnelt.
         /// </summary>
         public static string replace {
@@ -791,6 +791,15 @@ namespace RepeatList.Properties {
         public static string Restore {
             get {
                 return ResourceManager.GetString("Restore", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Say your (shopping) list ähnelt.
+        /// </summary>
+        public static string Say_your_shopping_list {
+            get {
+                return ResourceManager.GetString("Say_your_shopping_list", resourceCulture);
             }
         }
         
@@ -1071,6 +1080,15 @@ namespace RepeatList.Properties {
         public static string yes {
             get {
                 return ResourceManager.GetString("yes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Your text appears here... ähnelt.
+        /// </summary>
+        public static string Your_text_appears_here {
+            get {
+                return ResourceManager.GetString("Your_text_appears_here", resourceCulture);
             }
         }
     }

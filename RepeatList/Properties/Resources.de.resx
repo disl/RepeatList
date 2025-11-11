@@ -465,4 +465,13 @@ Lassen Sie sich von ChatGPT &amp; Co. eine Liste zu Ihrem Wunschthema erstellen 
   <data name="import_liste_file" xml:space="preserve">
     <value>Listendatei importieren</value>
   </data>
+  <data name="Say_your_shopping_list" xml:space="preserve">
+    <value>Sprich deine (Einkaufs-) Liste:</value>
+  </data>
+  <data name="Your_text_appears_here" xml:space="preserve">
+    <value>Dein Text erscheint hier. Keine Sorge, wenn etwas nicht stimmt. KI versucht, deine Liste anzupassen.</value>
+  </data>
+  <data name="rename" xml:space="preserve">
+    <value>Umbenennen</value>
+  </data>
 </root>

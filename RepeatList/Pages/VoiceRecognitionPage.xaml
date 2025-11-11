@@ -7,17 +7,14 @@
     x:Class="RepeatList.VoiceRecognitionPage"
     xmlns:system="clr-namespace:System;assembly=System.Runtime"
     x:TypeArguments="system:String"
-   BackgroundColor="gray"
-    >
+   BackgroundColor="gray">
     <VerticalStackLayout Padding="20" Spacing="20">
-        <Label Text="Sprich deine Einkaufsliste:" FontSize="18" />
-        <Editor x:Name="txtResult" HeightRequest="300" Placeholder="Dein Text erscheint hier..."  />
+        <Label Text="{x:Static properties:Resources.Say_your_shopping_list}" FontSize="18" />
+        <Editor x:Name="txtResult" HeightRequest="300" Placeholder="{x:Static properties:Resources.Your_text_appears_here}"  />
 
         <HorizontalStackLayout Spacing="10" HorizontalOptions="Center">
-            <Button Text="🎤 START" Clicked="OnStartListeningClicked" FontSize="Body" 
-                         />
-            <Button Text="⏹ STOP" Clicked="OnStopListeningClicked" FontSize="Body"
-                         />
+            <Button x:Name="startButton" IsVisible="True" Text="🎤 START" Clicked="OnStartListeningClicked"   />
+            <Button x:Name="stopButton" IsVisible="False" Text="⏹ STOP" Clicked="OnStopListeningClicked"  />
         </HorizontalStackLayout>
     </VerticalStackLayout>
 </toolkit:Popup>

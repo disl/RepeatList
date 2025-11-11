@@ -465,4 +465,13 @@ Demandez à ChatGPT &amp; Co. de vous créer une liste sur le thème de votre ch
   <data name="import_liste_file" xml:space="preserve">
     <value>Fichier de liste d'importation</value>
   </data>
+  <data name="Say_your_shopping_list" xml:space="preserve">
+    <value>Prononce ta liste (d'achats) :</value>
+  </data>
+  <data name="Your_text_appears_here" xml:space="preserve">
+    <value>Ton texte apparaîtra ici. Ne t'inquiète pas si quelque chose ne va pas. L'IA essaie d'adapter ta liste.</value>
+  </data>
+  <data name="rename" xml:space="preserve">
+    <value>Renommer</value>
+  </data>
 </root>

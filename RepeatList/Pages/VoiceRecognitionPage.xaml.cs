@@ -10,11 +10,25 @@ namespace RepeatList;
 public partial class VoiceRecognitionPage : Popup<string>
 {
 
+    bool isListening = false;
+    bool IsListening
+    {
+        get { return isListening; }
+
+        set
+        {
+            isListening = value;
+
+            startButton.IsVisible = !isListening;
+            stopButton.IsVisible = isListening;
+        }
+    }
+
 #if ANDROID
     SpeechRecognizer? recognizer;
     Intent? voiceIntent;
     StringBuilder textBuilder = new();
-    bool isListening = false;
+
 #endif
 
     public VoiceRecognitionPage()
@@ -25,7 +39,7 @@ public partial class VoiceRecognitionPage : Popup<string>
     private async void OnStartListeningClicked(object sender, EventArgs e)
     {
 #if ANDROID
-        if (isListening)
+        if (IsListening)
             return;
 
         if (!await CheckMicrophonePermissionAsync())
@@ -40,17 +54,6 @@ public partial class VoiceRecognitionPage : Popup<string>
 
         var context = Platform.CurrentActivity ?? Android.App.Application.Context;
 
-        //voiceIntent = new Intent(RecognizerIntent.ActionRecognizeSpeech);
-        //voiceIntent.PutExtra(RecognizerIntent.ExtraLanguageModel, RecognizerIntent.LanguageModelFreeForm);
-        //voiceIntent.PutExtra(RecognizerIntent.ExtraCallingPackage, context.PackageName);
-        //voiceIntent.PutExtra(RecognizerIntent.ExtraLanguage, Java.Util.Locale.Default);
-        //voiceIntent.PutExtra(RecognizerIntent.ExtraMaxResults, 5);
-        //voiceIntent.PutExtra(RecognizerIntent.ExtraPartialResults, true);
-        //// erhöhe Timeout
-        //voiceIntent.PutExtra(RecognizerIntent.ExtraSpeechInputCompleteSilenceLengthMillis, 3000);
-        //voiceIntent.PutExtra(RecognizerIntent.ExtraSpeechInputPossiblyCompleteSilenceLengthMillis, 3000);
-
-
         voiceIntent = new Intent(RecognizerIntent.ActionRecognizeSpeech);
         voiceIntent.PutExtra(RecognizerIntent.ExtraLanguageModel, RecognizerIntent.LanguageModelFreeForm);
         voiceIntent.PutExtra(RecognizerIntent.ExtraPrompt, "Sprich jetzt...");
@@ -63,7 +66,7 @@ public partial class VoiceRecognitionPage : Popup<string>
         recognizer = SpeechRecognizer.CreateSpeechRecognizer(context);
         recognizer.SetRecognitionListener(listener);
 
-        isListening = true;
+        IsListening = true;
         recognizer.StartListening(voiceIntent);
         //await Application.Current.MainPage.DisplayAlert("Info", "Du kannst jetzt deine Einkaufsliste diktieren.", "OK");
 #else
@@ -74,11 +77,11 @@ public partial class VoiceRecognitionPage : Popup<string>
     private async void OnStopListeningClicked(object sender, EventArgs e)
     {
 #if ANDROID
-        isListening = false;
+        IsListening = false;
         recognizer?.StopListening();
         recognizer?.Destroy();
 
-        if(!string.IsNullOrEmpty(txtResult.Text))
+        if (!string.IsNullOrEmpty(txtResult.Text))
         {
             await CloseMe(txtResult.Text);
         }
@@ -116,7 +119,7 @@ public partial class VoiceRecognitionPage : Popup<string>
 
     private void RestartListening()
     {
-        if (!isListening || voiceIntent == null) return;
+        if (!IsListening || voiceIntent == null) return;
         recognizer?.StartListening(voiceIntent);
     }
 #endif

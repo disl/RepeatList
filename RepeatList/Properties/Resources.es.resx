@@ -459,13 +459,19 @@ Deje que ChatGPT &amp; Co. le cree una lista sobre el tema que desee, ya sea «p
   <data name="Create_Spotify_playlist" xml:space="preserve">
     <value>Crear lista de Spotify</value>
   </data>
-  <data name="Premium_active1" xml:space="preserve">
-    <value>Premium activo</value>
-  </data>
   <data name="Export_to_Spotify" xml:space="preserve">
     <value>Exportar a Spotify</value>
   </data>
   <data name="import_liste_file" xml:space="preserve">
     <value>Importar archivo de lista</value>
+  </data>
+  <data name="Say_your_shopping_list" xml:space="preserve">
+    <value>Di tu lista (de la compra):</value>
+  </data>
+  <data name="Your_text_appears_here" xml:space="preserve">
+    <value>Tu texto aparecerá aquí. No te preocupes si algo no está bien. La IA intentará ajustar tu lista.</value>
+  </data>
+  <data name="rename" xml:space="preserve">
+    <value>Renombrar</value>
   </data>
 </root>

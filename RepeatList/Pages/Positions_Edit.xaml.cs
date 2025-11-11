@@ -17,13 +17,13 @@ public partial class Positions_Edit : Popup<object>
         ViewModel.SelectedItem = position_selectedItem;
         BindingContext = ViewModel;
 
-        Device.BeginInvokeOnMainThread(async () =>
-        {
-            await Task.Delay(100); // Kleine Verzögerung, falls UI noch nicht bereit
-            PositionNameEntry.Focus();
+        //Device.BeginInvokeOnMainThread(async () =>
+        //{
+        //    await Task.Delay(100); // Kleine Verzögerung, falls UI noch nicht bereit
+        //    PositionNameEntry.Focus();
 
-            PositionNameEntry.CursorPosition= PositionNameEntry.Text?.Length ?? 0; 
-        });
+        //    PositionNameEntry.CursorPosition= PositionNameEntry.Text?.Length ?? 0; 
+        //});
     }
 
    

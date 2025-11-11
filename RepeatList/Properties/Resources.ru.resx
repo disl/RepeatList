@@ -465,4 +465,14 @@
   <data name="import_liste_file" xml:space="preserve">
     <value>Импорт файла списка</value>
   </data>
+  <data name="Say_your_shopping_list" xml:space="preserve">
+    <value>
+Продиктуй свой список (покупок):</value>
+  </data>
+  <data name="Your_text_appears_here" xml:space="preserve">
+    <value>Твой текст появится здесь. Не волнуйся, если что-то не так. ИИ попытается скорректировать твой список.</value>
+  </data>
+  <data name="rename" xml:space="preserve">
+    <value>Переименовать</value>
+  </data>
 </root>

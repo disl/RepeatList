@@ -1226,6 +1226,7 @@ namespace RepeatList.ViewModels
             IsBusy = false;
         }
 
+        [RelayCommand]
         public async Task<bool> DeletePosition(Models.Position pos)
         {
             Position_selectedItem = pos;

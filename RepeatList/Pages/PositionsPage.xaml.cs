@@ -3,6 +3,7 @@ using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Maui.Core;
 using CommunityToolkit.Maui.Core.Extensions;
 using CommunityToolkit.Maui.Extensions;
+using Microsoft.Maui.Controls;
 using Newtonsoft.Json;
 using RepeatList.Models;
 using RepeatList.Services;
@@ -431,23 +432,48 @@ namespace RepeatList
         private async void OnCheckedButtonClicked(object sender, EventArgs e)
         {
             if (ViewModel.IsBusy) return;
-            //if (ViewModel.HeaderSelected)
-            //{
-            //    ViewModel.HeaderSelected=false;
-            //    return;
-            //}
 
-            //ViewModel.IsBusy=true;
+            if (e == null) return;
+
+            Position? position = null;
+
+            _currentlyOpenSwipeView = null;
+
+            if (sender is Microsoft.Maui.Controls.ImageButton switchControl &&
+                   switchControl.BindingContext != null &&
+                   switchControl.BindingContext is Position _position_image)
+            {
+                position = _position_image;
+            }
+
+            if (position == null)
+            {
+                if (sender is Microsoft.Maui.Controls.SwipeItem swipeItem &&
+                   swipeItem.BindingContext != null &&
+                   swipeItem.BindingContext is Position _position_swipeItem)
+                {
+                    _currentlyOpenSwipeView = swipeItem.Parent.Parent as SwipeView;
+                    position = _position_swipeItem;
+                }
+            }
+
+            if (position == null)
+            {
+                if (sender is Microsoft.Maui.Controls.SwipeView swipeItem &&
+                   swipeItem.LeftItems != null &&
+                   swipeItem.LeftItems.BindingContext is Position _position_swipeItem)
+                {
+                    _currentlyOpenSwipeView = swipeItem;
+                    position = _position_swipeItem;
+                }
+            }
 
             try
             {
                 if (!string.IsNullOrEmpty(MySearchBar.Text))
                     MySearchBar.Text = "";
 
-                if (sender is Microsoft.Maui.Controls.ImageButton switchControl &&
-                    e != null &&
-                    switchControl.BindingContext != null &&
-                    switchControl.BindingContext is Position position)
+                if (position != null)
                 {
                     ViewModel.IsBusy = true;
 
@@ -456,6 +482,16 @@ namespace RepeatList
                     await ViewModel.UpdatePosition(position);
 
                     //SetHeader();
+
+                    // SwipeView SOFORT wieder öffnen
+                    if (_currentlyOpenSwipeView != null)
+                    {
+                        MainThread.BeginInvokeOnMainThread(async () =>
+                        {
+                            await Task.Delay(50); // Kurze Verzögerung
+                            _currentlyOpenSwipeView.Open(OpenSwipeItem.LeftItems);
+                        });
+                    }
 
                     ViewModel.IsBusy = false;
                 }
@@ -758,7 +794,9 @@ namespace RepeatList
 
 
         private Positions_Edit? _currentPopup_Positions_Edit;
-
+        private SwipeView? _currentlyOpenSwipeView;
+        private SwipeDirection _currentSwipeDirection;
+        private bool _swipeCompleted;
 
         private async void PositionListView_ItemTapped(object sender, ItemTappedEventArgs e)
         {
@@ -836,13 +874,52 @@ namespace RepeatList
             var result = await Shell.Current.ShowPopupAsync<string>(popup);
             if (result != null && !string.IsNullOrEmpty(result.Result))
             {
+                ViewModel.IsBusy = true;
+
                 var client = new DeepSeekClient();
 
                 var list_text = await client.TranscribeToShoppingList(result.Result.Replace("\n", ""));
                 if (!string.IsNullOrEmpty(list_text))
                 {
+
                     await InputPositions(list_text);
                 }
+
+                ViewModel.IsBusy = false;
+            }
+        }
+
+        private void OnSwipeStarted_Top(object sender, SwipeStartedEventArgs e)
+        {
+            _currentSwipeDirection = e.SwipeDirection;
+            _swipeCompleted = false;
+        }
+
+        private void OnSwipeChanging_Top(object sender, SwipeChangingEventArgs e)
+        {
+            // Könnte für visuelles Feedback verwendet werden
+            // z.B. Hintergrundfarbe ändern beim Swipe
+        }
+
+        private void OnSwipeEnded_Top(object sender, SwipeEndedEventArgs e)
+        {
+            if (_swipeCompleted) return;
+
+            var swipeView = sender as SwipeView;
+            if (swipeView == null || swipeView.BindingContext is not Position item)
+                return;
+
+            // Automatische Aktion basierend auf Swipe-Richtung
+            switch (_currentSwipeDirection)
+            {
+                case SwipeDirection.Left:
+                case SwipeDirection.Right:
+                    // Rechts-Swipe: Automatisch "Done"
+                    OnCheckedButtonClicked(swipeView, new EventArgs());
+                    _swipeCompleted = true;
+                    break;
+
+               
             }
         }
     }
