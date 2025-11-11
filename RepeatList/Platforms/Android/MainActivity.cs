@@ -31,6 +31,8 @@ namespace RepeatList
     {
         const int RequestRecordAudioId = 101;
 
+        private readonly SemaphoreSlim _sync = new(0, 1);
+
         protected override void OnCreate(Bundle? savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -56,10 +58,14 @@ namespace RepeatList
                 // ViewModel holen, mit neuer API und Null-Prüfung
                 var services = (IServiceProvider?)IPlatformApplication.Current?.Services;
                 var vm = services?.GetService(typeof(ListsPageViewModel)) as ListsPageViewModel;
-                vm?.LoadItemsFromJson(json);
 
-                //var list = JsonSerializer.Deserialize<List<Item>>(json);
-                // Liste ins ViewModel übernehmen
+                Task.Run(async () =>
+                {
+                    await vm?.LoadItemsFromJson(json);
+                    _sync.Release();
+                });
+
+                _sync.Wait(); // blockiert, aber sicher
             }
         }
 

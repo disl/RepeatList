@@ -9,31 +9,38 @@
              xmlns:properties="clr-namespace:RepeatList.Properties" 
              xmlns:system="clr-namespace:System;assembly=System.Runtime"
              x:TypeArguments="system:Object"
-             MaximumHeightRequest="500"
+             MaximumHeightRequest="550"
              BackgroundColor="Grey" >
 
     <ScrollView>
-        <VerticalStackLayout  >
+        <VerticalStackLayout Spacing="5"  >
 
-
-
-            <!-- Anleitungstext -->
+            <!-- 1. New list name or Synchro-Code -->
             <Label Text="{x:Static properties:Resources.Enter_a_list_name_or_insert_a_ready_made}"  
                    TextColor="{DynamicResource PrimaryTextColorLight}"
                    HorizontalOptions="Center"
                    FontSize="15"  />
 
-            <Grid ColumnDefinitions="*,auto" ColumnSpacing="3"  >
-                <!-- Eingabefeld mit MaxLength -->
+            <Grid ColumnDefinitions="*,auto" ColumnSpacing="3" Margin="0,0,0,20" >
+                
                 <ScrollView MaximumHeightRequest="200" Grid.Column="0">
                     <Editor x:Name="ListNameEditor" 
                     TextColor="{DynamicResource PrimaryTextColorLight}"                          
                     AutoSize="TextChanges" />
                 </ScrollView>
 
-                <!-- Buttons -->
-                <Button Text="OK" Grid.Column="1"  Clicked="OnOkClicked" />
+                <Button Text="OK" Grid.Column="1" TextColor="White"  Clicked="OnOkClicked"  />
             </Grid>
+            
+            <!-- 2. Import list file -->
+            <Label Text="{x:Static properties:Resources.Please_select_the_file_MiniList_Export_json}"  
+                   TextColor="{DynamicResource PrimaryTextColorLight}"
+                   HorizontalOptions="Center"
+                   FontSize="15"  />
+            <Button  Text="{x:Static properties:Resources.import_liste_file}" TextColor="White" Margin="0,0,0,20" 
+                Clicked="OnListImport_Clicked"  CommandParameter="{Binding}"  />
+
+
 
             <!-- DeepSeek -->
 
@@ -64,12 +71,14 @@
                 <Grid ColumnDefinitions="*,*" ColumnSpacing="3"  >
                     <Button x:Name="OnDeepSeekButton"
                         Text="OK" 
-                            Grid.Column="0"
+                        Grid.Column="0"
+                        TextColor="White"
                         Clicked="OnDeepSeekClicked" />
 
                     <Button x:Name="OnDeepSeek_SpotifyButton"
                         Text="{x:Static properties:Resources.Create_Spotify_playlist}" 
-                             Grid.Column="1"
+                        Grid.Column="1"
+                        TextColor="White"
                         Clicked="OnDeepSeek_SpotifyClicked" />
                 </Grid>
 

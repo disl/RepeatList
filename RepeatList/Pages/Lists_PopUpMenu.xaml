@@ -21,15 +21,16 @@
                 Clicked="OnDeleteHeaderClicked"  CommandParameter="{Binding}" />
         
         <!-- Import-Export -->
-        <Label Text="{x:Static properties:Resources.Import_export_of_lists}"  FontSize="Medium" TextColor="White" />
+        <!--<Label Text="{x:Static properties:Resources.Import_export_of_lists}"  FontSize="Medium" TextColor="White" />-->
+        <Label Text="Export"  FontSize="Medium" TextColor="White" />
         <Button  Text="{x:Static properties:Resources.Export_list}" TextColor="White" 
                 Clicked="Export_list_Clicked"  CommandParameter="{Binding}"  />
         <Button  Text="{x:Static properties:Resources.Export_to_Spotify}" TextColor="White" 
                 Clicked="Export_list_spotifyClicked"  CommandParameter="{Binding}"  />
-        <Button  Text="{x:Static properties:Resources.import_liste}" TextColor="White" 
-                Clicked="Import_list_Clicked"  CommandParameter="{Binding}"  />
-        <Button  Text="{x:Static properties:Resources.import_liste_file}" TextColor="White" 
-                Clicked="Import_list_file_Clicked"  CommandParameter="{Binding}"  />
+        <!--<Button  Text="{x:Static properties:Resources.import_liste}" TextColor="White" 
+                Clicked="Import_list_Clicked"  CommandParameter="{Binding}"  />-->
+        <!--<Button  Text="{x:Static properties:Resources.import_liste_file}" TextColor="White" 
+                Clicked="Import_list_file_Clicked"  CommandParameter="{Binding}"  />-->
         
         
 
@@ -37,7 +38,7 @@
         <Label x:Name="Synchronisation_of_listsLabel" Text="{x:Static properties:Resources.Synchronisation_of_lists}"  FontSize="Medium" TextColor="White" />
         <Button x:Name="Send_synchronisationButton" Text="{x:Static properties:Resources.Send_synchronisation}" TextColor="White" 
                 Clicked="Sync_list_upClicked"  CommandParameter="{Binding}"   />
-        <Button x:Name="Sync_removeButton"  Text="{x:Static properties:Resources.Delete_Synchronisation}"  
+        <Button x:Name="Sync_removeButton"  Text="{x:Static properties:Resources.Delete_Synchronisation}"  Margin="0,0,0,20"
                 BackgroundColor="{x:Static models:Constantes.Color_Warning}"
                 TextColor="White" 
                 Clicked="Sync_removeClicked"  CommandParameter="{Binding}"   />

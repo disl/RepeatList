@@ -475,4 +475,7 @@
   <data name="rename" xml:space="preserve">
     <value>Перейменувати</value>
   </data>
+  <data name="Please_select_the_file_MiniList_Export_json" xml:space="preserve">
+    <value>Виберіть файл «MiniList_Export.json», який, наприклад, був надісланий вам через WhatsApp.</value>
+  </data>
 </root>

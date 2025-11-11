@@ -164,8 +164,7 @@
   </data>
   <data name="Enter_a_list_name_or_insert_a_ready_made" xml:space="preserve">
     <value>1. inserire il nome di un elenco oppure 
-2. inserire un elenco già pronto come stringa di caratteri in formato JSON ricevuto da qualcuno, ad esempio tramite WhatsApp, oppure
-3. inserire una chiave di sincronizzazione ricevuta da qualcuno, ad esempio tramite WhatsApp.</value>
+2. inserire una chiave di sincronizzazione ricevuta da qualcuno, ad esempio tramite WhatsApp.</value>
   </data>
   <data name="Enter_list_name" xml:space="preserve">
     <value>Inserire il nome dell'elenco</value>
@@ -473,5 +472,8 @@ Lasciate che ChatGPT &amp; Co. creino un elenco sul tema che desiderate, che si 
   </data>
   <data name="rename" xml:space="preserve">
     <value>Rinomina</value>
+  </data>
+  <data name="Please_select_the_file_MiniList_Export_json" xml:space="preserve">
+    <value>Seleziona il file “MiniList_Export.json” che ti è stato inviato, ad esempio tramite WhatsApp.</value>
   </data>
 </root>

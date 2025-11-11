@@ -8,13 +8,22 @@
     xmlns:system="clr-namespace:System;assembly=System.Runtime"
     x:TypeArguments="system:String"
    BackgroundColor="gray">
-    <VerticalStackLayout Padding="20" Spacing="20">
-        <Label Text="{x:Static properties:Resources.Say_your_shopping_list}" FontSize="18" />
-        <Editor x:Name="txtResult" HeightRequest="300" Placeholder="{x:Static properties:Resources.Your_text_appears_here}"  />
+    <VerticalStackLayout Spacing="10">
+        <Label Text="{x:Static properties:Resources.Say_your_shopping_list}" FontSize="Body" FontAttributes="Bold" />
 
+        <!--<Label x:Name="statusLabel" Text="{x:Static properties:Resources.Status_Idle}" Padding="10" />-->
+        <Border Stroke="{AppThemeBinding Light=#00BCD4, Dark=#80DEEA}" StrokeThickness="1" Padding="5"   >
+            <Border.StrokeShape>
+                <RoundRectangle CornerRadius="5" />
+            </Border.StrokeShape>
+            <Editor x:Name="txtResult" 
+                    HeightRequest="300" 
+                    
+                    Placeholder="{x:Static properties:Resources.Your_text_appears_here}"  />
+        </Border>
         <HorizontalStackLayout Spacing="10" HorizontalOptions="Center">
-            <Button x:Name="startButton" IsVisible="True" Text="🎤 START" Clicked="OnStartListeningClicked"   />
-            <Button x:Name="stopButton" IsVisible="False" Text="⏹ STOP" Clicked="OnStopListeningClicked"  />
+            <Button x:Name="startButton" IsVisible="True" Text="🎤  START" FontSize="Medium" TextColor="White" Clicked="OnStartListeningClicked"   />
+            <Button x:Name="stopButton" IsVisible="False" Text="⏹  STOP" FontSize="Medium" TextColor="White" Clicked="OnStopListeningClicked"  />
         </HorizontalStackLayout>
     </VerticalStackLayout>
 </toolkit:Popup>

@@ -215,8 +215,6 @@ namespace RepeatList
                 var isDeepSeekAllowed = await IsDeepSeekAllowed();
 
                 var popup = new ListPage_Input(isDeepSeekAllowed, ByChat);
-                //var new_list_name_obj = await Shell.Current.ShowPopupAsync<object>(popup);
-
                 var options = new PopupOptions
                 {
                     CanBeDismissedByTappingOutsideOfPopup = true,
@@ -225,6 +223,13 @@ namespace RepeatList
 
                 if (new_list_name_obj.Result == null || string.IsNullOrEmpty(new_list_name_obj.Result.ToString()))
                     return;
+
+                // Import JSON-File
+                if (new_list_name_obj.Result.ToString() == "Start_import_file")
+                {
+                    await ViewModel.Import_list_fileAsync();
+                    return;
+                }
 
                 var new_list_name = new_list_name_obj.Result;
 

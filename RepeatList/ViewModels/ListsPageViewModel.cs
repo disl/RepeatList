@@ -1,5 +1,4 @@
-﻿using AndroidX.Lifecycle;
-using CommunityToolkit.Maui.Alerts;
+﻿using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Maui.Core;
 using CommunityToolkit.Maui.Core.Extensions;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -96,7 +95,7 @@ namespace RepeatList.ViewModels
         {
             if (items == null || !items.Any())
             {
-                await Shell.Current.DisplayAlert("Fehler", "Keine Daten zum Exportieren", "OK");
+                await Shell.Current.DisplayAlert("Error", "No data to export", "OK");
                 return;
             }
 
@@ -119,13 +118,13 @@ namespace RepeatList.ViewModels
                 else
                 {
                     ExportStatus = "Export fehlgeschlagen";
-                    await Shell.Current.DisplayAlert("Fehler", "Export konnte nicht durchgeführt werden", "OK");
+                    await Shell.Current.DisplayAlert("Error", "Export could not be performed", "OK");
                 }
             }
             catch (Exception ex)
             {
                 ExportStatus = "Fehler beim Export";
-                await Shell.Current.DisplayAlert("Fehler", $"Export fehlgeschlagen: {ex.Message}", "OK");
+                await Shell.Current.DisplayAlert("Error", $"Export failed: {ex.Message}", "OK");
             }
             finally
             {
@@ -158,7 +157,7 @@ namespace RepeatList.ViewModels
             }
             catch (Exception ex)
             {
-                await Shell.Current.DisplayAlert("Fehler", ex.Message, "OK");
+                await Shell.Current.DisplayAlert("Error", ex.Message, "OK");
             }
         }
 
@@ -756,7 +755,7 @@ namespace RepeatList.ViewModels
                 if (!string.IsNullOrEmpty(filePath))
                 {
                     // 2. Datei teilen über WhatsApp oder andere Apps
-                    await ShareFileAsync(filePath, "Datenexport", "application/json");
+                    await ShareFileAsync(filePath, "Data export", "application/json");
                 }
                 else
                 {
@@ -768,7 +767,7 @@ namespace RepeatList.ViewModels
             catch (Exception ex)
             {
                 // Fehlerbehandlung
-                await Application.Current.MainPage.DisplayAlert("Fehler", $"Export fehlgeschlagen: {ex.Message}", "OK");
+                await Application.Current.MainPage.DisplayAlert("Error", $"Export failed: {ex.Message}", "OK");
             }
             finally
             {
@@ -789,7 +788,7 @@ namespace RepeatList.ViewModels
 
                 var result = await FilePicker.Default.PickAsync(new PickOptions
                 {
-                    PickerTitle = "JSON-Datei auswählen",
+                    PickerTitle = "Select JSON-File (MiniList_Export.json)",
                     FileTypes = jsonFileType
                 });
 
@@ -811,7 +810,7 @@ namespace RepeatList.ViewModels
             }
             catch (Exception ex)
             {
-                await App.Current.MainPage.DisplayAlert("Fehler", ex.Message, "OK");
+                await App.Current.MainPage.DisplayAlert("Error", ex.Message, "OK");
             }
         }
 
@@ -916,7 +915,7 @@ namespace RepeatList.ViewModels
             if (Lists == null || Lists.Count == 0 || Header_SelectedItem == null)
             {
                 IsBusy = false;
-                await Application.Current.MainPage.DisplayAlert("Fehler", "Keine Tracks oder Header vorhanden.", "OK");
+                await Application.Current.MainPage.DisplayAlert("Error", "No tracks or headers available.", "OK");
                 return;
             }
             IsBusy = true;
@@ -951,7 +950,7 @@ namespace RepeatList.ViewModels
                 var playlistId = await CreatePlaylistOnSpotify(accessToken);
                 if (string.IsNullOrEmpty(playlistId))
                 {
-                    await Application.Current.MainPage.DisplayAlert("Fehler", "Playlist konnte nicht erstellt werden.", "OK");
+                    await Application.Current.MainPage.DisplayAlert("Error", "Playlist could not be created.", "OK");
                     IsBusy = false;
                     return;
                 }
@@ -964,7 +963,7 @@ namespace RepeatList.ViewModels
 
                 if (!trackTitles.Any())
                 {
-                    await Application.Current.MainPage.DisplayAlert("Fehler", "Keine gültigen Tracks gefunden.", "OK");
+                    await Application.Current.MainPage.DisplayAlert("Error", "No valid tracks found.", "OK");
                     IsBusy = false;
                     return;
                 }
@@ -1023,16 +1022,16 @@ namespace RepeatList.ViewModels
                         if (!response.IsSuccessStatusCode)
                         {
                             var errorContent = await response.Content.ReadAsStringAsync();
-                            await Application.Current.MainPage.DisplayAlert("Fehler", $"Tracks konnten nicht hinzugefügt werden: {errorContent}", "OK");
+                            await Application.Current.MainPage.DisplayAlert("Error", $"Tracks could not be added: {errorContent}", "OK");
                             IsBusy = false;
                             return;
                         }
                     }
-                    Console.WriteLine($"{trackUris.Count} Tracks erfolgreich zur Playlist '{playlistId}' hinzugefügt.");
+                    //Console.WriteLine($"{trackUris.Count} Successfully added tracks to playlist '{playlistId}' hinzugefügt.");
                 }
                 else
                 {
-                    await Application.Current.MainPage.DisplayAlert("Warnung", "Keine Tracks gefunden, leere Playlist erstellt.", "OK");
+                    await Application.Current.MainPage.DisplayAlert("Warning", "No tracks found, empty playlist created.", "OK");
                 }
 
                 // Playlist öffnen
@@ -1044,12 +1043,12 @@ namespace RepeatList.ViewModels
                 }
                 catch (Exception ex)
                 {
-                    await Application.Current.MainPage.DisplayAlert("Fehler", $"Fehler beim Öffnen der Playlist: {ex.Message}", "OK");
+                    await Application.Current.MainPage.DisplayAlert("Error", $"Error opening playlist: {ex.Message}", "OK");
                 }
             }
             catch (Exception ex)
             {
-                await Application.Current.MainPage.DisplayAlert("Fehler", $"Fehler: {ex.Message}", "OK");
+                await Application.Current.MainPage.DisplayAlert("Error", $"Error: {ex.Message}", "OK");
             }
             finally
             {
@@ -1192,7 +1191,7 @@ namespace RepeatList.ViewModels
 
         //    if (playlistId == null)
         //    {
-        //        await Application.Current.MainPage.DisplayAlert("Fehler", "Playlist konnte nicht erstellt werden.", "OK");
+        //        await Application.Current.MainPage.DisplayAlert("Error", "Playlist konnte nicht erstellt werden.", "OK");
         //        return;
         //    }
 
@@ -1282,9 +1281,9 @@ namespace RepeatList.ViewModels
         private async Task AddSongsToPlaylistFromAlbum(string accessToken, string albumId, string playlistFilePath)
         {
             if (string.IsNullOrEmpty(accessToken))
-                throw new ArgumentException("Access Token ist leer oder null.");
+                throw new ArgumentException("Access token is empty or null.");
             if (string.IsNullOrEmpty(albumId))
-                throw new ArgumentException("Album-ID ist leer oder null.");
+                throw new ArgumentException("Album ID is empty or zero.");
 
             using var client = new HttpClient();
             client.DefaultRequestHeaders.Authorization =
@@ -1301,8 +1300,8 @@ namespace RepeatList.ViewModels
                         errorContent.Contains("user may not be registered"))
                     {
                         throw new UnauthorizedAccessException(
-                            "Zugriff verweigert: Benutzer nicht im Spotify Developer Dashboard registriert. " +
-                            "Gehe zu https://developer.spotify.com/dashboard > Users and Access und füge den Benutzer hinzu.");
+                            "Access denied: User not registered in the Spotify Developer Dashboard. " +
+                            "Go to https://developer.spotify.com/dashboard > Users and Access and add the user..");
                     }
                     throw new HttpRequestException($"Fehler beim Abrufen der Benutzer-ID: {userResponse.StatusCode}, Details: {errorContent}");
                 }
@@ -1315,7 +1314,7 @@ namespace RepeatList.ViewModels
                 if (!albumResponse.IsSuccessStatusCode)
                 {
                     var errorContent = await albumResponse.Content.ReadAsStringAsync();
-                    throw new HttpRequestException($"Fehler beim Abrufen der Album-Tracks: {albumResponse.StatusCode}, Details: {errorContent}");
+                    throw new HttpRequestException($"Error retrieving album tracks: {albumResponse.StatusCode}, Details: {errorContent}");
                 }
                 var albumJson = await albumResponse.Content.ReadAsStringAsync();
                 var albumTracks = System.Text.Json.JsonDocument.Parse(albumJson);
@@ -1327,7 +1326,7 @@ namespace RepeatList.ViewModels
                 // Playlist erstellen
                 var newPlaylist = new
                 {
-                    name = "Meine Importierte Playlist",
+                    name = "My imported playlist",
                     description = "A celebratory music selection for a 60-year-old man's birthday, featuring classic rock, pop, and hits from his youth.",
                     @public = false
                 };
@@ -1340,7 +1339,7 @@ namespace RepeatList.ViewModels
                 if (!playlistResponse.IsSuccessStatusCode)
                 {
                     var errorContent = await playlistResponse.Content.ReadAsStringAsync();
-                    throw new HttpRequestException($"Fehler beim Erstellen der Playlist: {playlistResponse.StatusCode}, Details: {errorContent}");
+                    throw new HttpRequestException($"Error creating playlist: {playlistResponse.StatusCode}, Details: {errorContent}");
                 }
                 var playlistJson = await playlistResponse.Content.ReadAsStringAsync();
                 var playlist = System.Text.Json.JsonDocument.Parse(playlistJson);
@@ -1397,18 +1396,18 @@ namespace RepeatList.ViewModels
                     }
                     else
                     {
-                        throw new Exception("Spotify-App oder Browser nicht verfügbar.");
+                        throw new Exception("Spotify app or browser not available.");
                     }
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine($"Fehler beim Öffnen der Playlist: {ex.Message}");
+                    Console.WriteLine($"Error opening playlist: {ex.Message}");
                     throw;
                 }
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Fehler: {ex.Message}");
+                Console.WriteLine($"Error: {ex.Message}");
                 throw;
             }
         }
@@ -1417,7 +1416,7 @@ namespace RepeatList.ViewModels
         {
             if (string.IsNullOrEmpty(accessToken))
             {
-                throw new ArgumentException("Access Token ist leer oder null.");
+                throw new ArgumentException("Access token is empty or null.");
             }
 
             using var client = new HttpClient();
@@ -1431,7 +1430,7 @@ namespace RepeatList.ViewModels
                 if (!userResponse.IsSuccessStatusCode)
                 {
                     var errorContent = await userResponse.Content.ReadAsStringAsync();
-                    throw new HttpRequestException($"Fehler beim Abrufen der Benutzer-ID: {userResponse.StatusCode}, Details: {errorContent}");
+                    throw new HttpRequestException($"Error retrieving user ID: {userResponse.StatusCode}, Details: {errorContent}");
                 }
                 var userContent = await userResponse.Content.ReadAsStringAsync();
                 var user = System.Text.Json.JsonDocument.Parse(userContent);
@@ -1466,13 +1465,12 @@ namespace RepeatList.ViewModels
                 if (!response.IsSuccessStatusCode)
                 {
                     var errorContent = await response.Content.ReadAsStringAsync();
-                    throw new HttpRequestException($"Fehler beim Erstellen der Playlist: {response.StatusCode}, Details: {errorContent}");
+                    throw new HttpRequestException($"Error creating playlist: {response.StatusCode}, Details: {errorContent}");
                 }
 
                 var playlistJson = await response.Content.ReadAsStringAsync();
                 var playlist = System.Text.Json.JsonDocument.Parse(playlistJson);
                 var playlistId = playlist.RootElement.GetProperty("id").GetString();
-                Console.WriteLine($"Playlist erstellt mit ID: {playlistId}");
 
                 return playlistId;
             }
@@ -1488,90 +1486,6 @@ namespace RepeatList.ViewModels
             }
         }
 
-
-        //private async Task CreatePlaylistOnSpotify(string accessToken)
-        //{
-        //    using var client = new HttpClient();
-        //    client.DefaultRequestHeaders.Authorization =
-        //        new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", accessToken);
-
-        //    //var userResponse = await client.GetStringAsync("https://api.spotify.com/v1/me");    
-        //    //var user = System.Text.Json.JsonDocument.Parse(userResponse);
-        //    //var userId = user.RootElement.GetProperty("id").GetString();
-
-        //    var userResponse = await client.GetAsync("https://api.spotify.com/v1/me");
-        //    if (!userResponse.IsSuccessStatusCode)
-        //    {
-        //        var errorContent = await userResponse.Content.ReadAsStringAsync();
-        //        throw new HttpRequestException($"Fehler beim Abrufen der Benutzer-ID: {userResponse.StatusCode}, Details: {errorContent}");
-        //    }
-        //    var userContent = await userResponse.Content.ReadAsStringAsync();
-        //    var user = System.Text.Json.JsonDocument.Parse(userContent);
-        //    var userId = user.RootElement.GetProperty("id").GetString();
-
-        //    var newPlaylist = new
-        //    {
-        //        name = "Meine Importierte Playlist",
-        //        description = "Importiert aus playlist.txt",
-        //        @public = false
-        //    };
-
-        //    var content = new StringContent(
-        //        System.Text.Json.JsonSerializer.Serialize(newPlaylist),
-        //        Encoding.UTF8,
-        //        "application/json"
-        //    );
-
-        //    var response = await client.PostAsync($"https://api.spotify.com/v1/users/{userId}/playlists", content);
-        //    var playlistJson = await response.Content.ReadAsStringAsync();
-        //    var playlist = System.Text.Json.JsonDocument.Parse(playlistJson);
-        //    var playlistId = playlist.RootElement.GetProperty("id").GetString();
-        //}
-
-        //private async Task<string> GetAccessTokenFromCode(string code, string clientId, string clientSecret, string redirectUri)
-        //{
-        //    m_client = new HttpClient();
-        //    var content = new FormUrlEncodedContent(new[]
-        //    {
-        //        new KeyValuePair<string, string>("grant_type", "authorization_code"),
-        //        new KeyValuePair<string, string>("code", code),
-        //        new KeyValuePair<string, string>("redirect_uri", redirectUri),
-        //        new KeyValuePair<string, string>("client_id", clientId),
-        //        new KeyValuePair<string, string>("client_secret", clientSecret)
-        //    });
-
-        //    var response = await m_client.PostAsync("https://accounts.spotify.com/api/token", content);
-        //    response.EnsureSuccessStatusCode();
-        //    var responseContent = await response.Content.ReadAsStringAsync();
-        //    var tokenData = System.Text.Json.JsonDocument.Parse(responseContent);
-        //    var accessToken = tokenData.RootElement.GetProperty("access_token").GetString();
-
-        //    // Refresh tocken
-        //    if (tokenData.RootElement.TryGetProperty("refresh_token", out var newRefreshToken))
-        //    {
-        //        await SecureStorage.SetAsync("refresh_token", newRefreshToken.GetString());
-        //    }
-
-        //    return accessToken;
-        //}
-
-        //async Task<string> RefreshAccessToken(string refreshToken, string clientId, string clientSecret)
-        //{
-        //    using var client = new HttpClient();
-        //    var content = new FormUrlEncodedContent(new[]
-        //    {
-        //        new KeyValuePair<string, string>("grant_type", "refresh_token"),
-        //        new KeyValuePair<string, string>("refresh_token", refreshToken),
-        //        new KeyValuePair<string, string>("client_id", clientId),
-        //        new KeyValuePair<string, string>("client_secret", clientSecret)
-        //    });
-
-        //    var response = await client.PostAsync("https://accounts.spotify.com/api/token", content);
-        //    response.EnsureSuccessStatusCode();
-        //    var responseContent = await response.Content.ReadAsStringAsync();
-        //    var json = System.Text.Json.JsonDocument.Parse(responseContent);
-        //    return json.RootElement.GetProperty("access_token").GetString();
-        //}
 
         [RelayCommand]
         public void Reset_current_list_Clicked()

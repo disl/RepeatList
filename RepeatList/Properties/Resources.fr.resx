@@ -164,8 +164,7 @@
   </data>
   <data name="Enter_a_list_name_or_insert_a_ready_made" xml:space="preserve">
     <value>1. saisir un nom de liste ou 
-2. insérer une liste prête à l'emploi en tant que chaîne de caractères au format JSON que vous avez reçue de quelqu'un, par exemple via WhatsApp, ou
-3. saisir une clé de synchronisation que vous avez reçue de quelqu'un, par exemple via WhatsApp.</value>
+2. saisir une clé de synchronisation que vous avez reçue de quelqu'un, par exemple via WhatsApp.</value>
   </data>
   <data name="Enter_list_name" xml:space="preserve">
     <value>Saisir un nom de liste</value>
@@ -473,5 +472,8 @@ Demandez à ChatGPT &amp; Co. de vous créer une liste sur le thème de votre ch
   </data>
   <data name="rename" xml:space="preserve">
     <value>Renommer</value>
+  </data>
+  <data name="Please_select_the_file_MiniList_Export_json" xml:space="preserve">
+    <value>Sélectionnez le fichier « MiniList_Export.json » qui vous a été envoyé, par exemple via WhatsApp.</value>
   </data>
 </root>

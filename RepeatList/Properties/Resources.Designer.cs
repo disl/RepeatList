@@ -305,8 +305,7 @@ namespace RepeatList.Properties {
         
         /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die 1. enter a list name or 
-        ///2. insert a ready-made list as a character string in JSON format that you have received from someone, e.g. via WhatsApp, or
-        ///3. enter a synchronisation key that you have received from someone, e.g. via WhatsApp. ähnelt.
+        ///2. enter a synchronisation key that you have received from someone, e.g. via WhatsApp. ähnelt.
         /// </summary>
         public static string Enter_a_list_name_or_insert_a_ready_made {
             get {
@@ -656,6 +655,15 @@ namespace RepeatList.Properties {
         public static string Please_enter_the_ID_of_the_list_to_be_synchronised {
             get {
                 return ResourceManager.GetString("Please_enter_the_ID_of_the_list_to_be_synchronised", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Please select the file ‘MiniList_Export.json’ that was sent to you via WhatsApp, for example. ähnelt.
+        /// </summary>
+        public static string Please_select_the_file_MiniList_Export_json {
+            get {
+                return ResourceManager.GetString("Please_select_the_file_MiniList_Export_json", resourceCulture);
             }
         }
         

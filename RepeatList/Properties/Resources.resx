@@ -164,8 +164,7 @@
   </data>
   <data name="Enter_a_list_name_or_insert_a_ready_made" xml:space="preserve">
     <value>1. enter a list name or 
-2. insert a ready-made list as a character string in JSON format that you have received from someone, e.g. via WhatsApp, or
-3. enter a synchronisation key that you have received from someone, e.g. via WhatsApp.</value>
+2. enter a synchronisation key that you have received from someone, e.g. via WhatsApp.</value>
   </data>
   <data name="Enter_list_name" xml:space="preserve">
     <value>Enter list name</value>
@@ -473,5 +472,8 @@ Let ChatGPT &amp; Co. create a list for you on your desired topic – whether it
   </data>
   <data name="rename" xml:space="preserve">
     <value>Rename</value>
+  </data>
+  <data name="Please_select_the_file_MiniList_Export_json" xml:space="preserve">
+    <value>Please select the file ‘MiniList_Export.json’ that was sent to you via WhatsApp, for example.</value>
   </data>
 </root>

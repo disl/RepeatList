@@ -3,8 +3,7 @@ using Newtonsoft.Json;
 using RepeatList.Models;
 using RepeatList.Services;
 using RepeatList.ViewModels;
-using System.ComponentModel.Design;
-using static Android.Renderscripts.ScriptGroup;
+
 
 namespace RepeatList;
 
@@ -16,7 +15,6 @@ public partial class ListPage_Input : Popup<object>
         Unknown,
         General,
         Spotify,
-
     }
 
     ListsPageViewModel listsPageViewModel = new();
@@ -386,5 +384,12 @@ public partial class ListPage_Input : Popup<object>
         {
             return;
         }
+    }
+
+    private async void OnListImport_Clicked(object sender, EventArgs e)
+    {
+        //await listsPageViewModel.Import_list_fileAsync();
+
+        await CloseMe("Start_import_file");
     }
 }
