@@ -476,4 +476,7 @@ Lasciate che ChatGPT &amp; Co. creino un elenco sul tema che desiderate, che si 
   <data name="Please_select_the_file_MiniList_Export_json" xml:space="preserve">
     <value>Seleziona il file “MiniList_Export.json” che ti è stato inviato, ad esempio tramite WhatsApp.</value>
   </data>
+  <data name="Now_select_an_exported_JSON_file_named" xml:space="preserve">
+    <value>Seleziona ora il file JSON esportato “MiniList_Export.json”, ad esempio da WhatsApp o dal file system. Seleziona quindi l'app “MiniList” dall'elenco. L'app verrà chiusa brevemente e avviata automaticamente dopo l'importazione del file.</value>
+  </data>
 </root>

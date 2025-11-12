@@ -478,4 +478,7 @@
   <data name="Please_select_the_file_MiniList_Export_json" xml:space="preserve">
     <value>Виберіть файл «MiniList_Export.json», який, наприклад, був надісланий вам через WhatsApp.</value>
   </data>
+  <data name="Now_select_an_exported_JSON_file_named" xml:space="preserve">
+    <value>Тепер виберіть експортований файл JSON «MiniList_Export.json», наприклад, з WhatsApp або файлової системи. Потім виберіть із списку додаток «MiniList». Додаток на короткий час закриється і автоматично запуститься після імпорту файлу.</value>
+  </data>
 </root>

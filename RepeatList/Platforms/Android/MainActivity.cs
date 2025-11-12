@@ -27,11 +27,14 @@ namespace RepeatList
     ]
     [IntentFilter(new[] { Android.Content.Intent.ActionView },
               Categories = new[] { Android.Content.Intent.CategoryDefault, Android.Content.Intent.CategoryBrowsable },
+
               DataMimeType = "application/json",
               DataSchemes = new[] { "content", "file" })]
     public class MainActivity : MauiAppCompatActivity
     {
         const int RequestRecordAudioId = 101;
+
+        private static string? _pendingIntentJson { get; set; }
 
         private readonly SemaphoreSlim _sync = new(0, 1);
 
@@ -50,32 +53,34 @@ namespace RepeatList
             Platform.Init(this, savedInstanceState);
 
             // JSON-file Serializer Optionen setzen
-            if (Intent?.Data != null)
+
+            _pendingIntentJson = string.Empty;
+
+            try
             {
-                var uri = Intent.Data;
-                using var stream = ContentResolver.OpenInputStream(uri);
-                using var reader = new StreamReader(stream);
-                string json = reader.ReadToEnd();
-
-                // ViewModel holen, mit neuer API und Null-Prüfung
-                var services = (IServiceProvider?)IPlatformApplication.Current?.Services;
-                var vm = services?.GetService(typeof(ListsPageViewModel)) as ListsPageViewModel;
-
-                if (vm != null)
+                if (Intent?.Data != null)
                 {
-                    MainThread.BeginInvokeOnMainThread(async () =>
-                    {
-                        await vm.LoadItemsFromJson(json);
-                    });
-                }
+                    var uri = Intent.Data;
 
-                //Task.Run(async () =>
-                //{
-                //    await vm?.LoadItemsFromJson(json);
-                //    _sync.Release();
-                //});
-                //_sync.Wait(); // blockiert, aber sicher
+                    using var stream = ContentResolver.OpenInputStream(uri);
+                    using var reader = new StreamReader(stream);
+                    string json = reader.ReadToEnd();
+                    _pendingIntentJson = json;
+                }
             }
+            catch (Exception ex)
+            {
+                Android.Util.Log.Error("MainActivity", $"Error processing intent data: {ex.Message}");
+            }
+        }
+
+
+
+        public static string GetPendingIntentData()
+        {
+            var data = _pendingIntentJson;
+            _pendingIntentJson = null; // Zurücksetzen nach dem Abholen
+            return data;
         }
 
         void CheckAudioPermission()

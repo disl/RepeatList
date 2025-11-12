@@ -251,7 +251,7 @@ namespace RepeatList.ViewModels
         //}
         [ObservableProperty] public string sync_arrow_down_icon = "sync_arrow_down_icon_red.png";
         [ObservableProperty] public CultureInfo cultur;
-        [ObservableProperty] public ObservableCollection<Header> filteredList = new();
+        [ObservableProperty] ObservableCollection<Header>? filteredList = new();
         [ObservableProperty] public string please_create_a_first_list = Properties.Resources.Please_create_a_first_list;
         [ObservableProperty] public bool isSynchronized = false;
         [ObservableProperty] public string title_sort_by = Properties.Resources.sort_by;
@@ -779,6 +779,11 @@ namespace RepeatList.ViewModels
         {
             try
             {
+                IsBusy = true;
+
+                var cts = new CancellationTokenSource(TimeSpan.FromSeconds(20)); // 30 Sekunden Timeout
+                FileResult result = null;
+
                 var jsonFileType = new FilePickerFileType(new Dictionary<DevicePlatform, IEnumerable<string>>
                 {
                     { DevicePlatform.Android, new[] { "application/json" } },
@@ -786,49 +791,89 @@ namespace RepeatList.ViewModels
                     { DevicePlatform.iOS, new[] { "public.json" } }
                 });
 
-                var result = await FilePicker.Default.PickAsync(new PickOptions
+                try
                 {
-                    PickerTitle = "Select JSON-File (MiniList_Export.json)",
-                    FileTypes = jsonFileType
-                });
+                    result =  await FilePicker.Default.PickAsync(new PickOptions
+                    {
+                        PickerTitle = "Select JSON-File (MiniList_Export.json)",
+                        FileTypes = jsonFileType
+                    }).WaitAsync(cts.Token);
+                }
+                catch (OperationCanceledException)
+                {
+                    System.Diagnostics.Debug.WriteLine("FilePicker timeout oder abgebrochen");
+                    await App.Current.MainPage.DisplayAlert("Timeout", "FilePicker wurde abgebrochen", "OK");
+                    return;
+                }
+
+                if (result != null)
+                {
+                    using var stream = await result.OpenReadAsync();
+                    using var reader = new StreamReader(stream);
+                    string json = await reader.ReadToEndAsync();
+
+                    await LoadItemsFromJson(json);
+                }
             }
             catch (Exception ex)
             {
                 await App.Current.MainPage.DisplayAlert("Error", ex.Message, "OK");
             }
+            finally
+            {
+                IsBusy = false;
+            }
         }
 
         public async Task LoadItemsFromJson(string json)
         {
-            if (await InputHeaderWithPositions(json, true))
+            IsBusy = true;
+
+            try
             {
-                //SetFirstItemForHeaders();
-
-               IsBusy = true;
-
-                // UI sofort aktualisieren
-                //await MainThread.InvokeOnMainThreadAsync(() =>
-                //{
-                //    // Collection neu erstellen um UI-Update zu erzwingen
-                //    Headers = new ObservableCollection<Header>(headers);
-                //    FilteredList = new ObservableCollection<Header>(Headers);
-                //});
-                MainThread.BeginInvokeOnMainThread(async () =>
+                if (await InputHeaderWithPositions(json, true))
                 {
-                    await LoadHeaders();
+              
 
-                    await Application.Current.MainPage.DisplaySnackbar(Properties.Resources.List_added_successfully,
-                      visualOptions: new SnackbarOptions
-                      {
-                          BackgroundColor = Color.FromArgb(Constantes.Color_Success_string),
-                          TextColor = Colors.White
-                      }, duration: TimeSpan.FromSeconds(2));
+                    //IsBusy = true;
+
+                    // UI sofort aktualisieren
+                    //await MainThread.InvokeOnMainThreadAsync(() =>
+                    //{
+                    //    // Collection neu erstellen um UI-Update zu erzwingen
+                    //    Headers = new ObservableCollection<Header>(headers);
+                    //    FilteredList = new ObservableCollection<Header>(Headers);
+                    //});
+                    //MainThread.BeginInvokeOnMainThread(async () =>
+                    //{
 
 
 
-                    IsBusy = false;
-                });
 
+                    //await Application.Current.MainPage.DisplayAlert("Success", Properties.Resources.List_added_successfully, "OK");
+                    //MainThread.BeginInvokeOnMainThread(async () =>
+                    //{
+                    //await LoadHeaders();
+
+                    //await Application.Current.MainPage.DisplaySnackbar(Properties.Resources.List_added_successfully,
+                    //  visualOptions: new SnackbarOptions
+                    //  {
+                    //      BackgroundColor = Color.FromArgb(Constantes.Color_Success_string),
+                    //      TextColor = Colors.White
+                    //  }, duration: TimeSpan.FromSeconds(2));
+
+
+                    //});
+
+
+                }
+            }
+            catch (Exception ex)
+            {
+                await Application.Current.MainPage.DisplayAlert("Error", $"Import failed: {ex.Message}", "OK");
+            }
+            finally
+            {
                 IsBusy = false;
             }
         }
@@ -844,7 +889,7 @@ namespace RepeatList.ViewModels
                     var tempDir = FileSystem.CacheDirectory;
                     var filePath = Path.Combine(tempDir, fileName);
 
-                    if(File.Exists(filePath))
+                    if (File.Exists(filePath))
                         File.Delete(filePath);
 
                     await File.WriteAllTextAsync(filePath, jsonContent);
@@ -1432,11 +1477,11 @@ namespace RepeatList.ViewModels
                 string listDescription = string.Empty;
 
                 var listDescription_1 = Header_SelectedItem.Positions.FirstOrDefault(x => x.Title.StartsWith("_"));
-                if (listDescription_1 != null && !string.IsNullOrEmpty(listDescription_1.Title)  && listDescription_1.Title.StartsWith("_"))
+                if (listDescription_1 != null && !string.IsNullOrEmpty(listDescription_1.Title) && listDescription_1.Title.StartsWith("_"))
                 {
                     int ind_dp = listDescription_1.Title.IndexOf(":");
-                    if (ind_dp > 0 && listDescription_1.Title.Length > ind_dp+1)
-                        listDescription = listDescription_1.Title.Substring(ind_dp+1, listDescription_1.Title.Length - ind_dp - 1).Trim();
+                    if (ind_dp > 0 && listDescription_1.Title.Length > ind_dp + 1)
+                        listDescription = listDescription_1.Title.Substring(ind_dp + 1, listDescription_1.Title.Length - ind_dp - 1).Trim();
                 }
 
                 // Playlist erstellen
@@ -1500,7 +1545,8 @@ namespace RepeatList.ViewModels
 
         public async Task LoadHeaders()
         {
-            Headers = null;
+            Headers?.Clear();
+            FilteredList?.Clear();
 
             var headers = await _databaseService.GetHeadersAsync();
             if (headers == null)
@@ -1509,6 +1555,23 @@ namespace RepeatList.ViewModels
             Headers = new ObservableCollection<Header>(headers);
             FilteredList = new ObservableCollection<Header>(Headers);
         }
+
+        //public async Task LoadHeaders()
+        //{
+        //    var headers = await _databaseService.GetHeadersAsync();
+        //    if (headers == null)
+        //        return;
+
+        //    // Bestehende Collections aktualisieren
+        //    Headers?.Clear();
+        //    FilteredList?.Clear();
+
+        //    foreach (var header in headers)
+        //    {
+        //        Headers?.Add(header);
+        //        FilteredList?.Add(header);
+        //    }
+        //}
 
         public async Task<Header> AddHeader(string HeaderEntryText, bool IsSynchronized, string? Id = null)
         {

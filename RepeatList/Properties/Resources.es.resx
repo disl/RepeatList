@@ -476,4 +476,7 @@ Deje que ChatGPT &amp; Co. le cree una lista sobre el tema que desee, ya sea «p
   <data name="Please_select_the_file_MiniList_Export_json" xml:space="preserve">
     <value>Seleccione el archivo «MiniList_Export.json» que le ha sido enviado, por ejemplo, a través de WhatsApp.</value>
   </data>
+  <data name="Now_select_an_exported_JSON_file_named" xml:space="preserve">
+    <value>Ahora seleccione el archivo JSON exportado «MiniList_Export.json», por ejemplo, desde WhatsApp o el sistema de archivos. A continuación, seleccione la aplicación «MiniList» de la lista. La aplicación se cerrará brevemente y se iniciará automáticamente después de importar el archivo.</value>
+  </data>
 </root>

@@ -132,7 +132,7 @@
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <ViewCell>
-                                <SwipeView x:Name="SwipeViewContainer_Top"
+                                <!--<SwipeView x:Name="SwipeViewContainer_Top"
                                        SwipeStarted="OnSwipeStarted_Top"
                                        SwipeChanging="OnSwipeChanging_Top"
                                        SwipeEnded="OnSwipeEnded_Top">
@@ -149,8 +149,8 @@
                                              BackgroundColor="LightGreen"
                                              Clicked="OnCheckedButtonClicked"
                                              CommandParameter="{Binding}"/>
-                                    </SwipeView.RightItems>
-                                    <Grid  ColumnDefinitions="30,*" 
+                                    </SwipeView.RightItems>-->
+                                    <Grid  ColumnDefinitions="30,6*,1*"
                                            VerticalOptions="Center" 
                                            ColumnSpacing="10" >
                                         <Button BackgroundColor="{Binding Category_color}" Grid.Column="0"                                            
@@ -161,10 +161,10 @@
                                              LineBreakMode="TailTruncation" MaxLines="1"
                                              VerticalTextAlignment="Center"
                                              TextColor="{AppThemeBinding Light={DynamicResource PrimaryTextColor}, Dark={DynamicResource PrimaryTextColorLight}}"/>
-                                        <!--<ImageButton Source="{Binding PositionImageSource, FallbackValue = 'check_box_blank.png'}" 
+                                        <ImageButton Source="{Binding PositionImageSource, FallbackValue = 'check_box_blank.png'}" 
                                              Clicked="OnCheckedButtonClicked" CommandParameter="{Binding}" 
                                              HeightRequest="30" 
-                                             Grid.Column="2"/>-->
+                                             Grid.Column="2"/>
                                         <!--<ImageButton Source="{AppThemeBinding Light=edit_icon_black.png, Dark=edit_icon_white.png}" 
                                           Clicked="OnEditPositionClicked" CommandParameter="{Binding}" 
                                           HeightRequest="30" 
@@ -174,7 +174,7 @@
                                           HeightRequest="30" Grid.Column="4"/>-->
                                     </Grid>
 
-                                </SwipeView>
+                                <!--</SwipeView>-->
 
                             </ViewCell>
                         </DataTemplate>
@@ -248,7 +248,7 @@
                     <DataTemplate>
                         <ViewCell>
 
-                            <SwipeView x:Name="SwipeViewContainer_Top"
+                            <!--<SwipeView x:Name="SwipeViewContainer_Top"
         SwipeStarted="OnSwipeStarted_Top"
         SwipeChanging="OnSwipeChanging_Top"
         SwipeEnded="OnSwipeEnded_Top">
@@ -265,37 +265,36 @@
               BackgroundColor="LightCoral"
               Clicked="OnCheckedButtonClicked"
               CommandParameter="{Binding}"/>
-                                </SwipeView.RightItems>
+                                </SwipeView.RightItems>-->
 
 
-
-                                <!--<Grid  ColumnDefinitions="30,6*, 1*"-->  
-                                <Grid  ColumnDefinitions="30,*"  
-                               VerticalOptions="Center"                               
-                               ColumnSpacing="10"                               
-                            >
-                                <Button BackgroundColor="{Binding Category_color}" Grid.Column="0" 
+                                <!--<Grid  ColumnDefinitions="30,*"-->
+                                <Grid  ColumnDefinitions="30,6*, 1*"                       
+                                   VerticalOptions="Center"                               
+                                   ColumnSpacing="10"                               
+                                >
+                                    <Button BackgroundColor="{Binding Category_color}" Grid.Column="0" 
                                         Clicked="Category_colorClicked" CommandParameter="{Binding}"
                                          WidthRequest="30"    HeightRequest="30"    CornerRadius="15"
                                         BorderColor="{AppThemeBinding Light=Gray, Dark=LightGray}"/>
-                                <Label Text="{Binding Title}" Grid.Column="1"
+                                    <Label Text="{Binding Title}" Grid.Column="1"
                                        VerticalOptions="Center" 
                                        LineBreakMode="TailTruncation" MaxLines="1"
                                        TextDecorations="Strikethrough"                                                 
                                        TextColor="{AppThemeBinding Light={DynamicResource PrimaryTextColor}, Dark={DynamicResource PrimaryTextColorLight}}"/>
-                                <!--<ImageButton Source="{Binding PositionImageSource}" Clicked="OnCheckedButtonClicked" 
-                                     HeightRequest="30" CommandParameter="{Binding}" Grid.Column="2"/>-->
+                                    <ImageButton Source="{Binding PositionImageSource}" Clicked="OnCheckedButtonClicked" 
+                                     HeightRequest="30" CommandParameter="{Binding}" Grid.Column="2"/>
 
-                                <!--<ImageButton Source="{AppThemeBinding Light=edit_icon_black.png, Dark=edit_icon_white.png}" 
+                                    <!--<ImageButton Source="{AppThemeBinding Light=edit_icon_black.png, Dark=edit_icon_white.png}" 
                              Clicked="OnEditPositionClicked" CommandParameter="{Binding}" 
                              HeightRequest="30" Grid.Column="3"/>
                 <ImageButton Source="{AppThemeBinding Light=delete_icon_black.png, Dark=delete_icon_white.png}" 
                              Clicked="OnDeletePositionClicked" 
                              HeightRequest="30" CommandParameter="{Binding}" Grid.Column="4"/>-->
 
-                            </Grid>
+                                </Grid>
 
-                            </SwipeView>
+                            <!--</SwipeView>-->
 
                         </ViewCell>
                     </DataTemplate>

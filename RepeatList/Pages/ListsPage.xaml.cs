@@ -37,7 +37,7 @@ namespace RepeatList
                 ViewModel = new ListsPageViewModel();
                 BindingContext = ViewModel;
 
-     
+
             }
             catch (Exception ex)
             {
@@ -89,6 +89,14 @@ namespace RepeatList
                     }
 #endif
                     m_need_for_update = false;
+                }
+
+
+                // Prüfe ob Intent-Daten vorhanden sind
+                var pendingJson = MainActivity.GetPendingIntentData();
+                if (!string.IsNullOrEmpty(pendingJson))
+                {
+                    await ViewModel.LoadItemsFromJson(pendingJson);
                 }
             }
             catch (Exception ex)
@@ -223,11 +231,24 @@ namespace RepeatList
                 // Import JSON-File
                 if (new_list_name_obj.Result.ToString() == "Start_import_file")
                 {
-                    await ViewModel.Import_list_fileAsync();
+                    ViewModel.IsBusy = true;
 
-                    _timer.Start();
+                    try
+                    {
+                        await DisplayAlert("Select JSON-File", Properties.Resources.Now_select_an_exported_JSON_file_named,
+                            Properties.Resources.yes);
 
-                    IsBusy = false;
+#if ANDROID
+                        var activity = Platform.CurrentActivity;
+                        activity?.FinishAffinity(); // Schließt alle Activities in der Task
+#endif
+
+                        //_ = ViewModel.Import_list_fileAsync();
+                    }
+                    finally
+                    {
+                        ViewModel.IsBusy = false; // Busy-State immer zurücksetzen
+                    }
                     return;
                 }
 

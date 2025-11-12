@@ -10,7 +10,7 @@ namespace RepeatList.Platforms.Android.Handlers
             var recyclerView = base.CreatePlatformView();
 
             // Android-spezifische Optimierungen
-            recyclerView.SetItemViewCacheSize(20); // Mehr Caching
+            recyclerView.SetItemViewCacheSize(40); // Mehr Caching
             recyclerView.HasFixedSize = true;      // Für gleichgroße Items
             recyclerView.SetItemAnimator(null);    // Animationen deaktivieren
 

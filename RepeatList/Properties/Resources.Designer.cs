@@ -19,7 +19,7 @@ namespace RepeatList.Properties {
     // -Klasse über ein Tool wie ResGen oder Visual Studio automatisch generiert.
     // Um einen Member hinzuzufügen oder zu entfernen, bearbeiten Sie die .ResX-Datei und führen dann ResGen
     // mit der /str-Option erneut aus, oder Sie erstellen Ihr VS-Projekt neu.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "18.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class Resources {
@@ -591,6 +591,15 @@ namespace RepeatList.Properties {
         public static string No_purchases_found {
             get {
                 return ResourceManager.GetString("No_purchases_found", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Now select the exported JSON file ‘MiniList_Export.json’, for example from WhatsApp or the file system. Then select the ‘MiniList’ app from the list. The app will close briefly and start automatically after the file has been imported. ähnelt.
+        /// </summary>
+        public static string Now_select_an_exported_JSON_file_named {
+            get {
+                return ResourceManager.GetString("Now_select_an_exported_JSON_file_named", resourceCulture);
             }
         }
         
