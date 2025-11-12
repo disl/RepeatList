@@ -5,7 +5,9 @@ using Android.Gms.Ads;
 using Android.OS;
 using AndroidX.Core.App;
 using AndroidX.Core.Content;
+using Bumptech.Glide.Load.Model;
 using RepeatList.ViewModels;
+using System.Collections.ObjectModel;
 
 namespace RepeatList
 {
@@ -59,13 +61,20 @@ namespace RepeatList
                 var services = (IServiceProvider?)IPlatformApplication.Current?.Services;
                 var vm = services?.GetService(typeof(ListsPageViewModel)) as ListsPageViewModel;
 
-                Task.Run(async () =>
+                if (vm != null)
                 {
-                    await vm?.LoadItemsFromJson(json);
-                    _sync.Release();
-                });
+                    MainThread.BeginInvokeOnMainThread(async () =>
+                    {
+                        await vm.LoadItemsFromJson(json);
+                    });
+                }
 
-                _sync.Wait(); // blockiert, aber sicher
+                //Task.Run(async () =>
+                //{
+                //    await vm?.LoadItemsFromJson(json);
+                //    _sync.Release();
+                //});
+                //_sync.Wait(); // blockiert, aber sicher
             }
         }
 

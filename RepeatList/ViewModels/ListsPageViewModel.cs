@@ -791,22 +791,6 @@ namespace RepeatList.ViewModels
                     PickerTitle = "Select JSON-File (MiniList_Export.json)",
                     FileTypes = jsonFileType
                 });
-
-                //if (result != null)
-                //{
-                //    using var stream = await result.OpenReadAsync();
-                //    using var reader = new StreamReader(stream);
-                //    string json = await reader.ReadToEndAsync();
-
-                //    //var importedItems = JsonSerializer.Deserialize<List<Item>>(json);
-
-                //    //if (importedItems != null)
-                //    //{
-                //    //    Items.Clear();
-                //    //    foreach (var item in importedItems)
-                //    //        Items.Add(item);
-                //    //}
-                //}
             }
             catch (Exception ex)
             {
@@ -816,29 +800,37 @@ namespace RepeatList.ViewModels
 
         public async Task LoadItemsFromJson(string json)
         {
-            if (!await InputHeaderWithPositions(json, true))
+            if (await InputHeaderWithPositions(json, true))
             {
-                //if (is_json)
-                //{
-                //    await Application.Current.MainPage.DisplaySnackbar(Properties.Resources.String_is_not_a_valid_list_description,
-                //                visualOptions: new SnackbarOptions
-                //                {
-                //                    BackgroundColor = Color.FromArgb(Constantes.Color_Error_string),
-                //                    TextColor = Colors.White
-                //                }, duration: TimeSpan.FromSeconds(3));
-                //    IsBusy = false;
-                //    return;
-                //}
-                await AddHeader(json, false);
-            }
-            await Application.Current.MainPage.DisplaySnackbar(Properties.Resources.List_added_successfully,
-                visualOptions: new SnackbarOptions
-                {
-                    BackgroundColor = Color.FromArgb(Constantes.Color_Success_string),
-                    TextColor = Colors.White
-                }, duration: TimeSpan.FromSeconds(2));
+                //SetFirstItemForHeaders();
 
-            SetFirstItemForHeaders();
+               IsBusy = true;
+
+                // UI sofort aktualisieren
+                //await MainThread.InvokeOnMainThreadAsync(() =>
+                //{
+                //    // Collection neu erstellen um UI-Update zu erzwingen
+                //    Headers = new ObservableCollection<Header>(headers);
+                //    FilteredList = new ObservableCollection<Header>(Headers);
+                //});
+                MainThread.BeginInvokeOnMainThread(async () =>
+                {
+                    await LoadHeaders();
+
+                    await Application.Current.MainPage.DisplaySnackbar(Properties.Resources.List_added_successfully,
+                      visualOptions: new SnackbarOptions
+                      {
+                          BackgroundColor = Color.FromArgb(Constantes.Color_Success_string),
+                          TextColor = Colors.White
+                      }, duration: TimeSpan.FromSeconds(2));
+
+
+
+                    IsBusy = false;
+                });
+
+                IsBusy = false;
+            }
         }
 
         private async Task<string> CreateJsonFile(string jsonContent, string fileName)

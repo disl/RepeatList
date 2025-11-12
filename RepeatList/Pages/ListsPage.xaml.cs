@@ -1,5 +1,4 @@
-﻿using AndroidX.Lifecycle;
-using CommunityToolkit.Maui;
+﻿using CommunityToolkit.Maui;
 using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Maui.Core;
 using CommunityToolkit.Maui.Extensions;
@@ -8,7 +7,6 @@ using RepeatList.Services;
 using RepeatList.ViewModels;
 using System.Collections.ObjectModel;
 using System.Globalization;
-using static Android.Provider.MediaStore.Audio;
 using Header = RepeatList.Models.Header;
 
 
@@ -25,6 +23,8 @@ namespace RepeatList
         private readonly InAppBillingService _billingService = new();
 
         private IDispatcherTimer _timer;
+        private IDispatcherTimer _timer_refresh;
+
 
         //private readonly ISpeechToText _speechToText;
 
@@ -37,15 +37,13 @@ namespace RepeatList
                 ViewModel = new ListsPageViewModel();
                 BindingContext = ViewModel;
 
-                //_speechToText = speechToText;
+     
             }
             catch (Exception ex)
             {
                 SentrySdk.CaptureException(ex);
                 throw;
             }
-
-            //_speechToText=speechToText;
         }
 
         protected async override void OnAppearing()
@@ -144,8 +142,6 @@ namespace RepeatList
 #endif
 
 
-
-
         private async void _timer_Tick(object? sender, EventArgs e)
         {
             await ForTimer_Tick();
@@ -228,6 +224,10 @@ namespace RepeatList
                 if (new_list_name_obj.Result.ToString() == "Start_import_file")
                 {
                     await ViewModel.Import_list_fileAsync();
+
+                    _timer.Start();
+
+                    IsBusy = false;
                     return;
                 }
 
@@ -601,7 +601,7 @@ namespace RepeatList
                     var popup = new Lists_PopUpMenu((Header)button.CommandParameter, ViewModel.SupabaseService_ready);
                     var result = await Shell.Current.ShowPopupAsync<string>(popup);
 
-                    ViewModel.IsBusy = true;
+                    //ViewModel.IsBusy = true;
 
                     switch (result.Result)
                     {
@@ -617,8 +617,8 @@ namespace RepeatList
 
                         case "Import":
                             await ForOnAddHeaderClicked(false); break;
-                        case "Import_list_file":
-                            await ForOnAddHeader_list_fileClicked(); break;
+                        //case "Import_list_file":
+                        //    await ForOnAddHeader_list_fileClicked(); break;
                         case "Export":
                             await ViewModel.Export_list_Clicked(); break;
                         case "ExportSpotify":
