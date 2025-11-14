@@ -563,6 +563,82 @@ namespace RepeatList.ViewModels
         //}
 
         [RelayCommand]
+        //public async Task Sync_list_downClicked(string guid_str_param)
+        //{
+        //    if (string.IsNullOrWhiteSpace(guid_str_param) || _supabaseService == null)
+        //        return;
+
+        //    Guid tmp_guid = new Guid(guid_str_param);
+        //    IsBusy = true;
+
+        //    try
+        //    {
+        //        (Header Header, List<Position> Position) sync_responce = await _supabaseService.GetHeaderWithPositionsByIdAsync(tmp_guid);
+
+        //        if (sync_responce.Header == null || sync_responce.Position == null)
+        //        {
+        //            await ShowErrorMessage(Properties.Resources.String_is_not_a_valid_List_ID);
+        //            return;
+        //        }
+
+        //        // WICHTIG: Collection KOPIEREN bevor modifiziert
+        //        var positionsToProcess = sync_responce.Position.ToList();
+
+        //        Header? _header = Headers?.FirstOrDefault(x => x.Id == sync_responce.Header.Id);
+
+        //        if (_header != null)
+        //        {
+        //            await EditNameHeader(_header, sync_responce.Header.ListName);
+        //            Lists = (await _databaseService.GetPositionsAsync(_header.Id)).ToObservableCollection();
+
+        //            // ⭐ Über die KOPIE iterieren
+        //            foreach (var pos in positionsToProcess)
+        //            {
+        //                await ProcessPosition(pos);
+        //            }
+        //        }
+        //        else
+        //        {
+        //            Header = await AddHeader(sync_responce.Header.ListName, true, sync_responce.Header.Id);
+
+        //            // ⭐ Über die KOPIE iterieren
+        //            foreach (var pos in positionsToProcess)
+        //            {
+        //                await AddPosition(pos, false, true);
+        //            }
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        await Application.Current.MainPage.DisplayAlert("Error", ex.Message, "OK");
+        //    }
+        //    finally
+        //    {
+        //        IsBusy = false;
+        //    }
+        //}
+
+        //private async Task ShowErrorMessage(string string_is_not_a_valid_List_ID)
+        //{
+        //    await Application.Current.MainPage.DisplaySnackbar(string_is_not_a_valid_List_ID,
+        //            visualOptions: new SnackbarOptions
+        //            {
+        //                BackgroundColor = Color.FromArgb(Constantes.Color_Error_string),
+        //                TextColor = Colors.White
+        //            },
+        //        duration: TimeSpan.FromSeconds(2));
+        //}
+
+        //private async Task ProcessPosition(Position pos)
+        //{
+        //    var old_pos = Lists?.FirstOrDefault(p => p.Id == pos.Id);
+        //    if (old_pos == null)
+        //        await AddPosition(pos, false, true);
+        //    else
+        //        await UpdatePosition(pos);
+        //}
+
+
         public async Task Sync_list_downClicked(string guid_str_param)  //Header header)
         {
             if (string.IsNullOrWhiteSpace(guid_str_param) || _supabaseService == null)
@@ -576,13 +652,6 @@ namespace RepeatList.ViewModels
 
             if (sync_responce.Header == null || sync_responce.Position == null)
             {
-                //string guid_str = await Application.Current.MainPage.DisplayPromptAsync(
-                //  Properties.Resources.Would_you_like_to_work_with_someone_on_a_current_list,
-                //  Properties.Resources.Please_enter_the_ID_of_the_list_to_be_synchronised);
-                //if (!string.IsNullOrEmpty(guid_str))
-                //{
-                //    if (!Guid.TryParse(guid_str, out tmp_guid))
-                //    {
                 await Application.Current.MainPage.DisplaySnackbar(Properties.Resources.String_is_not_a_valid_List_ID,
                     visualOptions: new SnackbarOptions
                     {
@@ -591,9 +660,6 @@ namespace RepeatList.ViewModels
                     },
                 duration: TimeSpan.FromSeconds(2));
                 IsBusy = false;
-                return;
-                //}
-                //}
             }
 
             Header? _header = null;
@@ -624,6 +690,10 @@ namespace RepeatList.ViewModels
             }
             IsBusy = false;
         }
+
+
+
+
 
         [RelayCommand]
         public async Task Sync_list_upClicked()

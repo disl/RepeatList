@@ -23,7 +23,6 @@ namespace RepeatList
         private readonly InAppBillingService _billingService = new();
 
         private IDispatcherTimer _timer;
-        private IDispatcherTimer _timer_refresh;
 
 
         //private readonly ISpeechToText _speechToText;
@@ -159,28 +158,72 @@ namespace RepeatList
         {
             ViewModel.IsBusy = true;
 
-            if (ViewModel.FilteredList == null || ViewModel.FilteredList.Count == 0)
-                return;
-
-            //try
-            //{
-            foreach (var header in ViewModel.FilteredList)
+            try
             {
-                if (header.IsSynchronized)
+                if (ViewModel.FilteredList == null || ViewModel.FilteredList.Count == 0)
+                    return;
+
+                // Collection kopieren um Enumeration-Fehler zu vermeiden
+                var headersCopy = ViewModel.FilteredList.ToList();
+
+                foreach (var header in headersCopy)
                 {
-                    await ViewModel.Sync_list_downClicked(header.Id);
-                    Header.IsSupabaseOk = true;
+                    try
+                    {
+                        if (header.IsSynchronized)
+                        {
+                            await ViewModel.Sync_list_downClicked(header.Id.ToString());
+                            Header.IsSupabaseOk = true;  // Direkt im Header-Objekt setzen
+                        }
+                    }
+                    catch (Exception headerEx)
+                    {
+                        // Fehler pro Header loggen, aber fortfahren
+                        Header.IsSupabaseOk = false;
+                        SentrySdk.CaptureException(headerEx);
+
+                        // Optional: Kurze Pause zwischen Fehlern
+                        await Task.Delay(1000);
+                    }
                 }
             }
-            //}
-            //catch (Exception ex)
-            //{
-            //    SentrySdk.CaptureException(ex);
-            //    Header.IsSupabaseOk = false;
-            //    throw;
-            //}
-            ViewModel.IsBusy = false;
+            catch (Exception ex)
+            {
+                SentrySdk.CaptureException(ex);
+                throw;
+            }
+            finally
+            {
+                ViewModel.IsBusy = false;
+            }
         }
+
+        //private async Task ForTimer_Tick()
+        //{
+        //    ViewModel.IsBusy = true;
+
+        //    if (ViewModel.FilteredList == null || ViewModel.FilteredList.Count == 0)
+        //        return;
+
+        //    try
+        //    {
+        //        foreach (var header in ViewModel.FilteredList.ToList())
+        //        {
+        //            if (header.IsSynchronized)
+        //            {
+        //                await ViewModel.Sync_list_downClicked(header.Id);
+        //                Header.IsSupabaseOk = true;
+        //            }
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        SentrySdk.CaptureException(ex);
+        //        Header.IsSupabaseOk = false;
+        //        throw;
+        //    }
+        //    ViewModel.IsBusy = false;
+        //}
 
         protected override void OnDisappearing()
         {
