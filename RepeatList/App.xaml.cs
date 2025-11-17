@@ -1,4 +1,6 @@
-﻿namespace RepeatList
+﻿using RepeatList.Pages;
+
+namespace RepeatList
 {
     public partial class App : Application
     {
@@ -23,8 +25,7 @@
             // Datenbankdatei kopieren
             Task.Run(async () => await DatabaseHelper.CopyDatabaseToAppData("todo.db3")).Wait();
 
-            //MainPage = new MainPage();
-            // MainPage = new NavigationPage(new ListsPage());
+          
         }
 
         private void HandleUnhandledException(object sender, UnhandledExceptionEventArgs e)
@@ -45,7 +46,12 @@
 
         protected override Window CreateWindow(IActivationState? activationState)
         {
-            return new Window(new AppShell());
+            bool seen = Preferences.Get("onboarding_seen", false);
+
+            if (!seen)
+                return new Window(new OnboardingPage());
+            else
+                return new Window(new AppShell());
         }
 
 

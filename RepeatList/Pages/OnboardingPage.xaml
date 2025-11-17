@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="RepeatList.Pages.OnboardingPage"
+              xmlns:vm="clr-namespace:RepeatList.ViewModels"
+             Title="OnboardingPage">
+
+    <ContentPage.BindingContext>
+        <vm:OnboardingViewModel />
+    </ContentPage.BindingContext>
+
+    <Grid RowDefinitions="*, Auto, Auto" Padding="0">
+
+        <!-- SLIDES -->
+        <CarouselView
+            Grid.Row="0"
+            ItemsSource="{Binding Slides}"
+            Position="{Binding Position, Mode=TwoWay}"
+            IndicatorView="indicator"
+            HorizontalScrollBarVisibility="Never">
+
+            <CarouselView.ItemTemplate>
+                <DataTemplate>
+                    <Grid RowDefinitions="Auto, Auto, *"
+                          Padding="20"
+                          RowSpacing="25">
+
+                        <!-- Image -->
+                        <Image
+                            Grid.Row="0"
+                            Source="{Binding Image}"
+                            Aspect="AspectFit"
+                            HeightRequest="380" />
+
+                        <!-- Title -->
+                        <Label
+                            Grid.Row="1"
+                            Text="{Binding Title}"
+                            FontSize="28"
+                            FontAttributes="Bold"
+                            HorizontalOptions="Center"
+                            TextColor="#111" />
+
+                        <!-- Description -->
+                        <Label
+                            Grid.Row="2"
+                            Text="{Binding Description}"
+                            FontSize="17"
+                            HorizontalTextAlignment="Center"
+                            HorizontalOptions="Center"
+                            TextColor="#444"
+                            Margin="10,0,10,0" />
+                    </Grid>
+                </DataTemplate>
+            </CarouselView.ItemTemplate>
+        </CarouselView>
+
+        <!-- Indicator -->
+        <IndicatorView
+            x:Name="indicator"
+            Grid.Row="1"
+            Margin="0,10,0,10"
+            IndicatorColor="#DDDDDD"
+            SelectedIndicatorColor="#333333"
+            HorizontalOptions="Center"
+            VerticalOptions="Center" />
+
+        <!-- Buttons -->
+        <Grid Grid.Row="2" Padding="20" ColumnDefinitions="*, *" ColumnSpacing="20">
+
+            <Button
+                Grid.Column="0"
+                Text="Skip"
+                BackgroundColor="#EEEEEE"
+                TextColor="#333"
+                CornerRadius="18"
+                HeightRequest="48"
+                Command="{Binding SkipCommand}" />
+
+            <Button
+                Grid.Column="1"
+                Text="Next"
+                BackgroundColor="#333333"
+                TextColor="White"
+                CornerRadius="18"
+                HeightRequest="48"
+                Command="{Binding NextCommand}" />
+
+        </Grid>
+
+    </Grid>
+
+</ContentPage>
