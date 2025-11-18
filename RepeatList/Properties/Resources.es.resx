@@ -479,4 +479,34 @@ Deje que ChatGPT &amp; Co. le cree una lista sobre el tema que desee, ya sea «p
   <data name="Now_select_an_exported_JSON_file_named" xml:space="preserve">
     <value>Ahora seleccione el archivo JSON exportado «MiniList_Export.json», por ejemplo, desde WhatsApp o el sistema de archivos. A continuación, seleccione la aplicación «MiniList» de la lista. La aplicación se cerrará brevemente y se iniciará automáticamente después de importar el archivo.</value>
   </data>
+  <data name="OrganizeEverything" xml:space="preserve">
+    <value>Organiza todo</value>
+  </data>
+  <data name="MiniList_lets_you_manage_purchases" xml:space="preserve">
+    <value>MiniList te permite gestionar compras, tareas y notas sin esfuerzo.</value>
+  </data>
+  <data name="FastInput" xml:space="preserve">
+    <value>Entrada rápida</value>
+  </data>
+  <data name="Enter_many_items_at_once" xml:space="preserve">
+    <value>Introduzca varios artículos a la vez: «manzana 1 kg; pera; carne 0,5 kg».</value>
+  </data>
+  <data name="Share_Collaborate" xml:space="preserve">
+    <value>Compartir y colaborar</value>
+  </data>
+  <data name="Export_and_import_full_lists_as_JSON" xml:space="preserve">
+    <value>Exporte e importe listas completas en formato JSON a través de WhatsApp. También puede utilizar listas sincronizadas intercambiando códigos de publicación entre sí.</value>
+  </data>
+  <data name="Works_Offline" xml:space="preserve">
+    <value>Funciona sin conexión</value>
+  </data>
+  <data name="Use_MiniList_anytime" xml:space="preserve">
+    <value>Utiliza MiniList en cualquier momento, incluso sin conexión a Internet.</value>
+  </data>
+  <data name="Minimal_Intuitive" xml:space="preserve">
+    <value>Mínimo e intuitivo</value>
+  </data>
+  <data name="A_clean_simple_interface_designed" xml:space="preserve">
+    <value>Una interfaz limpia y sencilla diseñada para la productividad.</value>
+  </data>
 </root>

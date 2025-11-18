@@ -18,32 +18,32 @@ namespace RepeatList.ViewModels
             {
                 new OnboardingSlide
                 {
-                    Title = "Organize Everything",
-                    Description = "MiniList lets you manage purchases, tasks and notes effortlessly.",
+                    Title = Properties.Resources.OrganizeEverything,
+                    Description = Properties.Resources.MiniList_lets_you_manage_purchases,
                     Image = "onboarding1.webp"
                 },
                 new OnboardingSlide
                 {
-                    Title = "Fast Input",
-                    Description = "Enter many items at once: \"apple 1kg; pear; meat 0.5kg\".",
+                    Title = Properties.Resources.FastInput,
+                    Description = Properties.Resources.Enter_many_items_at_once,
                     Image = "onboarding2.webp"
                 },
                 new OnboardingSlide
                 {
-                    Title = "Share & Collaborate",
-                    Description = "Export and import full lists as JSON via WhatsApp and work together.",
+                    Title =Properties.Resources.Share_Collaborate,
+                    Description = Properties.Resources.Export_and_import_full_lists_as_JSON,
                     Image = "onboarding3.webp"
                 },
                 new OnboardingSlide
                 {
-                    Title = "Works Offline",
-                    Description = "Use MiniList anytime — even without internet.",
+                    Title = Properties.Resources.Works_Offline,
+                    Description = Properties.Resources.Use_MiniList_anytime,
                     Image = "onboarding4.webp"
                 },
                 new OnboardingSlide
                 {
-                    Title = "Minimal & Intuitive",
-                    Description = "A clean, simple interface designed for productivity.",
+                    Title = Properties.Resources.Minimal_Intuitive,
+                    Description = Properties.Resources.A_clean_simple_interface_designed,
                     Image = "onboarding5.webp"
                 }
             };

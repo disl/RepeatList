@@ -61,6 +61,15 @@ namespace RepeatList.Properties {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die A clean, simple interface designed for productivity. ähnelt.
+        /// </summary>
+        public static string A_clean_simple_interface_designed {
+            get {
+                return ResourceManager.GetString("A_clean_simple_interface_designed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die A maximum of %1 synchronised lists are permitted ähnelt.
         /// </summary>
         public static string A_maximum_of_3_synchronised_lists_are_permitted {
@@ -323,6 +332,15 @@ namespace RepeatList.Properties {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Enter many items at once: &quot;apple 1kg; pear; meat 0.5kg&quot;. ähnelt.
+        /// </summary>
+        public static string Enter_many_items_at_once {
+            get {
+                return ResourceManager.GetString("Enter_many_items_at_once", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Enter new list name ähnelt.
         /// </summary>
         public static string Enter_new_list_name {
@@ -359,6 +377,15 @@ namespace RepeatList.Properties {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Export and import full lists as JSON via WhatsApp and work together. ähnelt.
+        /// </summary>
+        public static string Export_and_import_full_lists_as_JSON {
+            get {
+                return ResourceManager.GetString("Export_and_import_full_lists_as_JSON", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Export current list ähnelt.
         /// </summary>
         public static string Export_list {
@@ -382,6 +409,15 @@ namespace RepeatList.Properties {
         public static string Export_to_Spotify {
             get {
                 return ResourceManager.GetString("Export_to_Spotify", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Fast Input ähnelt.
+        /// </summary>
+        public static string FastInput {
+            get {
+                return ResourceManager.GetString("FastInput", resourceCulture);
             }
         }
         
@@ -568,6 +604,24 @@ namespace RepeatList.Properties {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die MiniList lets you manage purchases, tasks and notes effortlessly ähnelt.
+        /// </summary>
+        public static string MiniList_lets_you_manage_purchases {
+            get {
+                return ResourceManager.GetString("MiniList_lets_you_manage_purchases", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Minimal &amp; Intuitive ähnelt.
+        /// </summary>
+        public static string Minimal_Intuitive {
+            get {
+                return ResourceManager.GetString("Minimal_Intuitive", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die No ähnelt.
         /// </summary>
         public static string no {
@@ -628,6 +682,15 @@ namespace RepeatList.Properties {
         public static string Operation_successfully_completed {
             get {
                 return ResourceManager.GetString("Operation_successfully_completed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Organize Everything ähnelt.
+        /// </summary>
+        public static string OrganizeEverything {
+            get {
+                return ResourceManager.GetString("OrganizeEverything", resourceCulture);
             }
         }
         
@@ -866,6 +929,15 @@ namespace RepeatList.Properties {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Share &amp; Collaborate ähnelt.
+        /// </summary>
+        public static string Share_Collaborate {
+            get {
+                return ResourceManager.GetString("Share_Collaborate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Sort by ähnelt.
         /// </summary>
         public static string sort_by {
@@ -1055,12 +1127,30 @@ namespace RepeatList.Properties {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Use MiniList anytime — even without internet. ähnelt.
+        /// </summary>
+        public static string Use_MiniList_anytime {
+            get {
+                return ResourceManager.GetString("Use_MiniList_anytime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die PREMIUM FEATURE!
         ///Let ChatGPT &amp; Co. create a list for you on your desired topic – whether it&apos;s ‘pizza’, ‘minestrone’, travel ideas, project tasks or something else entirely. You can make three free queries per day. ähnelt.
         /// </summary>
         public static string What_would_you_like_to_create_a_chat_based_list_for {
             get {
                 return ResourceManager.GetString("What_would_you_like_to_create_a_chat_based_list_for", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Works Offline ähnelt.
+        /// </summary>
+        public static string Works_Offline {
+            get {
+                return ResourceManager.GetString("Works_Offline", resourceCulture);
             }
         }
         

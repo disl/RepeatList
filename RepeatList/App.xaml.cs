@@ -16,7 +16,8 @@ namespace RepeatList
                 e.SetObserved();
                 MainThread.BeginInvokeOnMainThread(async () =>
                 {
-                    await Application.Current.MainPage.DisplayAlert("Task-Fehler", e.Exception.Message, "OK");
+                    if (Application.Current != null && Application.Current?.MainPage != null)
+                        await Application.Current.MainPage.DisplayAlert("Task-Fehler", e.Exception.Message, "OK");
 
                     SentrySdk.CaptureException(e.Exception);
                 });
@@ -25,7 +26,7 @@ namespace RepeatList
             // Datenbankdatei kopieren
             Task.Run(async () => await DatabaseHelper.CopyDatabaseToAppData("todo.db3")).Wait();
 
-          
+
         }
 
         private void HandleUnhandledException(object sender, UnhandledExceptionEventArgs e)
@@ -38,7 +39,9 @@ namespace RepeatList
             // Zurück zum MainThread wechseln
             MainThread.BeginInvokeOnMainThread(async () =>
             {
-                await Application.Current.MainPage.DisplayAlert("Untreated exception. Please report the exception to support.", ex?.Message ?? "Unknown error. Please report the error to support.", "OK");
+                if (Application.Current != null && Application.Current?.MainPage != null)
+                    await Application.Current.MainPage.DisplayAlert("Untreated exception. Please report the exception to support.",
+                        ex?.Message ?? "Unknown error. Please report the error to support.", "OK");
             });
 
             // Optional: Logging oder Fehlerberichterstattung
@@ -48,10 +51,22 @@ namespace RepeatList
         {
             bool seen = Preferences.Get("onboarding_seen", false);
 
+
             if (!seen)
-                return new Window(new OnboardingPage());
+            {
+                try
+                {
+                    return new Window(new OnboardingPage());
+                }
+                catch (Exception ex)
+                {
+                    SentrySdk.CaptureException(ex);
+                    return new Window(new AppShell());
+                }
+            }
             else
                 return new Window(new AppShell());
+
         }
 
 

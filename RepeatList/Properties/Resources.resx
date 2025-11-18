@@ -479,4 +479,34 @@ Let ChatGPT &amp; Co. create a list for you on your desired topic – whether it
   <data name="Now_select_an_exported_JSON_file_named" xml:space="preserve">
     <value>Now select the exported JSON file ‘MiniList_Export.json’, for example from WhatsApp or the file system. Then select the ‘MiniList’ app from the list. The app will close briefly and start automatically after the file has been imported.</value>
   </data>
+  <data name="OrganizeEverything" xml:space="preserve">
+    <value>Organize Everything</value>
+  </data>
+  <data name="MiniList_lets_you_manage_purchases" xml:space="preserve">
+    <value>MiniList lets you manage purchases, tasks and notes effortlessly</value>
+  </data>
+  <data name="FastInput" xml:space="preserve">
+    <value>Fast Input</value>
+  </data>
+  <data name="Enter_many_items_at_once" xml:space="preserve">
+    <value>Enter many items at once: "apple 1kg; pear; meat 0.5kg".</value>
+  </data>
+  <data name="Share_Collaborate" xml:space="preserve">
+    <value>Share &amp; Collaborate</value>
+  </data>
+  <data name="Export_and_import_full_lists_as_JSON" xml:space="preserve">
+    <value>Export and import full lists as JSON via WhatsApp and work together.</value>
+  </data>
+  <data name="Works_Offline" xml:space="preserve">
+    <value>Works Offline</value>
+  </data>
+  <data name="Use_MiniList_anytime" xml:space="preserve">
+    <value>Use MiniList anytime — even without internet.</value>
+  </data>
+  <data name="Minimal_Intuitive" xml:space="preserve">
+    <value>Minimal &amp; Intuitive</value>
+  </data>
+  <data name="A_clean_simple_interface_designed" xml:space="preserve">
+    <value>A clean, simple interface designed for productivity.</value>
+  </data>
 </root>

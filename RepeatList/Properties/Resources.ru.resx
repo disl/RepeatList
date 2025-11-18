@@ -480,4 +480,34 @@
   <data name="Now_select_an_exported_JSON_file_named" xml:space="preserve">
     <value>Теперь выберите экспортированный файл JSON «MiniList_Export.json», например, из WhatsApp или файловой системы. Затем выберите приложение «MiniList» из списка. Приложение на короткое время закроется и автоматически запустится после импорта файла.</value>
   </data>
+  <data name="OrganizeEverything" xml:space="preserve">
+    <value>Организуйте все</value>
+  </data>
+  <data name="MiniList_lets_you_manage_purchases" xml:space="preserve">
+    <value>MiniList позволяет легко управлять покупками, задачами и заметками</value>
+  </data>
+  <data name="FastInput" xml:space="preserve">
+    <value>Быстрый ввод</value>
+  </data>
+  <data name="Enter_many_items_at_once" xml:space="preserve">
+    <value>Введите одновременно несколько позиций: «яблоки 1 кг; груши; мясо 0,5 кг».</value>
+  </data>
+  <data name="Share_Collaborate" xml:space="preserve">
+    <value>Обмениваться и сотрудничать</value>
+  </data>
+  <data name="Export_and_import_full_lists_as_JSON" xml:space="preserve">
+    <value>Экспортируйте и импортируйте полные списки в формате JSON через WhatsApp. Вы также можете использовать синхронизированные списки, обмениваясь кодами публикации.</value>
+  </data>
+  <data name="Works_Offline" xml:space="preserve">
+    <value>Работает в автономном режиме</value>
+  </data>
+  <data name="Use_MiniList_anytime" xml:space="preserve">
+    <value>Используйте MiniList в любое время — даже без интернета.</value>
+  </data>
+  <data name="Minimal_Intuitive" xml:space="preserve">
+    <value>Минималистичный и интуитивный</value>
+  </data>
+  <data name="A_clean_simple_interface_designed" xml:space="preserve">
+    <value>Чистый, простой интерфейс, разработанный для повышения производительности.</value>
+  </data>
 </root>
