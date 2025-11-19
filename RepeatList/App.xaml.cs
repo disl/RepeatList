@@ -52,6 +52,9 @@ namespace RepeatList
             bool seen = Preferences.Get("onboarding_seen", false);
 
 
+            // TEST
+            //seen = false;
+
             if (!seen)
             {
                 try
