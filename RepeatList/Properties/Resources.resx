@@ -509,4 +509,7 @@ Let ChatGPT &amp; Co. create a list for you on your desired topic – whether it
   <data name="A_clean_simple_interface_designed" xml:space="preserve">
     <value>A clean, simple interface designed for productivity.</value>
   </data>
+  <data name="No_application_could_be_found_to_open_the_URL" xml:space="preserve">
+    <value>No application could be found to open the URL</value>
+  </data>
 </root>

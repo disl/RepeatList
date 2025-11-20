@@ -509,4 +509,7 @@ Deje que ChatGPT &amp; Co. le cree una lista sobre el tema que desee, ya sea «p
   <data name="A_clean_simple_interface_designed" xml:space="preserve">
     <value>Una interfaz limpia y sencilla diseñada para la productividad.</value>
   </data>
+  <data name="No_application_could_be_found_to_open_the_URL" xml:space="preserve">
+    <value>No se ha encontrado ninguna aplicación para abrir la URL.</value>
+  </data>
 </root>

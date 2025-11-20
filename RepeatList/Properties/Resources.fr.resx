@@ -509,4 +509,7 @@ Demandez à ChatGPT &amp; Co. de vous créer une liste sur le thème de votre ch
   <data name="A_clean_simple_interface_designed" xml:space="preserve">
     <value>Une interface claire et simple conçue pour la productivité.</value>
   </data>
+  <data name="No_application_could_be_found_to_open_the_URL" xml:space="preserve">
+    <value>Aucune application n'a pu être trouvée pour ouvrir l'URL.</value>
+  </data>
 </root>

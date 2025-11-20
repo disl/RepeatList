@@ -509,4 +509,7 @@ Lassen Sie sich von ChatGPT &amp; Co. eine Liste zu Ihrem Wunschthema erstellen 
   <data name="A_clean_simple_interface_designed" xml:space="preserve">
     <value>Eine übersichtliche, einfache Benutzeroberfläche, die auf Produktivität ausgelegt ist.</value>
   </data>
+  <data name="No_application_could_be_found_to_open_the_URL" xml:space="preserve">
+    <value>Es konnte keine Anwendung gefunden werden, um die URL zu öffnen.</value>
+  </data>
 </root>

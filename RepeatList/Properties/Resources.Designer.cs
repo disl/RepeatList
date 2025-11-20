@@ -631,6 +631,15 @@ namespace RepeatList.Properties {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die No application could be found to open the URL ähnelt.
+        /// </summary>
+        public static string No_application_could_be_found_to_open_the_URL {
+            get {
+                return ResourceManager.GetString("No_application_could_be_found_to_open_the_URL", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die No items to display ähnelt.
         /// </summary>
         public static string No_items_to_display {

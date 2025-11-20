@@ -3,6 +3,7 @@ using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Maui.Core;
 using CommunityToolkit.Maui.Extensions;
 using RepeatList.Models;
+using RepeatList.Pages;
 using RepeatList.Services;
 using RepeatList.ViewModels;
 using System.Collections.ObjectModel;
@@ -504,7 +505,8 @@ namespace RepeatList
             {
 
                 SentrySdk.CaptureException(ex);
-                throw;
+                await DisplayAlert(Properties.Resources.Error, ex.Message,
+                         Properties.Resources.yes);
             }
         }
 
@@ -515,8 +517,23 @@ namespace RepeatList
 
         private async void CoffeeButtonClicked(object sender, EventArgs e)
         {
-            string url = "https://Ko-fi.com/disl";
-            await Launcher.OpenAsync(new Uri(url));
+            string url = "https://ko-fi.com/disl";
+
+            try
+            {
+                bool opened = await Launcher.TryOpenAsync(url);
+
+                if (!opened)
+                {
+                    // Opening WebViewPage as fallback
+                    await Navigation.PushAsync(new WebViewPage(url));
+                }
+            }
+            catch (Exception ex)
+            {
+                SentrySdk.CaptureException(ex);
+                await DisplayAlert(Properties.Resources.Error, ex.Message, Properties.Resources.yes);
+            }
         }
 
 

@@ -510,4 +510,7 @@
   <data name="A_clean_simple_interface_designed" xml:space="preserve">
     <value>Чистый, простой интерфейс, разработанный для повышения производительности.</value>
   </data>
+  <data name="No_application_could_be_found_to_open_the_URL" xml:space="preserve">
+    <value>Не удалось найти приложение для открытия URL-адреса.</value>
+  </data>
 </root>

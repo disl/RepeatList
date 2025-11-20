@@ -9,7 +9,7 @@
               xmlns:properties="clr-namespace:RepeatList.Properties" 
              Title="{Binding Title}" 
              >
-    <!--xmlns:admob="clr-namespace:Plugin.AdMob;assembly=Plugin.AdMob"-->
+    <!--xmlns:admob="clr-namespace:Plugin.AdMob;assembly=Plugin.Ad.Mobile"-->
 
     <!--<ContentPage.BindingContext>
         <local:ListsPageViewModel />
@@ -87,7 +87,7 @@
                                         <TapGestureRecognizer Tapped="OnBurgerMenuTapped" NumberOfTapsRequired="1"  />
                                     </ImageButton.GestureRecognizers>
                                     <ImageButton.Source>
-                                        <AppThemeBinding Light="more_vert_black.png"  Dark="more_vert_white.png" />
+    <AppThemeBinding Light="more_vert_black.png" Dark="more_vert_white.png" />
                                     </ImageButton.Source>
                                 </ImageButton>
                             </Grid>
@@ -110,5 +110,9 @@
             </CollectionView>
 
         </Border>
+        
+        
+        
+        
     </Grid>
 </ContentPage>
