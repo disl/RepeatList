@@ -514,4 +514,7 @@
   <data name="No_application_could_be_found_to_open_the_URL" xml:space="preserve">
     <value>Не вдалося знайти програму для відкриття URL-адреси.</value>
   </data>
+  <data name="This_is_the_link_to_the_published_list_called" xml:space="preserve">
+    <value>Це посилання на опублікований список під назвою «%1»: </value>
+  </data>
 </root>

@@ -1100,6 +1100,15 @@ namespace RepeatList.Properties {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die This is the link to the published list called &quot;%1&quot;. ähnelt.
+        /// </summary>
+        public static string This_is_the_link_to_the_published_list_called {
+            get {
+                return ResourceManager.GetString("This_is_the_link_to_the_published_list_called", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die To be able to edit the list ‘%2’, please use the following key: %1 (confidential). ähnelt.
         /// </summary>
         public static string To_be_able_to_edit_the_list_please_use_the_following_key {

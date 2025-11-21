@@ -512,4 +512,7 @@ Lassen Sie sich von ChatGPT &amp; Co. eine Liste zu Ihrem Wunschthema erstellen 
   <data name="No_application_could_be_found_to_open_the_URL" xml:space="preserve">
     <value>Es konnte keine Anwendung gefunden werden, um die URL zu öffnen.</value>
   </data>
+  <data name="This_is_the_link_to_the_published_list_called" xml:space="preserve">
+    <value>Das ist der Link zur veröffentlichten Liste namens "%1":</value>
+  </data>
 </root>

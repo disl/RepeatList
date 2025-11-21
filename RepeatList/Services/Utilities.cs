@@ -20,9 +20,9 @@ namespace RepeatList.Services
         //    await Share.RequestAsync(request);
         //}
 
-        public static async Task ShareTextAsync(string TextContent)
+        public static async Task ShareTextAsync(string TextContent, string Title = "")
         {
-            await Share.RequestAsync(TextContent);
+            await Share.RequestAsync(TextContent, Title);
         }
 
     }

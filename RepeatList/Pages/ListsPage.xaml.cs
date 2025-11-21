@@ -191,40 +191,13 @@ namespace RepeatList
             catch (Exception ex)
             {
                 SentrySdk.CaptureException(ex);
-                throw;
+                await Shell.Current.DisplayAlert(Properties.Resources.Error, ex.Message, "OK");
             }
             finally
             {
                 ViewModel.IsBusy = false;
             }
         }
-
-        //private async Task ForTimer_Tick()
-        //{
-        //    ViewModel.IsBusy = true;
-
-        //    if (ViewModel.FilteredList == null || ViewModel.FilteredList.Count == 0)
-        //        return;
-
-        //    try
-        //    {
-        //        foreach (var header in ViewModel.FilteredList.ToList())
-        //        {
-        //            if (header.IsSynchronized)
-        //            {
-        //                await ViewModel.Sync_list_downClicked(header.Id);
-        //                Header.IsSupabaseOk = true;
-        //            }
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        SentrySdk.CaptureException(ex);
-        //        Header.IsSupabaseOk = false;
-        //        throw;
-        //    }
-        //    ViewModel.IsBusy = false;
-        //}
 
         protected override void OnDisappearing()
         {
@@ -572,7 +545,7 @@ namespace RepeatList
                 {
                     var count_of_sync_lists = ViewModel.Headers.Count(x => x.IsSynchronized);
 
-                    if (count_of_sync_lists == m_max_count_of_sync_lists)
+                    if (count_of_sync_lists > m_max_count_of_sync_lists)
                     {
                         await DisplayAlert(Properties.Resources.A_maximum_of_3_synchronised_lists_are_permitted.Replace("%1", m_max_count_of_sync_lists.ToString()),
                             Properties.Resources.Are_you_sure, Properties.Resources.yes);

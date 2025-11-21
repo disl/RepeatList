@@ -1,5 +1,6 @@
 ﻿using RepeatList.Models;
 using Supabase;
+using static AndroidX.ConstraintLayout.Core.Motion.Utils.HyperSpline;
 
 namespace RepeatList.Services
 {
@@ -20,20 +21,16 @@ namespace RepeatList.Services
             _supabase.InitializeAsync().Wait();
         }
 
-
-
         public async Task SyncHeaderWithDetailsAsync(Header? header)
         {
-            // Hole den Header aus der lokalen Datenbank
-            //var header = await _databaseService.GetHeaderAsync(headerId);
+            if (header == null)
+                return;
 
-            if (header != null)
+            await _supabase.From<Header>().Upsert(header);
+
+            if (header.Positions != null)
             {
-                await _supabase.From<Header>().Upsert(header);
-
-                // Hole die zugehörigen Positions aus der lokalen Datenbank
-                //var positions = await _databaseService.GetPositionsAsync(headerId);
-                foreach (var position in header.Positions)
+                foreach (var position in header.Positions.Where(p => p != null))
                 {
                     await _supabase.From<Position>().Upsert(position);
                 }

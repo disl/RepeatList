@@ -512,4 +512,7 @@ Deje que ChatGPT &amp; Co. le cree una lista sobre el tema que desee, ya sea «p
   <data name="No_application_could_be_found_to_open_the_URL" xml:space="preserve">
     <value>No se ha encontrado ninguna aplicación para abrir la URL.</value>
   </data>
+  <data name="This_is_the_link_to_the_published_list_called" xml:space="preserve">
+    <value>Este es el enlace a la lista publicada llamada «%1»: </value>
+  </data>
 </root>

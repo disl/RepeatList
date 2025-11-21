@@ -512,4 +512,7 @@ Demandez à ChatGPT &amp; Co. de vous créer une liste sur le thème de votre ch
   <data name="No_application_could_be_found_to_open_the_URL" xml:space="preserve">
     <value>Aucune application n'a pu être trouvée pour ouvrir l'URL.</value>
   </data>
+  <data name="This_is_the_link_to_the_published_list_called" xml:space="preserve">
+    <value>Voici le lien vers la liste publiée intitulée « %1 »: </value>
+  </data>
 </root>

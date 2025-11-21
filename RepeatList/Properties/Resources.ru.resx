@@ -513,4 +513,7 @@
   <data name="No_application_could_be_found_to_open_the_URL" xml:space="preserve">
     <value>Не удалось найти приложение для открытия URL-адреса.</value>
   </data>
+  <data name="This_is_the_link_to_the_published_list_called" xml:space="preserve">
+    <value>Это ссылка на опубликованный список под названием «%1»: </value>
+  </data>
 </root>

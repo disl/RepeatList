@@ -507,138 +507,6 @@ namespace RepeatList.ViewModels
 
         }
 
-
-
-
-
-
-        //[RelayCommand]
-        //public async Task Import_listClicked()
-        //{
-        //    Guid tmp_guid = Guid.Empty;
-
-        //    string guid_str = await Application.Current.MainPage.DisplayPromptAsync(
-        //         Properties.Resources.import_liste,
-        //         Properties.Resources.Please_enter_the_ID_of_the_list_to_be_synchronised);
-        //    if (!string.IsNullOrEmpty(guid_str))
-        //    {
-        //        if (!Guid.TryParse(guid_str, out tmp_guid))
-        //        {
-        //            await Application.Current.MainPage.DisplaySnackbar(Properties.Resources.String_is_not_a_valid_List_ID);
-        //            IsBusy = false;
-        //            return;
-        //        }
-        //    }
-        //    else
-        //        return;
-
-        //    IsBusy = true;
-
-        //    (Header Header, List<Position> Lists) sync_responce = await _supabaseService.GetHeaderWithPositionsByIdAsync(tmp_guid);
-
-        //    if (sync_responce.Header == null || sync_responce.Lists == null)
-        //    {
-        //        await Application.Current.MainPage.DisplaySnackbar(Properties.Resources.List_not_available_or_corrupt);
-        //        IsBusy = false;
-        //        return;
-        //    }
-
-        //    var _header = Headers.FirstOrDefault(x => x.Id == sync_responce.Header.Id);
-        //    if (_header != null)
-        //        Header = sync_responce.Header;
-        //    else
-        //        Header = await AddHeader(sync_responce.Header.ListName, sync_responce.Header.Id);
-
-        //    foreach (var pos in sync_responce.Lists)
-        //    {
-        //        await AddPosition(pos, false);
-        //    }
-
-        //    Header_SelectedItem = Header;
-        //    await EditIsSynchronizedHeader(Header_SelectedItem, true);
-
-        //    await Application.Current.MainPage.DisplaySnackbar(Properties.Resources.List_was_imported_successfully);
-
-        //    IsBusy = false;
-        //}
-
-        [RelayCommand]
-        //public async Task Sync_list_downClicked(string guid_str_param)
-        //{
-        //    if (string.IsNullOrWhiteSpace(guid_str_param) || _supabaseService == null)
-        //        return;
-
-        //    Guid tmp_guid = new Guid(guid_str_param);
-        //    IsBusy = true;
-
-        //    try
-        //    {
-        //        (Header Header, List<Position> Position) sync_responce = await _supabaseService.GetHeaderWithPositionsByIdAsync(tmp_guid);
-
-        //        if (sync_responce.Header == null || sync_responce.Position == null)
-        //        {
-        //            await ShowErrorMessage(Properties.Resources.String_is_not_a_valid_List_ID);
-        //            return;
-        //        }
-
-        //        // WICHTIG: Collection KOPIEREN bevor modifiziert
-        //        var positionsToProcess = sync_responce.Position.ToList();
-
-        //        Header? _header = Headers?.FirstOrDefault(x => x.Id == sync_responce.Header.Id);
-
-        //        if (_header != null)
-        //        {
-        //            await EditNameHeader(_header, sync_responce.Header.ListName);
-        //            Lists = (await _databaseService.GetPositionsAsync(_header.Id)).ToObservableCollection();
-
-        //            // ⭐ Über die KOPIE iterieren
-        //            foreach (var pos in positionsToProcess)
-        //            {
-        //                await ProcessPosition(pos);
-        //            }
-        //        }
-        //        else
-        //        {
-        //            Header = await AddHeader(sync_responce.Header.ListName, true, sync_responce.Header.Id);
-
-        //            // ⭐ Über die KOPIE iterieren
-        //            foreach (var pos in positionsToProcess)
-        //            {
-        //                await AddPosition(pos, false, true);
-        //            }
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        await Application.Current.MainPage.DisplayAlert("Error", ex.Message, "OK");
-        //    }
-        //    finally
-        //    {
-        //        IsBusy = false;
-        //    }
-        //}
-
-        //private async Task ShowErrorMessage(string string_is_not_a_valid_List_ID)
-        //{
-        //    await Application.Current.MainPage.DisplaySnackbar(string_is_not_a_valid_List_ID,
-        //            visualOptions: new SnackbarOptions
-        //            {
-        //                BackgroundColor = Color.FromArgb(Constantes.Color_Error_string),
-        //                TextColor = Colors.White
-        //            },
-        //        duration: TimeSpan.FromSeconds(2));
-        //}
-
-        //private async Task ProcessPosition(Position pos)
-        //{
-        //    var old_pos = Lists?.FirstOrDefault(p => p.Id == pos.Id);
-        //    if (old_pos == null)
-        //        await AddPosition(pos, false, true);
-        //    else
-        //        await UpdatePosition(pos);
-        //}
-
-
         public async Task Sync_list_downClicked(string guid_str_param)  //Header header)
         {
             if (string.IsNullOrWhiteSpace(guid_str_param) || _supabaseService == null)
@@ -691,54 +559,114 @@ namespace RepeatList.ViewModels
             IsBusy = false;
         }
 
-
-
-
-
         [RelayCommand]
         public async Task Sync_list_upClicked()
         {
-            if (_supabaseService == null)
-            {
-                //await Application.Current.MainPage.DisplaySnackbar(Properties.Resources.Supabase_service_is_not_available);
-                IsBusy = false;
-                return;
-            }
-            Lists = (await _databaseService.GetPositionsAsync(Header_SelectedItem.Id)).ToObservableCollection();
-            if (Lists == null || Lists.Count == 0 || Header == null)
-            {
-                IsBusy = false;
-                return;
-            }
-
             IsBusy = true;
 
-            Header_SelectedItem.Positions = Lists.ToList();
+            // 🔒 1. Grundsicherungen
+            if (_supabaseService == null || Header_SelectedItem == null)
+            {
+                IsBusy = false;
+                return;
+            }
 
+            // 🔒 2. Positions aus SQLite laden
+            var loadedPositions = await _databaseService.GetPositionsAsync(Header_SelectedItem.Id);
+
+            // Falls geladen NULL oder leer → abbrechen
+            if (loadedPositions == null || loadedPositions.Count == 0)
+            {
+                IsBusy = false;
+                return;
+            }
+
+            // 🔧 3. Null-Werte *entfernen* – wichtigste Zeile gegen TryGetFirst!
+            loadedPositions = loadedPositions.Where(x => x != null).ToList();
+
+            // Falls nach dem Säubern nichts übrig ist → abbrechen
+            if (loadedPositions.Count == 0)
+            {
+                IsBusy = false;
+                return;
+            }
+
+            // UI-Collection aktualisieren
+            Lists = loadedPositions.ToObservableCollection();
+
+            // 🔧 4. Positions in das ausgewählte Header-Objekt setzen
+            Header_SelectedItem.Positions = loadedPositions;
+
+            // 🔄 5. Supabase-Sync (nur wenn Dienst bereit)
             if (SupabaseService_ready)
                 await _supabaseService.SyncHeaderWithDetailsAsync(Header_SelectedItem);
 
+            // 📌 6. Lokal markieren, dass dieser Header synchronisiert ist
             await EditIsSynchronizedHeader(Header_SelectedItem, true);
 
+            // 🔁 7. Down-Sync
             await Sync_list_downClicked(Header_SelectedItem.Id);
 
+            // 🔗 8. Dialog zum Teilen des Keys
             bool answer = await Application.Current.MainPage.DisplayAlert(
                 Properties.Resources.Would_you_like_to_work_with_someone_on_a_current_list + Environment.NewLine +
                 Properties.Resources.To_be_able_to_edit_the_list_please_use_the_following_key
-                    .Replace("%1", Header_SelectedItem.Id).Replace("%2", Header_SelectedItem.ListName) + ":"
-                , Properties.Resources.Are_you_sure, Properties.Resources.yes, Properties.Resources.no);
+                    .Replace("%1", Header_SelectedItem.Id)
+                    .Replace("%2", Header_SelectedItem.ListName) + ":",
+                Properties.Resources.Are_you_sure,
+                Properties.Resources.yes,
+                Properties.Resources.no
+            );
+
             if (answer)
             {
-                var share_text = Header_SelectedItem.Id;
-                //Properties.Resources.To_be_able_to_edit_the_list_please_use_the_following_key
-                //.Replace("%1", Header_SelectedItem.Id).Replace("%2", Header_SelectedItem.ListName);
-                await Utilities.ShareTextAsync(share_text);
+                var share_text = Properties.Resources.This_is_the_link_to_the_published_list_called.Replace("%1", Header_SelectedItem.ListName);
+                await Utilities.ShareTextAsync(Header_SelectedItem.Id, share_text);
             }
-
-
 
             IsBusy = false;
         }
+
+        //public async Task Sync_list_upClicked()
+        //{
+        //    if (_supabaseService == null || Header_SelectedItem == null)
+        //    {
+        //        IsBusy = false;
+        //        return;
+        //    }
+        //    Lists = (await _databaseService.GetPositionsAsync(Header_SelectedItem.Id)).ToObservableCollection();
+        //    if (Lists == null || Lists.Count == 0 || Header == null)
+        //    {
+        //        IsBusy = false;
+        //        return;
+        //    }
+
+        //    IsBusy = true;
+
+        //    Header_SelectedItem.Positions = Lists.ToList();
+
+        //    if (SupabaseService_ready)
+        //        await _supabaseService.SyncHeaderWithDetailsAsync(Header_SelectedItem);
+
+        //    await EditIsSynchronizedHeader(Header_SelectedItem, true);
+
+        //    await Sync_list_downClicked(Header_SelectedItem.Id);
+
+        //    bool answer = await Application.Current.MainPage.DisplayAlert(
+        //        Properties.Resources.Would_you_like_to_work_with_someone_on_a_current_list + Environment.NewLine +
+        //        Properties.Resources.To_be_able_to_edit_the_list_please_use_the_following_key
+        //            .Replace("%1", Header_SelectedItem.Id).Replace("%2", Header_SelectedItem.ListName) + ":"
+        //        , Properties.Resources.Are_you_sure, Properties.Resources.yes, Properties.Resources.no);
+        //    if (answer)
+        //    {
+        //        var share_text = Header_SelectedItem.Id;
+        //        //Properties.Resources.To_be_able_to_edit_the_list_please_use_the_following_key
+        //        //.Replace("%1", Header_SelectedItem.Id).Replace("%2", Header_SelectedItem.ListName);
+        //        await Utilities.ShareTextAsync(share_text);
+        //    }
+
+        //    IsBusy = false;
+        //}
 
         [RelayCommand]
         public async Task Export_list_text_Clicked()
@@ -903,38 +831,6 @@ namespace RepeatList.ViewModels
             {
                 if (await InputHeaderWithPositions(json, true))
                 {
-              
-
-                    //IsBusy = true;
-
-                    // UI sofort aktualisieren
-                    //await MainThread.InvokeOnMainThreadAsync(() =>
-                    //{
-                    //    // Collection neu erstellen um UI-Update zu erzwingen
-                    //    Headers = new ObservableCollection<Header>(headers);
-                    //    FilteredList = new ObservableCollection<Header>(Headers);
-                    //});
-                    //MainThread.BeginInvokeOnMainThread(async () =>
-                    //{
-
-
-
-
-                    //await Application.Current.MainPage.DisplayAlert("Success", Properties.Resources.List_added_successfully, "OK");
-                    //MainThread.BeginInvokeOnMainThread(async () =>
-                    //{
-                    //await LoadHeaders();
-
-                    //await Application.Current.MainPage.DisplaySnackbar(Properties.Resources.List_added_successfully,
-                    //  visualOptions: new SnackbarOptions
-                    //  {
-                    //      BackgroundColor = Color.FromArgb(Constantes.Color_Success_string),
-                    //      TextColor = Colors.White
-                    //  }, duration: TimeSpan.FromSeconds(2));
-
-
-                    //});
-
 
                 }
             }
@@ -1624,24 +1520,7 @@ namespace RepeatList.ViewModels
 
             Headers = new ObservableCollection<Header>(headers);
             FilteredList = new ObservableCollection<Header>(Headers);
-        }
-
-        //public async Task LoadHeaders()
-        //{
-        //    var headers = await _databaseService.GetHeadersAsync();
-        //    if (headers == null)
-        //        return;
-
-        //    // Bestehende Collections aktualisieren
-        //    Headers?.Clear();
-        //    FilteredList?.Clear();
-
-        //    foreach (var header in headers)
-        //    {
-        //        Headers?.Add(header);
-        //        FilteredList?.Add(header);
-        //    }
-        //}
+        }        
 
         public async Task<Header> AddHeader(string HeaderEntryText, bool IsSynchronized, string? Id = null)
         {
