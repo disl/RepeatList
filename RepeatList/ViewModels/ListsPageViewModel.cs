@@ -507,57 +507,132 @@ namespace RepeatList.ViewModels
 
         }
 
-        public async Task Sync_list_downClicked(string guid_str_param)  //Header header)
+        public async Task Sync_list_downClicked(string guid_str_param)
         {
             if (string.IsNullOrWhiteSpace(guid_str_param) || _supabaseService == null)
                 return;
 
             Guid tmp_guid = new Guid(guid_str_param);
-
             IsBusy = true;
 
-            (Header Header, List<Position> Position) sync_responce = await _supabaseService.GetHeaderWithPositionsByIdAsync(tmp_guid);
-
-            if (sync_responce.Header == null || sync_responce.Position == null)
+            try
             {
-                await Application.Current.MainPage.DisplaySnackbar(Properties.Resources.String_is_not_a_valid_List_ID,
+                var sync_responce = await _supabaseService.GetHeaderWithPositionsByIdAsync(tmp_guid);
+
+                if (sync_responce.header == null || sync_responce.position == null)
+                {
+                    await Application.Current.MainPage.DisplaySnackbar(
+                        Properties.Resources.String_is_not_a_valid_List_ID,
+                        visualOptions: new SnackbarOptions
+                        {
+                            BackgroundColor = Color.FromArgb(Constantes.Color_Error_string),
+                            TextColor = Colors.White
+                        },
+                        duration: TimeSpan.FromSeconds(2)
+                    );
+                    return; // <<< wichtig
+                }
+
+                var existingHeader = Headers?.FirstOrDefault(x => x.Id == sync_responce.header.Id);
+
+                if (existingHeader != null)
+                {
+                    await EditNameHeader(existingHeader, sync_responce.header.ListName);
+
+                    Lists = (await _databaseService.GetPositionsAsync(existingHeader.Id))
+                        ?.ToObservableCollection() ?? new ObservableCollection<Position>();
+
+                    foreach (var pos in sync_responce.position)
+                    {
+                        var old_pos = Lists.FirstOrDefault(p => p.Id == pos.Id);
+
+                        if (old_pos == null)
+                            await AddPosition(pos, false, true);
+                        else
+                            await UpdatePosition(pos);
+                    }
+                }
+                else
+                {
+                    var newHeader = await AddHeader(sync_responce.header.ListName, true, sync_responce.header.Id);
+
+                    foreach (var pos in sync_responce.position)
+                    {
+                        await AddPosition(pos, false, true);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                await Application.Current.MainPage.DisplaySnackbar(
+                    Properties.Resources.An_unexpected_error_has_occurred,
                     visualOptions: new SnackbarOptions
                     {
-                        BackgroundColor = Color.FromArgb(Constantes.Color_Error_string),
+                        BackgroundColor = Colors.Red,
                         TextColor = Colors.White
                     },
-                duration: TimeSpan.FromSeconds(2));
+                    duration: TimeSpan.FromSeconds(2)
+                );
+            }
+            finally
+            {
                 IsBusy = false;
             }
-
-            Header? _header = null;
-            if (Headers != null)
-                _header = Headers.FirstOrDefault(x => x.Id == sync_responce.Header.Id);
-            if (_header != null)
-            {
-                await EditNameHeader(_header, sync_responce.Header.ListName);
-
-                Lists = (await _databaseService.GetPositionsAsync(_header.Id)).ToObservableCollection();
-
-                foreach (var pos in sync_responce.Position)
-                {
-                    var old_pos = Lists.FirstOrDefault(p => p.Id == pos.Id);
-                    if (old_pos == null)
-                        await AddPosition(pos, false, true);
-                    else
-                        await UpdatePosition(pos);
-                }
-            }
-            else
-            {
-                Header = await AddHeader(sync_responce.Header.ListName, true, sync_responce.Header.Id);
-                foreach (var pos in sync_responce.Position)
-                {
-                    await AddPosition(pos, false, true);
-                }
-            }
-            IsBusy = false;
         }
+
+
+        //public async Task Sync_list_downClicked_old(string guid_str_param)  //Header header)
+        //{
+        //    if (string.IsNullOrWhiteSpace(guid_str_param) || _supabaseService == null)
+        //        return;
+
+        //    Guid tmp_guid = new Guid(guid_str_param);
+
+        //    IsBusy = true;
+
+        //    (Header? Header, List<Position>? Position) sync_responce = await _supabaseService.GetHeaderWithPositionsByIdAsync(tmp_guid);
+
+        //    if (sync_responce.Header == null || sync_responce.Position == null)
+        //    {
+        //        await Application.Current.MainPage.DisplaySnackbar(Properties.Resources.String_is_not_a_valid_List_ID,
+        //            visualOptions: new SnackbarOptions
+        //            {
+        //                BackgroundColor = Color.FromArgb(Constantes.Color_Error_string),
+        //                TextColor = Colors.White
+        //            },
+        //        duration: TimeSpan.FromSeconds(2));
+        //        IsBusy = false;
+        //        return;
+        //    }
+
+        //    Header? _header = null;
+        //    if (Headers != null)
+        //        _header = Headers?.FirstOrDefault(x => x.Id == sync_responce.Header.Id);
+        //    if (_header != null)
+        //    {
+        //        await EditNameHeader(_header, sync_responce.Header.ListName);
+
+        //        Lists = (await _databaseService.GetPositionsAsync(_header.Id)).ToObservableCollection();
+
+        //        foreach (var pos in sync_responce.Position)
+        //        {
+        //            var old_pos = Lists.FirstOrDefault(p => p.Id == pos.Id);
+        //            if (old_pos == null)
+        //                await AddPosition(pos, false, true);
+        //            else
+        //                await UpdatePosition(pos);
+        //        }
+        //    }
+        //    else
+        //    {
+        //        Header = await AddHeader(sync_responce.Header.ListName, true, sync_responce.Header.Id);
+        //        foreach (var pos in sync_responce.Position)
+        //        {
+        //            await AddPosition(pos, false, true);
+        //        }
+        //    }
+        //    IsBusy = false;
+        //}
 
         [RelayCommand]
         public async Task Sync_list_upClicked()

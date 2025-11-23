@@ -515,4 +515,7 @@ Demandez à ChatGPT &amp; Co. de vous créer une liste sur le thème de votre ch
   <data name="This_is_the_link_to_the_published_list_called" xml:space="preserve">
     <value>Voici le lien vers la liste publiée intitulée « %1 »: </value>
   </data>
+  <data name="An_unexpected_error_has_occurred" xml:space="preserve">
+    <value>Une erreur inattendue s'est produite.</value>
+  </data>
 </root>

@@ -515,4 +515,7 @@ Lasciate che ChatGPT &amp; Co. creino un elenco sul tema che desiderate, che si 
   <data name="This_is_the_link_to_the_published_list_called" xml:space="preserve">
     <value>Questo è il link alla lista pubblicata denominata “%1”: </value>
   </data>
+  <data name="An_unexpected_error_has_occurred" xml:space="preserve">
+    <value>Si è verificato un errore imprevisto</value>
+  </data>
 </root>

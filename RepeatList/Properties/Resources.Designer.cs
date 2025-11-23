@@ -115,6 +115,15 @@ namespace RepeatList.Properties {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die An unexpected error has occurred ähnelt.
+        /// </summary>
+        public static string An_unexpected_error_has_occurred {
+            get {
+                return ResourceManager.GetString("An_unexpected_error_has_occurred", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Application is closed to update changes ähnelt.
         /// </summary>
         public static string Application_is_closed_to_update_changes {

@@ -515,4 +515,7 @@ Lassen Sie sich von ChatGPT &amp; Co. eine Liste zu Ihrem Wunschthema erstellen 
   <data name="This_is_the_link_to_the_published_list_called" xml:space="preserve">
     <value>Das ist der Link zur veröffentlichten Liste namens "%1":</value>
   </data>
+  <data name="An_unexpected_error_has_occurred" xml:space="preserve">
+    <value>Ein unerwarteter Fehler ist aufgetreten</value>
+  </data>
 </root>

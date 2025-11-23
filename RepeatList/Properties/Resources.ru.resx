@@ -516,4 +516,7 @@
   <data name="This_is_the_link_to_the_published_list_called" xml:space="preserve">
     <value>Это ссылка на опубликованный список под названием «%1»: </value>
   </data>
+  <data name="An_unexpected_error_has_occurred" xml:space="preserve">
+    <value>Произошла неожиданная ошибка</value>
+  </data>
 </root>
