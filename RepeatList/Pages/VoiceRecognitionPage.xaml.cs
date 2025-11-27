@@ -77,14 +77,35 @@ public partial class VoiceRecognitionPage : Popup<string>
     private async void OnStopListeningClicked(object sender, EventArgs e)
     {
 #if ANDROID
-        IsListening = false;
-        recognizer?.StopListening();
-        recognizer?.Destroy();
+    IsListening = false;
 
-        if (!string.IsNullOrEmpty(txtResult.Text))
-        {
-            await CloseMe(txtResult.Text);
-        }
+    try
+    {
+        recognizer?.StopListening();
+    }
+    catch { }
+
+    try
+    {
+        recognizer?.Cancel();
+    }
+    catch { }
+
+    try
+    {
+        recognizer?.Destroy();
+    }
+    catch (Exception ex)
+    {
+        Android.Util.Log.Warn("Speech", "Destroy failed: " + ex.Message);
+    }
+
+    recognizer = null;
+
+    if (!string.IsNullOrEmpty(txtResult.Text))
+    {
+        await CloseMe(txtResult.Text);
+    }
 #endif
     }
 
