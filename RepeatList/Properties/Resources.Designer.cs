@@ -812,11 +812,20 @@ namespace RepeatList.Properties {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die Rate app ähnelt.
+        ///   Sucht eine lokalisierte Zeichenfolge, die Play market ähnelt.
         /// </summary>
-        public static string Rate_app {
+        public static string Rate_app_android {
             get {
-                return ResourceManager.GetString("Rate_app", resourceCulture);
+                return ResourceManager.GetString("Rate_app_android", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die App store ähnelt.
+        /// </summary>
+        public static string Rate_app_ios {
+            get {
+                return ResourceManager.GetString("Rate_app_ios", resourceCulture);
             }
         }
         

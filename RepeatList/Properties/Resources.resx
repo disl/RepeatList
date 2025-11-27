@@ -358,8 +358,11 @@ Do you still want to continue?</value>
   <data name="close" xml:space="preserve">
     <value>Close</value>
   </data>
-  <data name="Rate_app" xml:space="preserve">
-    <value>Rate app</value>
+  <data name="Rate_app_android" xml:space="preserve">
+    <value>Play market</value>
+  </data>
+  <data name="Rate_app_ios" xml:space="preserve">
+    <value>App store</value>
   </data>
   <data name="Select_a_category" xml:space="preserve">
     <value>Select a category</value>

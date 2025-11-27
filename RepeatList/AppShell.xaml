@@ -26,9 +26,27 @@
                   Icon="{AppThemeBinding Light=settings_black.png, Dark=settings_white.png}"  
                   ContentTemplate="{DataTemplate local:SetupPage}"  
                   Route="SetupPage" />
-    <MenuItem Text="{x:Static properties:Resources.Rate_app}" 
+    <!--<MenuItem Text="{OnPlatform x:TypeArguments=x:String, 
+              Android='x:Static properties:Resources.Rate_app',
+              iOS='Im App Store bewerten',
+              Default='App bewerten'}" 
               Clicked="OnRateAppClicked" 
-              IconImageSource="{AppThemeBinding Light=star_black.png, Dark=star_white.png}"  />
+              IconImageSource="{AppThemeBinding Light=star_black.png, Dark=star_white.png}"  />-->
+
+    <MenuItem Clicked="OnRateAppClicked" IconImageSource="{AppThemeBinding Light=star_black.png, Dark=star_white.png}">
+        <MenuItem.Text>
+            <OnPlatform x:TypeArguments="x:String">
+                <On Platform="Android" Value="{x:Static properties:Resources.Rate_app_android}" />
+                <On Platform="iOS" Value="{x:Static properties:Resources.Rate_app_ios}" />
+                <On Platform="Default" Value="App bewerten" />
+            </OnPlatform>
+        </MenuItem.Text>
+    </MenuItem>
+
+
+    <!--x:Static properties:Resources.Rate_app}" 
+              Clicked="OnRateAppClicked" 
+              IconImageSource="{AppThemeBinding Light=star_black.png, Dark=star_white.png}"  />-->
     <MenuItem x:Name="DeviceIdButton"
               Text="Device-ID"     
               IconImageSource="{AppThemeBinding Light=numbers_black.png, Dark=numbers_white.png}"  
