@@ -45,43 +45,57 @@
 		<IncludeSymbols>False</IncludeSymbols>
 		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
 
-		
+
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net9.0-android|AnyCPU'">
-	  <EmbedAssembliesIntoApk>False</EmbedAssembliesIntoApk>
-	  <ApplicationDisplayVersion>1.0.123</ApplicationDisplayVersion>
-	  <ApplicationVersion>123</ApplicationVersion>
-	  <AndroidKeyStore>False</AndroidKeyStore>
+		<EmbedAssembliesIntoApk>False</EmbedAssembliesIntoApk>
+		<ApplicationDisplayVersion>1.0.126</ApplicationDisplayVersion>
+		<ApplicationVersion>126</ApplicationVersion>
+		<AndroidKeyStore>False</AndroidKeyStore>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net9.0-ios|AnyCPU'">
-	  <ApplicationDisplayVersion>1.0.68</ApplicationDisplayVersion>
-	  <ApplicationVersion>68</ApplicationVersion>
+		<ApplicationDisplayVersion>1.0.68</ApplicationDisplayVersion>
+		<ApplicationVersion>68</ApplicationVersion>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net9.0-windows10.0.19041.0|AnyCPU'">
-	  <ApplicationDisplayVersion>1.0.2</ApplicationDisplayVersion>
-	  <ApplicationVersion>3</ApplicationVersion>
+		<ApplicationDisplayVersion>1.0.2</ApplicationDisplayVersion>
+		<ApplicationVersion>3</ApplicationVersion>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net9.0-android|AnyCPU'">
-	  <ApplicationDisplayVersion>1.0.123</ApplicationDisplayVersion>
-	  <ApplicationVersion>123</ApplicationVersion>
-	  <AndroidLinkTool>r8</AndroidLinkTool>
-	  <AndroidKeyStore>False</AndroidKeyStore>
-	  <RunAOTCompilation>True</RunAOTCompilation>
-	  <TargetSdkVersion>35</TargetSdkVersion>
+		<ApplicationDisplayVersion>1.0.126</ApplicationDisplayVersion>
+		<ApplicationVersion>126</ApplicationVersion>
+
+
+		<!-- AAB für Google Play -->
+		<AndroidPackageFormat>aab</AndroidPackageFormat>
+
+		<!-- WICHTIG: Native Debug-Symbole für Google Play -->
+		<AndroidDebugSymbols>true</AndroidDebugSymbols>
+		<MonoSymbolArchive>true</MonoSymbolArchive>
+		<AndroidStripDebugSymbols>false</AndroidStripDebugSymbols>
+
+		<!-- Optional: verbessert Symbol-Qualität -->
+		<EmbedAssembliesIntoApk>true</EmbedAssembliesIntoApk>
+
+
+		<AndroidLinkTool>r8</AndroidLinkTool>
+		<AndroidKeyStore>False</AndroidKeyStore>
+		<RunAOTCompilation>True</RunAOTCompilation>
+		<TargetSdkVersion>35</TargetSdkVersion>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net9.0-ios|AnyCPU'">
-	  <ApplicationDisplayVersion>1.0.68</ApplicationDisplayVersion>
-	  <ApplicationVersion>68</ApplicationVersion>
+		<ApplicationDisplayVersion>1.0.68</ApplicationDisplayVersion>
+		<ApplicationVersion>68</ApplicationVersion>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net9.0-windows10.0.19041.0|AnyCPU'">
-	  <ApplicationDisplayVersion>1.0.2</ApplicationDisplayVersion>
-	  <ApplicationVersion>3</ApplicationVersion>
+		<ApplicationDisplayVersion>1.0.2</ApplicationDisplayVersion>
+		<ApplicationVersion>3</ApplicationVersion>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -142,47 +156,47 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <AndroidResource Remove="Platforms\Android\Resources\layout\activity_main.xml" />
+		<AndroidResource Remove="Platforms\Android\Resources\layout\activity_main.xml" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Compile Remove="CategoryPositionPage.xaml.cs" />
-	  <Compile Remove="InputPromptPage.cs" />
-	  <Compile Remove="InputTextWithMicrophone.xaml.cs" />
-	  <Compile Remove="MainPage_old.xaml.cs" />
-	  <Compile Remove="Models\SpeechToText.cs" />
-	  <Compile Remove="Platforms\Android\AdViewRenderer.cs" />
-	  <Compile Remove="Platforms\Android\InAppUpdateManager.cs" />
-	  <Compile Remove="Platforms\Android\Services\SpeechToTextImplementation.cs" />
-	  <Compile Remove="PopupRouter.cs" />
-	  <Compile Remove="Program.cs" />
-	  <Compile Remove="Properties\Resources.es.Designer.cs" />
-	  <Compile Remove="Properties\Resources.fr.Designer.cs" />
-	  <Compile Remove="Services\SpeechService.cs" />
-	  <Compile Remove="Services\SpeechToTextService.cs" />
-	  <Compile Remove="SpeechRecognition.xaml.cs" />
-	  <Compile Remove="ViewModels\InputTextWithMicrophoneViewModel.cs" />
+		<Compile Remove="CategoryPositionPage.xaml.cs" />
+		<Compile Remove="InputPromptPage.cs" />
+		<Compile Remove="InputTextWithMicrophone.xaml.cs" />
+		<Compile Remove="MainPage_old.xaml.cs" />
+		<Compile Remove="Models\SpeechToText.cs" />
+		<Compile Remove="Platforms\Android\AdViewRenderer.cs" />
+		<Compile Remove="Platforms\Android\InAppUpdateManager.cs" />
+		<Compile Remove="Platforms\Android\Services\SpeechToTextImplementation.cs" />
+		<Compile Remove="PopupRouter.cs" />
+		<Compile Remove="Program.cs" />
+		<Compile Remove="Properties\Resources.es.Designer.cs" />
+		<Compile Remove="Properties\Resources.fr.Designer.cs" />
+		<Compile Remove="Services\SpeechService.cs" />
+		<Compile Remove="Services\SpeechToTextService.cs" />
+		<Compile Remove="SpeechRecognition.xaml.cs" />
+		<Compile Remove="ViewModels\InputTextWithMicrophoneViewModel.cs" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <EmbeddedResource Remove="Properties\Resource.de.resx" />
-	  <EmbeddedResource Remove="Properties\Resource.resx" />
+		<EmbeddedResource Remove="Properties\Resource.de.resx" />
+		<EmbeddedResource Remove="Properties\Resource.resx" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <MauiAsset Remove="Resources\Raw\ggml_tiny.bin" />
+		<MauiAsset Remove="Resources\Raw\ggml_tiny.bin" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <MauiImage Remove="Resources\Images\dotnet_bot.png" />
-	  <MauiImage Remove="Resources\Images\repeat_list_1024_500.jpeg" />
-	  <MauiImage Remove="Resources\Images\repeat_list_300.jpeg" />
+		<MauiImage Remove="Resources\Images\dotnet_bot.png" />
+		<MauiImage Remove="Resources\Images\repeat_list_1024_500.jpeg" />
+		<MauiImage Remove="Resources\Images\repeat_list_300.jpeg" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <MauiXaml Remove="CategoryPositionPage.xaml" />
-	  <MauiXaml Remove="MainPage_old.xaml" />
-	  <MauiXaml Remove="SpeechRecognition.xaml" />
+		<MauiXaml Remove="CategoryPositionPage.xaml" />
+		<MauiXaml Remove="MainPage_old.xaml" />
+		<MauiXaml Remove="SpeechRecognition.xaml" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -248,142 +262,142 @@
 
 	<ItemGroup>
 		<MauiXaml Update="Controls\ActivityProgressBar.xaml">
-		  <Generator>MSBuild:Compile</Generator>
+			<Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
 		<MauiXaml Update="Controls\FlyoutHeader.xaml">
-		  <Generator>MSBuild:Compile</Generator>
+			<Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
 		<MauiXaml Update="Pages\HelpPage.xaml">
-		  <Generator>MSBuild:Compile</Generator>
+			<Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
 		<MauiXaml Update="InputTextWithMicrophone.xaml">
-		  <Generator>MSBuild:Compile</Generator>
+			<Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
 		<MauiXaml Update="Pages\ListPage_Input.xaml">
-		  <Generator>MSBuild:Compile</Generator>
+			<Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
 		<MauiXaml Update="Pages\ListsPage.xaml">
-		  <Generator>MSBuild:Compile</Generator>
+			<Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
 		<MauiXaml Update="Pages\CategoryPosition_PopUp.xaml">
-		  <Generator>MSBuild:Compile</Generator>
+			<Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
 		<MauiXaml Update="Pages\OnboardingPage.xaml">
-		  <Generator>MSBuild:Compile</Generator>
+			<Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
 		<MauiXaml Update="Pages\Positions_Edit.xaml">
-		  <Generator>MSBuild:Compile</Generator>
+			<Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
 		<MauiXaml Update="Pages\Positions_PopUpMenu.xaml">
-		  <Generator>MSBuild:Compile</Generator>
+			<Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
 		<MauiXaml Update="Pages\Lists_PopUpMenu.xaml">
-		  <Generator>MSBuild:Compile</Generator>
+			<Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
 		<MauiXaml Update="Pages\PositionsPage.xaml">
-		  <Generator>MSBuild:Compile</Generator>
+			<Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
 		<MauiXaml Update="Pages\SetupPage.xaml">
-		  <Generator>MSBuild:Compile</Generator>
+			<Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
 		<MauiXaml Update="Pages\VoiceRecognitionPage.xaml">
-		  <Generator>MSBuild:Compile</Generator>
+			<Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
 		<MauiXaml Update="Pages\WebViewPage.xaml">
-		  <Generator>MSBuild:Compile</Generator>
+			<Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
 	</ItemGroup>
 
 
 
 	<ItemGroup>
-	  <Compile Update="Pages\ListsPage.xaml.cs">
-	    <DependentUpon>ListsPage.xaml</DependentUpon>
-	  </Compile>
-	  <Compile Update="Pages\CategoryPosition_PopUp.xaml.cs">
-	    <DependentUpon>CategoryPosition_PopUp.xaml</DependentUpon>
-	  </Compile>
-	  <Compile Update="Pages\Positions_Edit.xaml.cs">
-	    <DependentUpon>Positions_Edit.xaml</DependentUpon>
-	  </Compile>
-	  <Compile Update="Pages\Positions_PopUpMenu.xaml.cs">
-	    <DependentUpon>Positions_PopUpMenu.xaml</DependentUpon>
-	  </Compile>
-	  <Compile Update="Pages\PositionsPage.xaml.cs">
-	    <DependentUpon>PositionsPage.xaml</DependentUpon>
-	  </Compile>
-	  <Compile Update="Properties\Resources.Designer.cs">
-	    <DesignTime>True</DesignTime>
-	    <AutoGen>True</AutoGen>
-	    <DependentUpon>Resources.resx</DependentUpon>
-	  </Compile>
+		<Compile Update="Pages\ListsPage.xaml.cs">
+			<DependentUpon>ListsPage.xaml</DependentUpon>
+		</Compile>
+		<Compile Update="Pages\CategoryPosition_PopUp.xaml.cs">
+			<DependentUpon>CategoryPosition_PopUp.xaml</DependentUpon>
+		</Compile>
+		<Compile Update="Pages\Positions_Edit.xaml.cs">
+			<DependentUpon>Positions_Edit.xaml</DependentUpon>
+		</Compile>
+		<Compile Update="Pages\Positions_PopUpMenu.xaml.cs">
+			<DependentUpon>Positions_PopUpMenu.xaml</DependentUpon>
+		</Compile>
+		<Compile Update="Pages\PositionsPage.xaml.cs">
+			<DependentUpon>PositionsPage.xaml</DependentUpon>
+		</Compile>
+		<Compile Update="Properties\Resources.Designer.cs">
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>Resources.resx</DependentUpon>
+		</Compile>
 	</ItemGroup>
 
 	<ItemGroup>
-	  <EmbeddedResource Update="Properties\Resources.uk.resx">
-	    <SubType>Designer</SubType>
-	    <Generator></Generator>
-	  </EmbeddedResource>
-	  <EmbeddedResource Update="Properties\Resources.ru.resx">
-	    <SubType>Designer</SubType>
-	    <Generator></Generator>
-	  </EmbeddedResource>
-	  <EmbeddedResource Update="Properties\Resources.it.resx">
-	    <Generator></Generator>
-	  </EmbeddedResource>
-	  <EmbeddedResource Update="Properties\Resources.fr.resx">
-	    <Generator></Generator>
-	  </EmbeddedResource>
-	  <EmbeddedResource Update="Properties\Resources.es.resx">
-	    <Generator></Generator>
-	  </EmbeddedResource>
-	  <EmbeddedResource Update="Properties\Resources.de.resx">
-	    <Generator></Generator>
-	  </EmbeddedResource>
-	  <EmbeddedResource Update="Properties\Resources.resx">
-	    <Generator>PublicResXFileCodeGenerator</Generator>
-	    <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-	  </EmbeddedResource>
+		<EmbeddedResource Update="Properties\Resources.uk.resx">
+			<SubType>Designer</SubType>
+			<Generator></Generator>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Properties\Resources.ru.resx">
+			<SubType>Designer</SubType>
+			<Generator></Generator>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Properties\Resources.it.resx">
+			<Generator></Generator>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Properties\Resources.fr.resx">
+			<Generator></Generator>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Properties\Resources.es.resx">
+			<Generator></Generator>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Properties\Resources.de.resx">
+			<Generator></Generator>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Properties\Resources.resx">
+			<Generator>PublicResXFileCodeGenerator</Generator>
+			<LastGenOutput>Resources.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="Platforms\Android\Resources\layout\" />
+		<Folder Include="Platforms\Android\Resources\layout\" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <MauiIcon Include="Resources\AppIcon\appicon.png" />
+		<MauiIcon Include="Resources\AppIcon\appicon.png" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <MauiSplashScreen Include="Resources\Splash\appicon.png" Color="#1C989C" />
+		<MauiSplashScreen Include="Resources\Splash\appicon.png" Color="#1C989C" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <None Include="..\..\..\..\Downloads\minilist_icon_128.png">
-	    <Pack>True</Pack>
-	    <PackagePath>\</PackagePath>
-	  </None>
+		<None Include="..\..\..\..\Downloads\minilist_icon_128.png">
+			<Pack>True</Pack>
+			<PackagePath>\</PackagePath>
+		</None>
 	</ItemGroup>
 
 	<ItemGroup>
-	  <MauiAsset Update="Resources\Raw\categories_de.csv">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </MauiAsset>
+		<MauiAsset Update="Resources\Raw\categories_de.csv">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</MauiAsset>
 	</ItemGroup>
 
 	<ItemGroup>
-	  <None Update="Resources\Raw\appsettings.json">
-	    <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-	  </None>
+		<None Update="Resources\Raw\appsettings.json">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
 	</ItemGroup>
 
 	<ItemGroup Condition="'$(TargetFramework)' == 'net9.0-android'">
-	  <PackageReference Include="Xamarin.Google.Android.Play.Core">
-	    <Version>1.10.3.19</Version>
-	  </PackageReference>
-	  <PackageReference Include="Xamarin.GooglePlayServices.Ads.Lite">
-	    <Version>124.0.0.2</Version>
-	  </PackageReference>
+		<PackageReference Include="Xamarin.Google.Android.Play.Core">
+			<Version>1.10.3.19</Version>
+		</PackageReference>
+		<PackageReference Include="Xamarin.GooglePlayServices.Ads.Lite">
+			<Version>124.0.0.2</Version>
+		</PackageReference>
 	</ItemGroup>
 
 

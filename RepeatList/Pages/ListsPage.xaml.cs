@@ -191,7 +191,8 @@ namespace RepeatList
             catch (Exception ex)
             {
                 SentrySdk.CaptureException(ex);
-                await Shell.Current.DisplayAlert(Properties.Resources.Error, ex.Message, "OK");
+                if (Shell.Current  != null)
+                    await Shell.Current.DisplayAlert(Properties.Resources.Error, ex.Message, "OK");
             }
             finally
             {
@@ -653,6 +654,7 @@ namespace RepeatList
                     ViewModel.Header_SelectedItem = button.CommandParameter as Header;
 
                     var popup = new Lists_PopUpMenu((Header)button.CommandParameter, ViewModel.SupabaseService_ready);
+
                     var result = await Shell.Current.ShowPopupAsync<string>(popup);
 
                     //ViewModel.IsBusy = true;

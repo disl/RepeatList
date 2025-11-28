@@ -95,7 +95,8 @@ namespace RepeatList.ViewModels
         {
             if (items == null || !items.Any())
             {
-                await Shell.Current.DisplayAlert("Error", "No data to export", "OK");
+                if (Shell.Current  != null)
+                    await Shell.Current.DisplayAlert("Error", "No data to export", "OK");
                 return;
             }
 
@@ -112,19 +113,22 @@ namespace RepeatList.ViewModels
                 if (success)
                 {
                     ExportStatus = "Export erfolgreich!";
-                    await Shell.Current.DisplayAlert("Erfolg",
+                    if (Shell.Current  != null)
+                        await Shell.Current.DisplayAlert("Erfolg",
                         $"Datei wurde im Downloads-Ordner gespeichert:\n{filename}", "OK");
                 }
                 else
                 {
                     ExportStatus = "Export fehlgeschlagen";
-                    await Shell.Current.DisplayAlert("Error", "Export could not be performed", "OK");
+                    if (Shell.Current  != null)
+                        await Shell.Current.DisplayAlert("Error", "Export could not be performed", "OK");
                 }
             }
             catch (Exception ex)
             {
                 ExportStatus = "Fehler beim Export";
-                await Shell.Current.DisplayAlert("Error", $"Export failed: {ex.Message}", "OK");
+                if (Shell.Current  != null)
+                    await Shell.Current.DisplayAlert("Error", $"Export failed: {ex.Message}", "OK");
             }
             finally
             {
@@ -157,7 +161,8 @@ namespace RepeatList.ViewModels
             }
             catch (Exception ex)
             {
-                await Shell.Current.DisplayAlert("Error", ex.Message, "OK");
+                if (Shell.Current  != null)
+                    await Shell.Current.DisplayAlert("Error", ex.Message, "OK");
             }
         }
 

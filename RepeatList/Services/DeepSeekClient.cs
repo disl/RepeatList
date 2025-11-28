@@ -375,7 +375,8 @@ namespace RepeatList.Services
 
             if (response == null || string.IsNullOrEmpty(response.Content))
             {
-                await Shell.Current.DisplayAlert("Error", "No response from API.", "OK");
+                if (Shell.Current  != null)
+                    await Shell.Current.DisplayAlert("Error", "No response from API.", "OK");
                 return null;
             }
 

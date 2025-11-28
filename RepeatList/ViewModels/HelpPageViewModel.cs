@@ -56,10 +56,12 @@ namespace RepeatList.ViewModels
                 switch(Thema)
                 {
                     case HelpTopicThemasEnum.InputTextBox:
-                        await Shell.Current.GoToAsync("//Lists/Positions");
+                        if (Shell.Current  != null)
+                            await Shell.Current.GoToAsync("//Lists/Positions");
                         break;
                     default:
-                        await Shell.Current.GoToAsync("//Lists");
+                        if (Shell.Current  != null)
+                            await Shell.Current.GoToAsync("//Lists");
                         break;
                 }
             }

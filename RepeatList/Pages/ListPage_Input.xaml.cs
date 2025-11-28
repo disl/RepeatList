@@ -60,23 +60,24 @@ public partial class ListPage_Input : Popup<object>
         }
     }
 
-    private async Task<bool> ForOnDeepSeekClicked(DeepSeekType Mode= DeepSeekType.Unknown)
+    private async Task<bool> ForOnDeepSeekClicked(DeepSeekType Mode = DeepSeekType.Unknown)
     {
         string prompt = string.Empty;
         var deviceID = GetDeviceID();
         var CanExecutePremium = await _billing.CanExecuteQueryAsync();
         var CanExecuteQueryForFree = await _billing.CanExecuteQueryForFreeAsync(true);
 
-
         if (!CanExecuteQueryForFree && !CanExecutePremium)
         {
-            await Shell.Current.DisplayAlert(Properties.Resources.Error, Properties.Resources.Free_daily_limit_reached, "OK");
+            if (Shell.Current  != null)
+                await Shell.Current.DisplayAlert(Properties.Resources.Error, Properties.Resources.Free_daily_limit_reached, "OK");
             return false;
         }
 
         if (deviceID != null && !listsPageViewModel.DeviceList.Contains(deviceID) && !CanExecutePremium && !CanExecuteQueryForFree)
         {
-            await Shell.Current.DisplayAlert(Properties.Resources.premium_feature, Properties.Resources.Only_available_in_the_premium_version, "OK");
+            if (Shell.Current  != null)
+                await Shell.Current.DisplayAlert(Properties.Resources.premium_feature, Properties.Resources.Only_available_in_the_premium_version, "OK");
             return false;
         }
 
@@ -116,7 +117,7 @@ public partial class ListPage_Input : Popup<object>
             $"Only if it is a cooking recipe, state the number of people the recipe is intended for in the description. " +
             $"JSON must not contain any strings that interfere with JSON parsing.Do not use sublists.";
 
-        string json=string.Empty;
+        string json = string.Empty;
 
         try
         {
@@ -124,7 +125,8 @@ public partial class ListPage_Input : Popup<object>
 
             if (response == null || string.IsNullOrEmpty(response.Content))
             {
-                await Shell.Current.DisplayAlert("Error", "No response from DeepSeek.", "OK");
+                if (Shell.Current  != null)
+                    await Shell.Current.DisplayAlert("Error", "No response from DeepSeek.", "OK");
                 return false;
             }
 
@@ -135,14 +137,16 @@ public partial class ListPage_Input : Popup<object>
             m_isDeepSeekAllowed = false;
             MainThread.BeginInvokeOnMainThread(() =>
             {
-                Shell.Current.DisplayAlert(Properties.Resources.Error, Properties.Resources.insufficient_credit, "OK");
+                if (Shell.Current  != null)
+                    Shell.Current.DisplayAlert(Properties.Resources.Error, Properties.Resources.insufficient_credit, "OK");
             });
         }
         catch (Exception ex)
         {
             MainThread.BeginInvokeOnMainThread(() =>
             {
-                Shell.Current.DisplayAlert(Properties.Resources.Error, ex.Message, "OK");
+                if (Shell.Current  != null)
+                    Shell.Current.DisplayAlert(Properties.Resources.Error, ex.Message, "OK");
             });
         }
         finally
@@ -175,12 +179,13 @@ public partial class ListPage_Input : Popup<object>
                     var json_end_ind = response.Content.LastIndexOf("```");
                     if (json_start_ind < 0 || json_end_ind < 0 || json_end_ind <= json_start_ind)
                     {
-                        await Shell.Current.DisplayAlert("Error", "Invalid response format from DeepSeek.", "OK");
+                        if (Shell.Current  != null)
+                            await Shell.Current.DisplayAlert("Error", "Invalid response format from DeepSeek.", "OK");
                         return;
                     }
                     json = response.Content.Substring(json_start_ind, json_end_ind - json_start_ind);
                     json = json.Replace("json", "").Replace("```", "").Trim();
-                    
+
                     switch (Mode)
                     {
                         case DeepSeekType.Spotify:
@@ -197,10 +202,11 @@ public partial class ListPage_Input : Popup<object>
                 }
                 else
                 {
-                    await Shell.Current.DisplayAlert("Error", "Invalid response format from DeepSeek (2).", "OK");
+                    if (Shell.Current  != null)
+                        await Shell.Current.DisplayAlert("Error", "Invalid response format from DeepSeek (2).", "OK");
                     return;
                 }
-               
+
                 if (jsonObject != null)
                 {
                     // Sortierung nach Alphabet
@@ -212,7 +218,8 @@ public partial class ListPage_Input : Popup<object>
                 }
                 else
                 {
-                    await Shell.Current.DisplayAlert("Error", "Invalid JSON structure from DeepSeek.", "OK");
+                    if (Shell.Current  != null)
+                        await Shell.Current.DisplayAlert("Error", "Invalid JSON structure from DeepSeek.", "OK");
 
                     m_isDeepSeekAllowed = false;
                 }
@@ -221,7 +228,8 @@ public partial class ListPage_Input : Popup<object>
             {
                 MainThread.BeginInvokeOnMainThread(() =>
                 {
-                    Shell.Current.DisplayAlert("Error", ex.Message, "OK");
+                    if (Shell.Current  != null)
+                        Shell.Current.DisplayAlert("Error", ex.Message, "OK");
                 });
             }
         });
@@ -276,11 +284,13 @@ public partial class ListPage_Input : Popup<object>
 
     private async void OnBuySubscription(object sender, EventArgs e)
     {
-        if (await _billing.PurchaseSubscriptionAsync())
-            await Shell.Current.DisplayAlert(Properties.Resources.Success, Properties.Resources.Premium_subscription_activated, "OK");
-        else
-            await Shell.Current.DisplayAlert(Properties.Resources.Error, Properties.Resources.Purchase_failed_Try_again, "OK");
-
+        if (Shell.Current  != null)
+        {
+            if (await _billing.PurchaseSubscriptionAsync())
+                await Shell.Current.DisplayAlert(Properties.Resources.Success, Properties.Resources.Premium_subscription_activated, "OK");
+            else
+                await Shell.Current.DisplayAlert(Properties.Resources.Error, Properties.Resources.Purchase_failed_Try_again, "OK");
+        }
         UpdateStatusLabel();
     }
 
@@ -290,29 +300,33 @@ public partial class ListPage_Input : Popup<object>
         {
             if (await _billing.PurchaseTokenPackAsync())
             {
-                await Shell.Current.DisplayAlert(Properties.Resources.Thank_You, Properties.Resources.Thank_you_for_your_purchase, "OK");
+                if (Shell.Current  != null)
+                    await Shell.Current.DisplayAlert(Properties.Resources.Thank_You, Properties.Resources.Thank_you_for_your_purchase, "OK");
                 m_isDeepSeekAllowed = true;
             }
             else
             {
-                await Shell.Current.DisplayAlert(Properties.Resources.Error, Properties.Resources.Purchase_failed_Try_again, "OK");
+                if (Shell.Current  != null)
+                    await Shell.Current.DisplayAlert(Properties.Resources.Error, Properties.Resources.Purchase_failed_Try_again, "OK");
                 m_isDeepSeekAllowed = false;
             }
             UpdateStatusLabel();
         }
         catch (Exception ex)
         {
-            MainThread.BeginInvokeOnMainThread(() =>
-            {
-                Shell.Current.DisplayAlert("Error", ex.Message, "OK");
-            });
+            var shell = Shell.Current;
+            if (shell != null)
+                await shell.DisplayAlert("Error", ex.Message, "OK");
+            else
+                await Application.Current.MainPage.DisplayAlert("Error", ex.Message, "OK");
         }
     }
 
     private async void OnRestorePurchases(object sender, EventArgs e)
     {
         bool restored = await _billing.RestorePurchasesAsync();
-        await Shell.Current.DisplayAlert(Properties.Resources.Restore,
+        if (Shell.Current  != null)
+            await Shell.Current.DisplayAlert(Properties.Resources.Restore,
             restored ? Properties.Resources.Premium_restored : Properties.Resources.No_purchases_found, "OK");
         UpdateStatusLabel();
     }
@@ -349,7 +363,7 @@ public partial class ListPage_Input : Popup<object>
         DeepSeekEditor.IsVisible = OnDeepSeekButton.IsVisible;
         if (!DeepSeekEditor.IsVisible)
             DeepSeekEditor.Text = string.Empty;
-        BuyTokenPackButton.IsVisible = !OnDeepSeekButton.IsVisible;            
+        BuyTokenPackButton.IsVisible = !OnDeepSeekButton.IsVisible;
     }
 
     async Task CloseMe(dynamic param)
