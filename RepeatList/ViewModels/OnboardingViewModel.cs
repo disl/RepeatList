@@ -58,12 +58,38 @@ namespace RepeatList.ViewModels
                 Skip();
         }
 
-        [RelayCommand]
-        private void Skip()
-        {
-            Preferences.Set("onboarding_seen", true);
-            App.Current.MainPage = new AppShell();
-        }
+        //[RelayCommand]
+        //private void Skip()
+        //{
+        //    Preferences.Set("onboarding_seen", true);
 
+        //    App.Current.MainPage = new AppShell();
+        //}
+
+        [RelayCommand]
+        private async Task Skip()
+        {
+            // 1. Status speichern
+            Preferences.Set("onboarding_seen", true);
+
+            // 2. Zugriff auf die aktuelle Seite für die Animation
+            var currentPage = Application.Current?.MainPage;
+
+            if (currentPage != null)
+            {
+                // Onboarding langsam ausblenden (500 Millisekunden)
+                await currentPage.FadeTo(0, 500, Easing.Linear);
+            }
+
+            // 3. Seite wechseln
+            // Wir erstellen die Shell, setzen sie auf unsichtbar und weisen sie zu
+            var newShell = new AppShell();
+            newShell.Opacity = 0;
+
+            Application.Current.MainPage = newShell;
+
+            // 4. Die neue Shell langsam einblenden
+            await newShell.FadeTo(1, 500, Easing.Linear);
+        }
     }
 }
