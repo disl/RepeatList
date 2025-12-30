@@ -8,132 +8,188 @@ namespace RepeatList
         {
             InitializeComponent();
 
-            // 1. Fehlerbehandlung (Sentry & Co)
+            // Nur Ereignis-Handler im Konstruktor registrieren
             AppDomain.CurrentDomain.UnhandledException += HandleUnhandledException;
             TaskScheduler.UnobservedTaskException += (s, e) =>
             {
                 e.SetObserved();
-                MainThread.BeginInvokeOnMainThread(async () =>
-                {
-                    if (Application.Current?.MainPage != null)
-                        await Application.Current.MainPage.DisplayAlert("Task-Fehler", e.Exception.Message, "OK");
-                    SentrySdk.CaptureException(e.Exception);
-                });
+                SentrySdk.CaptureException(e.Exception);
             };
 
-            // 2. Datenbank-Initialisierung
-            // Hinweis: .Wait() kann Deadlocks verursachen. GetAwaiter().GetResult() ist in Konstruktoren oft stabiler.
-            DatabaseHelper.CopyDatabaseToAppData("todo.db3").GetAwaiter().GetResult();
+            // WICHTIG: Setze eine leere Platzhalterseite, 
+            // damit die App sofort etwas zum Anzeigen hat.
+            MainPage = new ContentPage { BackgroundColor = Colors.White };
+        }
 
-            // 3. NAVIGATIONSLOGIK (Die Lösung des Fehlers)
-            bool seen = Preferences.Get("onboarding_seen", false);
+        protected override async void OnStart()
+        {
+            base.OnStart();
 
-            if (!seen)
+            try
             {
-                // Wenn Onboarding noch nicht gesehen, zeige OnboardingPage
-                MainPage = new OnboardingPage();
+                // Datenbank asynchron ohne Blockieren kopieren
+                await DatabaseHelper.CopyDatabaseToAppData("todo.db3");
+
+                // Erst nach dem Kopieren die richtige Seite setzen
+                bool seen = Preferences.Get("onboarding_seen", false);
+
+                if (!seen)
+                    MainPage = new OnboardingPage();
+                else
+                    MainPage = new AppShell();
             }
-            else
+            catch (Exception ex)
             {
-                // Ansonsten starte die normale AppShell
+                SentrySdk.CaptureException(ex);
+                // Fallback bei Fehlern
                 MainPage = new AppShell();
             }
         }
 
         private void HandleUnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
-            Exception ex = e.ExceptionObject as Exception;
-            if (ex != null) SentrySdk.CaptureException(ex);
-
-            MainThread.BeginInvokeOnMainThread(async () =>
-            {
-                if (Application.Current?.MainPage != null)
-                    await Application.Current.MainPage.DisplayAlert("Unbehandelter Fehler", ex?.Message ?? "Unbekannter Fehler", "OK");
-            });
+            if (e.ExceptionObject is Exception ex)
+                SentrySdk.CaptureException(ex);
         }
-
-        // LÖSCHEN SIE DIE KOMPLETTE METHODE "CreateWindow" UNTEN IN IHREM CODE!
-        // protected override Window CreateWindow(IActivationState? activationState) { ... }
     }
+
+
+
+    //public partial class App : Application
+    //{
+    //    public App()
+    //    {
+    //        InitializeComponent();
+
+    //        // 1. Fehlerbehandlung (Sentry & Co)
+    //        AppDomain.CurrentDomain.UnhandledException += HandleUnhandledException;
+    //        TaskScheduler.UnobservedTaskException += (s, e) =>
+    //        {
+    //            e.SetObserved();
+    //            MainThread.BeginInvokeOnMainThread(async () =>
+    //            {
+    //                if (Application.Current?.MainPage != null)
+    //                    await Application.Current.MainPage.DisplayAlert("Task-Fehler", e.Exception.Message, "OK");
+    //                SentrySdk.CaptureException(e.Exception);
+    //            });
+    //        };
+
+    //        // 2. Datenbank-Initialisierung
+    //        // Hinweis: .Wait() kann Deadlocks verursachen. GetAwaiter().GetResult() ist in Konstruktoren oft stabiler.
+    //        DatabaseHelper.CopyDatabaseToAppData("todo.db3").GetAwaiter().GetResult();
+
+    //        // 3. NAVIGATIONSLOGIK (Die Lösung des Fehlers)
+    //        bool seen = Preferences.Get("onboarding_seen", false);
+
+    //        if (!seen)
+    //        {
+    //            // Wenn Onboarding noch nicht gesehen, zeige OnboardingPage
+    //            MainPage = new OnboardingPage();
+    //        }
+    //        else
+    //        {
+    //            // Ansonsten starte die normale AppShell
+    //            MainPage = new AppShell();
+    //        }
+    //    }
+
+    //    private void HandleUnhandledException(object sender, UnhandledExceptionEventArgs e)
+    //    {
+    //        Exception ex = e.ExceptionObject as Exception;
+    //        if (ex != null) SentrySdk.CaptureException(ex);
+
+    //        MainThread.BeginInvokeOnMainThread(async () =>
+    //        {
+    //            if (Application.Current?.MainPage != null)
+    //                await Application.Current.MainPage.DisplayAlert("Unbehandelter Fehler", ex?.Message ?? "Unbekannter Fehler", "OK");
+    //        });
+    //    }
+
+    //    // LÖSCHEN SIE DIE KOMPLETTE METHODE "CreateWindow" UNTEN IN IHREM CODE!
+    //    // protected override Window CreateWindow(IActivationState? activationState) { ... }
+    //}
+    //}
+
+
+
+
+
+
+    //using RepeatList.Pages;
+
+    //namespace RepeatList
+    //{
+    //    public partial class App : Application
+    //    {
+    //        public App()
+    //        {
+    //            InitializeComponent();
+
+    //            AppDomain.CurrentDomain.UnhandledException += HandleUnhandledException;
+
+    //            TaskScheduler.UnobservedTaskException += (s, e) =>
+    //            {
+    //                // Fuer nicht beobachtete Task-Ausnahmen
+    //                e.SetObserved();
+    //                MainThread.BeginInvokeOnMainThread(async () =>
+    //                {
+    //                    //if (Application.Current != null && Application.Current?.MainPage != null)
+    //                    if (Application.Current?.MainPage != null)
+    //                        await Application.Current.MainPage.DisplayAlert("Task-Fehler", e.Exception.Message, "OK");
+
+    //                    SentrySdk.CaptureException(e.Exception);
+    //                });
+    //            };
+
+    //            // Datenbankdatei kopieren
+    //            Task.Run(async () => await DatabaseHelper.CopyDatabaseToAppData("todo.db3")).Wait();
+
+
+    //        }
+
+    //        private void HandleUnhandledException(object sender, UnhandledExceptionEventArgs e)
+    //        {
+    //            Exception ex = e.ExceptionObject as Exception;
+
+    //            if (ex != null)
+    //                SentrySdk.CaptureException(ex);
+
+    //            // Zurück zum MainThread wechseln
+    //            MainThread.BeginInvokeOnMainThread(async () =>
+    //            {
+    //                if (Application.Current != null && Application.Current?.MainPage != null)
+    //                    await Application.Current.MainPage.DisplayAlert("Untreated exception. Please report the exception to support.",
+    //                        ex?.Message ?? "Unknown error. Please report the error to support.", "OK");
+    //            });
+
+    //            // Optional: Logging oder Fehlerberichterstattung
+    //        }
+
+    //        protected override Window CreateWindow(IActivationState? activationState)
+    //        {
+    //            bool seen = Preferences.Get("onboarding_seen", false);
+
+
+    //            // TEST
+    //            //seen = false;
+
+    //            if (!seen)
+    //            {
+    //                try
+    //                {
+    //                    return new Window(new OnboardingPage());
+    //                }
+    //                catch (Exception ex)
+    //                {
+    //                    SentrySdk.CaptureException(ex);
+    //                    return new Window(new AppShell());
+    //                }
+    //            }
+    //            else
+    //                return new Window(new AppShell());
+
+    //        }
+
+
+    //    }
 }
-
-
-
-//using RepeatList.Pages;
-
-//namespace RepeatList
-//{
-//    public partial class App : Application
-//    {
-//        public App()
-//        {
-//            InitializeComponent();
-
-//            AppDomain.CurrentDomain.UnhandledException += HandleUnhandledException;
-
-//            TaskScheduler.UnobservedTaskException += (s, e) =>
-//            {
-//                // Fuer nicht beobachtete Task-Ausnahmen
-//                e.SetObserved();
-//                MainThread.BeginInvokeOnMainThread(async () =>
-//                {
-//                    //if (Application.Current != null && Application.Current?.MainPage != null)
-//                    if (Application.Current?.MainPage != null)
-//                        await Application.Current.MainPage.DisplayAlert("Task-Fehler", e.Exception.Message, "OK");
-
-//                    SentrySdk.CaptureException(e.Exception);
-//                });
-//            };
-
-//            // Datenbankdatei kopieren
-//            Task.Run(async () => await DatabaseHelper.CopyDatabaseToAppData("todo.db3")).Wait();
-
-
-//        }
-
-//        private void HandleUnhandledException(object sender, UnhandledExceptionEventArgs e)
-//        {
-//            Exception ex = e.ExceptionObject as Exception;
-
-//            if (ex != null)
-//                SentrySdk.CaptureException(ex);
-
-//            // Zurück zum MainThread wechseln
-//            MainThread.BeginInvokeOnMainThread(async () =>
-//            {
-//                if (Application.Current != null && Application.Current?.MainPage != null)
-//                    await Application.Current.MainPage.DisplayAlert("Untreated exception. Please report the exception to support.",
-//                        ex?.Message ?? "Unknown error. Please report the error to support.", "OK");
-//            });
-
-//            // Optional: Logging oder Fehlerberichterstattung
-//        }
-
-//        protected override Window CreateWindow(IActivationState? activationState)
-//        {
-//            bool seen = Preferences.Get("onboarding_seen", false);
-
-
-//            // TEST
-//            //seen = false;
-
-//            if (!seen)
-//            {
-//                try
-//                {
-//                    return new Window(new OnboardingPage());
-//                }
-//                catch (Exception ex)
-//                {
-//                    SentrySdk.CaptureException(ex);
-//                    return new Window(new AppShell());
-//                }
-//            }
-//            else
-//                return new Window(new AppShell());
-
-//        }
-
-
-//    }
-//}
