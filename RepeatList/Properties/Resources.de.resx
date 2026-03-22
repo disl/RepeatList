@@ -340,7 +340,7 @@ MENÜPUNKT "DOPPELTE POSITIONEN":
     <value>Maximal %1 synchronisierte Listen sind zulässig</value>
   </data>
   <data name="Export_not_completed_as_a_text_list" xml:space="preserve">
-    <value>'Nicht erledigten Positionen' als Textliste</value>
+    <value>'Nicht erledigten' Positionen als Textliste</value>
   </data>
   <data name="Duplicate_entries" xml:space="preserve">
     <value>Doppelte Einträge</value>

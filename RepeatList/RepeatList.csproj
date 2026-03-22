@@ -6,13 +6,6 @@
 		<!-- Uncomment to also build the tizen app. You will need to install tizen by following this: https://github.com/Samsung/Tizen.NET -->
 		<!-- <TargetFrameworks>$(TargetFrameworks);net9.0-tizen</TargetFrameworks> -->
 
-		<!-- Note for MacCatalyst:
-		The default runtime is maccatalyst-x64, except in Release config, in which case the default is maccatalyst-x64;maccatalyst-arm64.
-		When specifying both architectures, use the plural <RuntimeIdentifiers> instead of the singular <RuntimeIdentifier>.
-		The Mac App Store will NOT accept apps with ONLY maccatalyst-arm64 indicated;
-		either BOTH runtimes must be indicated or ONLY macatalyst-x64. -->
-		<!-- For example: <RuntimeIdentifiers>maccatalyst-x64;maccatalyst-arm64</RuntimeIdentifiers> -->
-
 		<OutputType>Exe</OutputType>
 		<RootNamespace>RepeatList</RootNamespace>
 		<UseMaui>true</UseMaui>
@@ -33,26 +26,31 @@
 		<!-- To develop, package, and publish an app to the Microsoft Store, see: https://aka.ms/MauiTemplateUnpackaged -->
 		<WindowsPackageType>None</WindowsPackageType>
 
-		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">12.4</SupportedOSPlatformVersion>
-		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'maccatalyst'">15.0</SupportedOSPlatformVersion>
+		
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">23.0</SupportedOSPlatformVersion>
-		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.26100.0</SupportedOSPlatformVersion>
-		<TargetPlatformMinVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.26100.0</TargetPlatformMinVersion>
-		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'tizen'">6.5</SupportedOSPlatformVersion>
+		
 		<PackageIcon>minilist_icon_128.png</PackageIcon>
 		<DefaultLanguage>en</DefaultLanguage>
 		<NeutralLanguage>en</NeutralLanguage>
 		<IncludeSymbols>False</IncludeSymbols>
 		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
+		<Platforms>AnyCPU;x64</Platforms>
 
 
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net9.0-android|AnyCPU'">
 		<EmbedAssembliesIntoApk>False</EmbedAssembliesIntoApk>
-		<ApplicationDisplayVersion>1.0.129</ApplicationDisplayVersion>
-		<ApplicationVersion>129</ApplicationVersion>
+		<ApplicationDisplayVersion>1.0.130</ApplicationDisplayVersion>
+		<ApplicationVersion>130</ApplicationVersion>
 		<AndroidKeyStore>False</AndroidKeyStore>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net9.0-android|x64'">
+	  <EmbedAssembliesIntoApk>False</EmbedAssembliesIntoApk>
+	  <ApplicationDisplayVersion>1.0.130</ApplicationDisplayVersion>
+	  <ApplicationVersion>130</ApplicationVersion>
+	  <AndroidKeyStore>False</AndroidKeyStore>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net9.0-ios|AnyCPU'">
@@ -60,14 +58,24 @@
 		<ApplicationVersion>68</ApplicationVersion>
 	</PropertyGroup>
 
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net9.0-ios|x64'">
+	  <ApplicationDisplayVersion>1.0.68</ApplicationDisplayVersion>
+	  <ApplicationVersion>68</ApplicationVersion>
+	</PropertyGroup>
+
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net9.0-windows10.0.19041.0|AnyCPU'">
 		<ApplicationDisplayVersion>1.0.2</ApplicationDisplayVersion>
 		<ApplicationVersion>3</ApplicationVersion>
 	</PropertyGroup>
 
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net9.0-windows10.0.19041.0|x64'">
+	  <ApplicationDisplayVersion>1.0.2</ApplicationDisplayVersion>
+	  <ApplicationVersion>3</ApplicationVersion>
+	</PropertyGroup>
+
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net9.0-android|AnyCPU'">
-		<ApplicationDisplayVersion>1.0.129</ApplicationDisplayVersion>
-		<ApplicationVersion>129</ApplicationVersion>
+		<ApplicationDisplayVersion>1.0.130</ApplicationDisplayVersion>
+		<ApplicationVersion>130</ApplicationVersion>
 
 
 		<!-- AAB für Google Play -->
@@ -88,14 +96,38 @@
 		<TargetSdkVersion>35</TargetSdkVersion>
 	</PropertyGroup>
 
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net9.0-android|x64'">
+	  <ApplicationDisplayVersion>1.0.130</ApplicationDisplayVersion>
+	  <ApplicationVersion>130</ApplicationVersion>
+	  <AndroidPackageFormat>aab</AndroidPackageFormat>
+	  <AndroidDebugSymbols>true</AndroidDebugSymbols>
+	  <MonoSymbolArchive>true</MonoSymbolArchive>
+	  <AndroidStripDebugSymbols>false</AndroidStripDebugSymbols>
+	  <EmbedAssembliesIntoApk>true</EmbedAssembliesIntoApk>
+	  <AndroidLinkTool>r8</AndroidLinkTool>
+	  <AndroidKeyStore>False</AndroidKeyStore>
+	  <RunAOTCompilation>True</RunAOTCompilation>
+	  <TargetSdkVersion>35</TargetSdkVersion>
+	</PropertyGroup>
+
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net9.0-ios|AnyCPU'">
 		<ApplicationDisplayVersion>1.0.68</ApplicationDisplayVersion>
 		<ApplicationVersion>68</ApplicationVersion>
 	</PropertyGroup>
 
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net9.0-ios|x64'">
+	  <ApplicationDisplayVersion>1.0.68</ApplicationDisplayVersion>
+	  <ApplicationVersion>68</ApplicationVersion>
+	</PropertyGroup>
+
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net9.0-windows10.0.19041.0|AnyCPU'">
 		<ApplicationDisplayVersion>1.0.2</ApplicationDisplayVersion>
 		<ApplicationVersion>3</ApplicationVersion>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net9.0-windows10.0.19041.0|x64'">
+	  <ApplicationDisplayVersion>1.0.2</ApplicationDisplayVersion>
+	  <ApplicationVersion>3</ApplicationVersion>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -400,5 +432,6 @@
 		</PackageReference>
 	</ItemGroup>
 
+	
 
 </Project>

@@ -95,7 +95,7 @@ namespace RepeatList.ViewModels
         {
             if (items == null || !items.Any())
             {
-                if (Shell.Current  != null)
+                if (Shell.Current != null)
                     await Shell.Current.DisplayAlert("Error", "No data to export", "OK");
                 return;
             }
@@ -113,21 +113,21 @@ namespace RepeatList.ViewModels
                 if (success)
                 {
                     ExportStatus = "Export erfolgreich!";
-                    if (Shell.Current  != null)
+                    if (Shell.Current != null)
                         await Shell.Current.DisplayAlert("Erfolg",
                         $"Datei wurde im Downloads-Ordner gespeichert:\n{filename}", "OK");
                 }
                 else
                 {
                     ExportStatus = "Export fehlgeschlagen";
-                    if (Shell.Current  != null)
+                    if (Shell.Current != null)
                         await Shell.Current.DisplayAlert("Error", "Export could not be performed", "OK");
                 }
             }
             catch (Exception ex)
             {
                 ExportStatus = "Fehler beim Export";
-                if (Shell.Current  != null)
+                if (Shell.Current != null)
                     await Shell.Current.DisplayAlert("Error", $"Export failed: {ex.Message}", "OK");
             }
             finally
@@ -161,11 +161,41 @@ namespace RepeatList.ViewModels
             }
             catch (Exception ex)
             {
-                if (Shell.Current  != null)
+                if (Shell.Current != null)
                     await Shell.Current.DisplayAlert("Error", ex.Message, "OK");
             }
         }
 
+        public async Task Export_list_textClicked()
+        {
+            IsBusy = true;
+
+            try
+            {
+                Lists = (await _databaseService.GetPositionsAsync(Header_SelectedItem.Id)).ToObservableCollection();
+                if (Lists == null || Lists.Count == 0 || Header == null)
+                {
+                    IsBusy = false;
+                    return;
+                }
+
+                var Positions_undone = Lists.Where(x => !x.IsCompleted).ToList();
+
+                string send_text = Header_SelectedItem.ListName + ": " + Environment.NewLine;
+                for (int i = 0; i < Positions_undone.Count; i++)
+                {
+                    send_text += (i + 1) + ". " + Positions_undone[i].Title + Environment.NewLine;
+                }
+                await Utilities.ShareTextAsync(send_text);
+
+                IsBusy = false;
+            }
+            catch (Exception ex)
+            {
+                if (Shell.Current != null)
+                    await Shell.Current.DisplayAlert("Error", ex.Message, "OK");
+            }
+        }
 
 
         #endregion
@@ -748,39 +778,39 @@ namespace RepeatList.ViewModels
         //    IsBusy = false;
         //}
 
-        [RelayCommand]
-        public async Task Export_list_text_Clicked()
-        {
-            Lists = (await _databaseService.GetPositionsAsync(Header_SelectedItem.Id)).ToObservableCollection();
-            if (Lists == null || Lists.Count == 0 || Header == null)
-            {
-                IsBusy = false;
-                return;
-            }
-            IsBusy = true;
+        //[RelayCommand]
+        //public async Task Export_list_text_Clicked()
+        //{
+        //    Lists = (await _databaseService.GetPositionsAsync(Header_SelectedItem.Id)).ToObservableCollection();
+        //    if (Lists == null || Lists.Count == 0 || Header == null)
+        //    {
+        //        IsBusy = false;
+        //        return;
+        //    }
+        //    IsBusy = true;
 
-            //Header header = Header_SelectedItem;
-            //header.Positions = Lists.ToList();
+        //    //Header header = Header_SelectedItem;
+        //    //header.Positions = Lists.ToList();
 
-            //var settings = new JsonSerializerSettings();
-            //settings.Converters.Add(new OnlyPositionsJsonConverter());
-            //var json = JsonConvert.SerializeObject(header, settings);
+        //    //var settings = new JsonSerializerSettings();
+        //    //settings.Converters.Add(new OnlyPositionsJsonConverter());
+        //    //var json = JsonConvert.SerializeObject(header, settings);
 
-            //var send_text = Properties.Resources.Please_copy_this_text_to_the_clipboard_and_import_it_via_the_hamburger_menu.Replace("%1", json);
-
-
-
-            string send_text = "";
-            for (int i = 1; i <= Lists.Count; i++)
-            {
-                send_text += i + ". " + Lists[i].Title + Environment.NewLine;
-            }
+        //    //var send_text = Properties.Resources.Please_copy_this_text_to_the_clipboard_and_import_it_via_the_hamburger_menu.Replace("%1", json);
 
 
-            await Utilities.ShareTextAsync(send_text);
 
-            IsBusy = false;
-        }
+        //    string send_text = "";
+        //    for (int i = 1; i <= Lists.Count; i++)
+        //    {
+        //        send_text += i + ". " + Lists[i].Title + Environment.NewLine;
+        //    }
+
+
+        //    await Utilities.ShareTextAsync(send_text);
+
+        //    IsBusy = false;
+        //}
 
         [RelayCommand]
         //public async Task Export_list_Clicked()
@@ -871,7 +901,7 @@ namespace RepeatList.ViewModels
 
                 try
                 {
-                    result =  await FilePicker.Default.PickAsync(new PickOptions
+                    result = await FilePicker.Default.PickAsync(new PickOptions
                     {
                         PickerTitle = "Select JSON-File (MiniList_Export.json)",
                         FileTypes = jsonFileType
@@ -1600,7 +1630,7 @@ namespace RepeatList.ViewModels
 
             Headers = new ObservableCollection<Header>(headers);
             FilteredList = new ObservableCollection<Header>(Headers);
-        }        
+        }
 
         public async Task<Header> AddHeader(string HeaderEntryText, bool IsSynchronized, string? Id = null)
         {

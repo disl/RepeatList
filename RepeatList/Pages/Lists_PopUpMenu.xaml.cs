@@ -61,6 +61,12 @@ public partial class Lists_PopUpMenu : Popup<string>
         await CloseMe("Export");
     }
 
+    private async void Export_text_list_Clicked(object sender, EventArgs e)
+    {
+        //await CloseAsync("Export");
+        await CloseMe("Export_text");
+    }
+
     private async void Import_list_Clicked(object sender, EventArgs e)
     {
         //await CloseAsync("Import");

@@ -23,8 +23,22 @@
         <!-- Import-Export -->
         <!--<Label Text="{x:Static properties:Resources.Import_export_of_lists}"  FontSize="Medium" TextColor="White" />-->
         <Label Text="Export"  FontSize="Medium" TextColor="White" />
-        <Button  Text="{x:Static properties:Resources.Export_list}" TextColor="White" 
-                Clicked="Export_list_Clicked"  CommandParameter="{Binding}"  />
+
+
+        <Button  Text="JSON" TextColor="White" 
+        Clicked="Export_list_Clicked"  CommandParameter="{Binding}"  />
+        <!--<Button  Text="{x:Static properties:Resources.Export_list}" TextColor="White" 
+                Clicked="Export_list_Clicked"  CommandParameter="{Binding}"  />-->
+
+        <Button  Text="Text" TextColor="White" 
+           Clicked="Export_text_list_Clicked"  CommandParameter="{Binding}"  />
+
+        <!--<Button  Text="{x:Static properties:Resources.Export_not_completed_as_a_text_list}" TextColor="White" 
+           Clicked="Export_text_list_Clicked"  CommandParameter="{Binding}"  />-->
+
+        <!--<Button  Text="{x:Static properties:Resources.Export_not_completed_as_a_text_list}" TextColor="White" 
+                Clicked="Export_text_list_Clicked"  CommandParameter="{Binding}"  />-->
+        
         <Button  Text="{x:Static properties:Resources.Export_to_Spotify}" TextColor="White" 
                 Clicked="Export_list_spotifyClicked"  CommandParameter="{Binding}"  />
         <!--<Button  Text="{x:Static properties:Resources.import_liste}" TextColor="White" 

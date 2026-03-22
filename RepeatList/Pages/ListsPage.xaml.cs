@@ -677,6 +677,8 @@ namespace RepeatList
                         //    await ForOnAddHeader_list_fileClicked(); break;
                         case "Export":
                             await ViewModel.Export_list_Clicked(); break;
+                        case "Export_text": 
+                            await ViewModel.Export_list_textClicked(); break;
                         case "ExportSpotify":
                             await ViewModel.Export_list_Spotify_Clicked(); break;
                     }

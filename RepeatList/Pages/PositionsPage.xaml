@@ -51,7 +51,7 @@
                    IsVisible="{Binding UdoneSorting_visible}"
                    HeightRequest="{Binding Image_sort_SizeRequest}"                             >
                 <Image.Source>
-                    <AppThemeBinding Light="sort_black.png"  Dark="sort_white.png" />
+                    <x:AppThemeBinding Light="sort_black.png"  Dark="sort_white.png" />
                 </Image.Source>
             </Image>
             <Picker x:Name="SortingPicker_undone" Title="{Binding  Title_sort_by}"  Grid.Column="3" VerticalOptions="Center" 
@@ -199,7 +199,7 @@
                            IsVisible="{Binding SortImages_visible, FallbackValue = true}"
                            >
                 <ImageButton.Source>
-                    <AppThemeBinding Light="double_arrow_icon_black.png"  Dark="double_arrow_icon_white.png" />
+                    <x:AppThemeBinding Light="double_arrow_icon_black.png"  Dark="double_arrow_icon_white.png" />
                 </ImageButton.Source>
             </ImageButton>
 
@@ -207,7 +207,7 @@
                    IsVisible="{Binding SortImages_visible}"
                    HeightRequest="{Binding Image_sort_SizeRequest}"                             >
                 <Image.Source>
-                    <AppThemeBinding Light="sort_black.png"  Dark="sort_white.png" />
+                    <x:AppThemeBinding Light="sort_black.png"  Dark="sort_white.png" />
                 </Image.Source>
             </Image>
             <Picker x:Name="SortingPicker" Title="{Binding  Title_sort_by}"  Grid.Column="3" VerticalOptions="Center" 
