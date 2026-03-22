@@ -13,6 +13,8 @@
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
 
+		<RuntimeIdentifiers>android-arm64</RuntimeIdentifiers>
+
 		<!-- Display name -->
 		<ApplicationTitle>MiniList</ApplicationTitle>
 
@@ -34,7 +36,7 @@
 		<NeutralLanguage>en</NeutralLanguage>
 		<IncludeSymbols>False</IncludeSymbols>
 		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
-		<Platforms>AnyCPU;x64</Platforms>
+		<Platforms>AnyCPU</Platforms>
 
 
 	</PropertyGroup>
@@ -96,7 +98,7 @@
 		<TargetSdkVersion>35</TargetSdkVersion>
 	</PropertyGroup>
 
-	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net9.0-android|x64'">
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net9.0-android|AnyCPU'">
 	  <ApplicationDisplayVersion>1.0.130</ApplicationDisplayVersion>
 	  <ApplicationVersion>130</ApplicationVersion>
 	  <AndroidPackageFormat>aab</AndroidPackageFormat>
@@ -276,8 +278,12 @@
 		<PackageReference Include="SQLitePCLRaw.bundle_e_sqlite3" Version="3.0.2" />
 		<PackageReference Include="Supabase" Version="1.1.1" />
 		<PackageReference Include="Supabase.Postgrest" Version="4.1.0" />
-		<PackageReference Include="Whisper.net" Version="1.8.1" />
-		<PackageReference Include="Whisper.net.Runtime" Version="1.8.1" />
+		<!--<<PackageReference Include="Whisper.net" Version="1.8.1" />
+		<PackageReference Include="Whisper.net.Runtime" Version="1.8.1" />-->
+
+
+
+
 		<!--<PackageReference Include="System.Data.SqlClient" Version="4.9.0" />
 		<PackageReference Include="System.Drawing.Common" Version="9.0.2" />
 		<PackageReference Include="System.Private.Uri" Version="4.3.2" />
