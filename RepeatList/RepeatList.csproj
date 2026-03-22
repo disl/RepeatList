@@ -269,7 +269,12 @@
 		<PackageReference Include="Microsoft.Extensions.Http" Version="9.0.10" />
 		<PackageReference Include="Microsoft.Maui.Controls" Version="9.0.120" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="9.0.10" />
-		<PackageReference Include="NAudio" Version="2.2.1" />
+		<PackageReference Include="NAudio" Version="2.3.0" />
+
+
+		
+
+
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
 		<PackageReference Include="Plugin.InAppBilling" Version="9.1.0" />
 		<PackageReference Include="Sentry.Maui" Version="5.16.2" />
@@ -280,8 +285,7 @@
 		<PackageReference Include="Supabase.Postgrest" Version="4.1.0" />
 		<!--<<PackageReference Include="Whisper.net" Version="1.8.1" />
 		<PackageReference Include="Whisper.net.Runtime" Version="1.8.1" />-->
-
-
+		
 
 
 		<!--<PackageReference Include="System.Data.SqlClient" Version="4.9.0" />
@@ -438,6 +442,24 @@
 		</PackageReference>
 	</ItemGroup>
 
-	
 
+	<!-- Fügen Sie diesen Block GANZ AM ENDE der .csproj-Datei ein, kurz vor </Project> -->
+	<Target Name="FixRuntimeIdentifiersForAndroid" BeforeTargets="_ResolveAndroidTooling;GetSupportedPlatforms;CoreCompile" Condition="'$(TargetFramework)' == 'net9.0-android'">
+
+		<!-- Entfernt die falsche win-x64-Einstellung komplett -->
+		<PropertyGroup>
+			<RuntimeIdentifier Condition="'$(RuntimeIdentifier)' == 'win-x64'"></RuntimeIdentifier>
+			<Platform Condition="'$(Platform)' == 'x64'">AnyCPU</Platform>
+			<Platforms Condition="'$(Platforms)' == 'x64'">AnyCPU</Platforms>
+
+			<!-- Setzt die korrekten Android-RIDs -->
+			<RuntimeIdentifiers>android-arm64;android-arm;android-x86;android-x64</RuntimeIdentifiers>
+
+			<!-- Zusätzliche Sicherheit -->
+			<AndroidSupportedAbis>arm64-v8a;armeabi-v7a;x86_64;x86</AndroidSupportedAbis>
+		</PropertyGroup>
+
+		<Message Importance="high" Text="✓ Android-Build: RuntimeIdentifiers auf $(RuntimeIdentifiers) gesetzt" />
+
+	</Target>
 </Project>
