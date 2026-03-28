@@ -2,6 +2,9 @@
 
 	<PropertyGroup>
 		<TargetFrameworks>net9.0-android;</TargetFrameworks>
+
+		<RuntimeIdentifier Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">android-arm64</RuntimeIdentifier>
+
 		<PackageVersion>1.0.2</PackageVersion>
 		<!-- Uncomment to also build the tizen app. You will need to install tizen by following this: https://github.com/Samsung/Tizen.NET -->
 		<!-- <TargetFrameworks>$(TargetFrameworks);net9.0-tizen</TargetFrameworks> -->
@@ -13,7 +16,7 @@
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
 
-		<RuntimeIdentifiers>android-arm64</RuntimeIdentifiers>
+
 
 		<!-- Display name -->
 		<ApplicationTitle>MiniList</ApplicationTitle>
@@ -28,109 +31,66 @@
 		<!-- To develop, package, and publish an app to the Microsoft Store, see: https://aka.ms/MauiTemplateUnpackaged -->
 		<WindowsPackageType>None</WindowsPackageType>
 
-		
+
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">23.0</SupportedOSPlatformVersion>
-		
+
 		<PackageIcon>minilist_icon_128.png</PackageIcon>
 		<DefaultLanguage>en</DefaultLanguage>
 		<NeutralLanguage>en</NeutralLanguage>
 		<IncludeSymbols>False</IncludeSymbols>
 		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
 		<Platforms>AnyCPU</Platforms>
+		<PlatformTarget>AnyCPU</PlatformTarget>
 
 
 	</PropertyGroup>
 
-	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net9.0-android|AnyCPU'">
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net9.0-android'">
+		<EmbedAssembliesIntoApk>False</EmbedAssembliesIntoApk>
+		<ApplicationDisplayVersion>1.0.131</ApplicationDisplayVersion>
+		<ApplicationVersion>131</ApplicationVersion>
+		<AndroidKeyStore>False</AndroidKeyStore>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net9.0-android'">
 		<EmbedAssembliesIntoApk>False</EmbedAssembliesIntoApk>
 		<ApplicationDisplayVersion>1.0.130</ApplicationDisplayVersion>
 		<ApplicationVersion>130</ApplicationVersion>
 		<AndroidKeyStore>False</AndroidKeyStore>
 	</PropertyGroup>
 
-	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net9.0-android|x64'">
-	  <EmbedAssembliesIntoApk>False</EmbedAssembliesIntoApk>
-	  <ApplicationDisplayVersion>1.0.130</ApplicationDisplayVersion>
-	  <ApplicationVersion>130</ApplicationVersion>
-	  <AndroidKeyStore>False</AndroidKeyStore>
-	</PropertyGroup>
 
-	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net9.0-ios|AnyCPU'">
-		<ApplicationDisplayVersion>1.0.68</ApplicationDisplayVersion>
-		<ApplicationVersion>68</ApplicationVersion>
-	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)' == 'Release|net9.0-android'">
+		
+		<Platform>AnyCPU</Platform>
 
-	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net9.0-ios|x64'">
-	  <ApplicationDisplayVersion>1.0.68</ApplicationDisplayVersion>
-	  <ApplicationVersion>68</ApplicationVersion>
-	</PropertyGroup>
+		<RuntimeIdentifier>android-arm64</RuntimeIdentifier>
+		
 
-	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net9.0-windows10.0.19041.0|AnyCPU'">
-		<ApplicationDisplayVersion>1.0.2</ApplicationDisplayVersion>
-		<ApplicationVersion>3</ApplicationVersion>
-	</PropertyGroup>
-
-	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net9.0-windows10.0.19041.0|x64'">
-	  <ApplicationDisplayVersion>1.0.2</ApplicationDisplayVersion>
-	  <ApplicationVersion>3</ApplicationVersion>
-	</PropertyGroup>
-
-	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net9.0-android|AnyCPU'">
 		<ApplicationDisplayVersion>1.0.130</ApplicationDisplayVersion>
 		<ApplicationVersion>130</ApplicationVersion>
-
-
-		<!-- AAB für Google Play -->
 		<AndroidPackageFormat>aab</AndroidPackageFormat>
-
-		<!-- WICHTIG: Native Debug-Symbole für Google Play -->
 		<AndroidDebugSymbols>true</AndroidDebugSymbols>
-		<MonoSymbolArchive>true</MonoSymbolArchive>
-		<AndroidStripDebugSymbols>false</AndroidStripDebugSymbols>
-
-		<!-- Optional: verbessert Symbol-Qualität -->
 		<EmbedAssembliesIntoApk>true</EmbedAssembliesIntoApk>
-
-
 		<AndroidLinkTool>r8</AndroidLinkTool>
-		<AndroidKeyStore>False</AndroidKeyStore>
 		<RunAOTCompilation>True</RunAOTCompilation>
 		<TargetSdkVersion>35</TargetSdkVersion>
+		
 	</PropertyGroup>
+
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net9.0-android|AnyCPU'">
-	  <ApplicationDisplayVersion>1.0.130</ApplicationDisplayVersion>
-	  <ApplicationVersion>130</ApplicationVersion>
-	  <AndroidPackageFormat>aab</AndroidPackageFormat>
-	  <AndroidDebugSymbols>true</AndroidDebugSymbols>
-	  <MonoSymbolArchive>true</MonoSymbolArchive>
-	  <AndroidStripDebugSymbols>false</AndroidStripDebugSymbols>
-	  <EmbedAssembliesIntoApk>true</EmbedAssembliesIntoApk>
-	  <AndroidLinkTool>r8</AndroidLinkTool>
-	  <AndroidKeyStore>False</AndroidKeyStore>
-	  <RunAOTCompilation>True</RunAOTCompilation>
-	  <TargetSdkVersion>35</TargetSdkVersion>
+	  <ApplicationDisplayVersion>1.0.131</ApplicationDisplayVersion>
+	  <ApplicationVersion>131</ApplicationVersion>
 	</PropertyGroup>
 
-	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net9.0-ios|AnyCPU'">
-		<ApplicationDisplayVersion>1.0.68</ApplicationDisplayVersion>
-		<ApplicationVersion>68</ApplicationVersion>
-	</PropertyGroup>
 
-	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net9.0-ios|x64'">
-	  <ApplicationDisplayVersion>1.0.68</ApplicationDisplayVersion>
-	  <ApplicationVersion>68</ApplicationVersion>
-	</PropertyGroup>
 
-	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net9.0-windows10.0.19041.0|AnyCPU'">
-		<ApplicationDisplayVersion>1.0.2</ApplicationDisplayVersion>
-		<ApplicationVersion>3</ApplicationVersion>
-	</PropertyGroup>
 
-	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net9.0-windows10.0.19041.0|x64'">
-	  <ApplicationDisplayVersion>1.0.2</ApplicationDisplayVersion>
-	  <ApplicationVersion>3</ApplicationVersion>
-	</PropertyGroup>
+
+
+
+
 
 	<ItemGroup>
 		<!-- App Icon -->
@@ -150,24 +110,28 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<AndroidResource Remove="Platforms\iOS\**" />
 		<AndroidResource Remove="Platforms\MacCatalyst\**" />
 		<AndroidResource Remove="Platforms\Tizen\**" />
 		<AndroidResource Remove="Platforms\Windows\**" />
 		<AndroidResource Remove="Resources\Images\backup\**" />
 		<AndroidResource Remove="Resources\ML\**" />
 		<AndroidResource Remove="Themes\**" />
+		<Compile Remove="Platforms\iOS\**" />
 		<Compile Remove="Platforms\MacCatalyst\**" />
 		<Compile Remove="Platforms\Tizen\**" />
 		<Compile Remove="Platforms\Windows\**" />
 		<Compile Remove="Resources\Images\backup\**" />
 		<Compile Remove="Resources\ML\**" />
 		<Compile Remove="Themes\**" />
+		<EmbeddedResource Remove="Platforms\iOS\**" />
 		<EmbeddedResource Remove="Platforms\MacCatalyst\**" />
 		<EmbeddedResource Remove="Platforms\Tizen\**" />
 		<EmbeddedResource Remove="Platforms\Windows\**" />
 		<EmbeddedResource Remove="Resources\Images\backup\**" />
 		<EmbeddedResource Remove="Resources\ML\**" />
 		<EmbeddedResource Remove="Themes\**" />
+		<MauiCss Remove="Platforms\iOS\**" />
 		<MauiCss Remove="Platforms\MacCatalyst\**" />
 		<MauiCss Remove="Platforms\Tizen\**" />
 		<MauiCss Remove="Platforms\Windows\**" />
@@ -175,12 +139,14 @@
 		<MauiCss Remove="Resources\ML\**" />
 		<MauiCss Remove="Themes\**" />
 		<MauiImage Remove="Resources\Images\backup\**" />
+		<MauiXaml Remove="Platforms\iOS\**" />
 		<MauiXaml Remove="Platforms\MacCatalyst\**" />
 		<MauiXaml Remove="Platforms\Tizen\**" />
 		<MauiXaml Remove="Platforms\Windows\**" />
 		<MauiXaml Remove="Resources\Images\backup\**" />
 		<MauiXaml Remove="Resources\ML\**" />
 		<MauiXaml Remove="Themes\**" />
+		<None Remove="Platforms\iOS\**" />
 		<None Remove="Platforms\MacCatalyst\**" />
 		<None Remove="Platforms\Tizen\**" />
 		<None Remove="Platforms\Windows\**" />
@@ -272,7 +238,7 @@
 		<PackageReference Include="NAudio" Version="2.3.0" />
 
 
-		
+
 
 
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
@@ -283,24 +249,13 @@
 		<PackageReference Include="SQLitePCLRaw.bundle_e_sqlite3" Version="3.0.2" />
 		<PackageReference Include="Supabase" Version="1.1.1" />
 		<PackageReference Include="Supabase.Postgrest" Version="4.1.0" />
-		<!--<<PackageReference Include="Whisper.net" Version="1.8.1" />
-		<PackageReference Include="Whisper.net.Runtime" Version="1.8.1" />-->
-		
 
 
-		<!--<PackageReference Include="System.Data.SqlClient" Version="4.9.0" />
-		<PackageReference Include="System.Drawing.Common" Version="9.0.2" />
-		<PackageReference Include="System.Private.Uri" Version="4.3.2" />
-		<PackageReference Include="System.Reflection" Version="4.3.0" />-->
+
 	</ItemGroup>
 
 
-	<!--<ItemGroup Condition="'$(TargetFramework)' == 'net9.0-windows'">
-		<PackageReference Include="System.Data.SqlClient" Version="4.9.0" />
-		<PackageReference Include="System.Drawing.Common" Version="9.0.2" />
-		<PackageReference Include="System.Private.Uri" Version="4.3.2" />
-		<PackageReference Include="System.Reflection" Version="4.3.0" />
-	</ItemGroup>-->
+
 
 	<ItemGroup>
 		<MauiXaml Update="Controls\ActivityProgressBar.xaml">
@@ -442,24 +397,4 @@
 		</PackageReference>
 	</ItemGroup>
 
-
-	<!-- Fügen Sie diesen Block GANZ AM ENDE der .csproj-Datei ein, kurz vor </Project> -->
-	<Target Name="FixRuntimeIdentifiersForAndroid" BeforeTargets="_ResolveAndroidTooling;GetSupportedPlatforms;CoreCompile" Condition="'$(TargetFramework)' == 'net9.0-android'">
-
-		<!-- Entfernt die falsche win-x64-Einstellung komplett -->
-		<PropertyGroup>
-			<RuntimeIdentifier Condition="'$(RuntimeIdentifier)' == 'win-x64'"></RuntimeIdentifier>
-			<Platform Condition="'$(Platform)' == 'x64'">AnyCPU</Platform>
-			<Platforms Condition="'$(Platforms)' == 'x64'">AnyCPU</Platforms>
-
-			<!-- Setzt die korrekten Android-RIDs -->
-			<RuntimeIdentifiers>android-arm64;android-arm;android-x86;android-x64</RuntimeIdentifiers>
-
-			<!-- Zusätzliche Sicherheit -->
-			<AndroidSupportedAbis>arm64-v8a;armeabi-v7a;x86_64;x86</AndroidSupportedAbis>
-		</PropertyGroup>
-
-		<Message Importance="high" Text="✓ Android-Build: RuntimeIdentifiers auf $(RuntimeIdentifiers) gesetzt" />
-
-	</Target>
 </Project>
