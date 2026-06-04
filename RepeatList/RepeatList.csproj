@@ -61,14 +61,14 @@
 
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)' == 'Release|net9.0-android'">
-		
+
 		<Platform>AnyCPU</Platform>
 
 		<RuntimeIdentifier>android-arm64</RuntimeIdentifier>
-		
 
-		<ApplicationDisplayVersion>1.0.130</ApplicationDisplayVersion>
-		<ApplicationVersion>130</ApplicationVersion>
+
+		<ApplicationDisplayVersion>1.0.132</ApplicationDisplayVersion>
+		<ApplicationVersion>132</ApplicationVersion>
 		<AndroidPackageFormat>aab</AndroidPackageFormat>
 		<AndroidDebugSymbols>true</AndroidDebugSymbols>
 		<EmbedAssembliesIntoApk>true</EmbedAssembliesIntoApk>
@@ -80,8 +80,8 @@
 
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net9.0-android|AnyCPU'">
-	  <ApplicationDisplayVersion>1.0.131</ApplicationDisplayVersion>
-	  <ApplicationVersion>131</ApplicationVersion>
+	  <ApplicationDisplayVersion>1.0.133</ApplicationDisplayVersion>
+	  <ApplicationVersion>133</ApplicationVersion>
 	</PropertyGroup>
 
 

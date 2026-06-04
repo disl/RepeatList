@@ -346,6 +346,7 @@
             <!-- Aktionstaste rechts -->
             <Button Text="🎤"
                 Grid.Column="2"
+                IsVisible="False"
                 Clicked="OnAudioRecognationButton_Clicked"
                 TextColor="White"
                 BackgroundColor="{AppThemeBinding Light=#0097A7, Dark=#00ACC1}"

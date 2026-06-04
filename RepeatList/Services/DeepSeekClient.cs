@@ -1,5 +1,4 @@
 ﻿using Android.Speech;
-using IntelliJ.Lang.Annotations;
 using Newtonsoft.Json;
 using RepeatList.Models;
 using RepeatList.Platforms.Android.Services;
