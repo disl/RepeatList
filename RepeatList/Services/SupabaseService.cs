@@ -100,6 +100,42 @@ namespace RepeatList.Services
             }
         }
 
+        public async Task UpsertSubscriptionAsync(string deviceId, bool isPremium, string? purchaseToken = null, string? productId = null)
+        {
+            try
+            {
+                var sub = new Subscription
+                {
+                    DeviceId = deviceId,
+                    IsPremium = isPremium,
+                    PurchaseToken = purchaseToken,
+                    ProductId = productId,
+                    UpdatedAt = DateTime.UtcNow
+                };
+                await _supabase.From<Subscription>().Upsert(sub);
+            }
+            catch (Exception)
+            {
+                // Offline oder Fehler — lokaler Cache bleibt gültig
+            }
+        }
+
+        public async Task<bool?> GetSubscriptionStatusAsync(string deviceId)
+        {
+            try
+            {
+                var response = await _supabase
+                    .From<Subscription>()
+                    .Filter("device_id", Supabase.Postgrest.Constants.Operator.Equals, deviceId)
+                    .Single();
+                return response?.IsPremium;
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
         public async Task<List<DeviceList>?> GetDeviceListAsync()
         {
             try

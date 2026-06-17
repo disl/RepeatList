@@ -380,8 +380,7 @@ Vous voulez quand même continuer ?</value>
     <value>Supprimer</value>
   </data>
   <data name="What_would_you_like_to_create_a_chat_based_list_for" xml:space="preserve">
-    <value>FONCTION PREMIUM !
-Demandez à ChatGPT &amp; Co. de vous créer une liste sur le thème de votre choix, qu'il s'agisse de « pizza », de « minestrone », d'idées de voyage, de tâches de projet ou de tout autre sujet. Vous pouvez effectuer trois requêtes gratuites par jour.</value>
+    <value>Saisir le sujet...</value>
   </data>
   <data name="description" xml:space="preserve">
     <value>Description</value>
@@ -432,7 +431,7 @@ Demandez à ChatGPT &amp; Co. de vous créer une liste sur le thème de votre ch
     <value>Crédit insuffisant. Veuillez acheter davantage pour continuer à utiliser le service.</value>
   </data>
   <data name="Buy_requests_099" xml:space="preserve">
-    <value>Acheter des requêtes (~700, 1,99 €)</value>
+    <value>Acheter des requêtes</value>
   </data>
   <data name="The_remaining_credit_is" xml:space="preserve">
     <value>Crédit: %1</value>
@@ -459,7 +458,7 @@ Demandez à ChatGPT &amp; Co. de vous créer une liste sur le thème de votre ch
     <value>La réponse au chat n'a pas abouti. Veuillez modifier l'invite et réessayer.</value>
   </data>
   <data name="Create_Spotify_playlist" xml:space="preserve">
-    <value>Créer une liste Spotify</value>
+    <value>Spotify</value>
   </data>
   <data name="Export_to_Spotify" xml:space="preserve">
     <value>Exporter vers Spotify</value>

@@ -1,4 +1,6 @@
 ﻿using RepeatList.Pages;
+using RepeatList.Services;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace RepeatList
 {
@@ -30,13 +32,45 @@ namespace RepeatList
                 // Datenbank asynchron ohne Blockieren kopieren
                 await DatabaseHelper.CopyDatabaseToAppData("todo.db3");
 
+                // Abo-Status von Supabase laden (im Hintergrund, kein Blockieren)
+                _ = Task.Run(async () =>
+                {
+                    try { await new InAppBillingService().SyncFromSupabaseAsync(); }
+                    catch (Exception) { }
+                });
+
                 // Erst nach dem Kopieren die richtige Seite setzen
                 bool seen = Preferences.Get("onboarding_seen", false);
 
                 if (!seen)
+                {
                     MainPage = new OnboardingPage();
+                }
                 else
+                {
                     MainPage = new AppShell();
+
+                    // Pre-load interstitial ad early so it's ready when a list is completed
+                    _ = IPlatformApplication.Current?.Services.GetService<IInterstitialAdService>();
+
+                    // App Open Ad zeigen — bis zu 5 Sek. auf Laden warten
+                    _ = Task.Run(async () =>
+                    {
+                        var adService = IPlatformApplication.Current?.Services.GetService<IAppOpenAdService>();
+                        if (adService == null) return;
+
+                        await Task.Delay(800); // Activity muss bereit sein
+                        for (int i = 0; i < 10; i++)
+                        {
+                            if (adService.IsAdReady)
+                            {
+                                await MainThread.InvokeOnMainThreadAsync(() => adService.ShowAdIfReadyAsync());
+                                break;
+                            }
+                            await Task.Delay(500);
+                        }
+                    });
+                }
             }
             catch (Exception ex)
             {

@@ -16,20 +16,20 @@
         <VerticalStackLayout Spacing="5"  >
 
             <!-- 1. New list name or Synchro-Code -->
-            <Label Text="{x:Static properties:Resources.Enter_a_list_name_or_insert_a_ready_made}"  
+            <Label Text="{x:Static properties:Resources.Enter_a_list_name_or_insert_a_ready_made}"
                    TextColor="{DynamicResource PrimaryTextColorLight}"
                    HorizontalOptions="Center"
                    FontSize="15"  />
 
-            <Grid ColumnDefinitions="*,auto" ColumnSpacing="3" Margin="0,0,0,20" >
-                
+            <Grid ColumnDefinitions="*,auto" ColumnSpacing="3" Margin="0,0,0,5" >
+
                 <ScrollView MaximumHeightRequest="200" Grid.Column="0">
-                    <Editor x:Name="ListNameEditor" 
-                    TextColor="{DynamicResource PrimaryTextColorLight}"                          
+                    <Editor x:Name="ListNameEditor"
+                    TextColor="{DynamicResource PrimaryTextColorLight}"
                     AutoSize="TextChanges" />
                 </ScrollView>
 
-                <Button Text="OK" Grid.Column="1" TextColor="White"  Clicked="OnOkClicked"  />
+                <Button Text="OK" Grid.Column="1" TextColor="White" Clicked="OnOkClicked" />
             </Grid>
             
             <!-- 2. Import list file -->
@@ -56,31 +56,42 @@
                     />-->
 
 
-            <VerticalStackLayout Margin="0,5,0,0" Spacing="3" IsVisible="False">
+            <!-- 3. KI-Listengenerierung (kostenpflichtig) -->
+            <Border Stroke="#FF9800" StrokeThickness="1" Padding="8,8,8,3" Margin="0,5,0,0">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="5" />
+                </Border.StrokeShape>
+            <VerticalStackLayout Spacing="3" IsVisible="True">
                 <!-- Kopfzeile mit Icon und Text -->
-                <Label Text="{x:Static properties:Resources.What_would_you_like_to_create_a_chat_based_list_for}"  
-                           TextColor="{DynamicResource PrimaryTextColorLight}"
-                           HorizontalOptions="Center"                          
+                <Label Text="✨ KI-Listengenerierung"
+                           TextColor="#FF9800"
+                           HorizontalOptions="Center"
+                           FontAttributes="Bold"
                            FontSize="15"  />
-                <Entry x:Name="DeepSeekEditor" 
-                           TextColor="{DynamicResource PrimaryTextColorLight}"  
-                           ClearButtonVisibility="WhileEditing"
-
-                       />
-                <!--Completed="DeepSeekEditor_Completed"-->
-                <Grid ColumnDefinitions="*,*" ColumnSpacing="3"  >
-                    <Button x:Name="OnDeepSeekButton"
-                        Text="OK" 
-                        Grid.Column="0"
+                <Editor x:Name="DeepSeekEditor"
+                        TextColor="{DynamicResource PrimaryTextColorLight}"
+                        Placeholder="{x:Static properties:Resources.What_would_you_like_to_create_a_chat_based_list_for}"
+                        PlaceholderColor="LightGray"
+                        AutoSize="TextChanges"
+                        MaximumHeightRequest="72" />
+                <Button x:Name="OnDeepSeekButton"
+                        Text="OK"
+                        HorizontalOptions="Center"
+                        WidthRequest="120"
                         TextColor="White"
                         Clicked="OnDeepSeekClicked" />
-
-                    <Button x:Name="OnDeepSeek_SpotifyButton"
-                        Text="{x:Static properties:Resources.Create_Spotify_playlist}" 
-                        Grid.Column="1"
+                <Label x:Name="FreeStatusLabel"
+                       Margin="0,2,0,0"
+                       TextColor="#FF9800"
+                       HorizontalOptions="Center"
+                       FontAttributes="Bold"
+                       FontSize="13"
+                       Text="" />
+                <Button x:Name="OnDeepSeek_SpotifyButton"
+                        Text="{x:Static properties:Resources.Create_Spotify_playlist}"
                         TextColor="White"
+                        IsVisible="False"
                         Clicked="OnDeepSeek_SpotifyClicked" />
-                </Grid>
 
                 <!--<Button x:Name="OnPayPremiumButton" 
                         Text="{x:Static properties:Resources.Buy_Premium_Subscription}"  
@@ -110,27 +121,15 @@
                         BackgroundColor="#9E9E9E"
                         TextColor="White" />-->
 
-                <HorizontalStackLayout Spacing="10" HorizontalOptions="Center" >
-                    <Label  Margin="0,5,0,0" 
-                    BackgroundColor="Green"                       
-                       TextColor="White"
+                <Label x:Name="StatusLabel"
+                       Margin="0,4,0,0"
+                       TextColor="LightGray"
                        HorizontalOptions="Center"
-                       FontAttributes="Bold"
-                       FontSize="Medium"           
-                       Text="test"
-                       x:Name="StatusLabel" />
-
-                    <Label  Margin="0,5,0,0" 
-                    BackgroundColor="Green"                       
-                       TextColor="White"
-                       HorizontalOptions="Center"
-                       FontAttributes="Bold"
-                       FontSize="Medium"           
-                       Text="test"
-                       x:Name="FreeStatusLabel" />
-                </HorizontalStackLayout>
+                       FontSize="12"
+                       Text="" />
 
             </VerticalStackLayout>
+            </Border>
 
 
 

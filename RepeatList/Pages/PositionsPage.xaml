@@ -28,14 +28,6 @@
         <!--<controls:ActivityProgressBar IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}" Grid.Row="0" />-->
 
 
-        <!-- ADMOB -->
-        <Border Stroke="{AppThemeBinding Light=#00BCD4, Dark=#80DEEA}" StrokeThickness="0" Padding="5" Grid.Row="0" >
-            <Border.StrokeShape>
-                <RoundRectangle CornerRadius="0" />
-            </Border.StrokeShape>
-            <controls:AdBannerView HeightRequest="{OnIdiom Phone=50, Tablet=50}" />
-        </Border>
-
         <!-- TITLE -->
         <Label Grid.Row="1" Text="{Binding Title, FallbackValue = ''}" FontSize="24" HorizontalOptions="Center" 
                TextColor="{AppThemeBinding Light={DynamicResource PrimaryTextColor}, Dark={DynamicResource PrimaryTextColorLight}}" />
@@ -346,7 +338,7 @@
             <!-- Aktionstaste rechts -->
             <Button Text="🎤"
                 Grid.Column="2"
-                IsVisible="False"
+                IsVisible="True"
                 Clicked="OnAudioRecognationButton_Clicked"
                 TextColor="White"
                 BackgroundColor="{AppThemeBinding Light=#0097A7, Dark=#00ACC1}"

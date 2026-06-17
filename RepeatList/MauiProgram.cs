@@ -84,6 +84,12 @@ namespace RepeatList
             // Export file service
             builder.Services.AddSingleton<IFileExportService, FileExportService>();
 
+#if ANDROID
+            builder.Services.AddSingleton<IRewardedAdService, RewardedAdService>();
+            builder.Services.AddSingleton<IAppOpenAdService, AppOpenAdService>();
+            builder.Services.AddSingleton<IInterstitialAdService, InterstitialAdService>();
+#endif
+
 
 
             //builder.Services.AddSingleton<Header>();  // Falls global

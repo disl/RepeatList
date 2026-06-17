@@ -35,6 +35,7 @@ namespace RepeatList
     public class ApiKeys
     {
         public string SupabaseKey { get; set; }
+        public string DeepSeekKey { get; set; }
     }
 
     public class  SpotifyInfo

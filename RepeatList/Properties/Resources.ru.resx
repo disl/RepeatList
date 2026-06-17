@@ -380,8 +380,7 @@
     <value>Удалить</value>
   </data>
   <data name="What_would_you_like_to_create_a_chat_based_list_for" xml:space="preserve">
-    <value>ПРЕМИУМ-ФУНКЦИЯ!
-Попросите ChatGPT &amp; Co. составить список по интересующей вас теме — будь то «пицца», «минестроне», идеи для путешествий, задачи проекта или что-то совсем другое. В день вы можете сделать три бесплатных запроса.</value>
+    <value>Введите тему...</value>
   </data>
   <data name="description" xml:space="preserve">
     <value>Описание</value>
@@ -432,7 +431,7 @@
     <value>Недостаточно средств на счете. Пожалуйста, пополните счет, чтобы продолжить пользоваться услугой.</value>
   </data>
   <data name="Buy_requests_099" xml:space="preserve">
-    <value>Купить запросы (~700, 1,99€)</value>
+    <value>Купить запросы</value>
   </data>
   <data name="The_remaining_credit_is" xml:space="preserve">
     <value>Кредит: %1</value>
@@ -459,7 +458,7 @@
     <value>Ответ в чате не удался. Измените запрос и попробуйте еще раз.</value>
   </data>
   <data name="Create_Spotify_playlist" xml:space="preserve">
-    <value>Создать список Spotify</value>
+    <value>Spotify</value>
   </data>
   <data name="Export_to_Spotify" xml:space="preserve">
     <value>Экспорт в Spotify</value>

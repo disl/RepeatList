@@ -19,6 +19,7 @@ public partial class ListPage_Input : Popup<object>
 
     ListsPageViewModel listsPageViewModel = new();
     private readonly InAppBillingService _billing = new();
+    private readonly IRewardedAdService? _rewardedAd = IPlatformApplication.Current?.Services.GetService<IRewardedAdService>();
 
     bool m_isDeepSeekAllowed = false;
     private bool m_byChat;
@@ -69,9 +70,33 @@ public partial class ListPage_Input : Popup<object>
 
         if (!CanExecuteQueryForFree && !CanExecutePremium)
         {
-            if (Shell.Current  != null)
-                await Shell.Current.DisplayAlert(Properties.Resources.Error, Properties.Resources.Free_daily_limit_reached, "OK");
-            return false;
+            if (_rewardedAd != null && _rewardedAd.IsAdReady)
+            {
+                bool watchAd = await Shell.Current.DisplayAlert(
+                    Properties.Resources.Free_daily_limit_reached,
+                    Properties.Resources.Watch_ad_for_extra_queries,
+                    Properties.Resources.Watch_Ad,
+                    Properties.Resources.Cancel);
+
+                if (watchAd)
+                {
+                    bool rewarded = await _rewardedAd.ShowRewardedAdAsync();
+                    if (rewarded)
+                    {
+                        _billing.AddAdBonus(5);
+                        // retry with bonus
+                        CanExecuteQueryForFree = await _billing.CanExecuteQueryForFreeAsync(true);
+                    }
+                }
+            }
+            else
+            {
+                if (Shell.Current != null)
+                    await Shell.Current.DisplayAlert(Properties.Resources.Error, Properties.Resources.Free_daily_limit_reached, "OK");
+            }
+
+            if (!CanExecuteQueryForFree && !CanExecutePremium)
+                return false;
         }
 
         if (deviceID != null && !listsPageViewModel.DeviceList.Contains(deviceID) && !CanExecutePremium && !CanExecuteQueryForFree)
@@ -351,15 +376,15 @@ public partial class ListPage_Input : Popup<object>
         // TEST !!!
         //DailyQueryCount = 3; // For testing purposes, set to 3
 
-        if (DailyQueryCount >= 0 && DailyQueryCount < 3)
+        if (DailyQueryCount >= 0 && DailyQueryCount < InAppBillingService.FreeDailyLimit)
         {
-            FreeStatusLabel.Text = $"{Properties.Resources.Free_queries}: {(3 - DailyQueryCount).ToString()}";
+            FreeStatusLabel.Text = $"{Properties.Resources.Free_queries}: {(InAppBillingService.FreeDailyLimit - DailyQueryCount)}";
             FreeStatusLabel.IsVisible = true;
             StatusLabel.IsVisible = false;
         }
 
-        OnDeepSeekButton.IsVisible = m_isDeepSeekAllowed || !StatusLabel.IsVisible;  //m_isDeepSeekAllowed && (DailyQueryCount < 3);  // Ok-Button
-        OnDeepSeek_SpotifyButton.IsVisible = m_isDeepSeekAllowed || !StatusLabel.IsVisible;                                                             //
+        OnDeepSeekButton.IsVisible = m_isDeepSeekAllowed || !StatusLabel.IsVisible;
+        OnDeepSeek_SpotifyButton.IsVisible = false;
         DeepSeekEditor.IsVisible = OnDeepSeekButton.IsVisible;
         if (!DeepSeekEditor.IsVisible)
             DeepSeekEditor.Text = string.Empty;

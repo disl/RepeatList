@@ -439,6 +439,18 @@ namespace RepeatList.Properties {
             }
         }
         
+        public static string Watch_ad_for_extra_queries {
+            get {
+                return ResourceManager.GetString("Watch_ad_for_extra_queries", resourceCulture);
+            }
+        }
+
+        public static string Watch_Ad {
+            get {
+                return ResourceManager.GetString("Watch_Ad", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Free queries ähnelt.
         /// </summary>

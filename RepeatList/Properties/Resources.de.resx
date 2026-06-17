@@ -380,8 +380,7 @@ Wollen Sie trotzdem fortfahren?</value>
     <value>Löschen</value>
   </data>
   <data name="What_would_you_like_to_create_a_chat_based_list_for" xml:space="preserve">
-    <value>PREMIUM-FUNKTION!
-Lassen Sie sich von ChatGPT &amp; Co. eine Liste zu Ihrem Wunschthema erstellen – egal, ob es sich um „Pizza”, „Minestrone”, Reiseideen, Projektaufgaben oder etwas ganz anderes handelt. Pro Tag dürfen Sie drei freie Abfragen stellen.</value>
+    <value>Thema eingeben...</value>
   </data>
   <data name="description" xml:space="preserve">
     <value>Beschreibung</value>
@@ -432,7 +431,7 @@ Lassen Sie sich von ChatGPT &amp; Co. eine Liste zu Ihrem Wunschthema erstellen 
     <value>Unzureichendes Guthaben. Bitte kaufen Sie mehr, um den Dienst weiter nutzen zu können.</value>
   </data>
   <data name="Buy_requests_099" xml:space="preserve">
-    <value>Anfragen kaufen (~700, 1,99 €)</value>
+    <value>Anfragen kaufen</value>
   </data>
   <data name="The_remaining_credit_is" xml:space="preserve">
     <value>Gutschrift: %1</value>
@@ -459,7 +458,7 @@ Lassen Sie sich von ChatGPT &amp; Co. eine Liste zu Ihrem Wunschthema erstellen 
     <value>Die Chat-Antwort war nicht erfolgreich. Bitte ändern Sie die Eingabeaufforderung und versuchen Sie es erneut.</value>
   </data>
   <data name="Create_Spotify_playlist" xml:space="preserve">
-    <value>Spotify-Liste erstellen</value>
+    <value>Spotify</value>
   </data>
   <data name="Export_to_Spotify" xml:space="preserve">
     <value>Nach Spotify exportieren</value>

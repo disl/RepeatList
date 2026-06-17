@@ -1,4 +1,6 @@
-﻿using Plugin.InAppBilling;
+﻿using Microsoft.Maui.Storage;
+using Plugin.InAppBilling;
+using RepeatList.Models;
 using System.Globalization;
 
 namespace RepeatList.Services
@@ -9,10 +11,10 @@ namespace RepeatList.Services
         private const string In_app_1000_prompts = "in_app_1000_prompts";
 
         private const string PremiumKey = "HasPremiumSubscription";
-        //private const string TokenKey = "QueryTokenCount";
         private const string LastQueryDateKey = "QueryDate";
         private const string DailyQueryCountKey = "QueriesToday";
-        private const int FreeDailyLimit = 3;
+        private const string AdBonusKey = "AdBonusQueries";
+        public const int FreeDailyLimit = 1;
         public const decimal TokenPackAmount_199 = 1.99m;
 
         public async Task<bool> PurchaseSubscriptionAsync()
@@ -45,13 +47,16 @@ namespace RepeatList.Services
                 if (purchase?.State == PurchaseState.Purchased)
                 {
                     if (productId == SubscriptionProductId)
+                    {
                         Preferences.Set(PremiumKey, true);
+                        await SyncPurchaseToSupabaseAsync(purchase.PurchaseToken, productId);
+                    }
                     return true;
                 }
 
                 return false;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return false;
             }
@@ -59,6 +64,44 @@ namespace RepeatList.Services
             {
                 await CrossInAppBilling.Current.DisconnectAsync();
             }
+        }
+
+        private async Task SyncPurchaseToSupabaseAsync(string? purchaseToken, string productId)
+        {
+            var deviceId = GetDeviceId();
+            if (deviceId == null) return;
+
+            var supabase = new SupabaseService();
+            await supabase.UpsertSubscriptionAsync(deviceId, true, purchaseToken, productId);
+        }
+
+        public async Task SyncFromSupabaseAsync()
+        {
+            var deviceId = GetDeviceId();
+            if (deviceId == null) return;
+
+            try
+            {
+                var supabase = new SupabaseService();
+                var isPremium = await supabase.GetSubscriptionStatusAsync(deviceId);
+                if (isPremium.HasValue)
+                    Preferences.Set(PremiumKey, isPremium.Value);
+            }
+            catch (Exception)
+            {
+                // Offline — lokaler Cache bleibt
+            }
+        }
+
+        private static string? GetDeviceId()
+        {
+#if ANDROID
+            return Android.Provider.Settings.Secure.GetString(
+                Android.App.Application.Context.ContentResolver,
+                Android.Provider.Settings.Secure.AndroidId);
+#else
+            return null;
+#endif
         }
 
         public async Task<bool> RestorePurchasesAsync()
@@ -94,21 +137,8 @@ namespace RepeatList.Services
             return Convert.ToDecimal(tokenString, new CultureInfo("en-US"));
         }
 
-        //public void ConsumeToken(bool IsDecrementAktive)
-        //{
-        //    int tokens = GetAvailableTokens();
-        //    if (tokens > 0 && IsDecrementAktive)
-        //        Preferences.Set(DeepSeekBilling.Preferences_key__user_credit, tokens - 1);
-        //}
-
         public bool IsFreeLimitReached()
         {
-
-            // TEST !!!!!!!
-            //Preferences.Remove(DailyQueryCountKey);
-            //Preferences.Remove(LastQueryDateKey);
-
-
             DateTime today = DateTime.Today;
             string storedDate = Preferences.Get(LastQueryDateKey, "");
             int queriesToday = Preferences.Get(DailyQueryCountKey, 0);
@@ -129,7 +159,7 @@ namespace RepeatList.Services
                 return false;
             }
 
-            return queriesToday > FreeDailyLimit;
+            return queriesToday >= FreeDailyLimit;
         }
 
         public void IncrementFreeUsage()
@@ -144,27 +174,23 @@ namespace RepeatList.Services
                 return true;
 
             if (GetAvailableTokens() > 0)
-            {
-                //ConsumeToken(IsDecrementAktive);
                 return true;
-            }
 
-
-            // AKTIVIEREN ??????
-
-            //if (!IsFreeLimitReached())
-            //{
-            //    if (IsDecrementAktive)
-            //        IncrementFreeUsage();
-            //    return true;
-            //}
-
-            return false; // Blocked: no tokens and free limit reached
+            return false;
         }
+
+        public void AddAdBonus(int queries = 5) =>
+            Preferences.Set(AdBonusKey, Preferences.Get(AdBonusKey, 0) + queries);
 
         public async Task<bool> CanExecuteQueryForFreeAsync(bool IsDecrementAktive)
         {
-            // AKTIVIEREN ??????
+            int adBonus = Preferences.Get(AdBonusKey, 0);
+            if (adBonus > 0)
+            {
+                if (IsDecrementAktive)
+                    Preferences.Set(AdBonusKey, adBonus - 1);
+                return true;
+            }
 
             if (!IsFreeLimitReached())
             {
@@ -173,7 +199,7 @@ namespace RepeatList.Services
                 return true;
             }
 
-            return false; // Blocked: no tokens and free limit reached
+            return false;
         }
     }
 }

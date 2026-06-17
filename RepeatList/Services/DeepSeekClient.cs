@@ -16,9 +16,9 @@ namespace RepeatList.Services
         private readonly IAudioTranscriber _transcriber;
         private string _transcribedText;
 
-        public DeepSeekClient(string apiKey = "sk-a3240964efda4aa1aa6cf6ffcf9713b2")
+        public DeepSeekClient()
         {
-            _apiKey = apiKey;
+            _apiKey = AppSettings.Load().Result.ApiKeys.DeepSeekKey ?? string.Empty;
 
             var handler = new HttpClientHandler
             {
@@ -80,15 +80,24 @@ namespace RepeatList.Services
             cost = cost * 1.7m;
 
 
-            // TEST !!!!!!!!
-            //cost=1.9863450m;
+            bool hasPremium = Preferences.Get("HasPremiumSubscription", false);
 
-
-            var DailyQueryCount = Preferences.Get("QueriesToday", 0);
-
-            if (!DeepSeekBilling.DeductFromUserCredit(cost) && DailyQueryCount > 3)
+            if (!hasPremium)
             {
-                throw new CreditIsInsufficientError(777, Properties.Resources.insufficient_credit);
+                // Reset daily count if day has changed (consistent with InAppBillingService)
+                string storedDate = Preferences.Get("QueryDate", "");
+                if (!DateTime.TryParse(storedDate, out var lastDate) || lastDate.Date != DateTime.Today)
+                {
+                    Preferences.Set("QueriesToday", 0);
+                    Preferences.Set("QueryDate", DateTime.Today.ToString("yyyy-MM-dd"));
+                }
+
+                int dailyQueryCount = Preferences.Get("QueriesToday", 0);
+
+                if (!DeepSeekBilling.DeductFromUserCredit(cost) && dailyQueryCount >= InAppBillingService.FreeDailyLimit)
+                {
+                    throw new CreditIsInsufficientError(777, Properties.Resources.insufficient_credit);
+                }
             }
 
             return new CompletionResult

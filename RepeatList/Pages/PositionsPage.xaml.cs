@@ -418,6 +418,7 @@ namespace RepeatList
 
                     position.IsCompleted = e.Value;
                     await ViewModel.UpdatePosition(position);
+                    TryShowListCompletedAd();
 
                     ViewModel.IsBusy = false;
                 }
@@ -477,18 +478,17 @@ namespace RepeatList
                 {
                     ViewModel.IsBusy = true;
 
-                    position.IsCompleted = !position.IsCompleted;  // e.Value;
-                                                                   // position.UpdatedAt = DateTime.Now.ToUniversalTime();
+                    position.IsCompleted = !position.IsCompleted;
                     await ViewModel.UpdatePosition(position);
 
-                    //SetHeader();
+                    TryShowListCompletedAd();
 
                     // SwipeView SOFORT wieder öffnen
                     if (_currentlyOpenSwipeView != null)
                     {
                         MainThread.BeginInvokeOnMainThread(async () =>
                         {
-                            await Task.Delay(50); // Kurze Verzögerung
+                            await Task.Delay(50);
                             _currentlyOpenSwipeView.Open(OpenSwipeItem.LeftItems);
                         });
                     }
@@ -861,6 +861,17 @@ namespace RepeatList
             }
         }
 
+        private void TryShowListCompletedAd()
+        {
+            bool allDone = ViewModel.Positions_undone.Count == 0 && ViewModel.Positions_done.Count > 0;
+            if (!allDone) return;
+            if (Preferences.Get("HasPremiumSubscription", false)) return;
+
+            var ad = IPlatformApplication.Current?.Services.GetService<IInterstitialAdService>();
+            if (ad != null && ad.IsAdReady)
+                _ = ad.ShowAdIfReadyAsync();
+        }
+
         private void ExpanderChanged(object sender, ExpandedChangedEventArgs e)
         {
 
@@ -870,6 +881,41 @@ namespace RepeatList
 
         private async void OnAudioRecognationButton_Clicked(object sender, EventArgs e)
         {
+            var billing = new InAppBillingService();
+            var canExecutePremium = await billing.CanExecuteQueryAsync();
+            var canExecuteForFree = await billing.CanExecuteQueryForFreeAsync(false);
+
+            if (!canExecutePremium && !canExecuteForFree)
+            {
+                var rewardedAd = IPlatformApplication.Current?.Services.GetService<IRewardedAdService>();
+                if (rewardedAd != null && rewardedAd.IsAdReady)
+                {
+                    bool watchAd = await Shell.Current.DisplayAlert(
+                        Properties.Resources.Free_daily_limit_reached,
+                        Properties.Resources.Watch_ad_for_extra_queries,
+                        Properties.Resources.Watch_Ad,
+                        Properties.Resources.Cancel);
+
+                    if (watchAd)
+                    {
+                        bool rewarded = await rewardedAd.ShowRewardedAdAsync();
+                        if (rewarded)
+                            billing.AddAdBonus(5);
+                        else
+                            return;
+                    }
+                    else return;
+                }
+                else
+                {
+                    await Shell.Current.DisplayAlert(Properties.Resources.Error, Properties.Resources.Free_daily_limit_reached, "OK");
+                    return;
+                }
+            }
+
+            // Decrement free usage now that we know the query will proceed
+            await billing.CanExecuteQueryForFreeAsync(true);
+
             var popup = new VoiceRecognitionPage();
             var result = await Shell.Current.ShowPopupAsync<string>(popup);
             if (result != null && !string.IsNullOrEmpty(result.Result))
@@ -877,13 +923,9 @@ namespace RepeatList
                 ViewModel.IsBusy = true;
 
                 var client = new DeepSeekClient();
-
                 var list_text = await client.TranscribeToShoppingList(result.Result.Replace("\n", ""));
                 if (!string.IsNullOrEmpty(list_text))
-                {
-
                     await InputPositions(list_text);
-                }
 
                 ViewModel.IsBusy = false;
             }

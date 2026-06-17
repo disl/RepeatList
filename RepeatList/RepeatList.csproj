@@ -80,8 +80,8 @@
 
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net9.0-android|AnyCPU'">
-	  <ApplicationDisplayVersion>1.0.133</ApplicationDisplayVersion>
-	  <ApplicationVersion>133</ApplicationVersion>
+	  <ApplicationDisplayVersion>1.0.134</ApplicationDisplayVersion>
+	  <ApplicationVersion>134</ApplicationVersion>
 	</PropertyGroup>
 
 
@@ -157,6 +157,7 @@
 
 	<ItemGroup>
 		<AndroidResource Remove="Platforms\Android\Resources\layout\activity_main.xml" />
+		<AndroidResource Remove="Resources\Splash\appicon - Kopie.png" />
 	</ItemGroup>
 
 	<ItemGroup>

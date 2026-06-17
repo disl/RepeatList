@@ -380,8 +380,7 @@ Do you still want to continue?</value>
     <value>Delete</value>
   </data>
   <data name="What_would_you_like_to_create_a_chat_based_list_for" xml:space="preserve">
-    <value>PREMIUM FEATURE!
-Let ChatGPT &amp; Co. create a list for you on your desired topic – whether it's ‘pizza’, ‘minestrone’, travel ideas, project tasks or something else entirely. You can make three free queries per day.</value>
+    <value>Enter topic...</value>
   </data>
   <data name="description" xml:space="preserve">
     <value>Description</value>
@@ -432,7 +431,7 @@ Let ChatGPT &amp; Co. create a list for you on your desired topic – whether it
     <value>Insufficient credit. Please purchase more to continue using the service.</value>
   </data>
   <data name="Buy_requests_099" xml:space="preserve">
-    <value>Buy requests (~700, €1.99)</value>
+    <value>Buy queries</value>
   </data>
   <data name="The_remaining_credit_is" xml:space="preserve">
     <value>Credit: %1</value>
@@ -452,6 +451,12 @@ Let ChatGPT &amp; Co. create a list for you on your desired topic – whether it
   <data name="Free_daily_limit_reached" xml:space="preserve">
     <value>Free daily limit reached</value>
   </data>
+  <data name="Watch_ad_for_extra_queries" xml:space="preserve">
+    <value>You've used your 3 free queries today. Watch a short video to get 5 more.</value>
+  </data>
+  <data name="Watch_Ad" xml:space="preserve">
+    <value>Watch Ad</value>
+  </data>
   <data name="Free_queries" xml:space="preserve">
     <value>Free queries</value>
   </data>
@@ -459,7 +464,7 @@ Let ChatGPT &amp; Co. create a list for you on your desired topic – whether it
     <value>The chat response was unsuccessful. Please change the prompt and try again.</value>
   </data>
   <data name="Create_Spotify_playlist" xml:space="preserve">
-    <value>Create Spotify playlist</value>
+    <value>Spotify</value>
   </data>
   <data name="Export_to_Spotify" xml:space="preserve">
     <value>Export to Spotify</value>

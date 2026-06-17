@@ -381,8 +381,7 @@
     <value>Видалити</value>
   </data>
   <data name="What_would_you_like_to_create_a_chat_based_list_for" xml:space="preserve">
-    <value>ПРЕМІУМ-ФУНКЦІЯ!
-Дозвольте ChatGPT &amp; Co. створити список на бажану тему – незалежно від того, чи це «піца», «мінестроне», ідеї для подорожей, завдання проекту чи щось зовсім інше. Ви можете зробити три безкоштовні запити на день.</value>
+    <value>Введіть тему...</value>
   </data>
   <data name="description" xml:space="preserve">
     <value>Опис</value>
@@ -433,7 +432,7 @@
     <value>Недостатній кредит. Будь ласка, придбайте більше, щоб продовжити користуватися послугою.</value>
   </data>
   <data name="Buy_requests_099" xml:space="preserve">
-    <value>Купити запити (~700, 1,99€)</value>
+    <value>Придбати запити</value>
   </data>
   <data name="The_remaining_credit_is" xml:space="preserve">
     <value>Кредит: %1</value>
@@ -460,7 +459,7 @@
     <value>Відповідь у чаті не вдалася. Змініть запит і спробуйте ще раз.</value>
   </data>
   <data name="Create_Spotify_playlist" xml:space="preserve">
-    <value>Створити список Spotify</value>
+    <value>Spotify</value>
   </data>
   <data name="Export_to_Spotify" xml:space="preserve">
     <value>Експортувати до Spotify</value>

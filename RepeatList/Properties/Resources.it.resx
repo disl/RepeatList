@@ -196,17 +196,17 @@
   <data name="InputTextWithMicrophoneViewModel_PlaceholderText" xml:space="preserve">
     <value>POSIZIONE IN INGRESSO:
 ----------------------------------
-1. è possibile utilizzare una frase semplice, ad esempio “Latte 2 pezzi”; 
+1. è possibile utilizzare una frase semplice, ad esempio "Latte 2 pezzi"; 
 
-2. un elenco come frase con un punto e virgola (“;”) come separatore, ad esempio “Latte 2 pz;Carne 0,5 kg;Succo 1 confezione;Bonnen 1 p.”. Un elenco di questo tipo può essere inviato via WhatsApp, ad esempio, e letto rapidamente.
+2. un elenco come frase con un punto e virgola (";") come separatore, ad esempio "Latte 2 pz;Carne 0,5 kg;Succo 1 confezione;Bonnen 1 p.". Un elenco di questo tipo può essere inviato via WhatsApp, ad esempio, e letto rapidamente.
 
 3. è possibile incollare un elenco inviato, vedi punto 2, dagli appunti.
 
 Non dimenticate di premere il tasto Invio alla fine :)
 
-VOCE DI MENU “DUPLICA ELEMENTI”:
+VOCE DI MENU "DUPLICA ELEMENTI":
 -----------------------------------------------------------------
-1. SOSTITUISCI: le vecchie voci che iniziano con la parola chiave, ad esempio “mela” (“mela rossa 1 kg”, “mela verde 2 kg” ecc.) vengono eliminate e sostituite da nuove voci. Quindi, se si desidera mantenere alcune varianti, utilizzare “mela_rossa 1 kg”, “mela_verde 2 kg” ecc. 
+1. SOSTITUISCI: le vecchie voci che iniziano con la parola chiave, ad esempio "mela" ("mela rossa 1 kg", "mela verde 2 kg" ecc.) vengono eliminate e sostituite da nuove voci. Quindi, se si desidera mantenere alcune varianti, utilizzare "mela_rossa 1 kg", "mela_verde 2 kg" ecc. 
 
 2. AGGIUNGI: le nuove voci saranno aggiunte in ogni caso.</value>
   </data>
@@ -352,7 +352,7 @@ VOCE DI MENU “DUPLICA ELEMENTI”:
     <value>L'elenco è vuoto</value>
   </data>
   <data name="Old_entries_that_begin_with_the_keyword" xml:space="preserve">
-    <value>Le vecchie voci che iniziano con la parola chiave, ad esempio “mela” (“mela rossa 1 kg”, “mela verde 2 kg” ecc.) vengono cancellate e sostituite da nuove voci. Quindi, se volete mantenere alcune varianti, utilizzate “mela_rossa 1 kg”, “mela_verde 2 kg” ecc.
+    <value>Le vecchie voci che iniziano con la parola chiave, ad esempio "mela" ("mela rossa 1 kg", "mela verde 2 kg" ecc.) vengono cancellate e sostituite da nuove voci. Quindi, se volete mantenere alcune varianti, utilizzate "mela_rossa 1 kg", "mela_verde 2 kg" ecc.
 Volete ancora continuare?</value>
   </data>
   <data name="close" xml:space="preserve">
@@ -380,8 +380,7 @@ Volete ancora continuare?</value>
     <value>Elimina</value>
   </data>
   <data name="What_would_you_like_to_create_a_chat_based_list_for" xml:space="preserve">
-    <value>FUNZIONE PREMIUM!
-Lasciate che ChatGPT &amp; Co. creino un elenco sul tema che desiderate, che si tratti di “pizza”, “minestrone”, idee di viaggio, compiti di progetto o qualcos'altro. Potete effettuare tre ricerche gratuite al giorno.</value>
+    <value>Inserire il tema...</value>
   </data>
   <data name="description" xml:space="preserve">
     <value>Descrizione</value>
@@ -432,7 +431,7 @@ Lasciate che ChatGPT &amp; Co. creino un elenco sul tema che desiderate, che si 
     <value>Credito insufficiente. Acquista altro credito per continuare a utilizzare il servizio.</value>
   </data>
   <data name="Buy_requests_099" xml:space="preserve">
-    <value>Acquistare richieste (~700, 1,99€)</value>
+    <value>Acquista richieste</value>
   </data>
   <data name="The_remaining_credit_is" xml:space="preserve">
     <value>Credito: %1</value>
@@ -459,7 +458,7 @@ Lasciate che ChatGPT &amp; Co. creino un elenco sul tema che desiderate, che si 
     <value>La risposta alla chat non ha avuto esito positivo. Modifica il prompt e riprova.</value>
   </data>
   <data name="Create_Spotify_playlist" xml:space="preserve">
-    <value>Crea una playlist Spotify</value>
+    <value>Spotify</value>
   </data>
   <data name="Export_to_Spotify" xml:space="preserve">
     <value>Esporta su Spotify</value>
@@ -477,10 +476,10 @@ Lasciate che ChatGPT &amp; Co. creino un elenco sul tema che desiderate, che si 
     <value>Rinomina</value>
   </data>
   <data name="Please_select_the_file_MiniList_Export_json" xml:space="preserve">
-    <value>Seleziona il file “MiniList_Export.json” che ti è stato inviato, ad esempio tramite WhatsApp.</value>
+    <value>Seleziona il file "MiniList_Export.json" che ti è stato inviato, ad esempio tramite WhatsApp.</value>
   </data>
   <data name="Now_select_an_exported_JSON_file_named" xml:space="preserve">
-    <value>Seleziona ora il file JSON esportato “MiniList_Export.json”, ad esempio da WhatsApp o dal file system. Seleziona quindi l'app “MiniList” dall'elenco. L'app verrà chiusa brevemente e avviata automaticamente dopo l'importazione del file.</value>
+    <value>Seleziona ora il file JSON esportato "MiniList_Export.json", ad esempio da WhatsApp o dal file system. Seleziona quindi l'app "MiniList" dall'elenco. L'app verrà chiusa brevemente e avviata automaticamente dopo l'importazione del file.</value>
   </data>
   <data name="OrganizeEverything" xml:space="preserve">
     <value>Organizza tutto</value>
@@ -492,7 +491,7 @@ Lasciate che ChatGPT &amp; Co. creino un elenco sul tema che desiderate, che si 
     <value>Inserimento rapido</value>
   </data>
   <data name="Enter_many_items_at_once" xml:space="preserve">
-    <value>Inserisci più articoli contemporaneamente: “mela 1 kg; pera; carne 0,5 kg”.</value>
+    <value>Inserisci più articoli contemporaneamente: "mela 1 kg; pera; carne 0,5 kg".</value>
   </data>
   <data name="Share_Collaborate" xml:space="preserve">
     <value>Condividi e collabora</value>
@@ -516,7 +515,7 @@ Lasciate che ChatGPT &amp; Co. creino un elenco sul tema che desiderate, che si 
     <value>Non è stato possibile trovare alcuna applicazione per aprire l'URL.</value>
   </data>
   <data name="This_is_the_link_to_the_published_list_called" xml:space="preserve">
-    <value>Questo è il link alla lista pubblicata denominata “%1”: </value>
+    <value>Questo è il link alla lista pubblicata denominata "%1": </value>
   </data>
   <data name="An_unexpected_error_has_occurred" xml:space="preserve">
     <value>Si è verificato un errore imprevisto</value>

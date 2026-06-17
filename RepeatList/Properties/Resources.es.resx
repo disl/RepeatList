@@ -380,8 +380,7 @@ OPCIÓN DE MENÚ «DUPLICAR ELEMENTOS»:
     <value>Eliminar</value>
   </data>
   <data name="What_would_you_like_to_create_a_chat_based_list_for" xml:space="preserve">
-    <value>¡FUNCIÓN PREMIUM!
-Deje que ChatGPT &amp; Co. le cree una lista sobre el tema que desee, ya sea «pizza», «minestrone», ideas de viaje, tareas de proyectos o cualquier otra cosa. Puede realizar tres consultas gratuitas al día.</value>
+    <value>Introducir tema...</value>
   </data>
   <data name="description" xml:space="preserve">
     <value>Descripción</value>
@@ -432,7 +431,7 @@ Deje que ChatGPT &amp; Co. le cree una lista sobre el tema que desee, ya sea «p
     <value>Crédito insuficiente. Por favor, compre más para continuar utilizando el servicio.</value>
   </data>
   <data name="Buy_requests_099" xml:space="preserve">
-    <value>Comprar consultas (~700, 1,99 €)</value>
+    <value>Comprar consultas</value>
   </data>
   <data name="The_remaining_credit_is" xml:space="preserve">
     <value>Crédito: %1</value>
@@ -459,7 +458,7 @@ Deje que ChatGPT &amp; Co. le cree una lista sobre el tema que desee, ya sea «p
     <value>La respuesta del chat no se ha realizado correctamente. Cambie el mensaje y vuelva a intentarlo.</value>
   </data>
   <data name="Create_Spotify_playlist" xml:space="preserve">
-    <value>Crear lista de Spotify</value>
+    <value>Spotify</value>
   </data>
   <data name="Export_to_Spotify" xml:space="preserve">
     <value>Exportar a Spotify</value>
