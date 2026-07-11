@@ -1,14 +1,14 @@
 {
   "SpotifyInfo": {
-    "ClientId": "",
-    "ClientSecret": "",
+    "ClientId": "your-spotify-client-id",
+    "ClientSecret": "your-spotify-client-secret",
     "RedirectUri": "myapp://callback"
   },
   "ConnectionStrings": {
     "DefaultConnection": "Server=myServerAddress;Database=myDataBase;User Id=myUsername;Password=myPassword;"
   },
   "ApiKeys": {
-    "SupabaseKey": "",
-    "DeepSeekKey": ""
+    "SupabaseKey": "your-supabase-key",
+    "DeepSeekKey": "your-deepseek-key"
   }
 }

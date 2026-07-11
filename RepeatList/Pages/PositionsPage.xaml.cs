@@ -22,7 +22,7 @@ namespace RepeatList
         private PositionsPageViewModel ViewModel { get; set; }
         private CategoryPosition_PopUpViewModel m_CategoryPosition_PopUpViewModel = new CategoryPosition_PopUpViewModel();
 
-        //var client = new DeepSeekClient("sk-a3240964efda4aa1aa6cf6ffcf9713b2");
+        //var client = new DeepSeekClient();
 
         private IDispatcherTimer _timer;
 

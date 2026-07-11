@@ -18,7 +18,7 @@ namespace RepeatList.Services
 
         public DeepSeekClient()
         {
-            _apiKey = AppSettings.Load().Result.ApiKeys.DeepSeekKey ?? string.Empty;
+            _apiKey = SecretVault.DeepSeekApiKey;
 
             var handler = new HttpClientHandler
             {
@@ -82,22 +82,10 @@ namespace RepeatList.Services
 
             bool hasPremium = Preferences.Get("HasPremiumSubscription", false);
 
+            // Billing-Prüfung: Zuerst versuchen von gekauften Tokens abzuziehen
             if (!hasPremium)
             {
-                // Reset daily count if day has changed (consistent with InAppBillingService)
-                string storedDate = Preferences.Get("QueryDate", "");
-                if (!DateTime.TryParse(storedDate, out var lastDate) || lastDate.Date != DateTime.Today)
-                {
-                    Preferences.Set("QueriesToday", 0);
-                    Preferences.Set("QueryDate", DateTime.Today.ToString("yyyy-MM-dd"));
-                }
-
-                int dailyQueryCount = Preferences.Get("QueriesToday", 0);
-
-                if (!DeepSeekBilling.DeductFromUserCredit(cost) && dailyQueryCount >= InAppBillingService.FreeDailyLimit)
-                {
-                    throw new CreditIsInsufficientError(777, Properties.Resources.insufficient_credit);
-                }
+                DeepSeekBilling.DeductFromUserCredit(cost);
             }
 
             return new CompletionResult

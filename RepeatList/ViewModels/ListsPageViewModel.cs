@@ -84,7 +84,12 @@ namespace RepeatList.ViewModels
             InitSelectedItem_KindOfSorting_undone();
             SetResetImageSource();
 
-            spotifyInfo = AppSettings.Load().Result.SpotifyInfo;
+            spotifyInfo = new SpotifyInfo
+            {
+                ClientId = SecretVault.SpotifyClientId,
+                ClientSecret = SecretVault.SpotifyClientSecret,
+                RedirectUri = "myapp://callback"
+            };
         }
 
         #region File export

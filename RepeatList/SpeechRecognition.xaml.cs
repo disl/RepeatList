@@ -279,7 +279,7 @@ public partial class SpeechRecognition : Popup<string>
     //{
     //    InitializeComponent();
     //    _audioRecorder = new AudioRecorderService();
-    //    _deepSeekClient = new DeepSeekClient("sk-a3240964efda4aa1aa6cf6ffcf9713b2");
+    //    _deepSeekClient = new DeepSeekClient();
 
     //    _transcriber = new AndroidTranscriber();
     //    _positionsPageViewModel = new PositionsPageViewModel(_transcriber);

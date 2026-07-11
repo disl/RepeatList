@@ -13,7 +13,7 @@ namespace RepeatList.Services
         {
             //_databaseService =  new DatabaseService();
 
-            var supabaseKey = AppSettings.Load().Result.ApiKeys.SupabaseKey;
+            var supabaseKey = SecretVault.SupabaseKey;
             _supabase = new Client(
                 "https://bzjdutgysaztuszpcdlw.supabase.co",
                 supabaseKey
