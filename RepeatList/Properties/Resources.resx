@@ -526,4 +526,85 @@ Do you still want to continue?</value>
   <data name="An_unexpected_error_has_occurred" xml:space="preserve">
     <value>An unexpected error has occurred</value>
   </data>
+  <data name="AiSettingsSection" xml:space="preserve">
+    <value>AI provider</value>
+  </data>
+  <data name="AiSettingsTitle" xml:space="preserve">
+    <value>AI provider setup</value>
+  </data>
+  <data name="AiSettingsMissing" xml:space="preserve">
+    <value>No AI provider configured. Please set up your API key in the settings.</value>
+  </data>
+  <data name="AiSettingsOpen" xml:space="preserve">
+    <value>Open settings</value>
+  </data>
+  <data name="SettingsProviderLabel" xml:space="preserve">
+    <value>Provider</value>
+  </data>
+  <data name="SettingsApiKeyLabel" xml:space="preserve">
+    <value>API key</value>
+  </data>
+  <data name="SettingsBaseUrlLabel" xml:space="preserve">
+    <value>Base URL (OpenAI-compatible)</value>
+  </data>
+  <data name="SettingsModelLabel" xml:space="preserve">
+    <value>Model</value>
+  </data>
+  <data name="SettingsSaveAndTest" xml:space="preserve">
+    <value>Save &amp; test connection</value>
+  </data>
+  <data name="SettingsTesting" xml:space="preserve">
+    <value>Testing connection...</value>
+  </data>
+  <data name="SettingsTestOk" xml:space="preserve">
+    <value>Connection OK — model is reachable.</value>
+  </data>
+  <data name="SettingsTestFailed" xml:space="preserve">
+    <value>Connection failed: {0}</value>
+  </data>
+  <data name="SettingsInvalid" xml:space="preserve">
+    <value>Please fill in Base URL and Model.</value>
+  </data>
+  <data name="ProviderDeepSeek" xml:space="preserve">
+    <value>DeepSeek</value>
+  </data>
+  <data name="ProviderOpenRouter" xml:space="preserve">
+    <value>OpenRouter</value>
+  </data>
+  <data name="ProviderCustom" xml:space="preserve">
+    <value>Custom (OpenAI-compatible)</value>
+  </data>
+  <data name="ApiKeyLinkDeepSeek" xml:space="preserve">
+    <value>Create API key here: platform.deepseek.com/api_keys</value>
+  </data>
+  <data name="ApiKeyLinkOpenRouter" xml:space="preserve">
+    <value>Create API key here: openrouter.ai/keys</value>
+  </data>
+  <data name="ApiKeyLinkCustom" xml:space="preserve">
+    <value>API key (e.g. OpenAI): platform.openai.com/api-keys</value>
+  </data>
+  <data name="AiEnableButton" xml:space="preserve">
+    <value>Enable AI</value>
+  </data>
+  <data name="AiEnableNow" xml:space="preserve">
+    <value>Now</value>
+  </data>
+  <data name="AiFeatureCardTitle" xml:space="preserve">
+    <value>✨ Unlock AI features</value>
+  </data>
+  <data name="AiFeatureListGen" xml:space="preserve">
+    <value>AI list generation – create a complete list from a short description</value>
+  </data>
+  <data name="AiFeatureVoiceInput" xml:space="preserve">
+    <value>AI voice input – turn spoken words into a shopping list</value>
+  </data>
+  <data name="AiLater" xml:space="preserve">
+    <value>Later</value>
+  </data>
+  <data name="AiOnboardingDescription" xml:space="preserve">
+    <value>With your own AI key, MiniList unlocks AI list generation and AI voice input. You can configure it in the settings.</value>
+  </data>
+  <data name="AiOnboardingTitle" xml:space="preserve">
+    <value>AI features</value>
+  </data>
 </root>

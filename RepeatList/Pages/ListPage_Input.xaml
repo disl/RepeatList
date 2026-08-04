@@ -56,7 +56,7 @@
                     />-->
 
 
-            <!-- 3. KI-Listengenerierung (kostenpflichtig) -->
+            <!-- 3. KI-Listengenerierung -->
             <Border Stroke="#FF9800" StrokeThickness="1" Padding="8,8,8,3" Margin="0,5,0,0">
                 <Border.StrokeShape>
                     <RoundRectangle CornerRadius="5" />
@@ -68,6 +68,24 @@
                            HorizontalOptions="Center"
                            FontAttributes="Bold"
                            FontSize="15"  />
+
+                <!-- Kein eigener KI-Key konfiguriert: nur Aktivieren-Button -->
+                <VerticalStackLayout x:Name="AiEnableBox" Spacing="6" Margin="0,4,0,0">
+                    <Label x:Name="AiEnableHintLabel"
+                           TextColor="#FF9800"
+                           HorizontalOptions="Center"
+                           HorizontalTextAlignment="Center"
+                           FontSize="13" />
+                    <Button x:Name="AiEnableButton"
+                            Clicked="OnAiEnableClicked"
+                            TextColor="White"
+                            BackgroundColor="#FF9800"
+                            HorizontalOptions="Center"
+                            WidthRequest="180"
+                            HeightRequest="42" />
+                </VerticalStackLayout>
+
+                <!-- Mit Key: Beschreibung + OK -->
                 <Editor x:Name="DeepSeekEditor"
                         TextColor="{DynamicResource PrimaryTextColorLight}"
                         Placeholder="{x:Static properties:Resources.What_would_you_like_to_create_a_chat_based_list_for}"
@@ -80,54 +98,13 @@
                         WidthRequest="120"
                         TextColor="White"
                         Clicked="OnDeepSeekClicked" />
-                <Label x:Name="FreeStatusLabel"
-                       Margin="0,2,0,0"
-                       TextColor="#FF9800"
-                       HorizontalOptions="Center"
-                       FontAttributes="Bold"
-                       FontSize="13"
-                       Text="" />
                 <Button x:Name="OnDeepSeek_SpotifyButton"
                         Text="{x:Static properties:Resources.Create_Spotify_playlist}"
                         TextColor="White"
                         IsVisible="False"
                         Clicked="OnDeepSeek_SpotifyClicked" />
 
-                <!--<Button x:Name="OnPayPremiumButton" 
-                        Text="{x:Static properties:Resources.Buy_Premium_Subscription}"  
-                        BackgroundColor="{x:Static models:Constantes.Color_Warning}" 
-                        Clicked="OnPayPremiumClicked" />-->
-
-                <!-- Kaufoptionen -->
-                <!--<Button x:Name="BuySubscriptionButton"
-                        Text="Buy Premium (3.99 €/month)" 
-                        Clicked="OnBuySubscription"
-                        BackgroundColor="#2196F3"
-                        TextColor="White" />-->
-
-                <Button x:Name="BuyTokenPackButton"
-                        Text="{x:Static properties:Resources.Buy_requests_099}" 
-                        Clicked="OnBuyTokenPack"
-                        BackgroundColor="#FF9800"
-                        Margin="0,5,0,0"
-                        TextColor="White" />
-
                 <ActivityIndicator x:Name="Activity_Indicator" HeightRequest="30" Color="Crimson" />
-
-
-                <!--<Button x:Name="RestorePurchasesButton"
-                        Text="Restore Purchases" 
-                        Clicked="OnRestorePurchases"
-                        BackgroundColor="#9E9E9E"
-                        TextColor="White" />-->
-
-                <Label x:Name="StatusLabel"
-                       Margin="0,4,0,0"
-                       TextColor="LightGray"
-                       HorizontalOptions="Center"
-                       FontSize="12"
-                       Text="" />
-
             </VerticalStackLayout>
             </Border>
 

@@ -520,4 +520,28 @@ Volete ancora continuare?</value>
   <data name="An_unexpected_error_has_occurred" xml:space="preserve">
     <value>Si è verificato un errore imprevisto</value>
   </data>
+  <data name="AiEnableButton" xml:space="preserve">
+    <value>Attiva l'IA</value>
+  </data>
+  <data name="AiEnableNow" xml:space="preserve">
+    <value>Ora</value>
+  </data>
+  <data name="AiFeatureCardTitle" xml:space="preserve">
+    <value>✨ Sblocca le funzioni IA</value>
+  </data>
+  <data name="AiFeatureListGen" xml:space="preserve">
+    <value>Generazione di liste con IA – crea una lista completa da una breve descrizione</value>
+  </data>
+  <data name="AiFeatureVoiceInput" xml:space="preserve">
+    <value>Inserimento vocale con IA – trasforma le parole in una lista della spesa</value>
+  </data>
+  <data name="AiLater" xml:space="preserve">
+    <value>Più tardi</value>
+  </data>
+  <data name="AiOnboardingDescription" xml:space="preserve">
+    <value>Con la tua chiave IA, MiniList sblocca la generazione di liste e l'inserimento vocale con IA. Puoi configurarli nelle impostazioni.</value>
+  </data>
+  <data name="AiOnboardingTitle" xml:space="preserve">
+    <value>Funzioni IA</value>
+  </data>
 </root>

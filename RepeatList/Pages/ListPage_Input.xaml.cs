@@ -9,7 +9,6 @@ namespace RepeatList;
 
 public partial class ListPage_Input : Popup<object>
 {
-    private const string DailyQueryCountKey = "QueriesToday";
     private enum DeepSeekType
     {
         Unknown,
@@ -18,10 +17,8 @@ public partial class ListPage_Input : Popup<object>
     }
 
     ListsPageViewModel listsPageViewModel = new();
-    private readonly InAppBillingService _billing = new();
     private readonly IRewardedAdService? _rewardedAd = IPlatformApplication.Current?.Services.GetService<IRewardedAdService>();
 
-    bool m_isDeepSeekAllowed = false;
     private bool m_byChat;
 
     public bool IsOKClicked { get; private set; }
@@ -35,7 +32,6 @@ public partial class ListPage_Input : Popup<object>
     {
         InitializeComponent();
 
-        m_isDeepSeekAllowed = isDeepSeekAllowed;
         m_byChat = byChat;
 
         UpdateStatusLabel();
@@ -64,45 +60,11 @@ public partial class ListPage_Input : Popup<object>
     private async Task<bool> ForOnDeepSeekClicked(DeepSeekType Mode = DeepSeekType.Unknown)
     {
         string prompt = string.Empty;
-        var deviceID = GetDeviceID();
-        var CanExecutePremium = await _billing.CanExecuteQueryAsync();
-        var CanExecuteQueryForFree = await _billing.CanExecuteQueryForFreeAsync(true);
 
-        if (!CanExecuteQueryForFree && !CanExecutePremium)
+        // A user-configured API key bypasses the internal billing gate.
+        if (!AiSettingsService.Instance.HasSavedSettings)
         {
-            if (_rewardedAd != null && _rewardedAd.IsAdReady)
-            {
-                bool watchAd = await Shell.Current.DisplayAlert(
-                    Properties.Resources.Free_daily_limit_reached,
-                    Properties.Resources.Watch_ad_for_extra_queries,
-                    Properties.Resources.Watch_Ad,
-                    Properties.Resources.Cancel);
-
-                if (watchAd)
-                {
-                    bool rewarded = await _rewardedAd.ShowRewardedAdAsync();
-                    if (rewarded)
-                    {
-                        _billing.AddAdBonus(5);
-                        // retry with bonus
-                        CanExecuteQueryForFree = await _billing.CanExecuteQueryForFreeAsync(true);
-                    }
-                }
-            }
-            else
-            {
-                if (Shell.Current != null)
-                    await Shell.Current.DisplayAlert(Properties.Resources.Error, Properties.Resources.Free_daily_limit_reached, "OK");
-            }
-
-            if (!CanExecuteQueryForFree && !CanExecutePremium)
-                return false;
-        }
-
-        if (deviceID != null && !listsPageViewModel.DeviceList.Contains(deviceID) && !CanExecutePremium && !CanExecuteQueryForFree)
-        {
-            if (Shell.Current  != null)
-                await Shell.Current.DisplayAlert(Properties.Resources.premium_feature, Properties.Resources.Only_available_in_the_premium_version, "OK");
+            await PromptForAiSettingsAsync();
             return false;
         }
 
@@ -159,7 +121,6 @@ public partial class ListPage_Input : Popup<object>
         }
         catch (CreditIsInsufficientError)
         {
-            m_isDeepSeekAllowed = false;
             MainThread.BeginInvokeOnMainThread(() =>
             {
                 if (Shell.Current  != null)
@@ -183,6 +144,18 @@ public partial class ListPage_Input : Popup<object>
         }
 
         return true;
+    }
+
+    private async Task PromptForAiSettingsAsync()
+    {
+        bool go = await Shell.Current.DisplayAlert(
+            AiSettingsService.T("AiSettingsTitle"),
+            AiSettingsService.T("AiSettingsMissing"),
+            AiSettingsService.T("AiSettingsOpen"),
+            AiSettingsService.T("Cancel"));
+
+        if (go)
+            await Shell.Current.GoToAsync("//SetupPage");
     }
 
     private string ForForOnDeepSeekClicked(DeepSeekType Mode, string json, CompletionResult response)
@@ -245,8 +218,6 @@ public partial class ListPage_Input : Popup<object>
                 {
                     if (Shell.Current  != null)
                         await Shell.Current.DisplayAlert("Error", "Invalid JSON structure from DeepSeek.", "OK");
-
-                    m_isDeepSeekAllowed = false;
                 }
             }
             catch (Exception ex)
@@ -302,93 +273,27 @@ public partial class ListPage_Input : Popup<object>
         OnOkClicked(sender, e);
     }
 
-    //private async void OnPayPremiumClicked(object sender, EventArgs e)
-    //{
-    //    await _billingService.PayPremiumMonthAsync();
-    //}
-
-    private async void OnBuySubscription(object sender, EventArgs e)
-    {
-        if (Shell.Current  != null)
-        {
-            if (await _billing.PurchaseSubscriptionAsync())
-                await Shell.Current.DisplayAlert(Properties.Resources.Success, Properties.Resources.Premium_subscription_activated, "OK");
-            else
-                await Shell.Current.DisplayAlert(Properties.Resources.Error, Properties.Resources.Purchase_failed_Try_again, "OK");
-        }
-        UpdateStatusLabel();
-    }
-
-    private async void OnBuyTokenPack(object sender, EventArgs e)
-    {
-        try
-        {
-            if (await _billing.PurchaseTokenPackAsync())
-            {
-                if (Shell.Current  != null)
-                    await Shell.Current.DisplayAlert(Properties.Resources.Thank_You, Properties.Resources.Thank_you_for_your_purchase, "OK");
-                m_isDeepSeekAllowed = true;
-            }
-            else
-            {
-                if (Shell.Current  != null)
-                    await Shell.Current.DisplayAlert(Properties.Resources.Error, Properties.Resources.Purchase_failed_Try_again, "OK");
-                m_isDeepSeekAllowed = false;
-            }
-            UpdateStatusLabel();
-        }
-        catch (Exception ex)
-        {
-            var shell = Shell.Current;
-            if (shell != null)
-                await shell.DisplayAlert("Error", ex.Message, "OK");
-            else
-                await Application.Current.MainPage.DisplayAlert("Error", ex.Message, "OK");
-        }
-    }
-
-    private async void OnRestorePurchases(object sender, EventArgs e)
-    {
-        bool restored = await _billing.RestorePurchasesAsync();
-        if (Shell.Current  != null)
-            await Shell.Current.DisplayAlert(Properties.Resources.Restore,
-            restored ? Properties.Resources.Premium_restored : Properties.Resources.No_purchases_found, "OK");
-        UpdateStatusLabel();
-    }
-
     private void UpdateStatusLabel()
     {
-        var available_tokens = _billing.GetAvailableTokens();
-        var available_tokens_percent = Convert.ToDouble(available_tokens / InAppBillingService.TokenPackAmount_199);
+        // Mit eigenem KI-Key sind alle KI-Funktionen aktiv; ohne Key nur der Aktivieren-Button.
+        bool hasKey = AiSettingsService.Instance.HasSavedSettings;
 
-        string status = _billing.HasActiveSubscription()
-            ? Properties.Resources.Premium_active
-            : $"{Properties.Resources.The_remaining_credit_is.Replace("%1", (available_tokens_percent * 100.0).ToString("N0")) + "%"}";
+        AiEnableHintLabel.Text = AiSettingsService.T("AiSettingsMissing");
+        AiEnableButton.Text = AiSettingsService.T("AiEnableButton");
+        AiEnableBox.IsVisible = !hasKey;
 
-        StatusLabel.IsVisible = true;
-        StatusLabel.Text = status;
-        FreeStatusLabel.IsVisible = false;
-        FreeStatusLabel.Text = "";
-        OnDeepSeekButton.IsVisible = m_isDeepSeekAllowed;  // Ok-Button 
-
-        var DailyQueryCount = Preferences.Get(DailyQueryCountKey, 0);
-
-        // TEST !!!
-        //DailyQueryCount = 3; // For testing purposes, set to 3
-
-        if (DailyQueryCount >= 0 && DailyQueryCount < InAppBillingService.FreeDailyLimit)
-        {
-            FreeStatusLabel.Text = $"{Properties.Resources.Free_queries}: {(InAppBillingService.FreeDailyLimit - DailyQueryCount)}";
-            FreeStatusLabel.IsVisible = true;
-            StatusLabel.IsVisible = false;
-        }
-
-        OnDeepSeekButton.IsVisible = m_isDeepSeekAllowed || !StatusLabel.IsVisible;
+        DeepSeekEditor.IsVisible = hasKey;
+        OnDeepSeekButton.IsVisible = hasKey;
         OnDeepSeek_SpotifyButton.IsVisible = false;
-        DeepSeekEditor.IsVisible = OnDeepSeekButton.IsVisible;
-        if (!DeepSeekEditor.IsVisible)
+        if (!hasKey)
             DeepSeekEditor.Text = string.Empty;
-        BuyTokenPackButton.IsVisible = !OnDeepSeekButton.IsVisible;
+    }
+
+    private async void OnAiEnableClicked(object sender, EventArgs e)
+    {
+        // Popup schließen, dann zur Einstellungsseite navigieren
+        await CloseMe("");
+        await Shell.Current.GoToAsync("//SetupPage");
     }
 
     async Task CloseMe(dynamic param)

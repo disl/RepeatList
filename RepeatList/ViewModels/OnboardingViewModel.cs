@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using RepeatList.Models;
+using RepeatList.Services;
 using System.Collections.ObjectModel;
 
 namespace RepeatList.ViewModels
@@ -44,6 +45,12 @@ namespace RepeatList.ViewModels
                 {
                     Title = Properties.Resources.Minimal_Intuitive,
                     Description = Properties.Resources.A_clean_simple_interface_designed,
+                    Image = "onboarding5.webp"
+                },
+                new OnboardingSlide
+                {
+                    Title = AiSettingsService.T("AiOnboardingTitle"),
+                    Description = AiSettingsService.T("AiOnboardingDescription"),
                     Image = "onboarding5.webp"
                 }
             };

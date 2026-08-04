@@ -881,40 +881,12 @@ namespace RepeatList
 
         private async void OnAudioRecognationButton_Clicked(object sender, EventArgs e)
         {
-            var billing = new InAppBillingService();
-            var canExecutePremium = await billing.CanExecuteQueryAsync();
-            var canExecuteForFree = await billing.CanExecuteQueryForFreeAsync(false);
-
-            if (!canExecutePremium && !canExecuteForFree)
+            // A user-configured API key bypasses the internal billing gate.
+            if (!AiSettingsService.Instance.HasSavedSettings)
             {
-                var rewardedAd = IPlatformApplication.Current?.Services.GetService<IRewardedAdService>();
-                if (rewardedAd != null && rewardedAd.IsAdReady)
-                {
-                    bool watchAd = await Shell.Current.DisplayAlert(
-                        Properties.Resources.Free_daily_limit_reached,
-                        Properties.Resources.Watch_ad_for_extra_queries,
-                        Properties.Resources.Watch_Ad,
-                        Properties.Resources.Cancel);
-
-                    if (watchAd)
-                    {
-                        bool rewarded = await rewardedAd.ShowRewardedAdAsync();
-                        if (rewarded)
-                            billing.AddAdBonus(5);
-                        else
-                            return;
-                    }
-                    else return;
-                }
-                else
-                {
-                    await Shell.Current.DisplayAlert(Properties.Resources.Error, Properties.Resources.Free_daily_limit_reached, "OK");
-                    return;
-                }
+                await PromptForAiSettingsAsync();
+                return;
             }
-
-            // Decrement free usage now that we know the query will proceed
-            await billing.CanExecuteQueryForFreeAsync(true);
 
             var popup = new VoiceRecognitionPage();
             var result = await Shell.Current.ShowPopupAsync<string>(popup);
@@ -929,6 +901,18 @@ namespace RepeatList
 
                 ViewModel.IsBusy = false;
             }
+        }
+
+        private async Task PromptForAiSettingsAsync()
+        {
+            bool go = await Shell.Current.DisplayAlert(
+                AiSettingsService.T("AiSettingsTitle"),
+                AiSettingsService.T("AiSettingsMissing"),
+                AiSettingsService.T("AiSettingsOpen"),
+                AiSettingsService.T("Cancel"));
+
+            if (go)
+                await Shell.Current.GoToAsync("//SetupPage");
         }
 
         private void OnSwipeStarted_Top(object sender, SwipeStartedEventArgs e)

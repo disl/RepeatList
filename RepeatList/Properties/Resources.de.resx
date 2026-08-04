@@ -520,4 +520,85 @@ Wollen Sie trotzdem fortfahren?</value>
   <data name="An_unexpected_error_has_occurred" xml:space="preserve">
     <value>Ein unerwarteter Fehler ist aufgetreten</value>
   </data>
+  <data name="AiSettingsSection" xml:space="preserve">
+    <value>KI-Anbieter</value>
+  </data>
+  <data name="AiSettingsTitle" xml:space="preserve">
+    <value>KI-Anbieter einrichten</value>
+  </data>
+  <data name="AiSettingsMissing" xml:space="preserve">
+    <value>Kein KI-Anbieter konfiguriert. Bitte API-Key in den Einstellungen hinterlegen.</value>
+  </data>
+  <data name="AiSettingsOpen" xml:space="preserve">
+    <value>Einstellungen öffnen</value>
+  </data>
+  <data name="SettingsProviderLabel" xml:space="preserve">
+    <value>Anbieter</value>
+  </data>
+  <data name="SettingsApiKeyLabel" xml:space="preserve">
+    <value>API-Key</value>
+  </data>
+  <data name="SettingsBaseUrlLabel" xml:space="preserve">
+    <value>Base-URL (OpenAI-kompatibel)</value>
+  </data>
+  <data name="SettingsModelLabel" xml:space="preserve">
+    <value>Modell</value>
+  </data>
+  <data name="SettingsSaveAndTest" xml:space="preserve">
+    <value>Speichern &amp; Verbindung testen</value>
+  </data>
+  <data name="SettingsTesting" xml:space="preserve">
+    <value>Verbindung wird getestet...</value>
+  </data>
+  <data name="SettingsTestOk" xml:space="preserve">
+    <value>Verbindung OK — Modell erreichbar.</value>
+  </data>
+  <data name="SettingsTestFailed" xml:space="preserve">
+    <value>Verbindung fehlgeschlagen: {0}</value>
+  </data>
+  <data name="SettingsInvalid" xml:space="preserve">
+    <value>Bitte Base-URL und Modell ausfüllen.</value>
+  </data>
+  <data name="ProviderDeepSeek" xml:space="preserve">
+    <value>DeepSeek</value>
+  </data>
+  <data name="ProviderOpenRouter" xml:space="preserve">
+    <value>OpenRouter</value>
+  </data>
+  <data name="ProviderCustom" xml:space="preserve">
+    <value>Benutzerdefiniert (OpenAI-kompatibel)</value>
+  </data>
+  <data name="ApiKeyLinkDeepSeek" xml:space="preserve">
+    <value>API-Key hier anlegen: platform.deepseek.com/api_keys</value>
+  </data>
+  <data name="ApiKeyLinkOpenRouter" xml:space="preserve">
+    <value>API-Key hier anlegen: openrouter.ai/keys</value>
+  </data>
+  <data name="ApiKeyLinkCustom" xml:space="preserve">
+    <value>API-Key (z.B. OpenAI): platform.openai.com/api-keys</value>
+  </data>
+  <data name="AiEnableButton" xml:space="preserve">
+    <value>KI aktivieren</value>
+  </data>
+  <data name="AiEnableNow" xml:space="preserve">
+    <value>Jetzt</value>
+  </data>
+  <data name="AiFeatureCardTitle" xml:space="preserve">
+    <value>✨ KI-Funktionen freischalten</value>
+  </data>
+  <data name="AiFeatureListGen" xml:space="preserve">
+    <value>KI-Listengenerierung – aus einer kurzen Beschreibung eine komplette Liste erstellen</value>
+  </data>
+  <data name="AiFeatureVoiceInput" xml:space="preserve">
+    <value>KI-Spracheingabe – Gesprochenes in eine Einkaufsliste verwandeln</value>
+  </data>
+  <data name="AiLater" xml:space="preserve">
+    <value>Später</value>
+  </data>
+  <data name="AiOnboardingDescription" xml:space="preserve">
+    <value>Mit einem eigenen KI-Schlüssel schaltet MiniList die KI-Listengenerierung und die KI-Spracheingabe frei. Du kannst sie in den Einstellungen konfigurieren.</value>
+  </data>
+  <data name="AiOnboardingTitle" xml:space="preserve">
+    <value>KI-Funktionen</value>
+  </data>
 </root>

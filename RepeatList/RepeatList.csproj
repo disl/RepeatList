@@ -80,8 +80,8 @@
 
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net9.0-android|AnyCPU'">
-	  <ApplicationDisplayVersion>1.0.136</ApplicationDisplayVersion>
-	  <ApplicationVersion>136</ApplicationVersion>
+	  <ApplicationDisplayVersion>1.0.137</ApplicationDisplayVersion>
+	  <ApplicationVersion>137</ApplicationVersion>
 	</PropertyGroup>
 
 

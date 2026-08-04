@@ -39,6 +39,7 @@
                     TextColor="{DynamicResource PrimaryTextColorLight}"
                     Clicked="OnAddHeaderByChatClicked" Grid.Column="2" />
         </Grid>
+
         <Border Stroke="{AppThemeBinding Light=#00BCD4, Dark=#80DEEA}" StrokeThickness="1" Padding="5"  Grid.Row="2" >
             <Border.StrokeShape>
                 <RoundRectangle CornerRadius="5" />

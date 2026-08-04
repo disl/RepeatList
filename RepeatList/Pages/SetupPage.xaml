@@ -56,6 +56,43 @@
                 </StackLayout>
             </Border>
 
+            <Border Stroke="Gray" Padding="5" Margin="0,10,0,0">
+                <StackLayout Orientation="Vertical" Spacing="10">
+                    <Label x:Name="AiSectionTitle" FontAttributes="Bold"
+                           TextColor="{AppThemeBinding Light=Black, Dark=White}" />
+                    <Label x:Name="AiProviderLabel" FontSize="13"
+                           TextColor="{AppThemeBinding Light=Black, Dark=White}" />
+                    <Picker x:Name="AiProviderPicker" SelectedIndexChanged="OnAiProviderChanged"
+                            TextColor="{AppThemeBinding Light=Black, Dark=White}" />
+                    <Label x:Name="AiApiKeyLabel" FontSize="13"
+                           TextColor="{AppThemeBinding Light=Black, Dark=White}" />
+                    <Entry x:Name="AiApiKeyEntry" IsPassword="True"
+                           TextColor="{AppThemeBinding Light=Black, Dark=White}"
+                           PlaceholderColor="{AppThemeBinding Light=Gray, Dark=LightGray}" />
+                    <Label x:Name="AiApiKeyLinkLabel" FontSize="13"
+                           TextColor="{AppThemeBinding Light=#1565C0, Dark=#64B5F6}"
+                           TextDecorations="Underline">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="OnAiApiKeyLinkTapped" />
+                        </Label.GestureRecognizers>
+                    </Label>
+                    <Label x:Name="AiBaseUrlLabel" FontSize="13"
+                           TextColor="{AppThemeBinding Light=Black, Dark=White}" />
+                    <Entry x:Name="AiBaseUrlEntry" Keyboard="Url"
+                           TextColor="{AppThemeBinding Light=Black, Dark=White}"
+                           PlaceholderColor="{AppThemeBinding Light=Gray, Dark=LightGray}" />
+                    <Label x:Name="AiModelLabel" FontSize="13"
+                           TextColor="{AppThemeBinding Light=Black, Dark=White}" />
+                    <Entry x:Name="AiModelEntry"
+                           TextColor="{AppThemeBinding Light=Black, Dark=White}"
+                           PlaceholderColor="{AppThemeBinding Light=Gray, Dark=LightGray}" />
+                    <Button x:Name="AiSaveBtn" Clicked="OnAiSaveClicked" TextColor="White" />
+                    <ActivityIndicator x:Name="AiBusyIndicator" IsRunning="False" Color="Blue" />
+                    <Label x:Name="AiStatusLabel" IsVisible="False"
+                           TextColor="{AppThemeBinding Light=Black, Dark=White}" />
+                </StackLayout>
+            </Border>
+
             <StackLayout Orientation="Horizontal" HorizontalOptions="StartAndExpand" Spacing="10" >
                 <Button Text="OK" Clicked="OkButton_Clicked" HorizontalOptions="FillAndExpand" TextColor="White" WidthRequest="150" />
                 <Button Text="{Binding Label_cancel}" Clicked="OnCancel" BackgroundColor="{x:Static models:Constantes.Color_Warning}"

@@ -10,7 +10,6 @@ namespace RepeatList.Services
 {
     class DeepSeekClient
     {
-        private readonly string _apiKey;
         private readonly HttpClient _httpClient;
         PositionsPageViewModel _positionsPageViewModel;
         private readonly IAudioTranscriber _transcriber;
@@ -18,15 +17,11 @@ namespace RepeatList.Services
 
         public DeepSeekClient()
         {
-            _apiKey = SecretVault.DeepSeekApiKey;
-
             var handler = new HttpClientHandler
             {
                 AutomaticDecompression = System.Net.DecompressionMethods.GZip | System.Net.DecompressionMethods.Deflate
             };
             _httpClient = new HttpClient(handler) { Timeout = TimeSpan.FromMinutes(3) };
-            _httpClient.BaseAddress = new Uri("https://api.deepseek.com/v1/");
-            _httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {_apiKey}");
 
             _transcriber = new AndroidTranscriber();
             _positionsPageViewModel = new PositionsPageViewModel(_transcriber);
@@ -42,9 +37,13 @@ namespace RepeatList.Services
 
         public async Task<CompletionResult> GetCompletionAsync(string prompt, string type = "application/json")
         {
+            var settings = await AiSettingsService.Instance.LoadAsync();
+            if (!settings.IsConfigured)
+                throw new InvalidOperationException(AiSettingsService.T("AiSettingsMissing"));
+
             var requestBody = new
             {
-                model = "deepseek-chat",
+                model = settings.Model,
                 messages = new[]
                 {
                     new { role = "user", content = prompt }
@@ -57,7 +56,10 @@ namespace RepeatList.Services
                 type
             );
 
-            var response = await _httpClient.PostAsync("chat/completions", jsonContent);
+            _httpClient.DefaultRequestHeaders.Authorization =
+                new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", settings.ApiKey);
+
+            var response = await _httpClient.PostAsync(BuildEndpoint(settings.BaseUrl), jsonContent);
             var responseContent = await response.Content.ReadAsStringAsync();
 
             if (!response.IsSuccessStatusCode)
@@ -73,26 +75,55 @@ namespace RepeatList.Services
             int promptTokens = responseData?.usage?.prompt_tokens ?? 0;
             int completionTokens = responseData?.usage?.completion_tokens ?? 0;
 
-            // Kosten berechnen
+            // Kosten berechnen (nur Information; bei eigenem Key entfällt der Guthaben-Abzug)
             decimal cost = (promptTokens * 0.0015m / 1000) + (completionTokens * 0.0020m / 1000);
-
-            // Korrigieren der Kostenberechnung
             cost = cost * 1.7m;
-
-
-            bool hasPremium = Preferences.Get("HasPremiumSubscription", false);
-
-            // Billing-Prüfung: Zuerst versuchen von gekauften Tokens abzuziehen
-            if (!hasPremium)
-            {
-                DeepSeekBilling.DeductFromUserCredit(cost);
-            }
 
             return new CompletionResult
             {
                 Content = content,
                 Cost = cost
             };
+        }
+
+        /// <summary>
+        /// Verifies the configured endpoint/model is reachable (chat ping).
+        /// </summary>
+        public async Task TestConnectionAsync(AiSettings settings)
+        {
+            var body = new
+            {
+                model = settings.Model,
+                messages = new[] { new { role = "user", content = "ping" } },
+                max_tokens = 5
+            };
+
+            using var client = new HttpClient { Timeout = TimeSpan.FromSeconds(20) };
+            if (!string.IsNullOrWhiteSpace(settings.ApiKey))
+                client.DefaultRequestHeaders.Add("Authorization", $"Bearer {settings.ApiKey}");
+
+            var jsonContent = new StringContent(
+                System.Text.Json.JsonSerializer.Serialize(body),
+                Encoding.UTF8,
+                "application/json");
+
+            var response = await client.PostAsync(BuildEndpoint(settings.BaseUrl), jsonContent);
+            if (!response.IsSuccessStatusCode)
+            {
+                var err = await response.Content.ReadAsStringAsync();
+                throw new InvalidOperationException($"API Fehler {(int)response.StatusCode}: {err[..Math.Min(300, err.Length)]}");
+            }
+        }
+
+        /// <summary>
+        /// Builds the OpenAI-compatible chat completions URL from a base URL.
+        /// </summary>
+        private static string BuildEndpoint(string baseUrl)
+        {
+            var url = baseUrl.Trim().TrimEnd('/');
+            if (url.EndsWith("/chat/completions", StringComparison.OrdinalIgnoreCase))
+                return url;
+            return url + "/chat/completions";
         }
 
 
@@ -283,13 +314,14 @@ namespace RepeatList.Services
 
         public async Task<string> TranscribeAudioWithWhisper(string filePath)
         {
+            var settings = await AiSettingsService.Instance.LoadAsync();
             using var httpClient = new HttpClient();
             using var form = new MultipartFormDataContent();
             form.Add(new StringContent("whisper-1"), "model");
             form.Add(new StreamContent(File.OpenRead(filePath)), "file", Path.GetFileName(filePath));
 
             var request = new HttpRequestMessage(HttpMethod.Post, "https://api.openai.com/v1/audio/transcriptions");
-            request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", _apiKey);
+            request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", settings.ApiKey);
             request.Content = form;
 
             var response = await httpClient.SendAsync(request);

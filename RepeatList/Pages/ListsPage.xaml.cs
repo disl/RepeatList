@@ -18,6 +18,9 @@ namespace RepeatList
         int m_max_count_of_sync_lists = 2;
         static bool m_need_for_update = true;
 
+        // Shows the AI unlock dialog only once per app session.
+        static bool _aiDialogShown;
+
         private SetupPageViewModel SetupPageViewModel { get; set; }
         private ListsPageViewModel ViewModel { get; set; }
         private ResourcesViewModel ResourcesViewModel { get; set; }
@@ -75,6 +78,25 @@ namespace RepeatList
                 ViewModel.Label_lists = tmp_lists;
 
                 ViewModel.InitLabels();
+
+                // KI-Funktionen einmalig pro App-Sitzung als Dialog anbieten, solange kein Key gesetzt ist.
+                // Kurz verzögert, damit die Seite vollständig gerendert ist (v.a. nach dem Onboarding-Übergang),
+                // sonst wird der Dialog beim ersten Anzeigen auf Android teils verschluckt.
+                if (!AiSettingsService.Instance.HasSavedSettings && !_aiDialogShown)
+                {
+                    _aiDialogShown = true;
+                    Dispatcher.DispatchDelayed(TimeSpan.FromMilliseconds(700), async () =>
+                    {
+                        try
+                        {
+                            await ShowAiUnlockDialogAsync();
+                        }
+                        catch (Exception ex)
+                        {
+                            SentrySdk.CaptureException(ex);
+                        }
+                    });
+                }
 
                 ResourcesViewModel = new ResourcesViewModel();
 
@@ -225,6 +247,22 @@ namespace RepeatList
         private async void OnAddHeaderByChatClicked(object sender, EventArgs e)
         {
             await ForOnAddHeaderClicked(true);
+        }
+
+        // "Unlock AI features" dialog: "Now" opens the settings page, "Later" just closes it.
+        private async Task ShowAiUnlockDialogAsync()
+        {
+            var shell = Shell.Current;
+            if (shell == null) return;
+
+            bool goNow = await shell.DisplayAlert(
+                AiSettingsService.T("AiFeatureCardTitle"),
+                "• " + AiSettingsService.T("AiFeatureListGen") + "\n\n• " + AiSettingsService.T("AiFeatureVoiceInput"),
+                AiSettingsService.T("AiEnableNow"),
+                AiSettingsService.T("AiLater"));
+
+            if (goNow)
+                await Shell.Current.GoToAsync("//SetupPage");
         }
 
         private async Task ForOnAddHeaderClicked(bool ByChat)

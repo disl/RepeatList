@@ -522,4 +522,28 @@
   <data name="An_unexpected_error_has_occurred" xml:space="preserve">
     <value>Сталася несподівана помилка</value>
   </data>
+  <data name="AiEnableButton" xml:space="preserve">
+    <value>Увімкнути ШІ</value>
+  </data>
+  <data name="AiEnableNow" xml:space="preserve">
+    <value>Зараз</value>
+  </data>
+  <data name="AiFeatureCardTitle" xml:space="preserve">
+    <value>✨ Відкрийте можливості ШІ</value>
+  </data>
+  <data name="AiFeatureListGen" xml:space="preserve">
+    <value>Генерація списків з ШІ – створіть повний список за коротким описом</value>
+  </data>
+  <data name="AiFeatureVoiceInput" xml:space="preserve">
+    <value>Голосове введення з ШІ – перетворюйте мовлення на список покупок</value>
+  </data>
+  <data name="AiLater" xml:space="preserve">
+    <value>Пізніше</value>
+  </data>
+  <data name="AiOnboardingDescription" xml:space="preserve">
+    <value>Зі своїм ключем ШІ MiniList відкриває генерацію списків і голосове введення за допомогою ШІ. Ви можете налаштувати їх у налаштуваннях.</value>
+  </data>
+  <data name="AiOnboardingTitle" xml:space="preserve">
+    <value>Можливості ШІ</value>
+  </data>
 </root>
