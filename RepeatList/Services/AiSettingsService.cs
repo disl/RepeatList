@@ -39,8 +39,14 @@ public class AiSettingsService
     private const string PrefSaved = "ai_settings_saved";
     private const string SecureApiKey = "ai_apikey";
 
+    /// <summary>Preference key for the AI unlock dialog "don't show again" checkbox.</summary>
+    public const string PrefAiDialogDontShowAgain = "ai_dialog_dont_show_again";
+
     /// <summary>True once a connection test succeeded, so callers skip the settings prompt.</summary>
     public bool HasSavedSettings => Preferences.Default.Get(PrefSaved, false);
+
+    /// <summary>True once the user checked "don't show again" on the AI unlock dialog.</summary>
+    public bool AiDialogDontShowAgain => Preferences.Default.Get(PrefAiDialogDontShowAgain, false);
 
     public async Task<AiSettings> LoadAsync()
     {

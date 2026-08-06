@@ -520,8 +520,14 @@ OPCIÓN DE MENÚ «DUPLICAR ELEMENTOS»:
   <data name="An_unexpected_error_has_occurred" xml:space="preserve">
     <value>Se ha producido un error inesperado.</value>
   </data>
+  <data name="AiDontShowAgain" xml:space="preserve">
+    <value>No volver a mostrar</value>
+  </data>
   <data name="AiEnableButton" xml:space="preserve">
     <value>Activar la IA</value>
+  </data>
+  <data name="AiEnableLaterHint" xml:space="preserve">
+    <value>Puedes activar las funciones de IA en los ajustes cuando quieras.</value>
   </data>
   <data name="AiEnableNow" xml:space="preserve">
     <value>Ahora</value>

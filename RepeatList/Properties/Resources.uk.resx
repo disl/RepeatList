@@ -522,8 +522,14 @@
   <data name="An_unexpected_error_has_occurred" xml:space="preserve">
     <value>Сталася несподівана помилка</value>
   </data>
+  <data name="AiDontShowAgain" xml:space="preserve">
+    <value>Більше не показувати</value>
+  </data>
   <data name="AiEnableButton" xml:space="preserve">
     <value>Увімкнути ШІ</value>
+  </data>
+  <data name="AiEnableLaterHint" xml:space="preserve">
+    <value>Ви завжди можете увімкнути функції ШІ в налаштуваннях.</value>
   </data>
   <data name="AiEnableNow" xml:space="preserve">
     <value>Зараз</value>

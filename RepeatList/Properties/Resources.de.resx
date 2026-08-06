@@ -577,8 +577,14 @@ Wollen Sie trotzdem fortfahren?</value>
   <data name="ApiKeyLinkCustom" xml:space="preserve">
     <value>API-Key (z.B. OpenAI): platform.openai.com/api-keys</value>
   </data>
+  <data name="AiDontShowAgain" xml:space="preserve">
+    <value>Nicht mehr zeigen</value>
+  </data>
   <data name="AiEnableButton" xml:space="preserve">
     <value>KI aktivieren</value>
+  </data>
+  <data name="AiEnableLaterHint" xml:space="preserve">
+    <value>Sie können immer KI-Möglichkeiten einschalten.</value>
   </data>
   <data name="AiEnableNow" xml:space="preserve">
     <value>Jetzt</value>

@@ -583,8 +583,14 @@ Do you still want to continue?</value>
   <data name="ApiKeyLinkCustom" xml:space="preserve">
     <value>API key (e.g. OpenAI): platform.openai.com/api-keys</value>
   </data>
+  <data name="AiDontShowAgain" xml:space="preserve">
+    <value>Don't show again</value>
+  </data>
   <data name="AiEnableButton" xml:space="preserve">
     <value>Enable AI</value>
+  </data>
+  <data name="AiEnableLaterHint" xml:space="preserve">
+    <value>You can always enable AI features in the settings.</value>
   </data>
   <data name="AiEnableNow" xml:space="preserve">
     <value>Now</value>

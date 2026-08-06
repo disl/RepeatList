@@ -80,8 +80,8 @@
 
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net9.0-android|AnyCPU'">
-	  <ApplicationDisplayVersion>1.0.137</ApplicationDisplayVersion>
-	  <ApplicationVersion>137</ApplicationVersion>
+	  <ApplicationDisplayVersion>1.0.138</ApplicationDisplayVersion>
+	  <ApplicationVersion>138</ApplicationVersion>
 	</PropertyGroup>
 
 
@@ -298,6 +298,9 @@
 		<MauiXaml Update="Pages\SetupPage.xaml">
 			<Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
+		<MauiXaml Update="Pages\AiUnlockPopup.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
 		<MauiXaml Update="Pages\VoiceRecognitionPage.xaml">
 			<Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
@@ -323,6 +326,9 @@
 		</Compile>
 		<Compile Update="Pages\PositionsPage.xaml.cs">
 			<DependentUpon>PositionsPage.xaml</DependentUpon>
+		</Compile>
+		<Compile Update="Pages\AiUnlockPopup.xaml.cs">
+			<DependentUpon>AiUnlockPopup.xaml</DependentUpon>
 		</Compile>
 		<Compile Update="Properties\Resources.Designer.cs">
 			<DesignTime>True</DesignTime>

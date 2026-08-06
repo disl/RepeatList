@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<toolkit:Popup xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+               xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+               xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+               xmlns:local="clr-namespace:RepeatList"
+               xmlns:models="clr-namespace:RepeatList.Models"
+               x:Class="RepeatList.AiUnlockPopup"
+               x:TypeArguments="local:AiUnlockResult"
+               BackgroundColor="Transparent"
+               WidthRequest="320">
+
+    <!-- WidthRequest on the Popup fixes the Android window size (v12 has no Size property). -->
+    <Border BackgroundColor="{AppThemeBinding Light=White, Dark=#2B2B2B}"
+            Stroke="{AppThemeBinding Light=#E0E0E0, Dark=#444444}"
+            StrokeThickness="1"
+            Padding="20">
+        <Border.StrokeShape>
+            <RoundRectangle CornerRadius="14" />
+        </Border.StrokeShape>
+
+        <VerticalStackLayout Spacing="12">
+            <Label x:Name="TitleLabel" FontSize="19" FontAttributes="Bold"
+                   HorizontalOptions="Center" HorizontalTextAlignment="Center"
+                   TextColor="{AppThemeBinding Light=Black, Dark=White}" />
+
+            <Label x:Name="FeatureLabel" FontSize="14" LineHeight="1.2"
+                   TextColor="{AppThemeBinding Light=#333333, Dark=#DDDDDD}" />
+
+            <Label x:Name="HintLabel" FontSize="12" FontAttributes="Italic"
+                   TextColor="{AppThemeBinding Light=#666666, Dark=#AAAAAA}" />
+
+            <HorizontalStackLayout Spacing="8" HorizontalOptions="Start">
+                <CheckBox x:Name="DontShowAgainCheckbox" VerticalOptions="Center" />
+                <Label x:Name="DontShowAgainLabel" FontSize="14" VerticalOptions="Center"
+                       TextColor="{AppThemeBinding Light=Black, Dark=White}">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnDontShowAgainTapped" />
+                    </Label.GestureRecognizers>
+                </Label>
+            </HorizontalStackLayout>
+
+            <!-- Grid instead of fixed-width buttons: the columns split the dialog width evenly,
+                 so the right button can never be clipped by a too-narrow popup window. -->
+            <Grid ColumnDefinitions="*,*" ColumnSpacing="12" Margin="0,10,0,0">
+                <Button x:Name="LaterButton" Grid.Column="0" Clicked="OnLaterClicked"
+                        HeightRequest="44"
+                        BackgroundColor="{x:Static models:Constantes.Color_Warning}"
+                        TextColor="White" />
+                <Button x:Name="NowButton" Grid.Column="1" Clicked="OnNowClicked"
+                        HeightRequest="44"
+                        BackgroundColor="{x:Static models:Constantes.Color_Primary}"
+                        TextColor="White" />
+            </Grid>
+        </VerticalStackLayout>
+    </Border>
+</toolkit:Popup>

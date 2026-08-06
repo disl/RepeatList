@@ -79,10 +79,13 @@ namespace RepeatList
 
                 ViewModel.InitLabels();
 
-                // KI-Funktionen einmalig pro App-Sitzung als Dialog anbieten, solange kein Key gesetzt ist.
+                // KI-Funktionen beim App-Start als Popup anbieten, solange kein Key gesetzt ist und der
+                // Nutzer die Checkbox "Nicht mehr zeigen" nicht aktiviert hat. Nur einmal pro Sitzung.
                 // Kurz verzögert, damit die Seite vollständig gerendert ist (v.a. nach dem Onboarding-Übergang),
                 // sonst wird der Dialog beim ersten Anzeigen auf Android teils verschluckt.
-                if (!AiSettingsService.Instance.HasSavedSettings && !_aiDialogShown)
+                if (!AiSettingsService.Instance.HasSavedSettings
+                    && !AiSettingsService.Instance.AiDialogDontShowAgain
+                    && !_aiDialogShown)
                 {
                     _aiDialogShown = true;
                     Dispatcher.DispatchDelayed(TimeSpan.FromMilliseconds(700), async () =>
@@ -249,19 +252,18 @@ namespace RepeatList
             await ForOnAddHeaderClicked(true);
         }
 
-        // "Unlock AI features" dialog: "Now" opens the settings page, "Later" just closes it.
+        // "Unlock AI features" popup: "Now" opens the settings page, "Later" closes it.
+        // With the "Don't show again" checkbox checked the popup stays hidden on future app starts.
         private async Task ShowAiUnlockDialogAsync()
         {
-            var shell = Shell.Current;
-            if (shell == null) return;
+            var popupResult = await PopupExtensions.ShowPopupAsync<AiUnlockResult>(this, new AiUnlockPopup());
+            var result = popupResult.Result;
+            if (result == null) return;
 
-            bool goNow = await shell.DisplayAlert(
-                AiSettingsService.T("AiFeatureCardTitle"),
-                "• " + AiSettingsService.T("AiFeatureListGen") + "\n\n• " + AiSettingsService.T("AiFeatureVoiceInput"),
-                AiSettingsService.T("AiEnableNow"),
-                AiSettingsService.T("AiLater"));
+            if (result.DontShowAgain)
+                Preferences.Default.Set(AiSettingsService.PrefAiDialogDontShowAgain, true);
 
-            if (goNow)
+            if (result.GoToSettings)
                 await Shell.Current.GoToAsync("//SetupPage");
         }
 
