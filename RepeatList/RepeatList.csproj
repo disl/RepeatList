@@ -396,11 +396,16 @@
 	</ItemGroup>
 
 	<ItemGroup Condition="'$(TargetFramework)' == 'net9.0-android'">
-		<PackageReference Include="Xamarin.Google.Android.Play.Core">
-			<Version>1.10.3.19</Version>
-		</PackageReference>
+		<AndroidMavenLibrary Include="com.google.android.play:app-update" Version="2.1.0" Repository="Google" />
+		<AndroidMavenLibrary Include="com.google.android.play:core-common" Version="2.0.3" Repository="Google" />
 		<PackageReference Include="Xamarin.GooglePlayServices.Ads.Lite">
 			<Version>124.0.0.2</Version>
+		</PackageReference>
+		<PackageReference Include="Xamarin.GooglePlayServices.Basement">
+			<Version>118.7.0.2</Version>
+		</PackageReference>
+		<PackageReference Include="Xamarin.GooglePlayServices.Tasks">
+			<Version>118.3.0.2</Version>
 		</PackageReference>
 	</ItemGroup>
 

@@ -1,7 +1,8 @@
-﻿#if ANDROID
-using Xamarin.Google.Android.Play.Core.AppUpdate;
-using Xamarin.Google.Android.Play.Core.Install.Model;
-using Xamarin.Google.Android.Play.Core.Tasks;
+#if ANDROID
+using Android.Gms.Tasks;
+using Com.Google.Android.Play.Core.Appupdate;
+using Com.Google.Android.Play.Core.Install.Model;
+using Sentry;
 
 namespace RepeatList.Platforms.Android
 {
@@ -29,51 +30,51 @@ namespace RepeatList.Platforms.Android
                 var appUpdateInfo = await new PlayCoreTaskWrapper<AppUpdateInfo>(appUpdateInfoTask).GetAsync();
 
                 // Check if update is available
-                if (appUpdateInfo.UpdateAvailability() == UpdateAvailability.UpdateAvailable)
+                if (appUpdateInfo.UpdateAvailability() == IUpdateAvailability.UpdateAvailable)
                 {
                     // Check if the update is allowed
                     // For immediate updates:
-                    if (appUpdateInfo.IsUpdateTypeAllowed(AppUpdateType.Immediate))
+                    if (appUpdateInfo.IsUpdateTypeAllowed(IAppUpdateType.Immediate))
                     {
+                        var options = AppUpdateOptions.DefaultOptions(IAppUpdateType.Immediate);
                         _updateManager.StartUpdateFlowForResult(
                             appUpdateInfo,
-                            AppUpdateType.Immediate,
                             Platform.CurrentActivity ?? throw new NullReferenceException("CurrentActivity is null"),
+                            options,
                             UpdateRequestCode);
                     }
                     // For flexible updates:
-                    else if (appUpdateInfo.IsUpdateTypeAllowed(AppUpdateType.Flexible))
+                    else if (appUpdateInfo.IsUpdateTypeAllowed(IAppUpdateType.Flexible))
                     {
+                        var options = AppUpdateOptions.DefaultOptions(IAppUpdateType.Flexible);
                         _updateManager.StartUpdateFlowForResult(
                             appUpdateInfo,
-                            AppUpdateType.Flexible,
                             Platform.CurrentActivity ?? throw new NullReferenceException("CurrentActivity is null"),
+                            options,
                             UpdateRequestCode);
                     }
                 }
             }
             catch (Exception ex)
             {
-                //if (ex != null)
-                //    SentrySdk.CaptureException(ex);
-                //throw;
+                SentrySdk.CaptureException(ex);
             }
         }
     }
 
     public class PlayCoreTaskWrapper<T> : Java.Lang.Object, IOnSuccessListener, IOnFailureListener where T : class
     {
-        private readonly TaskCompletionSource<T> _tcs = new();
+        private readonly System.Threading.Tasks.TaskCompletionSource<T> _tcs = new();
 
-        public PlayCoreTaskWrapper(Xamarin.Google.Android.Play.Core.Tasks.Task task)
+        public PlayCoreTaskWrapper(global::Android.Gms.Tasks.Task task)
         {
             task.AddOnSuccessListener(this);
             task.AddOnFailureListener(this);
         }
 
-        public Task<T> GetAsync() => _tcs.Task;
+        public System.Threading.Tasks.Task<T> GetAsync() => _tcs.Task;
 
-        public void OnSuccess(Java.Lang.Object result)
+        public void OnSuccess(Java.Lang.Object? result)
         {
             if (result is T typedResult)
             {
@@ -91,5 +92,4 @@ namespace RepeatList.Platforms.Android
         }
     }
 }
-
 #endif
