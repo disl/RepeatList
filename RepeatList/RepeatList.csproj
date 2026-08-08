@@ -25,8 +25,8 @@
 		<ApplicationId>com.companyname.repeatlist</ApplicationId>
 
 		<!-- Versions -->
-		<ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
-		<ApplicationVersion>1</ApplicationVersion>
+		<ApplicationDisplayVersion>1.0.139</ApplicationDisplayVersion>
+		<ApplicationVersion>139</ApplicationVersion>
 
 		<!-- To develop, package, and publish an app to the Microsoft Store, see: https://aka.ms/MauiTemplateUnpackaged -->
 		<WindowsPackageType>None</WindowsPackageType>
@@ -44,22 +44,6 @@
 
 
 	</PropertyGroup>
-
-	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net9.0-android'">
-		<EmbedAssembliesIntoApk>False</EmbedAssembliesIntoApk>
-		<ApplicationDisplayVersion>1.0.131</ApplicationDisplayVersion>
-		<ApplicationVersion>131</ApplicationVersion>
-		<AndroidKeyStore>False</AndroidKeyStore>
-	</PropertyGroup>
-
-	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net9.0-android'">
-		<EmbedAssembliesIntoApk>False</EmbedAssembliesIntoApk>
-		<ApplicationDisplayVersion>1.0.130</ApplicationDisplayVersion>
-		<ApplicationVersion>130</ApplicationVersion>
-		<AndroidKeyStore>False</AndroidKeyStore>
-	</PropertyGroup>
-
-
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)' == 'Release|net9.0-android'">
 
 		<Platform>AnyCPU</Platform>
@@ -67,8 +51,6 @@
 		<RuntimeIdentifier>android-arm64</RuntimeIdentifier>
 
 
-		<ApplicationDisplayVersion>1.0.132</ApplicationDisplayVersion>
-		<ApplicationVersion>132</ApplicationVersion>
 		<AndroidPackageFormat>aab</AndroidPackageFormat>
 		<AndroidDebugSymbols>true</AndroidDebugSymbols>
 		<EmbedAssembliesIntoApk>true</EmbedAssembliesIntoApk>
@@ -77,14 +59,14 @@
 			<TargetSdkVersion>36</TargetSdkVersion>
 		
 	</PropertyGroup>
-
-
-	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net9.0-android|AnyCPU'">
-	  <ApplicationDisplayVersion>1.0.139</ApplicationDisplayVersion>
-	  <ApplicationVersion>139</ApplicationVersion>
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net9.0-android|AnyCPU'">
+	  <ApplicationDisplayVersion>1.0.141</ApplicationDisplayVersion>
+	  <ApplicationVersion>141</ApplicationVersion>
 	</PropertyGroup>
-
-
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net9.0-android|AnyCPU'">
+	  <ApplicationDisplayVersion>1.0.141</ApplicationDisplayVersion>
+	  <ApplicationVersion>141</ApplicationVersion>
+	</PropertyGroup>
 
 
 
@@ -230,12 +212,12 @@
 
 	<ItemGroup>
 		<PackageReference Include="CommunityToolkit.Maui" Version="12.3.0" />
-		<PackageReference Include="CommunityToolkit.Maui.MediaElement" Version="6.1.2" />
-		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
-		<PackageReference Include="Microsoft.Data.Sqlite.Core" Version="9.0.10" />
-		<PackageReference Include="Microsoft.Extensions.Http" Version="9.0.10" />
+		<PackageReference Include="CommunityToolkit.Maui.MediaElement" Version="6.1.3" />
+		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.2" />
+		<PackageReference Include="Microsoft.Data.Sqlite.Core" Version="9.0.18" />
+		<PackageReference Include="Microsoft.Extensions.Http" Version="9.0.18" />
 		<PackageReference Include="Microsoft.Maui.Controls" Version="9.0.120" />
-		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="9.0.10" />
+		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="9.0.18" />
 		<PackageReference Include="NAudio" Version="2.3.0" />
 
 
@@ -244,12 +226,12 @@
 
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
 		<PackageReference Include="Plugin.InAppBilling" Version="9.1.0" />
-		<PackageReference Include="Sentry.Maui" Version="5.16.2" />
-		<PackageReference Include="SpotifyAPI.Web" Version="7.2.1" />
-		<PackageReference Include="SpotifyAPI.Web.Auth" Version="7.2.1" />
-		<PackageReference Include="SQLitePCLRaw.bundle_e_sqlite3" Version="3.0.2" />
-		<PackageReference Include="Supabase" Version="1.1.1" />
-		<PackageReference Include="Supabase.Postgrest" Version="4.1.0" />
+		<PackageReference Include="Sentry.Maui" Version="6.8.0" />
+		<PackageReference Include="SpotifyAPI.Web" Version="7.4.2" />
+		<PackageReference Include="SpotifyAPI.Web.Auth" Version="7.4.2" />
+		<PackageReference Include="SQLitePCLRaw.bundle_e_sqlite3" Version="3.0.5" />
+		<PackageReference Include="Supabase" Version="1.6.0" />
+		<PackageReference Include="Supabase.Postgrest" Version="4.4.0" />
 
 
 

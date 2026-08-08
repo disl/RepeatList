@@ -75,27 +75,19 @@ public partial class Lists_PopUpMenu : Popup<string>
 
     async Task CloseMe(dynamic param)
     {
-        // Popup zuerst schlieﬂen
-        if (Handler != null)
+        try
         {
-            CloseAsync(param); // Bei Popup<TResult> -> kein await, sofort Ergebnis setzen
+            // Popup<TResult>.CloseAsync(param) sets the result and closes the popup.
+            await CloseAsync(param);
         }
-
-        // Danach Navigation
-        if (Navigation.ModalStack.Any())
+        catch (InvalidOperationException) when (Navigation.ModalStack.Any())
         {
+            // CommunityToolkit.Maui throws PopupBlockedException (internal) when another
+            // modal (e.g. the AI-unlock popup) is on top of the modal stack. Pop the
+            // topmost modal and try closing again.
             await Navigation.PopModalAsync();
+            await CloseAsync(param);
         }
-
-        //if (!Navigation.ModalStack.Any())
-        //{
-        //    await CloseAsync(param);
-        //}
-        //else
-        //{
-        //    await Navigation.PopModalAsync();
-        //    await CloseAsync(param);
-        //}
     }
 
     private async void Export_list_spotifyClicked(object sender, EventArgs e)

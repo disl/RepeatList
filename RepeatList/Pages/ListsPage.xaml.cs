@@ -92,6 +92,13 @@ namespace RepeatList
                     {
                         try
                         {
+                            // Only show the AI offer when no modal/popup is open.
+                            // Otherwise the PopupPage lands ON TOP of an open dialog
+                            // (e.g. the Add-list dialog) in the modal stack and blocks
+                            // its CloseAsync (PopupBlockedException in CommunityToolkit.Maui).
+                            if (Navigation.ModalStack.Any())
+                                return;
+
                             await ShowAiUnlockDialogAsync();
                         }
                         catch (Exception ex)

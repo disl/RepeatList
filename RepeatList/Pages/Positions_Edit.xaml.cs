@@ -55,6 +55,13 @@ public partial class Positions_Edit : Popup<object>
         {
             await CloseAsync(param);
         }
+        catch (InvalidOperationException) when (Navigation.ModalStack.Any())
+        {
+            // CommunityToolkit.Maui throws PopupBlockedException (internal) when another
+            // modal is on top of the modal stack. Pop the topmost modal and retry.
+            await Navigation.PopModalAsync();
+            await CloseAsync(param);
+        }
         catch (Exception ex)
         {
             SentrySdk.CaptureException(ex);
