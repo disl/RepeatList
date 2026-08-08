@@ -60,7 +60,7 @@ namespace RepeatList.ViewModels
 
             try
             {
-                _supabaseService = new SupabaseService();
+                _supabaseService = SupabaseService.Shared;
                 SupabaseService_ready = true;
             }
             catch (Exception ex)
@@ -678,68 +678,67 @@ namespace RepeatList.ViewModels
         public async Task Sync_list_upClicked()
         {
             IsBusy = true;
+            try
+            {
+                // 🔒 1. Grundsicherungen
+                if (_supabaseService == null || Header_SelectedItem == null)
+                    return;
 
-            // 🔒 1. Grundsicherungen
-            if (_supabaseService == null || Header_SelectedItem == null)
+                // 🔒 2. Positions aus SQLite laden
+                var loadedPositions = await _databaseService.GetPositionsAsync(Header_SelectedItem.Id);
+
+                // Falls geladen NULL oder leer → abbrechen
+                if (loadedPositions == null || loadedPositions.Count == 0)
+                    return;
+
+                // 🔧 3. Null-Werte *entfernen* – wichtigste Zeile gegen TryGetFirst!
+                loadedPositions = loadedPositions.Where(x => x != null).ToList();
+
+                // Falls nach dem Säubern nichts übrig ist → abbrechen
+                if (loadedPositions.Count == 0)
+                    return;
+
+                // UI-Collection aktualisieren
+                Lists = loadedPositions.ToObservableCollection();
+
+                // 🔧 4. Positions in das ausgewählte Header-Objekt setzen
+                Header_SelectedItem.Positions = loadedPositions;
+
+                // 🔄 5. Supabase-Sync (nur wenn Dienst bereit)
+                if (SupabaseService_ready)
+                {
+                    bool uploaded = await _supabaseService.SyncHeaderWithDetailsAsync(Header_SelectedItem);
+                    if (!uploaded)
+                        return; // Upload fehlgeschlagen → nicht als synchronisiert markieren
+                }
+
+                // 📌 6. Lokal markieren, dass dieser Header synchronisiert ist
+                await EditIsSynchronizedHeader(Header_SelectedItem, true);
+
+                // 🔁 7. Down-Sync
+                await Sync_list_downClicked(Header_SelectedItem.Id);
+
+                // 🔗 8. Dialog zum Teilen des Keys
+                bool answer = await Application.Current.MainPage.DisplayAlert(
+                    Properties.Resources.Would_you_like_to_work_with_someone_on_a_current_list + Environment.NewLine +
+                    Properties.Resources.To_be_able_to_edit_the_list_please_use_the_following_key
+                        .Replace("%1", Header_SelectedItem.Id)
+                        .Replace("%2", Header_SelectedItem.ListName) + ":",
+                    Properties.Resources.Are_you_sure,
+                    Properties.Resources.yes,
+                    Properties.Resources.no
+                );
+
+                if (answer)
+                {
+                    var share_text = Properties.Resources.This_is_the_link_to_the_published_list_called.Replace("%1", Header_SelectedItem.ListName);
+                    await Utilities.ShareTextAsync(Header_SelectedItem.Id, share_text);
+                }
+            }
+            finally
             {
                 IsBusy = false;
-                return;
             }
-
-            // 🔒 2. Positions aus SQLite laden
-            var loadedPositions = await _databaseService.GetPositionsAsync(Header_SelectedItem.Id);
-
-            // Falls geladen NULL oder leer → abbrechen
-            if (loadedPositions == null || loadedPositions.Count == 0)
-            {
-                IsBusy = false;
-                return;
-            }
-
-            // 🔧 3. Null-Werte *entfernen* – wichtigste Zeile gegen TryGetFirst!
-            loadedPositions = loadedPositions.Where(x => x != null).ToList();
-
-            // Falls nach dem Säubern nichts übrig ist → abbrechen
-            if (loadedPositions.Count == 0)
-            {
-                IsBusy = false;
-                return;
-            }
-
-            // UI-Collection aktualisieren
-            Lists = loadedPositions.ToObservableCollection();
-
-            // 🔧 4. Positions in das ausgewählte Header-Objekt setzen
-            Header_SelectedItem.Positions = loadedPositions;
-
-            // 🔄 5. Supabase-Sync (nur wenn Dienst bereit)
-            if (SupabaseService_ready)
-                await _supabaseService.SyncHeaderWithDetailsAsync(Header_SelectedItem);
-
-            // 📌 6. Lokal markieren, dass dieser Header synchronisiert ist
-            await EditIsSynchronizedHeader(Header_SelectedItem, true);
-
-            // 🔁 7. Down-Sync
-            await Sync_list_downClicked(Header_SelectedItem.Id);
-
-            // 🔗 8. Dialog zum Teilen des Keys
-            bool answer = await Application.Current.MainPage.DisplayAlert(
-                Properties.Resources.Would_you_like_to_work_with_someone_on_a_current_list + Environment.NewLine +
-                Properties.Resources.To_be_able_to_edit_the_list_please_use_the_following_key
-                    .Replace("%1", Header_SelectedItem.Id)
-                    .Replace("%2", Header_SelectedItem.ListName) + ":",
-                Properties.Resources.Are_you_sure,
-                Properties.Resources.yes,
-                Properties.Resources.no
-            );
-
-            if (answer)
-            {
-                var share_text = Properties.Resources.This_is_the_link_to_the_published_list_called.Replace("%1", Header_SelectedItem.ListName);
-                await Utilities.ShareTextAsync(Header_SelectedItem.Id, share_text);
-            }
-
-            IsBusy = false;
         }
 
         //public async Task Sync_list_upClicked()

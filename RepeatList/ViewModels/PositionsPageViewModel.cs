@@ -241,7 +241,7 @@ namespace RepeatList.ViewModels
             _databaseService = new DatabaseService();
             try
             {
-                _supabaseService = new SupabaseService();
+                _supabaseService = SupabaseService.Shared;
                 SupabaseService_ready = true;
             }
             catch (Exception ex)
@@ -268,29 +268,41 @@ namespace RepeatList.ViewModels
 
             // CSV-Datei laden
             Categories_list = new List<CategoryRule>(); // Groß-/Kleinschreibung ignorieren
+        }
 
-            LoadRulesAsync($"categories_{CurrentCulture.ToLower()}.csv").GetAwaiter().GetResult();
-
-            // Categories
-            RefreshColors().GetAwaiter().GetResult();
-
-            InitSelectedItem_KindOfSorting();
-
-
-            SetCollapseUndone(null);
-
-            string? _collapse_undone = null;
+        /// <summary>
+        /// Performs the heavier one-time initialization (CSV rules, category colors,
+        /// positions, sorting, collapse state) off the page constructor to keep the
+        /// UI thread responsive. Called from the page's OnAppearing.
+        /// </summary>
+        public async Task InitializeAsync()
+        {
             try
             {
-                _collapse_undone = Preferences.Get("Collapse_undone", "");
-                Collapse_undone = string.IsNullOrEmpty(_collapse_undone) ? null : Convert.ToBoolean(_collapse_undone);
+                await LoadRulesAsync($"categories_{CurrentCulture.ToLower()}.csv");
+
+                // Categories
+                await RefreshColors();
+
+                InitSelectedItem_KindOfSorting();
+
+                SetCollapseUndone(null);
+
+                string? _collapse_undone = null;
+                try
+                {
+                    _collapse_undone = Preferences.Get("Collapse_undone", "");
+                    Collapse_undone = string.IsNullOrEmpty(_collapse_undone) ? null : Convert.ToBoolean(_collapse_undone);
+                }
+                catch
+                {
+                    Collapse_undone = null;
+                }
             }
-            catch
+            catch (Exception ex)
             {
-                Collapse_undone = null;
+                SentrySdk.CaptureException(ex);
             }
-
-
         }
 
         public async Task LoadRulesAsync(string fileName)
@@ -703,24 +715,31 @@ namespace RepeatList.ViewModels
                 return;
 
             IsBusy = true;
-
-            await _supabaseService.SyncHeaderWithDetailsAsync(Header_SelectedItem);
-
-            await EditIsSynchronizedHeader(Header_SelectedItem, true);
-
-            bool answer = await Application.Current.MainPage.DisplayAlert(
-                Properties.Resources.Would_you_like_to_work_with_someone_on_a_current_list + Environment.NewLine +
-                Properties.Resources.To_be_able_to_edit_the_list_please_use_the_following_key
-                    .Replace("%1", Header_SelectedItem.Id).Replace("%2", Header_SelectedItem.ListName) + ":"
-                , Properties.Resources.Are_you_sure, Properties.Resources.yes, Properties.Resources.no);
-            if (answer)
+            try
             {
-                var share_text = Header_SelectedItem.Id;
-                //Properties.Resources.To_be_able_to_edit_the_list_please_use_the_following_key
-                //.Replace("%1", Header_SelectedItem.Id).Replace("%2", Header_SelectedItem.ListName);
-                await Utilities.ShareTextAsync(share_text);
+                bool uploaded = await _supabaseService.SyncHeaderWithDetailsAsync(Header_SelectedItem);
+                if (!uploaded)
+                    return; // Upload fehlgeschlagen (nach Retries) → nicht als synchronisiert markieren
+
+                await EditIsSynchronizedHeader(Header_SelectedItem, true);
+
+                bool answer = await Application.Current.MainPage.DisplayAlert(
+                    Properties.Resources.Would_you_like_to_work_with_someone_on_a_current_list + Environment.NewLine +
+                    Properties.Resources.To_be_able_to_edit_the_list_please_use_the_following_key
+                        .Replace("%1", Header_SelectedItem.Id).Replace("%2", Header_SelectedItem.ListName) + ":"
+                    , Properties.Resources.Are_you_sure, Properties.Resources.yes, Properties.Resources.no);
+                if (answer)
+                {
+                    var share_text = Header_SelectedItem.Id;
+                    //Properties.Resources.To_be_able_to_edit_the_list_please_use_the_following_key
+                    //.Replace("%1", Header_SelectedItem.Id).Replace("%2", Header_SelectedItem.ListName);
+                    await Utilities.ShareTextAsync(share_text);
+                }
             }
-            IsBusy = false;
+            finally
+            {
+                IsBusy = false;
+            }
         }
 
         [RelayCommand]
@@ -1209,21 +1228,26 @@ namespace RepeatList.ViewModels
         public async Task UpdatePosition(Position pos)
         {
             IsBusy = true;
-
-            pos.UpdatedAt = DateTime.Now.ToUniversalTime();
-
-            if (Header_SelectedItem.IsSynchronized && _supabaseService != null)
+            try
             {
-                await _supabaseService.SyncPositionAsync(pos);
+                pos.UpdatedAt = DateTime.Now.ToUniversalTime();
+
+                if (Header_SelectedItem.IsSynchronized && _supabaseService != null)
+                {
+                    // Best-effort: retry intern; bei Fehlschlag wird die lokale Änderung trotzdem gespeichert
+                    await _supabaseService.SyncPositionAsync(pos);
+                }
+
+                Position_selectedItem = pos;
+
+                await _databaseService.UpdatePositionAsync(pos);
+
+                await LoadPositions();
             }
-
-            Position_selectedItem = pos;
-
-            await _databaseService.UpdatePositionAsync(pos);
-
-            await LoadPositions();
-
-            IsBusy = false;
+            finally
+            {
+                IsBusy = false;
+            }
         }
 
         [RelayCommand]

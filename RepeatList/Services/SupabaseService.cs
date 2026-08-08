@@ -6,61 +6,213 @@ namespace RepeatList.Services
 {
     public class SupabaseService
     {
+        /// <summary>Shared instance so all callers reuse one client and one initialization.</summary>
+        public static SupabaseService Shared { get; } = new();
+
+        private static readonly TimeSpan InitializeTimeout = TimeSpan.FromSeconds(15);
+
         private readonly Client _supabase;
-        //private readonly DatabaseService _databaseService;
+        private readonly object _initLock = new();
+        private Task _initializationTask;
 
         public SupabaseService()
         {
-            //_databaseService =  new DatabaseService();
-
             var supabaseKey = SecretVault.SupabaseKey;
             _supabase = new Client(
                 "https://bzjdutgysaztuszpcdlw.supabase.co",
                 supabaseKey
                 );
-            _supabase.InitializeAsync().Wait();
+            // No blocking network call in the constructor:
+            // initialization runs lazily on first use (see EnsureInitializedAsync).
         }
 
-        public async Task SyncHeaderWithDetailsAsync(Header? header)
+        private Task EnsureInitializedAsync()
         {
-            if (header == null)
-                return;
-
-            await _supabase.From<Header>().Upsert(header);
-
-            if (header.Positions != null)
+            lock (_initLock)
             {
-                foreach (var position in header.Positions.Where(p => p != null))
+                if (_initializationTask == null)
+                    _initializationTask = InitializeCoreAsync();
+                return _initializationTask;
+            }
+        }
+
+        private async Task InitializeCoreAsync()
+        {
+            try
+            {
+                using var timeoutCts = new CancellationTokenSource(InitializeTimeout);
+                Task initializeTask = _supabase.InitializeAsync();
+                Task completed = await Task.WhenAny(initializeTask, Task.Delay(Timeout.Infinite, timeoutCts.Token));
+
+                if (completed != initializeTask)
                 {
-                    await _supabase.From<Position>().Upsert(position);
+                    // Timed out: keep observing the detached task so it never goes unobserved.
+                    _ = ObserveAsync(initializeTask);
+                    SentrySdk.CaptureMessage($"SupabaseService init timed out after {InitializeTimeout.TotalSeconds}s");
+                    return;
+                }
+
+                await initializeTask; // rethrow on failure
+            }
+            catch (Exception ex)
+            {
+                SentrySdk.CaptureException(ex);
+            }
+        }
+
+        private static async Task ObserveAsync(Task task)
+        {
+            try
+            {
+                await task;
+            }
+            catch (Exception ex)
+            {
+                SentrySdk.CaptureException(ex);
+            }
+        }
+
+        /// <summary>Anzahl der Versuche inkl. Erstversuch bei transienten Netzwerkfehlern
+        /// (z. B. "Software caused connection abort" bei Netzwechsel oder Keep-alive-Abbruch).</summary>
+        private const int MaxAttempts = 3;
+        private static readonly TimeSpan RetryBaseDelay = TimeSpan.FromMilliseconds(500);
+
+        private static bool IsTransientNetworkError(Exception ex)
+        {
+            Exception baseEx = ex.GetBaseException();
+
+            // HTTP-Statusfehler: nur 5xx ist transient (Server kurzzeitig überlastet)
+            if (baseEx is System.Net.Http.HttpRequestException httpEx && httpEx.StatusCode.HasValue)
+                return (int)httpEx.StatusCode.Value >= 500;
+
+            // Alte WebException-Klasse: Protokoll-/TLS-Fehler nicht wiederholen
+            if (baseEx is System.Net.WebException webEx)
+                return webEx.Status != System.Net.WebExceptionStatus.ProtocolError
+                    && webEx.Status != System.Net.WebExceptionStatus.SecureChannelFailure;
+
+            // Verbindungsfehler (Socket-Abbruch, Keep-alive-Reuse) sind transient
+            return baseEx is System.Net.Http.HttpRequestException
+                or System.Net.Sockets.SocketException
+                or Java.Net.SocketException;
+        }
+
+        private static async Task<T> ExecuteWithRetryAsync<T>(Func<Task<T>> operation)
+        {
+            for (int attempt = 1; ; attempt++)
+            {
+                try
+                {
+                    return await operation();
+                }
+                catch (Exception ex) when (attempt < MaxAttempts && IsTransientNetworkError(ex))
+                {
+                    await Task.Delay(RetryBaseDelay * attempt);
                 }
             }
         }
 
-        public async Task SyncPositionAsync(Position? position)
+        private static async Task ExecuteWithRetryAsync(Func<Task> operation)
         {
-            await _supabase.From<Position>().Upsert(position);
+            for (int attempt = 1; ; attempt++)
+            {
+                try
+                {
+                    await operation();
+                    return;
+                }
+                catch (Exception ex) when (attempt < MaxAttempts && IsTransientNetworkError(ex))
+                {
+                    await Task.Delay(RetryBaseDelay * attempt);
+                }
+            }
         }
-        
 
-        public async Task DeleteHeaderWithDetailsAsync(Header header)
+        public async Task<bool> SyncHeaderWithDetailsAsync(Header? header)
         {
-            if (header != null)
+            if (header == null)
+                return false;
+
+            await EnsureInitializedAsync();
+
+            try
+            {
+                await ExecuteWithRetryAsync(() => _supabase.From<Header>().Upsert(header));
+
+                if (header.Positions != null)
+                {
+                    foreach (var position in header.Positions.Where(p => p != null))
+                    {
+                        await ExecuteWithRetryAsync(() => _supabase.From<Position>().Upsert(position));
+                    }
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                // Nach Retries noch fehlgeschlagen → einmal melden; Aufrufer läuft lokal weiter
+                SentrySdk.CaptureException(ex);
+                return false;
+            }
+        }
+
+        public async Task<bool> SyncPositionAsync(Position? position)
+        {
+            await EnsureInitializedAsync();
+
+            try
+            {
+                await ExecuteWithRetryAsync(() => _supabase.From<Position>().Upsert(position));
+                return true;
+            }
+            catch (Exception ex)
+            {
+                SentrySdk.CaptureException(ex);
+                return false;
+            }
+        }
+
+
+        public async Task<bool> DeleteHeaderWithDetailsAsync(Header header)
+        {
+            await EnsureInitializedAsync();
+
+            if (header == null)
+                return false;
+
+            try
             {
                 //var positions = await _databaseService.GetPositionsAsync(header.Id);
                 //foreach (var position in positions)
                 //{
                 //    await _supabase.From<Position>().Delete(position);
                 //}
-                await _supabase.From<Header>().Delete(header);
+                await ExecuteWithRetryAsync(() => _supabase.From<Header>().Delete(header));
+                return true;
+            }
+            catch (Exception ex)
+            {
+                SentrySdk.CaptureException(ex);
+                return false;
             }
         }
 
-        public async Task DeletePositionAsync(Position position)
+        public async Task<bool> DeletePositionAsync(Position position)
         {
-            if (position != null)
+            await EnsureInitializedAsync();
+
+            if (position == null)
+                return false;
+
+            try
             {
-                await _supabase.From<Position>().Delete(position);
+                await ExecuteWithRetryAsync(() => _supabase.From<Position>().Delete(position));
+                return true;
+            }
+            catch (Exception ex)
+            {
+                SentrySdk.CaptureException(ex);
+                return false;
             }
         }
 
@@ -68,21 +220,25 @@ namespace RepeatList.Services
         {
             try
             {
-                Supabase.Postgrest.Responses.ModeledResponse<Header> headerResponse = await _supabase
-                    .From<Header>()
-                    .Filter("Id", Supabase.Postgrest.Constants.Operator.Equals, headerId.ToString())
-                    .Get();
+                await EnsureInitializedAsync();
+
+                Supabase.Postgrest.Responses.ModeledResponse<Header> headerResponse = await ExecuteWithRetryAsync(
+                    () => _supabase
+                        .From<Header>()
+                        .Filter("Id", Supabase.Postgrest.Constants.Operator.Equals, headerId.ToString())
+                        .Get());
 
                 var _header = headerResponse.Model;
 
                 if (headerResponse != null)
                 {
                     // Hole die zugehörigen Details aus Supabase
-                    var detailsResponse = await _supabase
-                        .From<Position>()
-                        .Filter("HeaderId", Supabase.Postgrest.Constants.Operator.Equals, headerId.ToString())
-                        //.Where(x => x.HeaderId == headerId.ToString())
-                        .Get();
+                    var detailsResponse = await ExecuteWithRetryAsync(
+                        () => _supabase
+                            .From<Position>()
+                            .Filter("HeaderId", Supabase.Postgrest.Constants.Operator.Equals, headerId.ToString())
+                            //.Where(x => x.HeaderId == headerId.ToString())
+                            .Get());
 
                     var _position = detailsResponse.Models;
 
@@ -104,6 +260,8 @@ namespace RepeatList.Services
         {
             try
             {
+                await EnsureInitializedAsync();
+
                 var sub = new Subscription
                 {
                     DeviceId = deviceId,
@@ -112,7 +270,7 @@ namespace RepeatList.Services
                     ProductId = productId,
                     UpdatedAt = DateTime.UtcNow
                 };
-                await _supabase.From<Subscription>().Upsert(sub);
+                await ExecuteWithRetryAsync(() => _supabase.From<Subscription>().Upsert(sub));
             }
             catch (Exception)
             {
@@ -124,10 +282,13 @@ namespace RepeatList.Services
         {
             try
             {
-                var response = await _supabase
-                    .From<Subscription>()
-                    .Filter("device_id", Supabase.Postgrest.Constants.Operator.Equals, deviceId)
-                    .Single();
+                await EnsureInitializedAsync();
+
+                var response = await ExecuteWithRetryAsync(
+                    () => _supabase
+                        .From<Subscription>()
+                        .Filter("device_id", Supabase.Postgrest.Constants.Operator.Equals, deviceId)
+                        .Single());
                 return response?.IsPremium;
             }
             catch (Exception)
@@ -140,10 +301,13 @@ namespace RepeatList.Services
         {
             try
             {
-                Supabase.Postgrest.Responses.ModeledResponse<DeviceList> headerResponse = await _supabase
-                    .From<DeviceList>()
-                    //.Filter("Id", Supabase.Postgrest.Constants.Operator.Equals, headerId.ToString())
-                    .Get();
+                await EnsureInitializedAsync();
+
+                Supabase.Postgrest.Responses.ModeledResponse<DeviceList> headerResponse = await ExecuteWithRetryAsync(
+                    () => _supabase
+                        .From<DeviceList>()
+                        //.Filter("Id", Supabase.Postgrest.Constants.Operator.Equals, headerId.ToString())
+                        .Get());
 
                 var _header = headerResponse.Models;
 

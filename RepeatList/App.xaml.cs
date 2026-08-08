@@ -80,6 +80,18 @@ namespace RepeatList
             }
         }
 
+        protected override void OnSleep()
+        {
+            base.OnSleep();
+            AppLifecycle.NotifyBackgrounded();
+        }
+
+        protected override void OnResume()
+        {
+            base.OnResume();
+            AppLifecycle.NotifyForegrounded();
+        }
+
         private void HandleUnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
             if (e.ExceptionObject is Exception ex)

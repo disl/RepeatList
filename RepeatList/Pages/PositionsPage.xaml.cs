@@ -25,6 +25,7 @@ namespace RepeatList
         //var client = new DeepSeekClient();
 
         private IDispatcherTimer _timer;
+        private bool _isTimerTicking;
 
         private double _lastScrollPosition_undone = 0;
         private object _lastVisibleItem_undone = null;
@@ -55,6 +56,8 @@ namespace RepeatList
 
                 //if (ViewModel != null && ViewModel.Headers != null && ViewModel.Headers.Count > 0)
                 //    HeaderListView.SelectedItem=ViewModel.Headers[0];
+
+                await ViewModel.InitializeAsync();
 
                 await ViewModel.LoadPositions();
 
@@ -98,13 +101,9 @@ namespace RepeatList
 
                 ViewModel.InitLabels();
 
-                if (ViewModel.Header_SelectedItem.IsSynchronized)
-                {
-                    _timer = Dispatcher.CreateTimer();
-                    _timer.Interval = TimeSpan.FromSeconds(15);
-                    _timer.Tick += _timer_Tick;
-                    _timer.Start();
-                }
+                AppLifecycle.Backgrounded += OnAppBackgrounded;
+                AppLifecycle.Foregrounded += OnAppForegrounded;
+                StartSyncTimer();
 
                 //SetHeader();
             }
@@ -172,29 +171,69 @@ namespace RepeatList
             //}
         }
 
+        private void StartSyncTimer()
+        {
+            if (ViewModel.Header_SelectedItem.IsSynchronized && _timer == null)
+            {
+                _timer = Dispatcher.CreateTimer();
+                _timer.Interval = TimeSpan.FromSeconds(15);
+                _timer.Tick += _timer_Tick;
+                _timer.Start();
+            }
+        }
+
+        private void StopSyncTimer()
+        {
+            if (_timer != null)
+            {
+                _timer.Stop();
+                _timer.Tick -= _timer_Tick;
+                _timer = null;
+            }
+        }
+
+        private void OnAppBackgrounded(object? sender, EventArgs e) => StopSyncTimer();
+
+        private void OnAppForegrounded(object? sender, EventArgs e) => StartSyncTimer();
+
         private async void _timer_Tick(object? sender, EventArgs e)
         {
-            if (ViewModel.IsBusy) return;
+            if (ViewModel.IsBusy || _isTimerTicking) return;
 
-            ViewModel.IsBusy = true;
+            _isTimerTicking = true;
+            try
+            {
+                ViewModel.IsBusy = true;
 
-            if (!ViewModel.Header_SelectedItem.IsSynchronized)
-                return;
+                if (!ViewModel.Header_SelectedItem.IsSynchronized)
+                {
+                    StopSyncTimer(); // no longer synchronized -> stop polling
+                    return;
+                }
 
-            await ViewModel.Sync_list_downClicked(ViewModel.Header_SelectedItem);
+                await ViewModel.Sync_list_downClicked(ViewModel.Header_SelectedItem);
 
-            await ViewModel.LoadPositions();
+                await ViewModel.LoadPositions();
 
-            //SetHeader();
-
-            ViewModel.IsBusy = false;
+                //SetHeader();
+            }
+            catch (Exception ex)
+            {
+                SentrySdk.CaptureException(ex);
+            }
+            finally
+            {
+                ViewModel.IsBusy = false;   // always reset, even on early return
+                _isTimerTicking = false;
+            }
         }
 
         protected override void OnDisappearing()
         {
             base.OnDisappearing();
-            if (_timer != null)
-                _timer.Stop();
+            AppLifecycle.Backgrounded -= OnAppBackgrounded;
+            AppLifecycle.Foregrounded -= OnAppForegrounded;
+            StopSyncTimer();
         }
 
         private void SetCurrentCulture(string curr_culture)

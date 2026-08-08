@@ -71,7 +71,7 @@ namespace RepeatList.Services
             var deviceId = GetDeviceId();
             if (deviceId == null) return;
 
-            var supabase = new SupabaseService();
+            var supabase = SupabaseService.Shared;
             await supabase.UpsertSubscriptionAsync(deviceId, true, purchaseToken, productId);
         }
 
@@ -82,7 +82,7 @@ namespace RepeatList.Services
 
             try
             {
-                var supabase = new SupabaseService();
+                var supabase = SupabaseService.Shared;
                 var isPremium = await supabase.GetSubscriptionStatusAsync(deviceId);
                 if (isPremium.HasValue)
                     Preferences.Set(PremiumKey, isPremium.Value);
