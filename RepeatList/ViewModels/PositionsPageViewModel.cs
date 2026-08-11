@@ -384,7 +384,7 @@ namespace RepeatList.ViewModels
 
         public async Task RefreshColors()
         {
-            GetCategories_DB().GetAwaiter().GetResult();
+            await GetCategories_DB();
 
             InitColors();
 
@@ -393,7 +393,10 @@ namespace RepeatList.ViewModels
 
         private async Task GetCategories_DB()
         {
-            await m_CategoryPosition_PopUpViewModel.FillList();
+            // Microsoft.Data.Sqlite-"Async"-Methoden laufen intern synchron auf dem
+            // aufrufenden Thread — daher vom Main-Thread lösen, damit die UI beim
+            // Kategorisieren/Laden nicht blockiert (ANR-Risiko).
+            await Task.Run(() => m_CategoryPosition_PopUpViewModel.FillList());
             Categories_db = m_CategoryPosition_PopUpViewModel.Categories_db;
         }
 
@@ -833,7 +836,8 @@ namespace RepeatList.ViewModels
 
                 PositionListViewVisible = false;
 
-                var _pos_arr = await _databaseService.GetPositionsAsync(Header_SelectedItem.Id);
+                // Microsoft.Data.Sqlite-"Async" läuft intern synchron — vom Main-Thread lösen
+                var _pos_arr = await Task.Run(() => _databaseService.GetPositionsAsync(Header_SelectedItem.Id));
                 if (_pos_arr == null || _pos_arr.Count == 0)
                 {
                     IsBusy = false;
@@ -841,8 +845,8 @@ namespace RepeatList.ViewModels
                 }
                 Positions = _pos_arr.OrderBy(x => x.IsCompleted).ThenBy(a => a.Title).ToObservableCollection();
 
-                // set categories 
-                FillCategories();
+                // set categories
+                await FillCategories();
 
                 if (SelectedItem_KindOfSorting_undone == null)
                 {
@@ -927,10 +931,10 @@ namespace RepeatList.ViewModels
             }
         }
 
-        public void FillCategories()
+        public async Task FillCategories()
         {
             // From DB
-            GetCategories_DB().GetAwaiter().GetResult();
+            await GetCategories_DB();
 
             // From prediction
             for (int i = 0; i < Positions.Count; i++)
