@@ -61,6 +61,10 @@ namespace RepeatList
 
                 await ViewModel.LoadPositions();
 
+                // Culture laden, damit SetCurrentCulture wie bisher greift
+                // (SelectedItem ist erst nach Load() verfügbar).
+                await SetupPageViewModel.Load();
+
                 if (SetupPageViewModel.SelectedItem != null)
                 {
                     SetCurrentCulture(SetupPageViewModel.SelectedItem.DefaultLanguage);

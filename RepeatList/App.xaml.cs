@@ -10,6 +10,16 @@ namespace RepeatList
         {
             InitializeComponent();
 
+            // Theme frühstmöglich anwenden: Im Konstruktor ist Application.Current bereits gesetzt,
+            // und die Android-Activity hat ihr Theme noch nicht gewählt → der erste sichtbare Frame
+            // startet direkt im gewählten Modus. OnStart wäre zu spät (dort ist das Activity-Theme
+            // bereits festgelegt, der erste Frame würde hell/light erscheinen).
+            if (Application.Current != null)
+            {
+                Application.Current.UserAppTheme =
+                    Preferences.Get("app_theme", "Dark") == "Dark" ? AppTheme.Dark : AppTheme.Light;
+            }
+
             // Nur Ereignis-Handler im Konstruktor registrieren
             AppDomain.CurrentDomain.UnhandledException += HandleUnhandledException;
             TaskScheduler.UnobservedTaskException += (s, e) =>
@@ -26,6 +36,15 @@ namespace RepeatList
         protected override async void OnStart()
         {
             base.OnStart();
+
+            // Theme beim Start anwenden, BEVOR die Shell erstellt wird. SetupPageViewModel.Load()
+            // läuft asynchron und setzt das Theme erst nach dem ersten Rendering (dort wird der Wert
+            // über Preferences.Set("app_theme", …) gepflegt; Default = Dark wie im DB-Schema).
+            if (Application.Current != null)
+            {
+                Application.Current.UserAppTheme =
+                    Preferences.Get("app_theme", "Dark") == "Dark" ? AppTheme.Dark : AppTheme.Light;
+            }
 
             try
             {

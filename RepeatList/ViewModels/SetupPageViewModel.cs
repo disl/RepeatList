@@ -50,11 +50,15 @@ namespace RepeatList.ViewModels
 
         #endregion
 
+        // Serialisiert den "DB ist leer → ersten Setup-Datensatz anlegen"-Pfad über alle
+        // Instanzen hinweg (mehrere SetupPageViewModel-Instanzen rufen Load() beim App-Start parallel auf).
+        private static readonly SemaphoreSlim _setupInitLock = new(1, 1);
+
         public SetupPageViewModel()
         {
             _databaseService = new DatabaseService();
-            _= Load();
-
+            // Kein fire-and-forget Load() mehr: SelectedItem wäre sonst (dank echtem Async)
+            // beim ersten Zugriff garantiert null. Aufrufer awaiten Load() explizit.
             InitLanguagePicker();
         }
 
@@ -76,45 +80,68 @@ namespace RepeatList.ViewModels
 
         public async Task Load()
         {
+            // Altlast (Doppel-Insert aus alter Version) einmalig bereinigen. Idempotent —
+            // nach dem ersten Durchlauf ist nur noch 1 Setup-Datensatz vorhanden.
+            await _databaseService.DeduplicateSetupsAsync();
+
             var _setup_list = await _databaseService.GetSetupsAsync();
             if (_setup_list == null || _setup_list.Count == 0)
             {
-                await Add(CultureInfo.CurrentCulture.TwoLetterISOLanguageName, "Dark");
-            }
-            else
-            {
-                if (List == null)
-                    List = new ObservableCollection<Setup>();
-                List.Clear();
-                List = new ObservableCollection<Setup>(_setup_list);
-
-
-                if (List != null &&  List.Count > 0)
+                await _setupInitLock.WaitAsync();
+                try
                 {
-                    SelectedItem = List.FirstOrDefault();
-
-                    // Thema
-                    if (SelectedItem != null && Application.Current != null)
+                    // Doppelprüfung: Ein paralleler Load()-Aufruf einer anderen Instanz
+                    // (mehrere ViewModels beim App-Start) hat den Datensatz evtl. schon angelegt.
+                    _setup_list = await _databaseService.GetSetupsAsync();
+                    if (_setup_list == null || _setup_list.Count == 0)
                     {
-                        if (SelectedItem.DefaultAppTheme == "Dark")
-                            Application.Current.UserAppTheme = AppTheme.Dark;
-                        else
-                            Application.Current.UserAppTheme = AppTheme.Light;
-
-                        IsChecked_Dark = Application.Current.UserAppTheme == AppTheme.Dark;
-                        IsChecked_Light = Application.Current.UserAppTheme == AppTheme.Light;
+                        await Add(CultureInfo.CurrentCulture.TwoLetterISOLanguageName, "Dark");
+                        _setup_list = await _databaseService.GetSetupsAsync();
                     }
+                }
+                finally
+                {
+                    _setupInitLock.Release();
+                }
+            }
 
-                    CultureInfo ci = new CultureInfo("en");
-                    if (SelectedItem != null)
-                        ci = new CultureInfo(SelectedItem.DefaultLanguage);
-                    Thread.CurrentThread.CurrentCulture = ci;
-                    Thread.CurrentThread.CurrentUICulture = ci;
+            if (_setup_list == null || _setup_list.Count == 0)
+                return;
 
-                    if (Languages != null)
-                    {
-                        SelectedLanguage = Languages.FirstOrDefault(x => x.Code != null && x.Code.Equals(ci.TwoLetterISOLanguageName, StringComparison.CurrentCultureIgnoreCase))  ;
-                    }
+            if (List == null)
+                List = new ObservableCollection<Setup>();
+            List.Clear();
+            List = new ObservableCollection<Setup>(_setup_list);
+
+            if (List != null && List.Count > 0)
+            {
+                SelectedItem = List.FirstOrDefault();
+
+                // Thema
+                if (SelectedItem != null && Application.Current != null)
+                {
+                    if (SelectedItem.DefaultAppTheme == "Dark")
+                        Application.Current.UserAppTheme = AppTheme.Dark;
+                    else
+                        Application.Current.UserAppTheme = AppTheme.Light;
+
+                    IsChecked_Dark = Application.Current.UserAppTheme == AppTheme.Dark;
+                    IsChecked_Light = Application.Current.UserAppTheme == AppTheme.Light;
+
+                    // Theme für den nächsten App-Start cachen. Load() läuft asynchron und kommt
+                    // damit zu spät für das erste Rendering → App.OnStart wendet es direkt an.
+                    Preferences.Set("app_theme", SelectedItem.DefaultAppTheme);
+                }
+
+                CultureInfo ci = new CultureInfo("en");
+                if (SelectedItem != null)
+                    ci = new CultureInfo(SelectedItem.DefaultLanguage);
+                Thread.CurrentThread.CurrentCulture = ci;
+                Thread.CurrentThread.CurrentUICulture = ci;
+
+                if (Languages != null)
+                {
+                    SelectedLanguage = Languages.FirstOrDefault(x => x.Code != null && x.Code.Equals(ci.TwoLetterISOLanguageName, StringComparison.CurrentCultureIgnoreCase));
                 }
             }
         }

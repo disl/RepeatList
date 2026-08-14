@@ -10,20 +10,34 @@ namespace RepeatList.ViewModels
         private DatabaseService _databaseService;
         private SetupPageViewModel? setupPageViewModel;
 
-        [ObservableProperty] public static string setup;
-
         public ResourcesViewModel()
         {
             _databaseService = new DatabaseService();
 
             setupPageViewModel = new SetupPageViewModel();
-            _ = setupPageViewModel.Load();
-            var CurrentCulture = setupPageViewModel.SelectedItem.DefaultLanguage;
-            CultureInfo culture = new CultureInfo(CurrentCulture);
-            CultureInfo.DefaultThreadCurrentCulture = culture;
-            CultureInfo.DefaultThreadCurrentUICulture = culture;
+            // Kein synchroner Zugriff auf SelectedItem: Load() läuft dank echtem Async
+            // nicht mehr synchron durch → SelectedItem ist sonst null (NullReferenceException).
+            _ = InitializeCultureAsync();
+        }
 
-            Setup = Properties.Resources.setup;
+        private async Task InitializeCultureAsync()
+        {
+            try
+            {
+                await setupPageViewModel.Load();
+
+                var lang = setupPageViewModel.SelectedItem?.DefaultLanguage;
+                if (!string.IsNullOrEmpty(lang))
+                {
+                    var culture = new CultureInfo(lang);
+                    CultureInfo.DefaultThreadCurrentCulture = culture;
+                    CultureInfo.DefaultThreadCurrentUICulture = culture;
+                }
+            }
+            catch (Exception ex)
+            {
+                SentrySdk.CaptureException(ex);
+            }
         }
 
 

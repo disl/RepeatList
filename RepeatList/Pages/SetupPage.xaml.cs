@@ -25,15 +25,17 @@ public partial class SetupPage : ContentPage
         BindingContext = ViewModel;
     }
 
-    protected override void OnAppearing()
+    protected override async void OnAppearing()
     {
         base.OnAppearing();
         _isStart = true;
 
-        _oldThema = ViewModel.SelectedItem.DefaultAppTheme;
-        _oldLanguage = ViewModel.SelectedItem.DefaultLanguage;
+        // SelectedItem ist erst nach Load() verfügbar (davor null → NullReferenceException).
+        await ViewModel.Load();
 
-        _ = ViewModel.Load();
+        _oldThema = ViewModel.SelectedItem?.DefaultAppTheme ?? "Dark";
+        _oldLanguage = ViewModel.SelectedItem?.DefaultLanguage ?? "en";
+
         _ = LoadAiSettingsAsync();
     }
 

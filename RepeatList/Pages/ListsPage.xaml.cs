@@ -28,6 +28,10 @@ namespace RepeatList
 
         private IDispatcherTimer _timer;
 
+        // Reentrancy-Guard + Abbruchkette für die Sync-Schleife in ForTimer_Tick.
+        private int _syncInProgress;
+        private CancellationTokenSource? _syncCts;
+
 
         //private readonly ISpeechToText _speechToText;
 
@@ -39,6 +43,10 @@ namespace RepeatList
 
                 ViewModel = new ListsPageViewModel();
                 BindingContext = ViewModel;
+
+                // Laufende Sync-Arbeit abbrechen, sobald die App in den Hintergrund geht
+                // (sonst belegt der Main-Thread weiter und Android meldet einen Background ANR).
+                AppLifecycle.Backgrounded += (_, _) => _syncCts?.Cancel();
 
 
             }
@@ -56,6 +64,7 @@ namespace RepeatList
                 ViewModel.IsBusy = true;
 
                 SetupPageViewModel = new SetupPageViewModel();
+                await SetupPageViewModel.Load();   // DB-Teil läuft im Hintergrund, SelectedItem danach verfügbar
                 if (SetupPageViewModel.SelectedItem != null)
                 {
                     SetCurrentCulture(SetupPageViewModel.SelectedItem.DefaultLanguage);
@@ -109,6 +118,11 @@ namespace RepeatList
                 }
 
                 ResourcesViewModel = new ResourcesViewModel();
+
+                // Frisches Abbruch-Token für diese Sync-Runde (Backgrounding/Disappearing cancelt es).
+                _syncCts?.Cancel();
+                _syncCts?.Dispose();
+                _syncCts = new CancellationTokenSource();
 
                 await ForTimer_Tick();
 
@@ -189,6 +203,10 @@ namespace RepeatList
 
         private async Task ForTimer_Tick()
         {
+            // Reentrancy-Guard: nicht stapeln, wenn OnAppearing / Timer / Buttons sich überlappen.
+            if (Interlocked.Exchange(ref _syncInProgress, 1) != 0)
+                return;
+
             ViewModel.IsBusy = true;
 
             try
@@ -201,13 +219,20 @@ namespace RepeatList
 
                 foreach (var header in headersCopy)
                 {
+                    _syncCts?.Token.ThrowIfCancellationRequested();
+
                     try
                     {
                         if (header.IsSynchronized)
                         {
-                            await ViewModel.Sync_list_downClicked(header.Id.ToString());
+                            await ViewModel.Sync_list_downClicked(header.Id.ToString(), _syncCts?.Token ?? default);
                             Header.IsSupabaseOk = true;  // Direkt im Header-Objekt setzen
                         }
+                    }
+                    catch (OperationCanceledException)
+                    {
+                        // Sync wurde backgrounded/verlassen → restliche Header überspringen.
+                        break;
                     }
                     catch (Exception headerEx)
                     {
@@ -216,7 +241,14 @@ namespace RepeatList
                         SentrySdk.CaptureException(headerEx);
 
                         // Optional: Kurze Pause zwischen Fehlern
-                        await Task.Delay(1000);
+                        try
+                        {
+                            await Task.Delay(1000, _syncCts?.Token ?? default);
+                        }
+                        catch (OperationCanceledException)
+                        {
+                            break;
+                        }
                     }
                 }
             }
@@ -229,6 +261,7 @@ namespace RepeatList
             finally
             {
                 ViewModel.IsBusy = false;
+                Interlocked.Exchange(ref _syncInProgress, 0);
             }
         }
 
@@ -237,6 +270,9 @@ namespace RepeatList
             base.OnDisappearing();
             if (_timer != null)
                 _timer.Stop(); // Timer anhalten, wenn die Seite nicht mehr sichtbar ist
+
+            // Laufende Sync-Arbeit abbrechen (Seite verlassen / App backgrounded).
+            _syncCts?.Cancel();
         }
 
         private void SetCurrentCulture(string curr_culture)

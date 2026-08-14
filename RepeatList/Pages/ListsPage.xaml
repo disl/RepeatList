@@ -47,8 +47,8 @@
             <CollectionView x:Name="HeaderListView"  
                         ItemsSource="{Binding FilteredList}"                  
                         SelectionMode="Single" 
-                        SelectedItem="{Binding Header_SelectedItem}" 
-                        ItemSizingStrategy="MeasureAllItems"
+                        SelectedItem="{Binding Header_SelectedItem}"
+                        ItemSizingStrategy="MeasureFirstItem"
                        >
                 <CollectionView.ItemTemplate>
                     <DataTemplate>

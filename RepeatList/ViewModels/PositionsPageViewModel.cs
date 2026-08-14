@@ -251,8 +251,7 @@ namespace RepeatList.ViewModels
             }
 
             setupPageViewModel = new SetupPageViewModel();
-            _ = setupPageViewModel.Load();
-            CurrentCulture = setupPageViewModel.SelectedItem.DefaultLanguage;
+            CurrentCulture = "en"; // wird in InitializeCultureAsync auf die gespeicherte Sprache aktualisiert
 
             if (selectedItem.ListName != null)
                 Header_SelectedItem = selectedItem;
@@ -270,6 +269,26 @@ namespace RepeatList.ViewModels
             Categories_list = new List<CategoryRule>(); // Groß-/Kleinschreibung ignorieren
         }
 
+        // Culture asynchron laden: SelectedItem ist erst nach Load() verfügbar
+        // (davor null → NullReferenceException).
+        private async Task InitializeCultureAsync()
+        {
+            try
+            {
+                await setupPageViewModel.Load();
+
+                var lang = setupPageViewModel.SelectedItem?.DefaultLanguage;
+                if (!string.IsNullOrEmpty(lang))
+                {
+                    CurrentCulture = lang;
+                }
+            }
+            catch (Exception ex)
+            {
+                SentrySdk.CaptureException(ex);
+            }
+        }
+
         /// <summary>
         /// Performs the heavier one-time initialization (CSV rules, category colors,
         /// positions, sorting, collapse state) off the page constructor to keep the
@@ -279,6 +298,9 @@ namespace RepeatList.ViewModels
         {
             try
             {
+                // Culture erst laden, damit die CSV-Regeln in der richtigen Sprache geladen werden.
+                await InitializeCultureAsync();
+
                 await LoadRulesAsync($"categories_{CurrentCulture.ToLower()}.csv");
 
                 // Categories

@@ -70,11 +70,8 @@ namespace RepeatList.ViewModels
             }
 
             setupPageViewModel = new SetupPageViewModel();
-            _ = setupPageViewModel.Load();
-            CurrentCulture = setupPageViewModel.SelectedItem.DefaultLanguage;
-            CultureInfo culture = new CultureInfo(CurrentCulture);
-            CultureInfo.DefaultThreadCurrentCulture = culture;
-            CultureInfo.DefaultThreadCurrentUICulture = culture;
+            CurrentCulture = "en";
+            _ = InitializeCultureAsync();
 
             _ = LoadHeaders();
             _ = GetDeviceIDs();
@@ -90,6 +87,29 @@ namespace RepeatList.ViewModels
                 ClientSecret = SecretVault.SpotifyClientSecret,
                 RedirectUri = "myapp://callback"
             };
+        }
+
+        // Culture asynchron laden: SelectedItem ist erst nach Load() verfügbar
+        // (Load() läuft dank echtem Async nicht mehr synchron durch).
+        private async Task InitializeCultureAsync()
+        {
+            try
+            {
+                await setupPageViewModel.Load();
+
+                var lang = setupPageViewModel.SelectedItem?.DefaultLanguage;
+                if (!string.IsNullOrEmpty(lang))
+                {
+                    CurrentCulture = lang;
+                    CultureInfo culture = new CultureInfo(lang);
+                    CultureInfo.DefaultThreadCurrentCulture = culture;
+                    CultureInfo.DefaultThreadCurrentUICulture = culture;
+                }
+            }
+            catch (Exception ex)
+            {
+                SentrySdk.CaptureException(ex);
+            }
         }
 
         #region File export
@@ -547,9 +567,16 @@ namespace RepeatList.ViewModels
 
         }
 
-        public async Task Sync_list_downClicked(string guid_str_param)
+        // Serialisiert Down-Syncs, damit sie sich nicht stapeln (OnAppearing + Buttons).
+        private readonly SemaphoreSlim _syncDownLock = new(1, 1);
+
+        public async Task Sync_list_downClicked(string guid_str_param, CancellationToken ct = default)
         {
             if (string.IsNullOrWhiteSpace(guid_str_param) || _supabaseService == null)
+                return;
+
+            // Guard: bereits ein Down-Sync aktiv → Skip statt Stapeln.
+            if (!await _syncDownLock.WaitAsync(0, ct))
                 return;
 
             Guid tmp_guid = new Guid(guid_str_param);
@@ -558,6 +585,7 @@ namespace RepeatList.ViewModels
             try
             {
                 var sync_responce = await _supabaseService.GetHeaderWithPositionsByIdAsync(tmp_guid);
+                ct.ThrowIfCancellationRequested();
 
                 if (sync_responce.header == null || sync_responce.position == null)
                 {
@@ -584,6 +612,8 @@ namespace RepeatList.ViewModels
 
                     foreach (var pos in sync_responce.position)
                     {
+                        ct.ThrowIfCancellationRequested();
+
                         var old_pos = Lists.FirstOrDefault(p => p.Id == pos.Id);
 
                         if (old_pos == null)
@@ -598,6 +628,7 @@ namespace RepeatList.ViewModels
 
                     foreach (var pos in sync_responce.position)
                     {
+                        ct.ThrowIfCancellationRequested();
                         await AddPosition(pos, false, true);
                     }
                 }
@@ -617,6 +648,7 @@ namespace RepeatList.ViewModels
             finally
             {
                 IsBusy = false;
+                _syncDownLock.Release();
             }
         }
 

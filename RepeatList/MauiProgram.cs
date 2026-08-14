@@ -33,11 +33,17 @@ namespace RepeatList
         options.Dsn = "https://b253a0732b2859186cc53692b1a9e625@o4509272206475264.ingest.de.sentry.io/4509272207982672";
 
 
-        // Use debug mode if you want to see what the SDK is doing.
-        // Debug messages are written to stdout with Console.Writeline,
-        // and are viewable in your IDE's debug console or with 'adb logcat', etc.
-        // This option is not recommended when deploying your application.
+        // Debug mode only in DEBUG builds — in Release verdeckt der Logcat-Noise
+        // sonst den nativen ANR-Dump.
+#if DEBUG
         options.Debug = true;
+#else
+        options.Debug = false;
+#endif
+
+        // ANR-Erkennung explizit aktivieren (Default ist true, hier bewusst gesetzt).
+        options.Native.AnrEnabled = true;
+        options.Native.AnrTimeoutInterval = TimeSpan.FromSeconds(3);
 
         // Other Sentry options can be set here.
         //options.TracesSampleRate = 1.0; // Optional: Performance-Tracing aktivieren
