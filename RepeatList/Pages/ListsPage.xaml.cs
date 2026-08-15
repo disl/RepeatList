@@ -219,10 +219,13 @@ namespace RepeatList
 
                 foreach (var header in headersCopy)
                 {
-                    _syncCts?.Token.ThrowIfCancellationRequested();
-
                     try
                     {
+                        // Cancellation sofort prüfen. Liegt der Abbruch (Backgrounding/Seitenwechsel)
+                        // vor, wirft das OperationCanceledException → unten als normaler Abbruch
+                        // behandelt (break), NICHT als Fehler an Sentry gemeldet.
+                        _syncCts?.Token.ThrowIfCancellationRequested();
+
                         if (header.IsSynchronized)
                         {
                             await ViewModel.Sync_list_downClicked(header.Id.ToString(), _syncCts?.Token ?? default);
@@ -231,7 +234,7 @@ namespace RepeatList
                     }
                     catch (OperationCanceledException)
                     {
-                        // Sync wurde backgrounded/verlassen → restliche Header überspringen.
+                        // Sync wurde backgrounded/verlassen → restliche Header überspringen (kein Fehler).
                         break;
                     }
                     catch (Exception headerEx)
@@ -254,6 +257,11 @@ namespace RepeatList
             }
             catch (Exception ex)
             {
+                // Abbruch durch Backgrounding/Seitenwechsel ist kein echter Fehler —
+                // nicht an Sentry melden und keinen Alert anzeigen.
+                if (ex is OperationCanceledException)
+                    return;
+
                 SentrySdk.CaptureException(ex);
                 if (Shell.Current  != null)
                     await Shell.Current.DisplayAlert(Properties.Resources.Error, ex.Message, "OK");

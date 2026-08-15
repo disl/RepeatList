@@ -217,7 +217,10 @@ namespace RepeatList
 
                 await ViewModel.Sync_list_downClicked(ViewModel.Header_SelectedItem);
 
-                await ViewModel.LoadPositions();
+                // No full LoadPositions() here: Sync_list_downClicked already refreshes the
+                // ObservableCollections via AddPosition/UpdatePosition when something changed.
+                // A redundant LoadPositions() cleared and rebuilt every list every 15 s, which
+                // caused visible flickering on the sync screen.
 
                 //SetHeader();
             }

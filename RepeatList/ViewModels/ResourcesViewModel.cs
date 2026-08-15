@@ -10,6 +10,11 @@ namespace RepeatList.ViewModels
         private DatabaseService _databaseService;
         private SetupPageViewModel? setupPageViewModel;
 
+        // Shell flyout title for the SetupPage (AppShell.xaml: Title="{Binding Setup}").
+        // Was removed during the 14.08.26 refactor -> the binding resolved to null and
+        // the "Einstellungen" menu item was rendered without a title (invisible).
+        public string Setup => Properties.Resources.setup;
+
         public ResourcesViewModel()
         {
             _databaseService = new DatabaseService();

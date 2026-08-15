@@ -1,4 +1,4 @@
-#if ANDROID
+﻿#if ANDROID
 using Android.Gms.Tasks;
 using Com.Google.Android.Play.Core.Appupdate;
 using Com.Google.Android.Play.Core.Install.Model;
@@ -57,6 +57,19 @@ namespace RepeatList.Platforms.Android
             }
             catch (Exception ex)
             {
+                // ERROR_APP_NOT_OWNED (-10) tritt bei Debug-/Sideload-Installs auf (App wurde
+                // nicht über den Play Store erworben). Das ist ein erwarteter, harmloser Zustand
+                // und kein Fehler im eigentlichen Sinn → nicht an Sentry melden.
+                if (ex.Message.Contains("-10", StringComparison.OrdinalIgnoreCase)
+                    || ex.Message.Contains("not owned", StringComparison.OrdinalIgnoreCase)
+                    || ex.Message.Contains("app not owned", StringComparison.OrdinalIgnoreCase))
+                {
+#if DEBUG
+                    System.Diagnostics.Debug.WriteLine($"InAppUpdater skipped (expected for sideload): {ex.Message}");
+#endif
+                    return;
+                }
+
                 SentrySdk.CaptureException(ex);
             }
         }

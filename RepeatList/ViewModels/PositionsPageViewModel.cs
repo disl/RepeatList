@@ -837,12 +837,6 @@ namespace RepeatList.ViewModels
             {
                 IsBusy = true;
 
-                Positions.Clear();
-                Positions_undone.Clear();
-                Positions_done.Clear();
-                Positions_undone_filterd.Clear();
-                Positions_done_filtered.Clear();
-
                 Label_Positions = Properties.Resources.Positions.ToUpper() + " (0)";
 
                 Label_done = Properties.Resources.done;
@@ -862,10 +856,12 @@ namespace RepeatList.ViewModels
                 var _pos_arr = await Task.Run(() => _databaseService.GetPositionsAsync(Header_SelectedItem.Id));
                 if (_pos_arr == null || _pos_arr.Count == 0)
                 {
+                    SyncCollectionsInPlace(Array.Empty<Position>(), Array.Empty<Position>(), Array.Empty<Position>());
                     IsBusy = false;
                     return;
                 }
-                Positions = _pos_arr.OrderBy(x => x.IsCompleted).ThenBy(a => a.Title).ToObservableCollection();
+
+                var allSorted = _pos_arr.OrderBy(x => x.IsCompleted).ThenBy(a => a.Title).ToList();
 
                 // set categories
                 await FillCategories();
@@ -876,12 +872,13 @@ namespace RepeatList.ViewModels
                     SelectedItem_KindOfSorting_undone = new CMBType_String(Properties.Resources.sort_by, "alpha");
                 }
 
+                List<Position> undoneSorted;
                 if (SelectedItem_KindOfSorting_undone.Value == "alpha")
-                    Positions_undone = _pos_arr.Where(a => a.IsCompleted == false).OrderBy(x => x.Title).ToObservableCollection();
+                    undoneSorted = _pos_arr.Where(a => a.IsCompleted == false).OrderBy(x => x.Title).ToList();
                 else if (SelectedItem_KindOfSorting_undone.Value == "category")
-                    Positions_undone = _pos_arr.Where(a => a.IsCompleted == false).OrderBy(y => y.Category).ThenBy(x => x.Title).ToObservableCollection();
-
-                //Positions_undone = _pos_arr.Where(a => a.IsCompleted == false).OrderBy(y => y.Category).ThenBy(x => x.Title).ToObservableCollection();
+                    undoneSorted = _pos_arr.Where(a => a.IsCompleted == false).OrderBy(y => y.Category).ThenBy(x => x.Title).ToList();
+                else
+                    undoneSorted = _pos_arr.Where(a => a.IsCompleted == false).ToList();
 
                 if (SelectedItem_KindOfSorting == null)
                 {
@@ -889,23 +886,23 @@ namespace RepeatList.ViewModels
                     SelectedItem_KindOfSorting = new CMBType_String(Properties.Resources.sort_by, "date");
                 }
 
+                List<Position> doneSorted;
                 if (SelectedItem_KindOfSorting.Value == "date")
-                    Positions_done = _pos_arr.Where(a => a.IsCompleted).OrderByDescending(x => x.UpdatedAt).ToObservableCollection();
+                    doneSorted = _pos_arr.Where(a => a.IsCompleted).OrderByDescending(x => x.UpdatedAt).ToList();
                 else if (SelectedItem_KindOfSorting.Value == "alpha")
-                    Positions_done = _pos_arr.Where(a => a.IsCompleted).OrderBy(x => x.Title).ToObservableCollection();
+                    doneSorted = _pos_arr.Where(a => a.IsCompleted).OrderBy(x => x.Title).ToList();
                 else if (SelectedItem_KindOfSorting.Value == "category")
-                    Positions_done = _pos_arr.Where(a => a.IsCompleted).OrderBy(y => y.Category).ThenBy(x => x.Title).ToObservableCollection();
+                    doneSorted = _pos_arr.Where(a => a.IsCompleted).OrderBy(y => y.Category).ThenBy(x => x.Title).ToList();
+                else
+                    doneSorted = _pos_arr.Where(a => a.IsCompleted).ToList();
+
+                // Inkrementell angleichen statt Clear() + Neu-Zuweisung: verhindert, dass die
+                // ListView bei jeder Aktion komplett neu aufgebaut wird (Flimmern).
+                SyncCollectionsInPlace(allSorted, doneSorted, undoneSorted);
 
                 Label_done = string.Format("{0} ({1})", Properties.Resources.done, Positions_done.Count);
                 Label_undone = string.Format("{0} ({1})", Properties.Resources.undone, Positions_undone.Count);
                 Label_Positions = string.Format(Properties.Resources.Positions.ToUpper() + " ({0})", Positions_done.Count + Positions_undone.Count);
-
-                FilteredList = new ObservableCollection<Position>(_pos_arr);
-
-                if (Positions_undone != null)
-                    Positions_undone_filterd = new ObservableCollection<Position>(Positions_undone);
-                if (Positions_done != null)
-                    Positions_done_filtered = new ObservableCollection<Position>(Positions_done);
 
                 // Rezept- label
                 RezeptLabelText=null;
@@ -950,6 +947,70 @@ namespace RepeatList.ViewModels
             {
                 SentrySdk.CaptureException(ex);
                 throw;
+            }
+        }
+
+        // Gleicht die an die UI gebundenen Collections inkrementell an den Soll-Zustand an.
+        // Früher wurde hier Clear() + Neu-Zuweisung verwendet, wodurch die ListView bei jeder
+        // Aktion (Hinzufügen/Abhaken/Sync) komplett neu gerendert und sichtbar "geflimmert" hat.
+        private void SyncCollectionsInPlace(IList<Position> all, IList<Position> done, IList<Position> undone)
+        {
+            SyncListInPlace(Positions, all);
+            SyncListInPlace(Positions_done, done);
+            SyncListInPlace(Positions_undone, undone);
+
+            // Die gefilterten Collections spiegeln die ungefilterten, solange keine Suche aktiv
+            // ist. Die Sonderbehandlung (Rezept: erstes "_"-Element) läuft danach in LoadPositions.
+            SyncListInPlace(Positions_done_filtered, done);
+            SyncListInPlace(Positions_undone_filterd, undone);
+        }
+
+        // Bringt eine Ziel-Collection per Id-Vergleich auf den Soll-Zustand, ohne sie neu
+        // zuzuweisen (PropertyChanged) oder komplett zu leeren. Nur tatsächliche Diffs werden
+        // als Add/Remove/Insert-Ereignisse ausgelöst → minimale UI-Updates statt Voll-Re-Render.
+        private static void SyncListInPlace(ObservableCollection<Position> target, IList<Position> desired)
+        {
+            if (target == null || desired == null)
+                return;
+
+            var desiredIds = new HashSet<string>(desired.Where(p => p.Id != null).Select(p => p.Id));
+
+            // Entferne Elemente, die im Soll-Zustand nicht (mehr) vorkommen.
+            for (int i = target.Count - 1; i >= 0; i--)
+            {
+                if (target[i].Id == null || !desiredIds.Contains(target[i].Id))
+                    target.RemoveAt(i);
+            }
+
+            // Füge fehlende Elemente an der richtigen Sortierposition hinzu.
+            for (int desiredIdx = 0; desiredIdx < desired.Count; desiredIdx++)
+            {
+                var cur = desired[desiredIdx];
+                var existingIdx = target.ToList().FindIndex(p => p.Id == cur.Id);
+
+                if (existingIdx < 0)
+                {
+                    // Neu → an der korrekten Position einfügen.
+                    int insertIdx = Math.Min(desiredIdx, target.Count);
+                    target.Insert(insertIdx, cur);
+                }
+                else
+                {
+                    // Bereits vorhanden → bei geänderter Sortierposition verschieben.
+                    if (existingIdx != desiredIdx)
+                        target.Move(existingIdx, desiredIdx);
+
+                    // Geänderte Eigenschaften (Title/IsCompleted/...) übernehmen.
+                    var existing = target[desiredIdx];
+                    if (!ReferenceEquals(existing, cur))
+                    {
+                        existing.Title = cur.Title;
+                        existing.IsCompleted = cur.IsCompleted;
+                        existing.Category = cur.Category;
+                        existing.UpdatedAt = cur.UpdatedAt;
+                        existing.Category_color = cur.Category_color;
+                    }
+                }
             }
         }
 
@@ -1192,9 +1253,8 @@ namespace RepeatList.ViewModels
 
             await LoadPositions();
 
-            //Positions.Clear();
-            var sort_pos_arr = Positions.OrderBy(x => x.IsCompleted).ThenBy(a => a.Title).ToList();
-            Positions = new ObservableCollection<Position>(sort_pos_arr);
+            // LoadPositions() befüllt Positions bereits inkrementell — keine Neu-Zuweisung
+            // mehr nötig (die das ListView-Rebinding und damit Flimmern auslösen würde).
 
             if (Header_SelectedItem.IsSynchronized && _supabaseService != null)
             {

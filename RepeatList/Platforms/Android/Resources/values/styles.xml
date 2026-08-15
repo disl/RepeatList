@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--
+        Light variant (values/): the status bar background is light/white, so the system
+        icons (clock, battery, ...) must be DARK to stay visible. Without windowLightStatusBar
+        Android keeps rendering white icons -> invisible on the white status bar.
+        Maui.SplashTheme inherits Theme.MaterialComponents.DayNight, so the light/night
+        variants are selected automatically from Application.Current.UserAppTheme.
+    -->
+    <style name="MiniListTheme" parent="@style/Maui.SplashTheme">
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:windowLightNavigationBar">true</item>
+    </style>
+</resources>

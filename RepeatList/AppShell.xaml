@@ -4,7 +4,6 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:RepeatList"
-    xmlns:viewModels="clr-namespace:RepeatList.ViewModels"
     xmlns:properties="clr-namespace:RepeatList.Properties"
     Shell.FlyoutBehavior="Flyout"
     
@@ -13,11 +12,12 @@
     <Shell.FlyoutHeader>
         <controls:FlyoutHeader />
     </Shell.FlyoutHeader>
-    <Shell.BindingContext>
-        <viewModels:ResourcesViewModel />
-    </Shell.BindingContext>
+    <!-- ResourcesViewModel wird NICHT mehr im XAML instanziiert: Der Konstruktor greift
+         (über DatabaseService -> FileSystem.AppDataDirectory) auf MAUI-Essentials zu, die beim
+         sehr frühen XAML-Load teils noch nicht bereit sind -> sporadische NullReferenceException.
+         Stattdessen wird das BindingContext im Code-Behind (AppShell.OnAppearing) gesetzt. -->
 
-    <ShellContent Title="MiniList"  
+    <ShellContent Title="MiniList"
                   ContentTemplate="{DataTemplate local:ListsPage}"  
                   Icon="{AppThemeBinding Light=home_black.png, Dark=home_white.png}"  
                   Route="Lists"  />

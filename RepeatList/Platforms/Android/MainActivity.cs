@@ -20,7 +20,9 @@ namespace RepeatList
 
     [Activity(
         Exported = true,
-        Theme = "@style/Maui.SplashTheme",
+        // MiniListTheme extends Maui.SplashTheme and only adds the light/dark status bar
+        // icon flags (see Platforms/Android/Resources/values(-night)/styles.xml).
+        Theme = "@style/MiniListTheme",
         MainLauncher = true,
         LaunchMode = LaunchMode.SingleTop,
         ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation | ConfigChanges.UiMode | ConfigChanges.ScreenLayout | ConfigChanges.SmallestScreenSize | ConfigChanges.Density)

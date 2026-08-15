@@ -8,14 +8,30 @@ namespace RepeatList.Services
     {
         // Serialisiert alle Zugriffe auf die eine SqliteConnection (nicht thread-sicher bei paralleler Nutzung).
         private readonly SemaphoreSlim _gate = new(1, 1);
-        private readonly string _connectionString;
+        private string? _connectionString;
         private SqliteConnection? _connection;
 
         public DatabaseService()
         {
-            var localDbPath = Path.Combine(FileSystem.AppDataDirectory, "todo.db3");
-            _connectionString = $"Data Source={localDbPath}";
-            // Kein blockierendes Open + CREATE TABLE mehr im Konstruktor (lief bisher auf dem Main-Thread).
+            // FileSystem.AppDataDirectory wird NICHT mehr im Konstruktor ausgelesen: Beim sehr
+            // frühen XAML-Load (ResourcesViewModel als Shell.BindingContext) ist der MAUI-Platform-
+            // Kontext teils noch nicht bereit und FileSystem.AppDataDirectory kann sporadisch eine
+            // NullReferenceException werfen. Der Pfad wird stattdessen lazy beim erstmaligen
+            // Öffnen der Verbindung ermittelt (dort ist der Kontext garantiert verfügbar).
+        }
+
+        // Ermittelt den lokalen DB-Pfad lazy — erst wenn eine Verbindung tatsächlich nötig ist.
+        private string ConnectionString
+        {
+            get
+            {
+                if (_connectionString == null)
+                {
+                    var localDbPath = Path.Combine(FileSystem.AppDataDirectory, "todo.db3");
+                    _connectionString = $"Data Source={localDbPath}";
+                }
+                return _connectionString;
+            }
         }
 
         // Öffnet die Verbindung + legt das Schema lazy und auf einem Hintergrund-Thread an.
@@ -31,7 +47,7 @@ namespace RepeatList.Services
                 {
                     _connection = await Task.Run(() =>
                     {
-                        var conn = new SqliteConnection(_connectionString);
+                        var conn = new SqliteConnection(ConnectionString);
                         conn.Open();
 
                         // Tabellen erstellen, falls sie nicht existieren

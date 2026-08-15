@@ -1,9 +1,8 @@
-<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="RepeatList.Controls.FlyoutHeader"
-             HeightRequest="50">
-    <VerticalStackLayout BackgroundColor="RoyalBlue" Padding="5" >
+             x:Class="RepeatList.Controls.FlyoutHeader">
+    <VerticalStackLayout x:Name="HeaderRoot" BackgroundColor="RoyalBlue" Padding="5" >
         <!--<Image Aspect="AspectFill"
                Source="repeat_list_300.jpg"
                Opacity="0.6" />-->
