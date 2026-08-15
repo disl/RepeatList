@@ -664,11 +664,21 @@ namespace RepeatList.ViewModels
         }
 
 
+        // Verhindert rekursives bzw. paralleles Down-Sync: Sync_list_downClicked wird sowohl vom
+        // 15s-Timer als auch nach lokalen Änderungen (UpdatePosition) aufgerufen und ruft selbst
+        // wieder UpdatePosition/AddPosition auf — ohne Guard käme es zu Rekursion/Doppel-Läufen.
+        private bool _isDownSyncing;
+
         [RelayCommand]
         public async Task Sync_list_downClicked(Header header)
         {
             if (_supabaseService == null)
                 return;
+
+            if (_isDownSyncing)
+                return;
+
+            _isDownSyncing = true;
 
             Guid tmp_guid = new Guid(header.Id);
 
@@ -729,6 +739,7 @@ namespace RepeatList.ViewModels
             finally
             {
                 //IsBusy = false;
+                _isDownSyncing = false;
             }
         }
 
@@ -1329,6 +1340,13 @@ namespace RepeatList.ViewModels
                 await _databaseService.UpdatePositionAsync(pos);
 
                 await LoadPositions();
+
+                // Sofort mit dem Server abgleichen, sobald lokal etwas geändert wurde (Umbenennen,
+                // Abhaken). So übernimmt dieses Gerät Änderungen des anderen Geräts, ohne auf den
+                // 15s-Timer zu warten. Sync_list_downClicked ist gegen Rekursion abgesichert
+                // (_isDownSyncing), daher ist dieser Aufruf auch innerhalb des Pulls unkritisch.
+                if (Header_SelectedItem.IsSynchronized && _supabaseService != null)
+                    await Sync_list_downClicked(Header_SelectedItem);
             }
             finally
             {
@@ -1408,13 +1426,16 @@ namespace RepeatList.ViewModels
 
         internal async Task<bool> EditTitleOfPosition(Position position, string title)
         {
-            Position_selectedItem = position;
-            await _databaseService.EditPositionsTitleAsync(position, title);
+            // In-Memory-Objekt aktualisieren, BEVOR es gespeichert/gepusht wird:
+            // 1. Title trägt den neuen Namen (sonst würde der alte Titel an Supabase gehen).
+            // 2. UpdatedAt wird neu gestempelt, damit andere Geräte die Änderung über den
+            //    Zeitvergleich in Sync_list_downClicked erkennen und übernehmen können.
+            position.Title = title;
+            position.UpdatedAt = DateTime.Now.ToUniversalTime();
 
-            if (Header_SelectedItem.IsSynchronized && _supabaseService != null)
-                await _supabaseService.SyncPositionAsync(position);
-
-            await LoadPositions();
+            // UpdatePosition persistiert (Title + IsCompleted + UpdatedAt), pusht bei
+            // synchronisierter Liste nach Supabase und lädt die Collections neu.
+            await UpdatePosition(position);
 
             return true;
         }

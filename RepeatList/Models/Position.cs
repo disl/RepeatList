@@ -3,13 +3,14 @@
 using Newtonsoft.Json;
 using Supabase.Postgrest.Attributes;
 using Supabase.Postgrest.Models;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Reflection;
-//using System.Runtime.Serialization;
+using System.Runtime.CompilerServices;
 
 namespace RepeatList.Models
 {
-    public class Position : BaseModel
+    public class Position : BaseModel, INotifyPropertyChanged
     {
         //static MLContext mlContext;
         //static ITransformer? mlModel;
@@ -61,6 +62,11 @@ namespace RepeatList.Models
             //}
         }
 
+        public event PropertyChangedEventHandler? PropertyChanged;
+
+        private void OnPropertyChanged([CallerMemberName] string? propertyName = null)
+            => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+
         //[JsonIgnore]
 
         //[System.ComponentModel.DataAnnotations.Key]
@@ -76,7 +82,9 @@ namespace RepeatList.Models
             get { return title; }
             set
             {
+                if (title == value) return;
                 title = value;
+                OnPropertyChanged();
 
                 // Set Categorie
                 //if (string.IsNullOrEmpty(title))
@@ -126,9 +134,24 @@ namespace RepeatList.Models
 
 
 
+        // Bleibt standardmäßig null (wie vorher) — PositionsPage.xaml.cs prüft auf Category == null.
+        private string? _category;
+
+        // WICHTIG: [JsonIgnore]/[NotMapped] müssen auf der PROPERTY stehen, nicht auf dem privaten
+        // Feld. Newtonsoft (Supabase-Push) serialisiert nur die öffentliche Property und würde sonst
+        // "Category" an PostgREST schicken (PGRST204: Could not find the 'Category' column).
         [JsonIgnore]
         [NotMapped]
-        public string Category { get; set; } 
+        public string Category
+        {
+            get => _category!;
+            set
+            {
+                if (_category == value) return;
+                _category = value;
+                OnPropertyChanged();
+            }
+        }
 
 
 
@@ -157,12 +180,36 @@ namespace RepeatList.Models
             }
         }
 
-        public bool IsCompleted { get; set; } = false;
+        private bool _isCompleted;
+        public bool IsCompleted
+        {
+            get => _isCompleted;
+            set
+            {
+                if (_isCompleted == value) return;
+                _isCompleted = value;
+                OnPropertyChanged();
+                // Das Checkbox-Bild leitet sich aus IsCompleted ab -> ebenfalls benachrichtigen.
+                OnPropertyChanged(nameof(PositionImageSource));
+            }
+        }
 
 
+        private Color _categoryColor = Colors.Transparent;
+
+        // Auch hier: Attribute auf der Property, nicht auf dem Feld (siehe Category).
         [JsonIgnore]
         [NotMapped]
-        public Color Category_color { get; set; } = Colors.Transparent;
+        public Color Category_color
+        {
+            get => _categoryColor;
+            set
+            {
+                if (_categoryColor == value) return;
+                _categoryColor = value;
+                OnPropertyChanged();
+            }
+        }
 
         [JsonIgnore]
         [NotMapped]
