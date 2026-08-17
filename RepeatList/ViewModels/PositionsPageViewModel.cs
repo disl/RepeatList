@@ -719,22 +719,35 @@ namespace RepeatList.ViewModels
                     var old_pos = Positions.FirstOrDefault(p => p.Id == new_pos.Id);
                     if (old_pos == null)
                     {
+                        // Neuer Server-Eintrag → lokal anlegen; evtl. fehlenden Timestamp heilen.
+                        new_pos.UpdatedAt ??= DateTime.Now.ToUniversalTime();
                         await AddPosition(new_pos, false);
+                    }
+                    else if (new_pos.UpdatedAt == null || old_pos.UpdatedAt == null)
+                    {
+                        // Altbestand ohne Timestamp → Serverversion übernehmen und heilen
+                        // (last-write-wins; ohne Zeitstempel gibt es nichts zu vergleichen).
+                        new_pos.UpdatedAt ??= DateTime.Now.ToUniversalTime();
+                        await UpdatePosition(new_pos, restampUpdatedAt: false);
                     }
                     else
                     {
-                        DateTime supaBaseDateTime = ((DateTime)new_pos.UpdatedAt);
-                        DateTime localDateTime = TimeZoneInfo.ConvertTimeToUtc((DateTime)old_pos.UpdatedAt);
+                        DateTime serverUtc = ToUtc(new_pos.UpdatedAt.Value);
+                        DateTime localUtc = ToUtc(old_pos.UpdatedAt.Value);
 
-                        if (supaBaseDateTime > localDateTime)
-                            await UpdatePosition(new_pos);
+                        if (serverUtc > localUtc)
+                            await UpdatePosition(new_pos, restampUpdatedAt: false);
                     }
                 }
             }
             catch (Exception ex)
             {
                 if (ex != null)
-                    SentrySdk.CaptureException(ex);
+                    SentrySdk.CaptureException(ex, scope =>
+                    {
+                        scope.SetTag("sync.direction", "down");
+                        scope.SetTag("sync.headerId", header?.Id);
+                    });
             }
             finally
             {
@@ -742,6 +755,16 @@ namespace RepeatList.ViewModels
                 _isDownSyncing = false;
             }
         }
+
+        // Einheitliche UTC-Normalisierung für den Sync-Zeitvergleich. Lokal wird UpdatedAt als
+        // UTC-Wallclock gespeichert (Kind geht durch SQLite verloren → Unspecified). Serverwerte
+        // können je nach Spaltentyp Utc/Local/Unspecified sein.
+        private static DateTime ToUtc(DateTime value) => value.Kind switch
+        {
+            DateTimeKind.Utc => value,
+            DateTimeKind.Local => value.ToUniversalTime(),
+            _ => DateTime.SpecifyKind(value, DateTimeKind.Utc), // Unspecified = wir speichern UTC
+        };
 
 
         [RelayCommand]
@@ -1322,12 +1345,16 @@ namespace RepeatList.ViewModels
             IsBusy = false;
         }
 
-        public async Task UpdatePosition(Position pos)
+        public async Task UpdatePosition(Position pos, bool restampUpdatedAt = true)
         {
             IsBusy = true;
             try
             {
-                pos.UpdatedAt = DateTime.Now.ToUniversalTime();
+                // Nur echte lokale Edits neu stempeln. Beim Übernehmen einer Server-Version
+                // (restampUpdatedAt: false aus Sync_list_downClicked) bleibt die echte
+                // Bearbeitungszeit des anderen Geräts erhalten → kein 15-s-Timestamp-Churn.
+                if (restampUpdatedAt)
+                    pos.UpdatedAt = DateTime.Now.ToUniversalTime();
 
                 if (Header_SelectedItem.IsSynchronized && _supabaseService != null)
                 {

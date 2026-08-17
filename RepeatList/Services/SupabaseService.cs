@@ -1,5 +1,6 @@
 ﻿using RepeatList.Models;
 using Supabase;
+using System.Threading;
 using static AndroidX.ConstraintLayout.Core.Motion.Utils.HyperSpline;
 
 namespace RepeatList.Services
@@ -13,7 +14,8 @@ namespace RepeatList.Services
 
         private readonly Client _supabase;
         private readonly object _initLock = new();
-        private Task _initializationTask;
+        private Task? _initializationTask;
+        private bool _initialized;
 
         public SupabaseService()
         {
@@ -26,50 +28,54 @@ namespace RepeatList.Services
             // initialization runs lazily on first use (see EnsureInitializedAsync).
         }
 
-        private Task EnsureInitializedAsync()
+        private async Task EnsureInitializedAsync()
         {
+            if (Volatile.Read(ref _initialized)) return;
+
+            Task task;
             lock (_initLock)
             {
-                if (_initializationTask == null)
-                    _initializationTask = InitializeCoreAsync();
-                return _initializationTask;
+                if (Volatile.Read(ref _initialized)) return;
+                task = _initializationTask!;
+                if (task == null)
+                {
+                    task = _initializationTask = InitializeCoreAsync();
+                    // Fehler beobachten + Cache zurücksetzen → der nächste Aufruf versucht neu.
+                    // (Die Task gilt erst als "erledigt", wenn der Client wirklich bereit ist.)
+                    _ = task.ContinueWith(t =>
+                    {
+                        _ = t.Exception; // als beobachtet markieren (kein UnobservedTaskException)
+                        lock (_initLock)
+                        {
+                            if (ReferenceEquals(_initializationTask, t))
+                                _initializationTask = null;
+                        }
+                    }, CancellationToken.None,
+                       TaskContinuationOptions.ExecuteSynchronously | TaskContinuationOptions.OnlyOnFaulted,
+                       TaskScheduler.Default);
+                }
             }
+
+            // Pro Aufruf gedeckelt: Der Aufrufer (z. B. der 15-s-Timer) hängt nie länger als 15 s.
+            // Läuft die echte Init länger, bleibt die Task aktiv; der nächste Tick wartet erneut.
+            using var timeoutCts = new CancellationTokenSource(InitializeTimeout);
+            Task completed = await Task.WhenAny(task, Task.Delay(Timeout.Infinite, timeoutCts.Token)).ConfigureAwait(false);
+
+            if (completed != task)
+            {
+                // Noch nicht bereit — KEIN dauerhafter Fehlerzustand: kein stale cache, der nächste
+                // Aufruf wartet auf dieselbe (noch laufende) Task und versucht es dann erneut.
+                SentrySdk.CaptureMessage($"SupabaseService init timed out after {InitializeTimeout.TotalSeconds}s");
+                return;
+            }
+
+            await task; // rethrow on failure → Fault-Continuation setzt den Cache zurück
         }
 
         private async Task InitializeCoreAsync()
         {
-            try
-            {
-                using var timeoutCts = new CancellationTokenSource(InitializeTimeout);
-                Task initializeTask = _supabase.InitializeAsync();
-                Task completed = await Task.WhenAny(initializeTask, Task.Delay(Timeout.Infinite, timeoutCts.Token));
-
-                if (completed != initializeTask)
-                {
-                    // Timed out: keep observing the detached task so it never goes unobserved.
-                    _ = ObserveAsync(initializeTask);
-                    SentrySdk.CaptureMessage($"SupabaseService init timed out after {InitializeTimeout.TotalSeconds}s");
-                    return;
-                }
-
-                await initializeTask; // rethrow on failure
-            }
-            catch (Exception ex)
-            {
-                SentrySdk.CaptureException(ex);
-            }
-        }
-
-        private static async Task ObserveAsync(Task task)
-        {
-            try
-            {
-                await task;
-            }
-            catch (Exception ex)
-            {
-                SentrySdk.CaptureException(ex);
-            }
+            await _supabase.InitializeAsync().ConfigureAwait(false);
+            Volatile.Write(ref _initialized, true);
         }
 
         /// <summary>Anzahl der Versuche inkl. Erstversuch bei transienten Netzwerkfehlern
@@ -249,8 +255,8 @@ namespace RepeatList.Services
             }
             catch (Exception ex)
             {
-                //if (ex != null)
-                //    SentrySdk.CaptureException(ex);
+                if (ex != null)
+                    SentrySdk.CaptureException(ex, scope => scope.SetTag("sync.direction", "down"));
 
                 return (null, null);
             }

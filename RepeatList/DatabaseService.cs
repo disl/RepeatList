@@ -1,5 +1,6 @@
 using Microsoft.Data.Sqlite;
 using RepeatList.Models;
+using System.Globalization;
 
 
 namespace RepeatList.Services
@@ -299,7 +300,10 @@ namespace RepeatList.Services
                             HeaderId = reader.GetString(1),
                             Title = reader.GetString(2),
                             IsCompleted = reader.GetBoolean(3),
-                            UpdatedAt = DateTime.Parse(reader.GetString(4))
+                            UpdatedAt = reader.IsDBNull(4)
+                                ? (DateTime?)null
+                                : DateTime.Parse(reader.GetString(4), CultureInfo.InvariantCulture,
+                                    DateTimeStyles.AssumeUniversal | DateTimeStyles.AdjustToUniversal)
                         });
                     }
                 }
@@ -326,7 +330,8 @@ namespace RepeatList.Services
                 command.Parameters.AddWithValue("@HeaderId", position.HeaderId);
                 command.Parameters.AddWithValue("@Title", position.Title);
                 command.Parameters.AddWithValue("@IsCompleted", position.IsCompleted);
-                command.Parameters.AddWithValue("@UpdatedAt", position.UpdatedAt);
+                var updatedAt = position.UpdatedAt ?? DateTime.UtcNow;
+                command.Parameters.AddWithValue("@UpdatedAt", updatedAt);
 
                 await command.ExecuteNonQueryAsync();
                 return new_guid;
@@ -345,7 +350,8 @@ namespace RepeatList.Services
                 command.Parameters.AddWithValue("@Title", position.Title);
                 command.Parameters.AddWithValue("@IsCompleted", position.IsCompleted);
                 command.Parameters.AddWithValue("@Id", position.Id);
-                command.Parameters.AddWithValue("@UpdatedAt", position.UpdatedAt);
+                var updatedAt = position.UpdatedAt ?? DateTime.UtcNow;
+                command.Parameters.AddWithValue("@UpdatedAt", updatedAt);
 
                 var ret_val = await command.ExecuteNonQueryAsync();
 
