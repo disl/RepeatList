@@ -32,6 +32,23 @@ namespace RepeatList
         // The DSN is the only required setting.
         options.Dsn = "https://b253a0732b2859186cc53692b1a9e625@o4509272206475264.ingest.de.sentry.io/4509272207982672";
 
+        // Bekannter Google-Billing-Library-Bug (ProxyBillingActivity-NPE, Versionen 3.x–8.x):
+        // wird von Play Pre-Launch-Reports / Bots ausgelöst, nicht vom App-Code
+        // (es existiert kein aktiver Kauf-Flow). RevenueCat/Google empfehlen, diesen
+        // Crash im Reporting zu unterdrücken statt zu fixen.
+        // Hinweis: Sentry 6.8.0 nutzt die Methoden-API SetBeforeSend(...) statt der alten Property.
+        options.SetBeforeSend((sentryEvent, hint) =>
+        {
+            // Beim nativen Java-Crash steht "ProxyBillingActivity" nicht in der Message,
+            // sondern im Stacktrace-Frame (com.android.billingclient.api.ProxyBillingActivity.onCreate).
+            bool isBillingProxyNpe =
+                sentryEvent.SentryExceptions?.Any(ex =>
+                    ex.Value?.Contains("ProxyBillingActivity") == true
+                    || ex.Stacktrace?.Frames?.Any(f =>
+                        f.Function?.Contains("ProxyBillingActivity") == true) == true) == true;
+
+            return isBillingProxyNpe ? null : sentryEvent;
+        });
 
         // Debug mode only in DEBUG builds — in Release verdeckt der Logcat-Noise
         // sonst den nativen ANR-Dump.
