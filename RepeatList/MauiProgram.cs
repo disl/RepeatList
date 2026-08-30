@@ -39,13 +39,17 @@ namespace RepeatList
         // Hinweis: Sentry 6.8.0 nutzt die Methoden-API SetBeforeSend(...) statt der alten Property.
         options.SetBeforeSend((sentryEvent, hint) =>
         {
-            // Beim nativen Java-Crash steht "ProxyBillingActivity" nicht in der Message,
-            // sondern im Stacktrace-Frame (com.android.billingclient.api.ProxyBillingActivity.onCreate).
+            // Pfad 1: Exception-Nachricht und/oder Stacktrace-Frames (deckt die innere NPE ab,
+            // z. B. com.android.billingclient.api.ProxyBillingActivity.onCreate).
             bool isBillingProxyNpe =
                 sentryEvent.SentryExceptions?.Any(ex =>
                     ex.Value?.Contains("ProxyBillingActivity") == true
                     || ex.Stacktrace?.Frames?.Any(f =>
-                        f.Function?.Contains("ProxyBillingActivity") == true) == true) == true;
+                        f.Function?.Contains("ProxyBillingActivity") == true) == true) == true
+                // Pfad 2: top-level Message (deckt die RuntimeException "Unable to start activity
+                // ComponentInfo{.../ProxyBillingActivity}" ab; das native Event-Mapping überträgt
+                // Exceptions evtl. nicht vollständig).
+                || sentryEvent.Message?.Formatted?.Contains("ProxyBillingActivity") == true;
 
             return isBillingProxyNpe ? null : sentryEvent;
         });
@@ -61,6 +65,10 @@ namespace RepeatList
         // ANR-Erkennung explizit aktivieren (Default ist true, hier bewusst gesetzt).
         options.Native.AnrEnabled = true;
         options.Native.AnrTimeoutInterval = TimeSpan.FromSeconds(3);
+
+        // WICHTIG: Ohne dies filtert SetBeforeSend NUR .NET-Events. Der ProxyBillingActivity-Crash
+        // ist ein nativer Android-Java-Crash und würde sonst ungefiltert ins Dashboard gehen.
+        options.Native.EnableBeforeSend = true;
 
         // Other Sentry options can be set here.
         //options.TracesSampleRate = 1.0; // Optional: Performance-Tracing aktivieren
