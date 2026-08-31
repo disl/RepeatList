@@ -240,11 +240,40 @@ namespace RepeatList.Services
         {
             return await RunExclusiveAsync(async (connection) =>
             {
-                var command = connection.CreateCommand();
-                command.CommandText = "DELETE FROM Header WHERE Id = @Id";
-                command.Parameters.AddWithValue("@Id", id);
+                // Header und seine Positionen in EINER Transaktion löschen. Ohne diese
+                // Absicherung verletzt DELETE FROM Header den FOREIGN KEY
+                // (Position.HeaderId → Header.Id, ohne ON DELETE CASCADE) → SQLite Error 19,
+                // sobald beim Löschen noch eine Position existiert (z. B. von einem parallel
+                // laufenden Sync zwischen dem separaten Positions-Löschen und dem
+                // Header-Löschen eingefügt). Das gehaltene _gate im RunExclusiveAsync
+                // verhindert während der Transaktion jeden konkurrierenden Schreibzugriff
+                // auf dieselbe Verbindung.
+                using var transaction = connection.BeginTransaction();
+                try
+                {
+                    using (var delPos = connection.CreateCommand())
+                    {
+                        delPos.CommandText = "DELETE FROM Position WHERE HeaderId = @HeaderId";
+                        delPos.Parameters.AddWithValue("@HeaderId", id);
+                        await delPos.ExecuteNonQueryAsync();
+                    }
 
-                return await command.ExecuteNonQueryAsync();
+                    int affected;
+                    using (var delHeader = connection.CreateCommand())
+                    {
+                        delHeader.CommandText = "DELETE FROM Header WHERE Id = @Id";
+                        delHeader.Parameters.AddWithValue("@Id", id);
+                        affected = await delHeader.ExecuteNonQueryAsync();
+                    }
+
+                    transaction.Commit();
+                    return affected;
+                }
+                catch
+                {
+                    transaction.Rollback();
+                    throw;
+                }
             });
         }
 

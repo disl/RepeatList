@@ -570,6 +570,28 @@ namespace RepeatList.ViewModels
         // Serialisiert Down-Syncs, damit sie sich nicht stapeln (OnAppearing + Buttons).
         private readonly SemaphoreSlim _syncDownLock = new(1, 1);
 
+        // Zeigt eine Snackbar abgesichert an. Beim Appstart (oder bei Navigation) kann
+        // MainPage noch keinen Handler/MauiContext haben — dann wirft DisplaySnackbar
+        // „MauiContext should have been set on parent" und die eigentliche Fehlerursache
+        // (z. B. die Snackbar im Sync-Fehlerpfad) würde durch die Snackbar-Exception
+        // überdeckt. In dem Fall die Snackbar einfach überspringen statt crashen.
+        private async Task ShowSnackbarAsync(string message, SnackbarOptions? options = null, TimeSpan? duration = null)
+        {
+            try
+            {
+                var page = Application.Current?.MainPage;
+                if (page == null || page.Handler == null || page.Handler.MauiContext == null)
+                    return;
+
+                await page.DisplaySnackbar(message, visualOptions: options, duration: duration ?? TimeSpan.FromSeconds(2));
+            }
+            catch (Exception ex)
+            {
+                // Snackbar ist reine Kosmetik — nie den eigentlichen Ablauf crashen lassen.
+                SentrySdk.CaptureException(ex, scope => scope.SetTag("ui.snackbar", "skipped"));
+            }
+        }
+
         public async Task Sync_list_downClicked(string guid_str_param, CancellationToken ct = default)
         {
             if (string.IsNullOrWhiteSpace(guid_str_param) || _supabaseService == null)
@@ -589,15 +611,13 @@ namespace RepeatList.ViewModels
 
                 if (sync_responce.header == null || sync_responce.position == null)
                 {
-                    await Application.Current.MainPage.DisplaySnackbar(
+                    await ShowSnackbarAsync(
                         Properties.Resources.String_is_not_a_valid_List_ID,
-                        visualOptions: new SnackbarOptions
+                        new SnackbarOptions
                         {
                             BackgroundColor = Color.FromArgb(Constantes.Color_Error_string),
                             TextColor = Colors.White
-                        },
-                        duration: TimeSpan.FromSeconds(2)
-                    );
+                        });
                     return; // <<< wichtig
                 }
 
@@ -639,15 +659,13 @@ namespace RepeatList.ViewModels
                 // immer nach Sentry melden, mit Richtungs-Tag zur Unterscheidung vom Netzwerkfehler.
                 SentrySdk.CaptureException(ex, scope => scope.SetTag("sync.direction", "down_local"));
 
-                await Application.Current.MainPage.DisplaySnackbar(
+                await ShowSnackbarAsync(
                     Properties.Resources.An_unexpected_error_has_occurred,
-                    visualOptions: new SnackbarOptions
+                    new SnackbarOptions
                     {
                         BackgroundColor = Colors.Red,
                         TextColor = Colors.White
-                    },
-                    duration: TimeSpan.FromSeconds(2)
-                );
+                    });
             }
             finally
             {
@@ -1804,7 +1822,11 @@ namespace RepeatList.ViewModels
             IsBusy = true;
 
             Header_SelectedItem = header;
-            await DeleteListsByHeaderIdAsync();
+
+            // DeleteHeaderAsync löscht Header + zugehörige Positionen in einer Transaktion.
+            // (Früher wurde hier DeleteListsByHeaderIdAsync() separat aufgerufen — das ließ
+            // zwischen Positions- und Header-Löschen ein Race mit einem parallel laufenden
+            // Sync zu, siehe DatabaseService.DeleteHeaderAsync.)
             await _databaseService.DeleteHeaderAsync(header.Id);
             await LoadHeaders();
             await LoadLists();
@@ -1911,13 +1933,13 @@ namespace RepeatList.ViewModels
             // Delete linkd to Supabase 
             await DeleteHeaderInSupabase(Header_SelectedItem);
 
-            await Application.Current.MainPage.DisplaySnackbar(Properties.Resources.Operation_successfully_completed,
-                visualOptions: new SnackbarOptions
+            await ShowSnackbarAsync(
+                Properties.Resources.Operation_successfully_completed,
+                new SnackbarOptions
                 {
                     BackgroundColor = Color.FromArgb(Constantes.Color_Success_string),
                     TextColor = Colors.White
-                },
-                duration: TimeSpan.FromSeconds(2));
+                });
 
             await _databaseService.UpdateIsSynchronizedHeaderAsync(Header_SelectedItem.Id, false);
 

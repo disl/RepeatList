@@ -60,12 +60,12 @@
 		
 	</PropertyGroup>
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net9.0-android|AnyCPU'">
-	  <ApplicationDisplayVersion>1.0.154</ApplicationDisplayVersion>
-	  <ApplicationVersion>154</ApplicationVersion>
+	  <ApplicationDisplayVersion>1.0.155</ApplicationDisplayVersion>
+	  <ApplicationVersion>155</ApplicationVersion>
 	</PropertyGroup>
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net9.0-android|AnyCPU'">
-	  <ApplicationDisplayVersion>1.0.154</ApplicationDisplayVersion>
-	  <ApplicationVersion>154</ApplicationVersion>
+	  <ApplicationDisplayVersion>1.0.155</ApplicationDisplayVersion>
+	  <ApplicationVersion>155</ApplicationVersion>
 	</PropertyGroup>
 
 
