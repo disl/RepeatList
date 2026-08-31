@@ -60,12 +60,22 @@
 		
 	</PropertyGroup>
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net9.0-android|AnyCPU'">
-	  <ApplicationDisplayVersion>1.0.156</ApplicationDisplayVersion>
-	  <ApplicationVersion>156</ApplicationVersion>
+	  <ApplicationDisplayVersion>1.0.157</ApplicationDisplayVersion>
+	  <ApplicationVersion>157</ApplicationVersion>
 	</PropertyGroup>
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net9.0-android|AnyCPU'">
-	  <ApplicationDisplayVersion>1.0.156</ApplicationDisplayVersion>
-	  <ApplicationVersion>156</ApplicationVersion>
+	  <ApplicationDisplayVersion>1.0.157</ApplicationDisplayVersion>
+	  <ApplicationVersion>157</ApplicationVersion>
+	  <!-- Sentry-Symbol-Upload (de.sentry.io): Die offizielle MSBuild-Integration
+	       (SentryUploadSymbols + UploadDebugInfoToSentry) schlägt auf der EU-Instanz fehl,
+	       weil der sentry-cli Auth-Check "GET /api/0/" dort 404 liefert und das Target den
+	       CLI-Pfad daraufhin leert. Deshalb macht das eigene Target "UploadSymbolsToSentry"
+	       (siehe unten) den Upload direkt nach dem Build. Die Ziel-Org/-Projekt/-URL stehen
+	       hier; der Auth-Token ist ein Secret und liegt in ~/.sentryclirc bzw. der
+	       Umgebungsvariable SENTRY_AUTH_TOKEN (nicht in diesem Git-Repo!). -->
+	  <SentryOrg>disl-apps</SentryOrg>
+	  <SentryProject>dotnet-maui</SentryProject>
+	  <SentryUrl>https://de.sentry.io</SentryUrl>
 	</PropertyGroup>
 
 
@@ -423,5 +433,39 @@
 		<PackageReference Include="Xamarin.AndroidX.Lifecycle.Service" Version="2.11.0.1" />
 		<PackageReference Include="Xamarin.AndroidX.Lifecycle.Runtime.Ktx.Android" Version="2.11.0.1" />
 	</ItemGroup>
+
+	<!-- Eigener Sentry-Symbol-Upload (Workaround für de.sentry.io):
+	     Das offizielle UploadDebugInfoToSentry-Target des Sentry-Pakets scheitert auf der
+	     EU-Instanz: Der Auth-Check "sentry-cli info" ruft GET /api/0/ auf, das auf
+	     de.sentry.io 404 liefert — das Target leert daraufhin den CLI-Pfad und der Upload
+	     wird übersprungen. Dieses Target sammelt die PDBs und nativen .so-Symbole (ELF)
+	     und lädt sie direkt nach jedem Release-Build nach de.sentry.io hoch.
+	     Der Auth-Token ist ein Secret und liegt in ~/.sentryclirc bzw. der
+	     Umgebungsvariable SENTRY_AUTH_TOKEN — NICHT in diesem Git-Repo. -->
+	<Target Name="UploadSymbolsToSentry" AfterTargets="Build" Condition="'$(Configuration)' == 'Release' and '$(SentryUrl)' != '' and $([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">
+
+		<PropertyGroup>
+			<SentryCliExe Condition="'$(SentryCliExe)' == '' and '$(PkgSentry)' != '' and $([MSBuild]::IsOSPlatform('Windows'))">$(PkgSentry)\tools\sentry-cli-Windows-x86_64.exe</SentryCliExe>
+		</PropertyGroup>
+
+		<!-- Native .so-Dateien (ELF-Symbole) aus dem AOT/Linker-Output sammeln, ohne
+		     die *.dll.so-Zwischenprodukte, die nicht im finalen App-Layout sind. -->
+		<ItemGroup>
+			<SentryAndroidNativeSymbols Include="$(IntermediateOutputPath)**/*.so" Exclude="$(IntermediateOutputPath)**/*.dll.so" />
+		</ItemGroup>
+
+		<PropertyGroup>
+			<SentryUploadItems>$(OutputPath)</SentryUploadItems>
+			<SentryUploadItems Condition="Exists('$(IntermediateOutputPath)linked')">$(SentryUploadItems) $(IntermediateOutputPath)linked\*.pdb</SentryUploadItems>
+			<SentryUploadItems Condition="'@(SentryAndroidNativeSymbols)' != ''">$(SentryUploadItems) @(SentryAndroidNativeSymbols, ' ')</SentryUploadItems>
+		</PropertyGroup>
+
+		<Message Importance="High" Condition="Exists('$(SentryCliExe)')" Text="Sentry: Lade Debug-Symbole nach de.sentry.io hoch ($(SentryUploadItems))" />
+
+		<Exec Condition="Exists('$(SentryCliExe)')" Command="&quot;$(SentryCliExe)&quot; --url $(SentryUrl) debug-files upload --org $(SentryOrg) --project $(SentryProject) -t pdb -t portablepdb -t elf $(SentryUploadItems)" IgnoreExitCode="true" ContinueOnError="WarnAndContinue">
+			<Output TaskParameter="ExitCode" PropertyName="_SentryUploadExitCode" />
+		</Exec>
+		<Warning Condition="'$(_SentryUploadExitCode)' != '0'" Text="Sentry: Debug-Symbole konnten nicht hochgeladen werden (Exit $(_SentryUploadExitCode))." />
+	</Target>
 
 </Project>
