@@ -653,6 +653,12 @@ namespace RepeatList.ViewModels
                     }
                 }
             }
+            catch (OperationCanceledException) when (ct.IsCancellationRequested)
+            {
+                // Geplanter Abbruch des Syncs (App backgrounded / Seite verlassen / neuer
+                // Sync über OnAppearing): Das Token wurde gecancelt, die Arbeit soll
+                // kontrolliert enden. Kein Fehler → keine Snackbar, kein Sentry-Spam.
+            }
             catch (Exception ex)
             {
                 // Exception-Details nie verwerfen: Für die Diagnose ("Ein unerwarteter Fehler")
@@ -788,6 +794,10 @@ namespace RepeatList.ViewModels
                     var share_text = Properties.Resources.This_is_the_link_to_the_published_list_called.Replace("%1", Header_SelectedItem.ListName);
                     await Utilities.ShareTextAsync(Header_SelectedItem.Id, share_text);
                 }
+            }
+            catch (OperationCanceledException)
+            {
+                // Geplanter Abbruch des Syncs — kein Fehler: still beenden, kein Sentry-Spam.
             }
             catch (Exception ex)
             {
