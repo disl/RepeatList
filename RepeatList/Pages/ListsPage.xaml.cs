@@ -124,6 +124,11 @@ namespace RepeatList
                 _syncCts?.Dispose();
                 _syncCts = new CancellationTokenSource();
 
+                // Sicherstellen, dass die Header geladen sind, bevor der Start-Sync läuft.
+                // Ohne dies bricht ForTimer_Tick bei leerer FilteredList sofort ab
+                // (LoadHeaders läuft im Konstruktor nur fire-and-forget) → kein Sync beim Start.
+                await ViewModel.LoadHeaders();
+
                 await ForTimer_Tick();
 
                 if (m_need_for_update)
@@ -229,7 +234,7 @@ namespace RepeatList
                         if (header.IsSynchronized)
                         {
                             await ViewModel.Sync_list_downClicked(header.Id.ToString(), _syncCts?.Token ?? default);
-                            Header.IsSupabaseOk = true;  // Direkt im Header-Objekt setzen
+                            header.IsSupabaseOk = true;  // Pro Header setzen (löst PropertyChanged aus → Icon-Update)
                         }
                     }
                     catch (OperationCanceledException)
@@ -240,7 +245,7 @@ namespace RepeatList
                     catch (Exception headerEx)
                     {
                         // Fehler pro Header loggen, aber fortfahren
-                        Header.IsSupabaseOk = false;
+                        header.IsSupabaseOk = false;
                         SentrySdk.CaptureException(headerEx);
 
                         // Optional: Kurze Pause zwischen Fehlern

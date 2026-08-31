@@ -1,17 +1,39 @@
-﻿using Supabase.Postgrest.Attributes;
+using Supabase.Postgrest.Attributes;
 using Supabase.Postgrest.Models;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
 
 namespace RepeatList.Models
 {
-    public class Header : BaseModel
+    public class Header : BaseModel, INotifyPropertyChanged
     {
+        public event PropertyChangedEventHandler? PropertyChanged;
+
+        private void OnPropertyChanged([CallerMemberName] string? propertyName = null)
+            => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+
         //[System.ComponentModel.DataAnnotations.Key]
         [PrimaryKey]
         //[JsonIgnore]
         public string Id { get; set; }
-        public string ListName { get; set; }
+
+        private string _listName = string.Empty;
+
+        public string ListName
+        {
+            get => _listName;
+            set
+            {
+                if (_listName != value)
+                {
+                    _listName = value;
+                    OnPropertyChanged();
+                    OnPropertyChanged(nameof(AvatarName));
+                }
+            }
+        }
 
         [NotMapped]
         [IgnoreDataMember]
@@ -30,7 +52,21 @@ namespace RepeatList.Models
         //[JsonIgnore]
         //[NotMapped]
         //[IgnoreDataMember]
-        public bool IsSynchronized { get; set; } = false;
+        private bool _isSynchronized = false;
+
+        public bool IsSynchronized
+        {
+            get => _isSynchronized;
+            set
+            {
+                if (_isSynchronized != value)
+                {
+                    _isSynchronized = value;
+                    OnPropertyChanged();
+                    OnPropertyChanged(nameof(Sync_arrow_down_icon));
+                }
+            }
+        }
 
         [NotMapped]
         [IgnoreDataMember]
@@ -47,9 +83,27 @@ namespace RepeatList.Models
             }
         }
 
+        // Pro-Header Zustand der letzten Supabase-Synchronisation. Früher static:
+        // ein Header hat alle anderen eingefärbt und das Setzen löste kein UI-Update aus.
         [NotMapped]
         [IgnoreDataMember]
-        public static bool IsSupabaseOk { get; set; }
+        private bool _isSupabaseOk;
+
+        [NotMapped]
+        [IgnoreDataMember]
+        public bool IsSupabaseOk
+        {
+            get => _isSupabaseOk;
+            set
+            {
+                if (_isSupabaseOk != value)
+                {
+                    _isSupabaseOk = value;
+                    OnPropertyChanged();
+                    OnPropertyChanged(nameof(Sync_arrow_down_icon));
+                }
+            }
+        }
 
         [NotMapped]
         [IgnoreDataMember]

@@ -83,6 +83,10 @@ namespace RepeatList.Services
         private const int MaxAttempts = 3;
         private static readonly TimeSpan RetryBaseDelay = TimeSpan.FromMilliseconds(500);
 
+        // Deckelt jeden einzelnen Supabase-Request. Ohne dies klemmt der Sync beim Appstart bis zum
+        // HttpClient-Default (~100 s) × Retries, wenn das Netzwerk hängt ("App friert beim Sync").
+        private static readonly TimeSpan RequestTimeout = TimeSpan.FromSeconds(20);
+
         private static bool IsTransientNetworkError(Exception ex)
         {
             Exception baseEx = ex.GetBaseException();
@@ -96,10 +100,33 @@ namespace RepeatList.Services
                 return webEx.Status != System.Net.WebExceptionStatus.ProtocolError
                     && webEx.Status != System.Net.WebExceptionStatus.SecureChannelFailure;
 
-            // Verbindungsfehler (Socket-Abbruch, Keep-alive-Reuse) sind transient
+            // Verbindungsfehler (Socket-Abbruch, Keep-alive-Reuse) und Request-Timeout sind transient
             return baseEx is System.Net.Http.HttpRequestException
                 or System.Net.Sockets.SocketException
-                or Java.Net.SocketException;
+                or Java.Net.SocketException
+                or TimeoutException;
+        }
+
+        // Führt einen Supabase-Request mit festem Timeout aus. Bei Timeout wird TimeoutException
+        // geworfen → von ExecuteWithRetryAsync als transient behandelt (Retry mit Backoff).
+        private static async Task<T> ExecuteWithTimeoutAsync<T>(Func<Task<T>> operation)
+        {
+            using var timeoutCts = new CancellationTokenSource(RequestTimeout);
+            Task<T> task = operation();
+            Task completed = await Task.WhenAny(task, Task.Delay(Timeout.Infinite, timeoutCts.Token));
+            if (completed != task)
+                throw new TimeoutException($"Supabase request timed out after {RequestTimeout.TotalSeconds}s");
+            return await task;
+        }
+
+        private static async Task ExecuteWithTimeoutAsync(Func<Task> operation)
+        {
+            using var timeoutCts = new CancellationTokenSource(RequestTimeout);
+            Task task = operation();
+            Task completed = await Task.WhenAny(task, Task.Delay(Timeout.Infinite, timeoutCts.Token));
+            if (completed != task)
+                throw new TimeoutException($"Supabase request timed out after {RequestTimeout.TotalSeconds}s");
+            await task;
         }
 
         private static async Task<T> ExecuteWithRetryAsync<T>(Func<Task<T>> operation)
@@ -108,7 +135,7 @@ namespace RepeatList.Services
             {
                 try
                 {
-                    return await operation();
+                    return await ExecuteWithTimeoutAsync(operation);
                 }
                 catch (Exception ex) when (attempt < MaxAttempts && IsTransientNetworkError(ex))
                 {
@@ -123,7 +150,7 @@ namespace RepeatList.Services
             {
                 try
                 {
-                    await operation();
+                    await ExecuteWithTimeoutAsync(operation);
                     return;
                 }
                 catch (Exception ex) when (attempt < MaxAttempts && IsTransientNetworkError(ex))

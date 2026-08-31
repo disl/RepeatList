@@ -635,6 +635,10 @@ namespace RepeatList.ViewModels
             }
             catch (Exception ex)
             {
+                // Exception-Details nie verwerfen: Für die Diagnose ("Ein unerwarteter Fehler")
+                // immer nach Sentry melden, mit Richtungs-Tag zur Unterscheidung vom Netzwerkfehler.
+                SentrySdk.CaptureException(ex, scope => scope.SetTag("sync.direction", "down_local"));
+
                 await Application.Current.MainPage.DisplaySnackbar(
                     Properties.Resources.An_unexpected_error_has_occurred,
                     visualOptions: new SnackbarOptions
@@ -766,6 +770,13 @@ namespace RepeatList.ViewModels
                     var share_text = Properties.Resources.This_is_the_link_to_the_published_list_called.Replace("%1", Header_SelectedItem.ListName);
                     await Utilities.ShareTextAsync(Header_SelectedItem.Id, share_text);
                 }
+            }
+            catch (Exception ex)
+            {
+                // Fehler beim Upload/Down-Sync nicht an den async-void-Handler rethrow-en
+                // (das würde die Seite verlassen / App-Neustart auslösen), sondern loggen und
+                // kontrolliert beenden. Die eigentliche Ursache liefert Sentry (Tag sync.direction=up).
+                SentrySdk.CaptureException(ex, scope => scope.SetTag("sync.direction", "up"));
             }
             finally
             {
@@ -1863,7 +1874,11 @@ namespace RepeatList.ViewModels
         {
             Header_SelectedItem = header;
             await _databaseService.EditHeadersTitleAsync(header, new_list_name);
-            await LoadHeaders();
+
+            // Header-Objekt direkt aktualisieren statt die ganze Collection neu zu laden
+            // (LoadHeaders → Headers.Clear() → "zurück zum Start"). ListName ist observable,
+            // daher aktualisieren sich Anzeige und Avatar automatisch.
+            header.ListName = new_list_name;
             SetFirstItemForHeaders();
         }
 
@@ -1871,7 +1886,12 @@ namespace RepeatList.ViewModels
         {
             Header_SelectedItem = header;
             await _databaseService.EditHeadersIsSynchronizedAsync(header, new_IsSynchronized);
-            await LoadHeaders();
+
+            // Gezielt nur das eine Header-Objekt aktualisieren statt die ganze Collection neu zu laden.
+            // LoadHeaders() macht Headers.Clear() → Scroll-Position und Auswahl gehen verloren
+            // ("zurück zum Start" beim Sync). Header implementiert INotifyPropertyChanged,
+            // daher aktualisiert sich das Sync-Icon (Sync_arrow_down_icon) automatisch.
+            header.IsSynchronized = new_IsSynchronized;
             SetFirstItemForHeaders();
         }
 
