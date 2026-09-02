@@ -32,24 +32,35 @@ namespace RepeatList.Platforms.Android
                 // Check if update is available
                 if (appUpdateInfo.UpdateAvailability() == IUpdateAvailability.UpdateAvailable)
                 {
-                    // Check if the update is allowed
-                    // For immediate updates:
+                    // Update-Typ bestimmen (Immediate bevorzugt, sonst Flexible)
+                    int? updateType = null;
                     if (appUpdateInfo.IsUpdateTypeAllowed(IAppUpdateType.Immediate))
                     {
-                        var options = AppUpdateOptions.DefaultOptions(IAppUpdateType.Immediate);
-                        _updateManager.StartUpdateFlowForResult(
-                            appUpdateInfo,
-                            Platform.CurrentActivity ?? throw new NullReferenceException("CurrentActivity is null"),
-                            options,
-                            UpdateRequestCode);
+                        updateType = IAppUpdateType.Immediate;
                     }
-                    // For flexible updates:
                     else if (appUpdateInfo.IsUpdateTypeAllowed(IAppUpdateType.Flexible))
                     {
-                        var options = AppUpdateOptions.DefaultOptions(IAppUpdateType.Flexible);
+                        updateType = IAppUpdateType.Flexible;
+                    }
+
+                    if (updateType.HasValue)
+                    {
+                        var activity = Platform.CurrentActivity;
+
+                        // Timer-getriggerter Aufruf: Activity kann gerade terminieren
+                        // (Hintergrund/Rotation/Beenden). StartUpdateFlowForResult braucht
+                        // eine gültige, aktive Activity - sonst wirft Play Core intern eine
+                        // Java.Lang.Exception aus der JNI-Schicht. Beim nächsten Timer-Tick
+                        // wird es erneut versucht, daher hier einfach überspringen.
+                        if (activity == null || activity.IsFinishing || activity.IsDestroyed)
+                        {
+                            return;
+                        }
+
+                        var options = AppUpdateOptions.DefaultOptions(updateType.Value);
                         _updateManager.StartUpdateFlowForResult(
                             appUpdateInfo,
-                            Platform.CurrentActivity ?? throw new NullReferenceException("CurrentActivity is null"),
+                            activity,
                             options,
                             UpdateRequestCode);
                     }
@@ -62,7 +73,8 @@ namespace RepeatList.Platforms.Android
                 // und kein Fehler im eigentlichen Sinn → nicht an Sentry melden.
                 if (ex.Message.Contains("-10", StringComparison.OrdinalIgnoreCase)
                     || ex.Message.Contains("not owned", StringComparison.OrdinalIgnoreCase)
-                    || ex.Message.Contains("app not owned", StringComparison.OrdinalIgnoreCase))
+                    || ex.Message.Contains("app not owned", StringComparison.OrdinalIgnoreCase)
+                    || ex.Message.Contains("not found", StringComparison.OrdinalIgnoreCase))
                 {
 #if DEBUG
                     System.Diagnostics.Debug.WriteLine($"InAppUpdater skipped (expected for sideload): {ex.Message}");

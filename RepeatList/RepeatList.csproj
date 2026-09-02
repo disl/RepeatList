@@ -60,12 +60,12 @@
 		
 	</PropertyGroup>
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net9.0-android|AnyCPU'">
-	  <ApplicationDisplayVersion>1.0.157</ApplicationDisplayVersion>
-	  <ApplicationVersion>157</ApplicationVersion>
+	  <ApplicationDisplayVersion>1.0.158</ApplicationDisplayVersion>
+	  <ApplicationVersion>158</ApplicationVersion>
 	</PropertyGroup>
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net9.0-android|AnyCPU'">
-	  <ApplicationDisplayVersion>1.0.157</ApplicationDisplayVersion>
-	  <ApplicationVersion>157</ApplicationVersion>
+	  <ApplicationDisplayVersion>1.0.158</ApplicationDisplayVersion>
+	  <ApplicationVersion>158</ApplicationVersion>
 	  <!-- Sentry-Symbol-Upload (de.sentry.io): Die offizielle MSBuild-Integration
 	       (SentryUploadSymbols + UploadDebugInfoToSentry) schlägt auf der EU-Instanz fehl,
 	       weil der sentry-cli Auth-Check "GET /api/0/" dort 404 liefert und das Target den
