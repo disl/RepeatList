@@ -1292,7 +1292,7 @@ namespace RepeatList.ViewModels
 
             if (Header_SelectedItem.IsSynchronized && _supabaseService != null)
             {
-                await _supabaseService.SyncPositionAsync(position);
+                await _supabaseService.SyncPositionAsync(position, Header_SelectedItem);
             }
 
             IsBusy = false;
@@ -1359,7 +1359,7 @@ namespace RepeatList.ViewModels
                 if (Header_SelectedItem.IsSynchronized && _supabaseService != null)
                 {
                     // Best-effort: retry intern; bei Fehlschlag wird die lokale Änderung trotzdem gespeichert
-                    await _supabaseService.SyncPositionAsync(pos);
+                    await _supabaseService.SyncPositionAsync(pos, Header_SelectedItem);
                 }
 
                 Position_selectedItem = pos;
@@ -1485,7 +1485,7 @@ namespace RepeatList.ViewModels
                 {
                     pos.IsCompleted = false;
                     pos.UpdatedAt = DateTime.Now.ToUniversalTime();
-                    await _supabaseService.SyncPositionAsync(pos);
+                    await _supabaseService.SyncPositionAsync(pos, Header_SelectedItem);
                 }
             }
 

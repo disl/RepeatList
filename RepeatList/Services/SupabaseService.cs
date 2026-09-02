@@ -189,7 +189,7 @@ namespace RepeatList.Services
             }
         }
 
-        public async Task<bool> SyncPositionAsync(Position? position)
+        public async Task<bool> SyncPositionAsync(Position? position, Header? parentHeader = null)
         {
             await EnsureInitializedAsync();
 
@@ -197,6 +197,24 @@ namespace RepeatList.Services
             {
                 await ExecuteWithRetryAsync(() => _supabase.From<Position>().Upsert(position));
                 return true;
+            }
+            catch (Exception ex) when (parentHeader != null && ex.Message.Contains("23503", StringComparison.OrdinalIgnoreCase))
+            {
+                // FK-Verletzung (HeaderId nicht in Header vorhanden): Der Header wurde lokal
+                // schon als synchronisiert markiert, ist remote aber (noch) nicht vorhanden -
+                // z. B. Race beim erstmaligen Aktivieren des Syncs. Header nachziehen und die
+                // Position einmal erneut hochladen, bevor an Sentry gemeldet wird.
+                try
+                {
+                    await ExecuteWithRetryAsync(() => _supabase.From<Header>().Upsert(parentHeader));
+                    await ExecuteWithRetryAsync(() => _supabase.From<Position>().Upsert(position));
+                    return true;
+                }
+                catch (Exception retryEx)
+                {
+                    SentrySdk.CaptureException(retryEx);
+                    return false;
+                }
             }
             catch (Exception ex)
             {
