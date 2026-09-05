@@ -1000,42 +1000,37 @@ namespace RepeatList.ViewModels
         }
 
         // Bringt eine Ziel-Collection per Id-Vergleich auf den Soll-Zustand, ohne sie neu
-        // zuzuweisen (PropertyChanged) oder komplett zu leeren. Nur tatsächliche Diffs werden
-        // als Add/Remove/Insert-Ereignisse ausgelöst → minimale UI-Updates statt Voll-Re-Render.
+        // zuzuweisen (PropertyChanged). Bestehende Element-Instanzen werden per Id wiederverwendet,
+        // damit Item-Referenzen/State erhalten bleiben; nur die Reihenfolge wird korrigiert.
+        //
+        // WICHTIG: Die frühere Implementierung nutzte in einer desIdx-Schleife target.Move(),
+        // was die Indizes aller noch nicht eingeordneten Elemente verschob → es entstanden
+        // Lücken und falsche Zuordnungen, sobald ein Element seinen Abgeschlossen-Status änderte
+        // (offen↔erledigt wechselt die Sortierung und damit die Zielreihenfolge). Der Abgleich
+        // erfolgt deshalb jetzt deterministisch über eine Id→Instanz-Map statt Move-Jonglieren.
         private static void SyncListInPlace(ObservableCollection<Position> target, IList<Position> desired)
         {
             if (target == null || desired == null)
                 return;
 
-            var desiredIds = new HashSet<string>(desired.Where(p => p.Id != null).Select(p => p.Id));
-
-            // Entferne Elemente, die im Soll-Zustand nicht (mehr) vorkommen.
-            for (int i = target.Count - 1; i >= 0; i--)
+            // Id -> bestehende Instanz (keine Duplikate erwartet, aber defensiv: letzte gewinnt).
+            var existingById = new Dictionary<string, Position>();
+            foreach (var p in target)
             {
-                if (target[i].Id == null || !desiredIds.Contains(target[i].Id))
-                    target.RemoveAt(i);
+                if (p?.Id != null)
+                    existingById[p.Id] = p;
             }
 
-            // Füge fehlende Elemente an der richtigen Sortierposition hinzu.
-            for (int desiredIdx = 0; desiredIdx < desired.Count; desiredIdx++)
+            // Reihenfolge und Inhalt bereinigt in einem Rutsch aufbauen. Für jede Soll-Position
+            // wird die bestehende Instanz wiederverwendet oder, falls neu, das neue Objekt
+            // übernommen. Am Ende keine Index-Lücken, da wir die Collection exakt als Spiegel
+            // von "desired" rekonstruieren.
+            for (int i = 0; i < desired.Count; i++)
             {
-                var cur = desired[desiredIdx];
-                var existingIdx = target.ToList().FindIndex(p => p.Id == cur.Id);
-
-                if (existingIdx < 0)
+                var cur = desired[i];
+                if (cur?.Id != null && existingById.TryGetValue(cur.Id, out var existing))
                 {
-                    // Neu → an der korrekten Position einfügen.
-                    int insertIdx = Math.Min(desiredIdx, target.Count);
-                    target.Insert(insertIdx, cur);
-                }
-                else
-                {
-                    // Bereits vorhanden → bei geänderter Sortierposition verschieben.
-                    if (existingIdx != desiredIdx)
-                        target.Move(existingIdx, desiredIdx);
-
-                    // Geänderte Eigenschaften (Title/IsCompleted/...) übernehmen.
-                    var existing = target[desiredIdx];
+                    // Instanz wiederverwenden, aber geänderte Werte übernehmen.
                     if (!ReferenceEquals(existing, cur))
                     {
                         existing.Title = cur.Title;
@@ -1044,8 +1039,31 @@ namespace RepeatList.ViewModels
                         existing.UpdatedAt = cur.UpdatedAt;
                         existing.Category_color = cur.Category_color;
                     }
+
+                    if (i < target.Count)
+                    {
+                        // Gleiche Position: ggf. ersetzen (Referenz kann sich geändert haben).
+                        if (!ReferenceEquals(target[i], existing))
+                            target[i] = existing;
+                    }
+                    else
+                    {
+                        target.Add(existing);
+                    }
+                }
+                else if (cur != null)
+                {
+                    // Neu → an Position i einfügen (oder anhängen).
+                    if (i < target.Count)
+                        target[i] = cur;
+                    else
+                        target.Add(cur);
                 }
             }
+
+            // Überschüssige Elemente am Ende entfernen (Soll hat weniger Einträge als vorher).
+            while (target.Count > desired.Count)
+                target.RemoveAt(target.Count - 1);
         }
 
         public async Task FillCategories()

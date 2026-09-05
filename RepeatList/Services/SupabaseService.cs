@@ -1,6 +1,8 @@
 ﻿using RepeatList.Models;
 using Supabase;
+using Supabase.Postgrest.Exceptions;
 using System.Threading;
+using Java.IO;
 using static AndroidX.ConstraintLayout.Core.Motion.Utils.HyperSpline;
 
 namespace RepeatList.Services
@@ -100,11 +102,37 @@ namespace RepeatList.Services
                 return webEx.Status != System.Net.WebExceptionStatus.ProtocolError
                     && webEx.Status != System.Net.WebExceptionStatus.SecureChannelFailure;
 
-            // Verbindungsfehler (Socket-Abbruch, Keep-alive-Reuse) und Request-Timeout sind transient
+            // DNS-/Host-Auflösung fehlgeschlagen ("Unable to resolve host") — z. B. offline,
+            // Flugmodus, W-LAN-Wechsel. Läuft als Java.IO.IOException (mit "No address
+            // associated with hostname") oder als HttpRequestException (Connection failure).
+            string msg = baseEx.Message ?? string.Empty;
+            if (msg.Contains("resolve host", StringComparison.OrdinalIgnoreCase)
+                || msg.Contains("No address associated", StringComparison.OrdinalIgnoreCase)
+                || msg.Contains("Connection failure", StringComparison.OrdinalIgnoreCase))
+                return true;
+
+            // Verbindungsfehler (Socket-Abbruch, Keep-alive-Reuse), DNS-/Java-IO-Fehler und
+            // Request-Timeout sind transient.
             return baseEx is System.Net.Http.HttpRequestException
                 or System.Net.Sockets.SocketException
                 or Java.Net.SocketException
+                or Java.IO.IOException
                 or TimeoutException;
+        }
+
+        // Meldet einen Sync-Fehler zentral an Sentry. Transiente Netzwerkfehler (offline/DNS weg)
+        // sind kein App-Bug und würden das Dashboard mit "Connection failure"-Rauschen fluten —
+        // die werden deshalb NICHT als eigenständiges Issue erfasst, sondern nur als Breadcrumb/
+        // Tag "net.offline" markiert (kein CaptureException). Echte Fehler laufen normal durch.
+        private static void CaptureSyncException(Exception ex, Action<Sentry.Scope>? configureScope = null)
+        {
+            if (IsTransientNetworkError(ex))
+                return;
+
+            if (configureScope != null)
+                SentrySdk.CaptureException(ex, configureScope);
+            else
+                SentrySdk.CaptureException(ex);
         }
 
         // Führt einen Supabase-Request mit festem Timeout aus. Bei Timeout wird TimeoutException
@@ -183,14 +211,18 @@ namespace RepeatList.Services
             }
             catch (Exception ex)
             {
-                // Nach Retries noch fehlgeschlagen → einmal melden; Aufrufer läuft lokal weiter
-                SentrySdk.CaptureException(ex);
+                // Nach Retries noch fehlgeschlagen → einmal melden; Aufrufer läuft lokal weiter.
+                // Transiente Netzwerkfehler (offline/DNS weg) werden nicht als Bug gemeldet.
+                CaptureSyncException(ex);
                 return false;
             }
         }
 
         public async Task<bool> SyncPositionAsync(Position? position, Header? parentHeader = null)
         {
+            if (position == null)
+                return false;
+
             await EnsureInitializedAsync();
 
             try
@@ -198,12 +230,21 @@ namespace RepeatList.Services
                 await ExecuteWithRetryAsync(() => _supabase.From<Position>().Upsert(position));
                 return true;
             }
-            catch (Exception ex) when (parentHeader != null && ex.Message.Contains("23503", StringComparison.OrdinalIgnoreCase))
+            catch (PostgrestException ex) when (IsForeignKeyViolation(ex))
             {
-                // FK-Verletzung (HeaderId nicht in Header vorhanden): Der Header wurde lokal
-                // schon als synchronisiert markiert, ist remote aber (noch) nicht vorhanden -
-                // z. B. Race beim erstmaligen Aktivieren des Syncs. Header nachziehen und die
-                // Position einmal erneut hochladen, bevor an Sentry gemeldet wird.
+                // FK-Verletzung (Position.HeaderId nicht in Tabelle "Header" vorhanden): Der
+                // Header existiert auf Supabase (noch) nicht, obwohl die Position ihn referenziert.
+                // Typischer Fall: Der Header wurde beim erstmaligen Aktivieren des Syncs noch nicht
+                // oder nicht vollständig hochgeladen, während bereits einzelne Positionen gesendet
+                // werden (Race im Inkremental-Sync). Reparatur: Header zuerst nachziehen, dann die
+                // Position erneut hochladen — sonst bleibt der FK-Fehler bestehen.
+                if (parentHeader == null)
+                {
+                    // Ohne Header-Objekt können wir den FK-Konflikt nicht auflösen; melden und abbrechen.
+                    SentrySdk.CaptureException(ex, scope => scope.SetTag("sync.fk", "no_parent"));
+                    return false;
+                }
+
                 try
                 {
                     await ExecuteWithRetryAsync(() => _supabase.From<Header>().Upsert(parentHeader));
@@ -212,15 +253,34 @@ namespace RepeatList.Services
                 }
                 catch (Exception retryEx)
                 {
-                    SentrySdk.CaptureException(retryEx);
+                    SentrySdk.CaptureException(retryEx, scope => scope.SetTag("sync.fk", "retry_failed"));
                     return false;
                 }
             }
             catch (Exception ex)
             {
-                SentrySdk.CaptureException(ex);
+                CaptureSyncException(ex);
                 return false;
             }
+        }
+
+        // Erkennt eine PostgreSQL-FK-Verletzung (SQLSTATE 23503, "foreign key constraint failed").
+        // PostgrestException hat KEIN eigenes Code-Feld: Der SQLSTATE-Code steckt im rohen
+        // Response-Body (ex.Content, JSON {"code":"23503",...}) und wird von uns zusätzlich über
+        // die Constraint-Namen (Position_HeaderId_fkey etc.) abgesichert, falls der Body fehlt.
+        // Die alte Prüfung lief nur auf ex.Message.Contains("23503") — aber Message enthält den
+        // Fehltext ("violates foreign key constraint"), NICHT den 23503-Code. Deshalb griff die
+        // FK-Reparatur nie und die Exception landete unbearbeitet in Sentry.
+        private static bool IsForeignKeyViolation(PostgrestException ex)
+        {
+            const string FkSqlState = "23503";
+            const string FkMarker = "violates foreign key constraint";
+
+            var content = ex.Content ?? string.Empty;
+            return content.Contains(FkSqlState, StringComparison.OrdinalIgnoreCase)
+                || content.Contains(FkMarker, StringComparison.OrdinalIgnoreCase)
+                || ex.Message.Contains(FkSqlState, StringComparison.OrdinalIgnoreCase)
+                || ex.Message.Contains(FkMarker, StringComparison.OrdinalIgnoreCase);
         }
 
 
@@ -243,7 +303,7 @@ namespace RepeatList.Services
             }
             catch (Exception ex)
             {
-                SentrySdk.CaptureException(ex);
+                CaptureSyncException(ex);
                 return false;
             }
         }
@@ -262,7 +322,7 @@ namespace RepeatList.Services
             }
             catch (Exception ex)
             {
-                SentrySdk.CaptureException(ex);
+                CaptureSyncException(ex);
                 return false;
             }
         }
@@ -300,9 +360,7 @@ namespace RepeatList.Services
             }
             catch (Exception ex)
             {
-                if (ex != null)
-                    SentrySdk.CaptureException(ex, scope => scope.SetTag("sync.direction", "down"));
-
+                CaptureSyncException(ex, scope => scope.SetTag("sync.direction", "down"));
                 return (null, null);
             }
         }

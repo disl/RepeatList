@@ -27,19 +27,32 @@ namespace RepeatList
                 e.SetObserved();
                 SentrySdk.CaptureException(e.Exception);
             };
+        }
 
-            // WICHTIG: Setze eine leere Platzhalterseite, 
-            // damit die App sofort etwas zum Anzeigen hat.
-            MainPage = new ContentPage { BackgroundColor = Colors.White };
+        // Gibt das Start-Window genau EINMAL zurück. MAUI ruft diese Methode beim Einlegen
+        // der Android-Activity auf. Sie ersetzt das frühere mehrfache Setzen von MainPage
+        // (leere Platzhalterseite im Konstruktor, dann new AppShell() in OnStart), das beim
+        // zweiten Activity-Aufruf (z. B. externer ActionView-Intent zum Öffnen einer .json)
+        // zu „This window is already associated with an active Activity" führte.
+        //
+        // WICHTIG: CreateWindow läuft VOR OnStart und darf deshalb NICHT auf die Datenbank
+        // zugreifen (die wird erst asynchron in OnStart kopiert). Es wertet nur die
+        // Onboarding-Präferenz synchron aus.
+        protected override Window CreateWindow(IActivationState? activationState)
+        {
+            bool seen = Preferences.Get("onboarding_seen", false);
+            return seen
+                ? new Window(new AppShell())
+                : new Window(new OnboardingPage());
         }
 
         protected override async void OnStart()
         {
             base.OnStart();
 
-            // Theme beim Start anwenden, BEVOR die Shell erstellt wird. SetupPageViewModel.Load()
-            // läuft asynchron und setzt das Theme erst nach dem ersten Rendering (dort wird der Wert
-            // über Preferences.Set("app_theme", …) gepflegt; Default = Dark wie im DB-Schema).
+            // Theme beim Start anwenden. SetupPageViewModel.Load() läuft asynchron und setzt
+            // das Theme erst nach dem ersten Rendering (dort wird der Wert über
+            // Preferences.Set("app_theme", …) gepflegt; Default = Dark wie im DB-Schema).
             if (Application.Current != null)
             {
                 Application.Current.UserAppTheme =
@@ -58,21 +71,15 @@ namespace RepeatList
                     catch (Exception) { }
                 });
 
-                // Erst nach dem Kopieren die richtige Seite setzen
                 bool seen = Preferences.Get("onboarding_seen", false);
 
-                if (!seen)
-                {
-                    MainPage = new OnboardingPage();
-                }
-                else
-                {
-                    MainPage = new AppShell();
+                // Pre-load interstitial ad early so it's ready when a list is completed.
+                // Nur wenn wir im normalen App-Zustand sind (nicht im Onboarding).
+                _ = IPlatformApplication.Current?.Services.GetService<IInterstitialAdService>();
 
-                    // Pre-load interstitial ad early so it's ready when a list is completed
-                    _ = IPlatformApplication.Current?.Services.GetService<IInterstitialAdService>();
-
-                    // App Open Ad zeigen — bis zu 5 Sek. auf Laden warten
+                // App Open Ad zeigen — bis zu 5 Sek. auf Laden warten (nur im normalen Zustand).
+                if (seen)
+                {
                     _ = Task.Run(async () =>
                     {
                         var adService = IPlatformApplication.Current?.Services.GetService<IAppOpenAdService>();
@@ -93,9 +100,11 @@ namespace RepeatList
             }
             catch (Exception ex)
             {
+                // DB-Kopie oder Abo-Sync ist fehlgeschlagen. Das Start-Window wurde bereits
+                // in CreateWindow gesetzt und bleibt erhalten — hier nur den Fehler melden,
+                // ohne ein neues Window/Page zu erzwingen (genau das führte zum
+                // „already associated with an active Activity"-Crash).
                 SentrySdk.CaptureException(ex);
-                // Fallback bei Fehlern
-                MainPage = new AppShell();
             }
         }
 

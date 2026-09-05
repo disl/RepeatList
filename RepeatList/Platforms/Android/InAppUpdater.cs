@@ -68,16 +68,23 @@ namespace RepeatList.Platforms.Android
             }
             catch (Exception ex)
             {
-                // ERROR_APP_NOT_OWNED (-10) tritt bei Debug-/Sideload-Installs auf (App wurde
-                // nicht über den Play Store erworben). Das ist ein erwarteter, harmloser Zustand
-                // und kein Fehler im eigentlichen Sinn → nicht an Sentry melden.
-                if (ex.Message.Contains("-10", StringComparison.OrdinalIgnoreCase)
-                    || ex.Message.Contains("not owned", StringComparison.OrdinalIgnoreCase)
-                    || ex.Message.Contains("app not owned", StringComparison.OrdinalIgnoreCase)
-                    || ex.Message.Contains("not found", StringComparison.OrdinalIgnoreCase))
+                // Harmlose, erwartete Play-Core-Zustände nicht an Sentry melden:
+                //  - ERROR_APP_NOT_OWNED (-10) / "not owned": Debug-/Sideload-Install (App wurde
+                //    nicht über den Play Store erworben).
+                //  - "not found": Update-Info-Abfrage ohne Ergebnis.
+                //  - "Binder has died" / "DeadObject": Der Play-Store-Prozess (Binder/IPC-Partner)
+                //    wurde beendet oder neu gestartet, während wir AppUpdateInfo abfragten. Das ist
+                //    transient und behebt sich beim nächsten Update-Check von selbst — kein App-Bug.
+                string msg = ex.GetBaseException().Message ?? string.Empty;
+                if (msg.Contains("-10", StringComparison.OrdinalIgnoreCase)
+                    || msg.Contains("not owned", StringComparison.OrdinalIgnoreCase)
+                    || msg.Contains("app not owned", StringComparison.OrdinalIgnoreCase)
+                    || msg.Contains("not found", StringComparison.OrdinalIgnoreCase)
+                    || msg.Contains("binder has died", StringComparison.OrdinalIgnoreCase)
+                    || msg.Contains("DeadObject", StringComparison.OrdinalIgnoreCase))
                 {
 #if DEBUG
-                    System.Diagnostics.Debug.WriteLine($"InAppUpdater skipped (expected for sideload): {ex.Message}");
+                    System.Diagnostics.Debug.WriteLine($"InAppUpdater skipped (expected): {msg}");
 #endif
                     return;
                 }
