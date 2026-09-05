@@ -79,21 +79,35 @@ namespace RepeatList.ViewModels
             // 1. Status speichern
             Preferences.Set("onboarding_seen", true);
 
-            // 2. Zugriff auf die aktuelle Seite für die Animation
-            var currentPage = Application.Current?.MainPage;
+            // 2. Zugriff auf die aktuelle Seite für die Animation.
+            //    Die Startseite wird in App.CreateWindow bestimmt (Window-Modell) — die Page
+            //    holen wir hier über das Window, nicht über Application.MainPage.
+            var app = Application.Current;
+            Window? window = null;
+            if (app is { Windows.Count: > 0 })
+                window = app.Windows[0];
 
-            if (currentPage != null)
+            if (window?.Page is { } currentPage)
             {
                 // Onboarding langsam ausblenden (500 Millisekunden)
                 await currentPage.FadeTo(0, 500, Easing.Linear);
             }
 
-            // 3. Seite wechseln
-            // Wir erstellen die Shell, setzen sie auf unsichtbar und weisen sie zu
-            var newShell = new AppShell();
-            newShell.Opacity = 0;
+            // 3. Seite wechseln.
+            //    WICHTIG: NICHT Application.Current.MainPage zuweisen! Da App.CreateWindow
+            //    überschrieben ist (App.xaml.cs), führt jede MainPage-Zuweisung zum Crash
+            //    "Both MainPage was set and CreateWindow was overridden to provide a page.",
+            //    sobald die Android-Activity neu erstellt wird (Rotation, Pre-Launch-Report,
+            //    erneuter Intent-Aufruf). Korrekt im Window-Modell: dem bestehenden Window
+            //    die neue Page zuweisen (umgeht das interne MainPage-Feld vollständig).
+            var newShell = new AppShell { Opacity = 0 };
 
-            Application.Current.MainPage = newShell;
+            // Skip() läuft nur, solange das Onboarding in einem Window angezeigt wird —
+            // daher ist window hier praktisch immer gesetzt. Der Guard ist rein defensiv.
+            if (window != null)
+            {
+                window.Page = newShell;
+            }
 
             // 4. Die neue Shell langsam einblenden
             await newShell.FadeTo(1, 500, Easing.Linear);
