@@ -6,6 +6,7 @@ using Android.OS;
 using AndroidX.Core.App;
 using AndroidX.Core.Content;
 using Bumptech.Glide.Load.Model;
+using RepeatList.Platforms.Android;
 using RepeatList.ViewModels;
 using System.Collections.ObjectModel;
 
@@ -77,6 +78,12 @@ namespace RepeatList
         }
 
 
+
+        protected override void OnResume()
+        {
+            base.OnResume();
+            InAppUpdateManager.CheckForUpdate(this);
+        }
 
         public static string GetPendingIntentData()
         {

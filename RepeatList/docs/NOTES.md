@@ -27,3 +27,16 @@ Sentry meldet erneut `ApplicationNotResponding: Background ANR`, Stack zeigt `mo
 - Build 157 liegt **vor** dem Symbol-Upload-Target (05.09.), daher fehlen Debug-Symbole — der Stack ist nicht auf App-Code zurückführbar.
 - Vermutung: anderes Problem als der ursprüngliche SQLite/Sync-Bug, evtl. Mono-Runtime/AOT-seitig statt App-Logik.
 - **Nächster Schritt:** Nächsten ANR mit einem Build ≥ 1.0.162 (nach Symbol-Upload-Integration) neu bewerten — der Stack sollte dann App-Frames enthalten.
+
+## In-App-Updates (Flexible Flow, seit 07.09.2026)
+
+Nutzer hingen bisher komplett am Play-Store-Auto-Update — es gab **nie** eine echte In-App-Update-Funktion in der App (`Platforms\Android\InAppUpdateManager.cs` existierte seit 02.05.2025 nur als leere, unbenutzte Klassenhülle und wurde einen Tag später sogar aus dem Build ausgeschlossen).
+
+**Umgesetzt:** Google Play Core "Flexible" In-App-Update (`Platforms\Android\InAppUpdateManager.cs`, aufgerufen aus `MainActivity.OnResume`):
+- Lädt eine verfügbare neue Version im Hintergrund herunter, ohne die App zu blockieren.
+- Nach Abschluss (oder beim nächsten `OnResume`, falls der Download bereits fertig war) fragt ein `DisplayAlert` den Nutzer, ob er jetzt neu starten möchte (`AppUpdateManager.CompleteUpdate()`).
+- Die nativen Play-Core-Maven-Libraries (`com.google.android.play:app-update:2.1.0`, `core-common:2.0.3`) waren im csproj schon länger referenziert, aber nie genutzt.
+
+**Bewusst weggelassen:** Ein `InstallStateUpdatedListener` (würde sofort benachrichtigen, sobald der Download fertig ist, auch während die App offen ist) — die generische Java-Signatur (`StateUpdatedListener<InstallState>`) lässt sich mit den aktuellen Xamarin/MAUI-Play-Core-Bindings nicht sauber implementieren (javac-Fehler: `onStateUpdate(Object)` vs. `onStateUpdate(InstallState)`, Erasure-Konflikt). Stattdessen wird der Status bei jedem `OnResume` neu abgefragt — für den Zweck (Nutzer von alten, potenziell verbuggten Versionen wegbekommen) ausreichend.
+
+**Immediate Flow** (blockierender Vollbild-Update-Zwang) bewusst nicht eingebaut — Entscheidung war Flexible, um Nutzer nicht zu bevormunden. Bei Bedarf für kritische Releases (z. B. ANR-Hotfixes) könnte das später ergänzt werden (Play-Console-Update-Priorität auswerten, dann `AppUpdateType.Immediate` statt `Flexible`).
