@@ -26,7 +26,8 @@ Sentry meldet erneut `ApplicationNotResponding: Background ANR`, Stack zeigt `mo
 - Build 1.0.157 entstand 31.08.–02.09.2026 — **nach** dem obigen ANR-Fix; alle damaligen Fixes sind im Code enthalten und griffen hier offenbar nicht.
 - Build 157 liegt **vor** dem Symbol-Upload-Target (05.09.), daher fehlen Debug-Symbole — der Stack ist nicht auf App-Code zurückführbar.
 - Vermutung: anderes Problem als der ursprüngliche SQLite/Sync-Bug, evtl. Mono-Runtime/AOT-seitig statt App-Logik.
-- **Nächster Schritt:** Nächsten ANR mit einem Build ≥ 1.0.162 (nach Symbol-Upload-Integration) neu bewerten — der Stack sollte dann App-Frames enthalten.
+- **Zweiter Auftritt (Version 1.0.159, gemeldet 08.09.2026):** identischer Stack (`mono_loader_lock`/`mono_metadata_get_generic_inst`, keine App-Frames, nur `main`-Thread) — bestätigt, dass es kein Einzelfall war. Liegt weiterhin vor 1.0.162, also vor der geplanten Neubewertung.
+- **Nächster Schritt:** Nächsten ANR mit einem Build ≥ 1.0.162 (nach Symbol-Upload-Integration) neu bewerten — der Stack sollte dann App-Frames enthalten. In Sentry nicht abhaken, bis eine Version ≥ 1.0.162 App-Frames im Stack zeigt.
 
 ## In-App-Updates (Flexible Flow, seit 07.09.2026)
 
