@@ -13,7 +13,7 @@
     
     <VerticalStackLayout Padding="10"  Spacing="10" BackgroundColor="gray">
         <Label Text="{x:Static properties:Resources.Export_list}"  FontSize="Medium" TextColor="White" />
-        <Button x:Name="Export_not_completed_as_a_text_list_Button"  Text="{x:Static properties:Resources.Export_not_completed_as_a_text_list}" TextColor="White" 
+        <Button x:Name="Export_not_completed_as_a_text_list_Button"  Text="{x:Static properties:Resources.Export_not_completed_as_a_text_list}" TextColor="White"
                VerticalOptions="FillAndExpand"
                 Clicked="OnExport_not_completed_as_a_text_listClicked"  CommandParameter="{Binding}"  />
 

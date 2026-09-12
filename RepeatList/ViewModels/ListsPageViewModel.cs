@@ -592,6 +592,20 @@ namespace RepeatList.ViewModels
             }
         }
 
+        // Ehrliche Meldung für einen fehlgeschlagenen Down-Sync. Vorher bekam jeder Fehlschlag
+        // "String is not a valid List-ID" — auch wenn nur der Server nicht erreichbar war.
+        private static string SyncFailureMessage(SyncFetchStatus status) => status switch
+        {
+            SyncFetchStatus.NotFound => Properties.Resources.List_does_not_exist_on_server,
+            SyncFetchStatus.NetworkError => Properties.Resources.Server_not_reachable_data_unchanged,
+            _ => Properties.Resources.An_unexpected_error_has_occurred,
+        };
+
+        // Netzfehler sind vorübergehend → Warnfarbe. Echte Fehler und "Liste fehlt" bleiben rot.
+        private static Color SyncFailureColor(SyncFetchStatus status) => status == SyncFetchStatus.NetworkError
+            ? Constantes.Color_Warning
+            : Constantes.Color_Error;
+
         public async Task Sync_list_downClicked(string guid_str_param, CancellationToken ct = default)
         {
             if (string.IsNullOrWhiteSpace(guid_str_param) || _supabaseService == null)
@@ -606,31 +620,34 @@ namespace RepeatList.ViewModels
 
             try
             {
-                var sync_responce = await _supabaseService.GetHeaderWithPositionsByIdAsync(tmp_guid);
+                SyncFetchResult sync_responce = await _supabaseService.GetHeaderWithPositionsByIdAsync(tmp_guid);
                 ct.ThrowIfCancellationRequested();
 
-                if (sync_responce.header == null || sync_responce.position == null)
+                Header? serverHeader = sync_responce.Header;
+                List<Position>? serverPositions = sync_responce.Positions;
+
+                if (sync_responce.Status != SyncFetchStatus.Ok || serverHeader == null || serverPositions == null)
                 {
                     await ShowSnackbarAsync(
-                        Properties.Resources.String_is_not_a_valid_List_ID,
+                        SyncFailureMessage(sync_responce.Status),
                         new SnackbarOptions
                         {
-                            BackgroundColor = Color.FromArgb(Constantes.Color_Error_string),
+                            BackgroundColor = SyncFailureColor(sync_responce.Status),
                             TextColor = Colors.White
                         });
                     return; // <<< wichtig
                 }
 
-                var existingHeader = Headers?.FirstOrDefault(x => x.Id == sync_responce.header.Id);
+                var existingHeader = Headers?.FirstOrDefault(x => x.Id == serverHeader.Id);
 
                 if (existingHeader != null)
                 {
-                    await EditNameHeader(existingHeader, sync_responce.header.ListName);
+                    await EditNameHeader(existingHeader, serverHeader.ListName);
 
                     Lists = (await _databaseService.GetPositionsAsync(existingHeader.Id))
                         ?.ToObservableCollection() ?? new ObservableCollection<Position>();
 
-                    foreach (var pos in sync_responce.position)
+                    foreach (var pos in serverPositions)
                     {
                         ct.ThrowIfCancellationRequested();
 
@@ -644,9 +661,9 @@ namespace RepeatList.ViewModels
                 }
                 else
                 {
-                    var newHeader = await AddHeader(sync_responce.header.ListName, true, sync_responce.header.Id);
+                    var newHeader = await AddHeader(serverHeader.ListName, true, serverHeader.Id);
 
-                    foreach (var pos in sync_responce.position)
+                    foreach (var pos in serverPositions)
                     {
                         ct.ThrowIfCancellationRequested();
                         await AddPosition(pos, false, true);

@@ -7,6 +7,28 @@ using static AndroidX.ConstraintLayout.Core.Motion.Utils.HyperSpline;
 
 namespace RepeatList.Services
 {
+    /// <summary>Ergebnisstatus eines Down-Sync-Abrufs. Trennt "die Liste gibt es nicht" von
+    /// "der Server war nicht erreichbar" — vorher lieferten beide Fälle (null, null), und die
+    /// Aufrufer zeigten in beiden Fällen "ungültige Listen-ID".</summary>
+    public enum SyncFetchStatus
+    {
+        /// <summary>Header und Positionen erfolgreich geladen.</summary>
+        Ok,
+
+        /// <summary>Der Server hat geantwortet, die Liste existiert dort aber nicht (0 Treffer).</summary>
+        NotFound,
+
+        /// <summary>Vorübergehender Netz-/Serverfehler (offline, DNS, Timeout, 502/503/504).</summary>
+        NetworkError,
+
+        /// <summary>Unerwarteter Fehler — wurde an Sentry gemeldet.</summary>
+        Error
+    }
+
+    /// <summary>Ergebnis von <see cref="SupabaseService.GetHeaderWithPositionsByIdAsync"/>.
+    /// Ersetzt das frühere Tupel, bei dem der Fehlergrund verloren ging.</summary>
+    public readonly record struct SyncFetchResult(Header? Header, List<Position>? Positions, SyncFetchStatus Status);
+
     public class SupabaseService
     {
         /// <summary>Shared instance so all callers reuse one client and one initialization.</summary>
@@ -96,6 +118,17 @@ namespace RepeatList.Services
             // HTTP-Statusfehler: nur 5xx ist transient (Server kurzzeitig überlastet)
             if (baseEx is System.Net.Http.HttpRequestException httpEx && httpEx.StatusCode.HasValue)
                 return (int)httpEx.StatusCode.Value >= 500;
+
+            // Der Supabase-Client verpackt HTTP-Fehler in eine PostgrestException (HTTP-Status in
+            // StatusCode, int). Server-seitige Gateway-Fehler — 504 Gateway Timeout, 502 Bad Gateway,
+            // 503 Service Unavailable — sind transient und werden wiederholt. Ohne diese Prüfung lief
+            // der 504 als "echter" Fehler durch: kein Retry, falsche Sentry-Meldung und irreführende
+            // Snackbar ("Liste nicht verfügbar oder beschädigt") beim Nutzer.
+            // ex UND baseEx prüfen: GetBaseException() liefert bei gesetzter InnerException die innere
+            // Ausnahme — die PostgrestException ginge dann verloren.
+            var postgrestEx = ex as PostgrestException ?? baseEx as PostgrestException;
+            if (postgrestEx?.StatusCode is 502 or 503 or 504)
+                return true;
 
             // Alte WebException-Klasse: Protokoll-/TLS-Fehler nicht wiederholen
             if (baseEx is System.Net.WebException webEx)
@@ -327,7 +360,7 @@ namespace RepeatList.Services
             }
         }
 
-        public async Task<(Header? header, List<Position>? position)> GetHeaderWithPositionsByIdAsync(Guid headerId)
+        public async Task<SyncFetchResult> GetHeaderWithPositionsByIdAsync(Guid headerId)
         {
             try
             {
@@ -341,27 +374,26 @@ namespace RepeatList.Services
 
                 var _header = headerResponse.Model;
 
-                if (headerResponse != null)
-                {
-                    // Hole die zugehörigen Details aus Supabase
-                    var detailsResponse = await ExecuteWithRetryAsync(
-                        () => _supabase
-                            .From<Position>()
-                            .Filter("HeaderId", Supabase.Postgrest.Constants.Operator.Equals, headerId.ToString())
-                            //.Where(x => x.HeaderId == headerId.ToString())
-                            .Get());
+                // Kein Treffer: Der Server hat geantwortet, die Liste existiert dort aber nicht.
+                // Das ist KEIN Netzwerkfehler und darf dem Nutzer nicht als solcher gemeldet werden.
+                if (_header == null)
+                    return new SyncFetchResult(null, null, SyncFetchStatus.NotFound);
 
-                    var _position = detailsResponse.Models;
+                // Hole die zugehörigen Details aus Supabase
+                var detailsResponse = await ExecuteWithRetryAsync(
+                    () => _supabase
+                        .From<Position>()
+                        .Filter("HeaderId", Supabase.Postgrest.Constants.Operator.Equals, headerId.ToString())
+                        //.Where(x => x.HeaderId == headerId.ToString())
+                        .Get());
 
-                    return (_header, _position);
-                }
-
-                return (null, null);
+                return new SyncFetchResult(_header, detailsResponse.Models, SyncFetchStatus.Ok);
             }
             catch (Exception ex)
             {
                 CaptureSyncException(ex, scope => scope.SetTag("sync.direction", "down"));
-                return (null, null);
+                return new SyncFetchResult(null, null,
+                    IsTransientNetworkError(ex) ? SyncFetchStatus.NetworkError : SyncFetchStatus.Error);
             }
         }
 

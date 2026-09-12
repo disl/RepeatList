@@ -552,4 +552,10 @@
   <data name="AiOnboardingTitle" xml:space="preserve">
     <value>Можливості ШІ</value>
   </data>
+  <data name="List_does_not_exist_on_server" xml:space="preserve">
+    <value>Цього списку немає на сервері.</value>
+  </data>
+  <data name="Server_not_reachable_data_unchanged" xml:space="preserve">
+    <value>Сервер недоступний. Ваші списки залишаться без змін — синхронізація повториться автоматично.</value>
+  </data>
 </root>

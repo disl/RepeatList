@@ -627,14 +627,17 @@ namespace RepeatList.ViewModels
 
             IsBusy = true;
 
-            (Header Header, List<Position> Positions) sync_responce = await _supabaseService.GetHeaderWithPositionsByIdAsync(tmp_guid);
+            SyncFetchResult sync_responce = await _supabaseService.GetHeaderWithPositionsByIdAsync(tmp_guid);
 
-            if (sync_responce.Header == null || sync_responce.Positions == null)
+            Header? serverHeader = sync_responce.Header;
+            List<Position>? serverPositions = sync_responce.Positions;
+
+            if (sync_responce.Status != SyncFetchStatus.Ok || serverHeader == null || serverPositions == null)
             {
-                await Application.Current.MainPage.DisplaySnackbar(Properties.Resources.List_not_available_or_corrupt,
+                await Application.Current.MainPage.DisplaySnackbar(SyncFailureMessage(sync_responce.Status),
                     visualOptions: new SnackbarOptions
                     {
-                        BackgroundColor = Color.FromArgb(Constantes.Color_Error_string),
+                        BackgroundColor = SyncFailureColor(sync_responce.Status),
                         TextColor = Colors.White
                     },
                 duration: TimeSpan.FromSeconds(2));
@@ -642,13 +645,13 @@ namespace RepeatList.ViewModels
                 return;
             }
 
-            var _header = Headers != null ? Headers.FirstOrDefault(x => x.Id == sync_responce.Header.Id) : null;
+            var _header = Headers != null ? Headers.FirstOrDefault(x => x.Id == serverHeader.Id) : null;
             if (_header != null)
-                Header = sync_responce.Header;
+                Header = serverHeader;
             else
-                Header = await AddHeader(sync_responce.Header.ListName, sync_responce.Header.Id);
+                Header = await AddHeader(serverHeader.ListName, serverHeader.Id);
 
-            foreach (var pos in sync_responce.Positions)
+            foreach (var pos in serverPositions)
             {
                 await AddPosition(pos, false);
             }
@@ -669,6 +672,25 @@ namespace RepeatList.ViewModels
         // wieder UpdatePosition/AddPosition auf — ohne Guard käme es zu Rekursion/Doppel-Läufen.
         private bool _isDownSyncing;
 
+        // Sync_list_downClicked läuft am 15-s-Timer: Eine Meldung pro Runde wäre Spam. Deshalb wird
+        // nur der Übergang "erfolgreich -> fehlgeschlagen" gemeldet; nach dem nächsten erfolgreichen
+        // Abruf ist die Sperre wieder frei.
+        private bool _syncFailureNotified;
+
+        // Ehrliche Meldung für einen fehlgeschlagenen Down-Sync. Vorher bekam jeder Fehlschlag
+        // "List not available or corrupt" — auch wenn nur der Server nicht erreichbar war.
+        private static string SyncFailureMessage(SyncFetchStatus status) => status switch
+        {
+            SyncFetchStatus.NotFound => Properties.Resources.List_does_not_exist_on_server,
+            SyncFetchStatus.NetworkError => Properties.Resources.Server_not_reachable_data_unchanged,
+            _ => Properties.Resources.An_unexpected_error_has_occurred,
+        };
+
+        // Netzfehler sind vorübergehend → Warnfarbe. Echte Fehler und "Liste fehlt" bleiben rot.
+        private static Color SyncFailureColor(SyncFetchStatus status) => status == SyncFetchStatus.NetworkError
+            ? Constantes.Color_Warning
+            : Constantes.Color_Error;
+
         [RelayCommand]
         public async Task Sync_list_downClicked(Header header)
         {
@@ -686,35 +708,38 @@ namespace RepeatList.ViewModels
             {
                 //IsBusy = true;
 
-                (Header header, List<Position> position) sync_responce = await _supabaseService.GetHeaderWithPositionsByIdAsync(tmp_guid);
+                SyncFetchResult sync_responce = await _supabaseService.GetHeaderWithPositionsByIdAsync(tmp_guid);
 
-                if (sync_responce.header == null || sync_responce.position == null)
+                Header? serverHeader = sync_responce.Header;
+                List<Position>? serverPositions = sync_responce.Positions;
+
+                if (sync_responce.Status != SyncFetchStatus.Ok || serverHeader == null || serverPositions == null)
                 {
-                    string guid_str = await Application.Current.MainPage.DisplayPromptAsync(
-                      Properties.Resources.Would_you_like_to_work_with_someone_on_a_current_list,
-                      Properties.Resources.Please_enter_the_ID_of_the_list_to_be_synchronised);
-                    if (!string.IsNullOrEmpty(guid_str))
+                    // Dieser Sync läuft am 15-s-Timer (PositionsPage._timer_Tick) — eine Meldung pro
+                    // Runde wäre Spam, daher nur der Übergang "erfolgreich -> fehlgeschlagen".
+                    // Der frühere ID-Dialog war hier zudem wirkungslos: die eingegebene ID wurde nie
+                    // für einen erneuten Abruf verwendet, erschien aber bei jedem Netzfehler erneut.
+                    if (!_syncFailureNotified)
                     {
-                        if (!Guid.TryParse(guid_str, out tmp_guid))
-                        {
-                            await Application.Current.MainPage.DisplaySnackbar(Properties.Resources.String_is_not_a_valid_List_ID,
-                                visualOptions: new SnackbarOptions { BackgroundColor = Color.FromArgb(Constantes.Color_Error_string), TextColor = Colors.White }
-                                , duration: TimeSpan.FromSeconds(2));
-                            IsBusy = false;
-                            return;
-                        }
+                        _syncFailureNotified = true;
+                        await Application.Current.MainPage.DisplaySnackbar(SyncFailureMessage(sync_responce.Status),
+                            visualOptions: new SnackbarOptions
+                            {
+                                BackgroundColor = SyncFailureColor(sync_responce.Status),
+                                TextColor = Colors.White
+                            },
+                            duration: TimeSpan.FromSeconds(2));
                     }
-                }
-
-                if (sync_responce.header == null || sync_responce.header.Id == null)
-                {
                     return;
                 }
+
+                // Abruf erfolgreich → Sperre für die nächste Fehlermeldung wieder öffnen.
+                _syncFailureNotified = false;
 
                 //var _header = Headers.FirstOrDefault(x => x.Id == sync_responce.header.Id);
                 //if (_header != null)
                 //{
-                foreach (var new_pos in sync_responce.position)
+                foreach (var new_pos in serverPositions)
                 {
                     var old_pos = Positions.FirstOrDefault(p => p.Id == new_pos.Id);
                     if (old_pos == null)

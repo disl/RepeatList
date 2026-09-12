@@ -596,6 +596,24 @@ namespace RepeatList.Properties {
                 return ResourceManager.GetString("List_not_available_or_corrupt", resourceCulture);
             }
         }
+
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die This list does not exist on the server. ähnelt.
+        /// </summary>
+        public static string List_does_not_exist_on_server {
+            get {
+                return ResourceManager.GetString("List_does_not_exist_on_server", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Server not reachable. Your lists stay unchanged ähnelt.
+        /// </summary>
+        public static string Server_not_reachable_data_unchanged {
+            get {
+                return ResourceManager.GetString("Server_not_reachable_data_unchanged", resourceCulture);
+            }
+        }
         
         /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die List was imported successfully ähnelt.

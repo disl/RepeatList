@@ -607,4 +607,10 @@ Wollen Sie trotzdem fortfahren?</value>
   <data name="AiOnboardingTitle" xml:space="preserve">
     <value>KI-Funktionen</value>
   </data>
+  <data name="List_does_not_exist_on_server" xml:space="preserve">
+    <value>Diese Liste existiert nicht auf dem Server.</value>
+  </data>
+  <data name="Server_not_reachable_data_unchanged" xml:space="preserve">
+    <value>Server nicht erreichbar. Deine Listen bleiben unverändert — der Sync versucht es automatisch erneut.</value>
+  </data>
 </root>

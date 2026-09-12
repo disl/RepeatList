@@ -550,4 +550,10 @@ Volete ancora continuare?</value>
   <data name="AiOnboardingTitle" xml:space="preserve">
     <value>Funzioni IA</value>
   </data>
+  <data name="List_does_not_exist_on_server" xml:space="preserve">
+    <value>Questa lista non esiste sul server.</value>
+  </data>
+  <data name="Server_not_reachable_data_unchanged" xml:space="preserve">
+    <value>Server non raggiungibile. Le tue liste restano invariate — la sincronizzazione riproverà automaticamente.</value>
+  </data>
 </root>
