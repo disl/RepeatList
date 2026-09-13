@@ -89,7 +89,11 @@ namespace RepeatList.Services
             {
                 // Noch nicht bereit — KEIN dauerhafter Fehlerzustand: kein stale cache, der nächste
                 // Aufruf wartet auf dieselbe (noch laufende) Task und versucht es dann erneut.
-                SentrySdk.CaptureMessage($"SupabaseService init timed out after {InitializeTimeout.TotalSeconds}s");
+                // Bewusst NICHT nach Sentry: Nach längerer Pause muss die Supabase-Instanz erst aus
+                // dem Idle hochfahren (Cold Start) — dieses Warten ist der Normalfall, kein Fehler.
+                // Der Zweig hängt zudem am 15-s-Timer, eine Meldung hätte das Dashboard geflutet.
+                // Echte Init-Fehler bleiben sichtbar: Schlägt die Init endgültig fehl, wirft
+                // await task weiter unten und läuft durch CaptureSyncException.
                 return;
             }
 
@@ -153,13 +157,16 @@ namespace RepeatList.Services
                 or TimeoutException;
         }
 
-        // Meldet einen Sync-Fehler zentral an Sentry. Transiente Netzwerkfehler (offline/DNS weg)
-        // sind kein App-Bug und würden das Dashboard mit "Connection failure"-Rauschen fluten —
-        // die werden deshalb NICHT als eigenständiges Issue erfasst, sondern nur als Breadcrumb/
-        // Tag "net.offline" markiert (kein CaptureException). Echte Fehler laufen normal durch.
-        private static void CaptureSyncException(Exception ex, Action<Sentry.Scope>? configureScope = null)
+        /// <summary>Meldet nur echte Fehler an Sentry. Vorhersehbare Zustände — transiente Netz-/
+        /// Serverfehler (offline, DNS, Timeout, 502/503/504) und ein regulärer Abbruch (Seite
+        /// verlassen, App im Hintergrund) — werden verworfen, damit das Dashboard nicht zuläuft.
+        /// Öffentlich, damit auch ViewModels und Pages diese Prüfung nutzen, statt direkt
+        /// SentrySdk.CaptureException aufzurufen.
+        /// Bewusst in Kauf genommen: Ein dauerhaft transienter Fehler bleibt dadurch in Sentry
+        /// unsichtbar und zeigt sich nur beim Nutzer als Meldung.</summary>
+        public static void CaptureSyncException(Exception ex, Action<Sentry.Scope>? configureScope = null)
         {
-            if (IsTransientNetworkError(ex))
+            if (IsExpectedCondition(ex))
                 return;
 
             if (configureScope != null)
@@ -167,6 +174,12 @@ namespace RepeatList.Services
             else
                 SentrySdk.CaptureException(ex);
         }
+
+        /// <summary>Vorhersehbare Zustände, die nicht als Fehler gemeldet werden. Bewusst getrennt
+        /// von <see cref="IsTransientNetworkError"/>: Ein Abbruch ist kein Fehler, aber auch kein
+        /// Grund für einen Retry — der Retry-Pfad prüft weiterhin nur auf Transienz.</summary>
+        private static bool IsExpectedCondition(Exception ex) =>
+            IsTransientNetworkError(ex) || ex is OperationCanceledException;
 
         // Führt einen Supabase-Request mit festem Timeout aus. Bei Timeout wird TimeoutException
         // geworfen → von ExecuteWithRetryAsync als transient behandelt (Retry mit Backoff).

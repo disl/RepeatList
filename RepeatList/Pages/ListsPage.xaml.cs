@@ -244,9 +244,10 @@ namespace RepeatList
                     }
                     catch (Exception headerEx)
                     {
-                        // Fehler pro Header loggen, aber fortfahren
+                        // Fehler pro Header melden, aber fortfahren. CaptureSyncException verwirft
+                        // vorhersehbare Zustände (Netzfehler, Abbruch) — nur echte Fehler zählen.
                         header.IsSupabaseOk = false;
-                        SentrySdk.CaptureException(headerEx);
+                        SupabaseService.CaptureSyncException(headerEx);
 
                         // Optional: Kurze Pause zwischen Fehlern
                         try
@@ -263,11 +264,11 @@ namespace RepeatList
             catch (Exception ex)
             {
                 // Abbruch durch Backgrounding/Seitenwechsel ist kein echter Fehler —
-                // nicht an Sentry melden und keinen Alert anzeigen.
+                // weder Alert noch Sentry-Meldung (CaptureSyncException prüft das ebenfalls).
                 if (ex is OperationCanceledException)
                     return;
 
-                SentrySdk.CaptureException(ex);
+                SupabaseService.CaptureSyncException(ex);
                 if (Shell.Current  != null)
                     await Shell.Current.DisplayAlert(Properties.Resources.Error, ex.Message, "OK");
             }
@@ -661,7 +662,7 @@ namespace RepeatList
             }
             catch (Exception ex)
             {
-                SentrySdk.CaptureException(ex);
+                SupabaseService.CaptureSyncException(ex);
                 throw;
             }
         }

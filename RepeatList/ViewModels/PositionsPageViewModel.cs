@@ -640,7 +640,7 @@ namespace RepeatList.ViewModels
                         BackgroundColor = SyncFailureColor(sync_responce.Status),
                         TextColor = Colors.White
                     },
-                duration: TimeSpan.FromSeconds(2));
+                duration: Constantes.Snackbar_Duration_SyncFailure);
                 IsBusy = false;
                 return;
             }
@@ -728,7 +728,7 @@ namespace RepeatList.ViewModels
                                 BackgroundColor = SyncFailureColor(sync_responce.Status),
                                 TextColor = Colors.White
                             },
-                            duration: TimeSpan.FromSeconds(2));
+                            duration: Constantes.Snackbar_Duration_SyncFailure);
                     }
                     return;
                 }
@@ -767,8 +767,10 @@ namespace RepeatList.ViewModels
             }
             catch (Exception ex)
             {
+                // 15-s-Auto-Sync: vorhersehbare Zustände (Netzfehler, Abbruch) nicht nach Sentry —
+                // nur echte Fehler, sonst läuft das Dashboard mit Timer-Rauschen voll.
                 if (ex != null)
-                    SentrySdk.CaptureException(ex, scope =>
+                    SupabaseService.CaptureSyncException(ex, scope =>
                     {
                         scope.SetTag("sync.direction", "down");
                         scope.SetTag("sync.headerId", header?.Id);

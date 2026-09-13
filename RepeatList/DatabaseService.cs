@@ -352,9 +352,18 @@ namespace RepeatList.Services
                     new_guid = position.Id;
 
                 var command = connection.CreateCommand();
+                // ON CONFLICT(Id) DO NOTHING macht das Einfügen idempotent. Der Down-Sync prüft
+                // vorher im Speicher, ob eine Server-Position lokal schon existiert; diese Prüfung
+                // ist nicht atomar. Zwei Läufe — Listenansicht und Positionsansicht sichern sich mit
+                // je eigener Sperre ab — können dieselbe Server-Id gleichzeitig einfügen; der
+                // zweite Versuch brach bisher mit "UNIQUE constraint failed: Position.Id" ab und
+                // riss den kompletten Sync mit. Eine bereits vorhandene Zeile bleibt unverändert
+                // (kein Überschreiben lokaler Daten) — abweichende Stände gleicht der nächste Sync
+                // über den Update-Zweig ab.
                 command.CommandText =
                     "INSERT INTO Position (Id,   HeaderId,  Title,  IsCompleted,  UpdatedAt) " +
-                    "VALUES               (@Id, @HeaderId, @Title, @IsCompleted, @UpdatedAt)";
+                    "VALUES               (@Id, @HeaderId, @Title, @IsCompleted, @UpdatedAt) " +
+                    "ON CONFLICT(Id) DO NOTHING";
                 command.Parameters.AddWithValue("@Id", new_guid);
                 command.Parameters.AddWithValue("@HeaderId", position.HeaderId);
                 command.Parameters.AddWithValue("@Title", position.Title);

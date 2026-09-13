@@ -634,7 +634,8 @@ namespace RepeatList.ViewModels
                         {
                             BackgroundColor = SyncFailureColor(sync_responce.Status),
                             TextColor = Colors.White
-                        });
+                        },
+                        Constantes.Snackbar_Duration_SyncFailure);
                     return; // <<< wichtig
                 }
 
@@ -679,8 +680,10 @@ namespace RepeatList.ViewModels
             catch (Exception ex)
             {
                 // Exception-Details nie verwerfen: Für die Diagnose ("Ein unerwarteter Fehler")
-                // immer nach Sentry melden, mit Richtungs-Tag zur Unterscheidung vom Netzwerkfehler.
-                SentrySdk.CaptureException(ex, scope => scope.SetTag("sync.direction", "down_local"));
+                // nach Sentry melden, mit Richtungs-Tag zur Unterscheidung vom Netzwerkfehler.
+                // CaptureSyncException verwirft vorher die vorhersehbaren Zustände (Netzfehler,
+                // Abbruch) — nur echte Fehler landen im Dashboard.
+                SupabaseService.CaptureSyncException(ex, scope => scope.SetTag("sync.direction", "down_local"));
 
                 await ShowSnackbarAsync(
                     Properties.Resources.An_unexpected_error_has_occurred,
@@ -688,7 +691,8 @@ namespace RepeatList.ViewModels
                     {
                         BackgroundColor = Colors.Red,
                         TextColor = Colors.White
-                    });
+                    },
+                    Constantes.Snackbar_Duration_SyncFailure);
             }
             finally
             {
@@ -821,7 +825,8 @@ namespace RepeatList.ViewModels
                 // Fehler beim Upload/Down-Sync nicht an den async-void-Handler rethrow-en
                 // (das würde die Seite verlassen / App-Neustart auslösen), sondern loggen und
                 // kontrolliert beenden. Die eigentliche Ursache liefert Sentry (Tag sync.direction=up).
-                SentrySdk.CaptureException(ex, scope => scope.SetTag("sync.direction", "up"));
+                // CaptureSyncException filtert vorhersehbare Zustände (Netzfehler, Abbruch) heraus.
+                SupabaseService.CaptureSyncException(ex, scope => scope.SetTag("sync.direction", "up"));
             }
             finally
             {

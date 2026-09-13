@@ -611,6 +611,6 @@ Wollen Sie trotzdem fortfahren?</value>
     <value>Diese Liste existiert nicht auf dem Server.</value>
   </data>
   <data name="Server_not_reachable_data_unchanged" xml:space="preserve">
-    <value>Server nicht erreichbar. Deine Listen bleiben unverändert — der Sync versucht es automatisch erneut.</value>
+    <value>Server nicht erreichbar. Deine Listen bleiben unverändert — der Sync versucht es automatisch erneut. Prüfe deine Internetverbindung.</value>
   </data>
 </root>

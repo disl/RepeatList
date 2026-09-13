@@ -554,6 +554,6 @@ Vous voulez quand même continuer ?</value>
     <value>Cette liste n'existe pas sur le serveur.</value>
   </data>
   <data name="Server_not_reachable_data_unchanged" xml:space="preserve">
-    <value>Serveur injoignable. Vos listes restent inchangées — la synchronisation réessaiera automatiquement.</value>
+    <value>Serveur injoignable. Vos listes restent inchangées — la synchronisation réessaiera automatiquement. Vérifiez votre connexion internet.</value>
   </data>
 </root>

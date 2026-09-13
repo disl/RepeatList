@@ -617,6 +617,6 @@ Do you still want to continue?</value>
     <value>This list does not exist on the server.</value>
   </data>
   <data name="Server_not_reachable_data_unchanged" xml:space="preserve">
-    <value>Server not reachable. Your lists stay unchanged — sync retries automatically.</value>
+    <value>Server not reachable. Your lists stay unchanged — sync retries automatically. Check your internet connection.</value>
   </data>
 </root>

@@ -554,6 +554,6 @@ OPCIÓN DE MENÚ «DUPLICAR ELEMENTOS»:
     <value>Esta lista no existe en el servidor.</value>
   </data>
   <data name="Server_not_reachable_data_unchanged" xml:space="preserve">
-    <value>Servidor no disponible. Tus listas permanecen sin cambios — la sincronización se reintentará automáticamente.</value>
+    <value>Servidor no disponible. Tus listas permanecen sin cambios — la sincronización se reintentará automáticamente. Comprueba tu conexión a internet.</value>
   </data>
 </root>

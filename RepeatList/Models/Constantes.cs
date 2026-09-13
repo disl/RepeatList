@@ -11,5 +11,9 @@
         public static Color Color_Success = Color.FromArgb(Color_Success_string);
         public static Color Color_Warning = Color.FromArgb(Color_Warning_string);
         public static Color Color_Error = Color.FromArgb(Color_Error_string);
+
+        // Anzeigedauer für Sync-Fehlermeldungen. Die Texte sind lang (Grund + Handlungshinweis) —
+        // mit den üblichen 2 Sekunden waren sie nicht lesbar. Bewusst als Konstante statt Magic Number.
+        public static readonly TimeSpan Snackbar_Duration_SyncFailure = TimeSpan.FromSeconds(10);
     }
 }

@@ -226,7 +226,8 @@ namespace RepeatList
             }
             catch (Exception ex)
             {
-                SentrySdk.CaptureException(ex);
+                // 15-s-Timer: vorhersehbare Zustände (Netzfehler, Abbruch) nicht nach Sentry.
+                SupabaseService.CaptureSyncException(ex);
             }
             finally
             {
@@ -669,7 +670,7 @@ namespace RepeatList
             }
             catch (Exception ex)
             {
-                SentrySdk.CaptureException(ex);
+                SupabaseService.CaptureSyncException(ex);
                 throw;
             }
         }
@@ -694,7 +695,7 @@ namespace RepeatList
             }
             catch (Exception ex)
             {
-                SentrySdk.CaptureException(ex);
+                SupabaseService.CaptureSyncException(ex);
                 throw;
             }
         }
