@@ -253,7 +253,11 @@ namespace RepeatList.ViewModels
             setupPageViewModel = new SetupPageViewModel();
             CurrentCulture = "en"; // wird in InitializeCultureAsync auf die gespeicherte Sprache aktualisiert
 
-            if (selectedItem.ListName != null)
+            // Guard verschärft: vorher nur "ListName != null" geprüft. Ein Header mit ListName=""
+            // (statt null) und leerer/fehlender Id kam so durch und überschrieb den (damals noch
+            // statischen) Header_SelectedItem mit einem kaputten Objekt — GetPositionsAsync warf dann
+            // "Value must be set", weil der Id-Parameter null/leer an SQLite ging.
+            if (!string.IsNullOrEmpty(selectedItem?.Id) && !string.IsNullOrEmpty(selectedItem.ListName))
                 Header_SelectedItem = selectedItem;
 
             //if (mlContext == null)
@@ -424,6 +428,12 @@ namespace RepeatList.ViewModels
 
         public void InitLabels()
         {
+            // Header_SelectedItem kann fehlen, wenn OnAppearing erneut läuft (z. B. Rückkehr von
+            // HelpPage), während die Header-Liste gerade neu geladen wird und (noch) kein gültiger
+            // Header ausgewählt ist. Vorher stürzte das hier mit NullReferenceException ab.
+            if (Header_SelectedItem == null)
+                return;
+
             Title = Header_SelectedItem.ListName;
             Search = Properties.Resources.search;
             Label_Positions = Properties.Resources.Positions.ToUpper() + " (0)";
@@ -517,7 +527,11 @@ namespace RepeatList.ViewModels
         [ObservableProperty] private string _label_undone = Properties.Resources.undone;
         [ObservableProperty] private string label_paste_from_clipboard = Properties.Resources.Paste_from_clipboard;
 
-        [ObservableProperty] private static Header header_SelectedItem;
+        // War fälschlich "static": alle PositionsPageViewModel-Instanzen teilten sich denselben
+        // Header, egal welche Liste sie zeigten. Eine zweite Instanz mit leerem/kaputtem Header
+        // (z. B. durch eine Race beim Neuladen der Header-Liste) überschrieb den Zustand global
+        // und riss die eigentlich aktive Seite mit in den Absturz (GetPositionsAsync mit Id=null).
+        [ObservableProperty] private Header header_SelectedItem;
         [ObservableProperty] private ObservableCollection<Header>? headers = new ObservableCollection<Header>();
         [ObservableProperty] private Header? header = new Header();
         [ObservableProperty] private Models.Position? position_selectedItem;

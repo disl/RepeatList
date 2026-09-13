@@ -51,19 +51,16 @@ namespace RepeatList.ViewModels
             {
                 await navPage.Navigation.PopAsync();
             }
-            else
+            else if (Shell.Current != null)
             {
-                switch(Thema)
-                {
-                    case HelpTopicThemasEnum.InputTextBox:
-                        if (Shell.Current  != null)
-                            await Shell.Current.GoToAsync("//Lists/Positions");
-                        break;
-                    default:
-                        if (Shell.Current  != null)
-                            await Shell.Current.GoToAsync("//Lists");
-                        break;
-                }
+                // War: Shell.Current.GoToAsync("//Lists/Positions") — eine ABSOLUTE Shell-Route
+                // (Präfix "//"). Das lässt Shell die Zielseite per DI komplett neu erzeugen, statt
+                // zur bereits offenen PositionsPage zurückzukehren: Der Header-Parameter des
+                // Konstruktors ist der DI-Factory unbekannt und kommt leer an — die Liste zeigte
+                // sich danach leer (Header_SelectedItem ohne gültige Id).
+                // HelpPage wurde per Navigation.PushAsync geöffnet (siehe PositionsPage.xaml.cs),
+                // daher gehört hierher ein normales Pop zur bestehenden Instanz zurück.
+                await Shell.Current.Navigation.PopAsync();
             }
         }
     }

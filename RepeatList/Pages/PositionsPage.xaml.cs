@@ -177,7 +177,10 @@ namespace RepeatList
 
         private void StartSyncTimer()
         {
-            if (ViewModel.Header_SelectedItem.IsSynchronized && _timer == null)
+            // Header_SelectedItem kann fehlen, wenn OnAppearing erneut läuft (z. B. Rückkehr von
+            // HelpPage), während die Header-Liste gerade neu geladen wird. Vorher stürzte das hier
+            // mit NullReferenceException ab; kein Timer zu starten ist in diesem Fall korrekt.
+            if (ViewModel.Header_SelectedItem != null && ViewModel.Header_SelectedItem.IsSynchronized && _timer == null)
             {
                 _timer = Dispatcher.CreateTimer();
                 _timer.Interval = TimeSpan.FromSeconds(15);
