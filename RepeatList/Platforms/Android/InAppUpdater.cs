@@ -58,11 +58,25 @@ namespace RepeatList.Platforms.Android
                         }
 
                         var options = AppUpdateOptions.DefaultOptions(updateType.Value);
-                        _updateManager.StartUpdateFlowForResult(
-                            appUpdateInfo,
-                            activity,
-                            options,
-                            UpdateRequestCode);
+                        try
+                        {
+                            _updateManager.StartUpdateFlowForResult(
+                                appUpdateInfo,
+                                activity,
+                                options,
+                                UpdateRequestCode);
+                        }
+                        catch (Java.Lang.Exception)
+                        {
+                            // Play Core wirft hier eine generische "Exception_WasThrown" aus der
+                            // JNI-Schicht, wenn die Activity zwar IsFinishing/IsDestroyed-Checks
+                            // besteht, aber intern (z. B. Fenster-Token schon ungültig, App gerade
+                            // im Hintergrund) trotzdem nicht mehr aktualisierbar ist. Kein Text-
+                            // Muster wie bei den übrigen Fällen unten — jede Exception genau aus
+                            // diesem einen nativen Aufruf ist damit erwartetes, transientes
+                            // Verhalten: der nächste Timer-Tick versucht es erneut.
+                            return;
+                        }
                     }
                 }
             }

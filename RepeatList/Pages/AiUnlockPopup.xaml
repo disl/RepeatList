@@ -30,7 +30,8 @@
                    TextColor="{AppThemeBinding Light=#666666, Dark=#AAAAAA}" />
 
             <HorizontalStackLayout Spacing="8" HorizontalOptions="Start">
-                <CheckBox x:Name="DontShowAgainCheckbox" VerticalOptions="Center" />
+                <CheckBox x:Name="DontShowAgainCheckbox" VerticalOptions="Center"
+                          Color="{AppThemeBinding Light=Black, Dark=White}" />
                 <Label x:Name="DontShowAgainLabel" FontSize="14" VerticalOptions="Center"
                        TextColor="{AppThemeBinding Light=Black, Dark=White}">
                     <Label.GestureRecognizers>
