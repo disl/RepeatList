@@ -16,7 +16,6 @@ namespace RepeatList
     public partial class ListsPage : ContentPage
     {
         int m_max_count_of_sync_lists = 2;
-        static bool m_need_for_update = true;
 
         // Shows the AI unlock dialog only once per app session.
         static bool _aiDialogShown;
@@ -131,18 +130,6 @@ namespace RepeatList
 
                 await ForTimer_Tick();
 
-                if (m_need_for_update)
-                {
-#if ANDROID
-                    if (IsPlayCoreApiAvailable())
-                    {
-                        await CheckForUpdates();
-                    }
-#endif
-                    m_need_for_update = false;
-                }
-
-
                 // Prüfe ob Intent-Daten vorhanden sind
                 var pendingJson = MainActivity.GetPendingIntentData();
                 if (!string.IsNullOrEmpty(pendingJson))
@@ -160,45 +147,6 @@ namespace RepeatList
                 ViewModel.IsBusy = false;
             }
         }
-
-
-#if ANDROID
-        bool IsPlayCoreApiAvailable()
-        {
-            try
-            {
-                var context = Android.App.Application.Context;
-                var packageManager = context.PackageManager;
-                var playStorePackageName = "com.android.vending";
-                var intent = packageManager.GetLaunchIntentForPackage(playStorePackageName);
-                return intent != null;
-            }
-            catch
-            {
-                return false;
-            }
-
-
-        }
-
-
-        private async Task CheckForUpdates()
-        {
-            try
-            {
-                var updater = new Platforms.Android.InAppUpdater();
-                await updater.CheckForUpdatesAsync();
-            }
-            catch (Exception ex)
-            {
-
-                //SentrySdk.CaptureException(ex);
-                //await Shell.Current.DisplayAlert("Update Error", ex.Message, "OK");
-
-            }
-
-        }
-#endif
 
 
         private async void _timer_Tick(object? sender, EventArgs e)

@@ -60,12 +60,12 @@
 		
 	</PropertyGroup>
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net9.0-android|AnyCPU'">
-	  <ApplicationDisplayVersion>1.0.166</ApplicationDisplayVersion>
-	  <ApplicationVersion>166</ApplicationVersion>
+	  <ApplicationDisplayVersion>1.0.167</ApplicationDisplayVersion>
+	  <ApplicationVersion>167</ApplicationVersion>
 	</PropertyGroup>
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net9.0-android|AnyCPU'">
-	  <ApplicationDisplayVersion>1.0.166</ApplicationDisplayVersion>
-	  <ApplicationVersion>166</ApplicationVersion>
+	  <ApplicationDisplayVersion>1.0.167</ApplicationDisplayVersion>
+	  <ApplicationVersion>167</ApplicationVersion>
 	  <!-- Sentry-Symbol-Upload (de.sentry.io): Die offizielle MSBuild-Integration
 	       (SentryUploadSymbols + UploadDebugInfoToSentry) schlägt auf der EU-Instanz fehl,
 	       weil der sentry-cli Auth-Check "GET /api/0/" dort 404 liefert und das Target den
@@ -244,7 +244,7 @@
 		     AdMob-Kette auf Ads.Lite 124.0.0.8 angehoben (einziges net9-Build, das Basement 118.10
 		     toleriert). Die Fixierungen stehen in der ItemGroup unten. -->
 		<PackageReference Include="Xamarin.Android.Google.BillingClient" Version="8.3.0.2" />
-		<PackageReference Include="Sentry.Maui" Version="6.8.0" />
+		<PackageReference Include="Sentry.Maui" Version="6.11.0" />
 		<PackageReference Include="SpotifyAPI.Web" Version="7.4.2" />
 		<PackageReference Include="SpotifyAPI.Web.Auth" Version="7.4.2" />
 		<PackageReference Include="SQLitePCLRaw.bundle_e_sqlite3" Version="3.0.5" />
