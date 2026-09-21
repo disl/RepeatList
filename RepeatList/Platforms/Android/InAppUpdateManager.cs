@@ -91,7 +91,23 @@ namespace RepeatList.Platforms.Android
                     // aber intern (z. B. Fenster-Token schon ungültig, App gerade im Hintergrund)
                     // trotzdem nicht mehr aktualisierbar ist. Mit Tag melden statt schlucken, bis
                     // sich zeigt, wie oft das noch vorkommt.
-                    SentrySdk.CaptureException(ex, scope => scope.SetTag("in_app_update", "start_flow_failed"));
+                    // Die .NET-Message ist in Release nur ein Ressourcen-Schlüssel; die echte
+                    // Java-Klasse/-Meldung steckt im Handle und wird deshalb als Kontext mitgeschickt.
+                    string javaClass = "?", javaMessage = "?", javaCause = "?";
+                    try { javaClass = global::Android.Runtime.JNIEnv.GetClassNameFromInstance(ex.Handle); } catch { }
+                    try { javaMessage = ex.LocalizedMessage ?? "(null)"; } catch { }
+                    try { javaCause = ex.Cause?.ToString() ?? "(null)"; } catch { }
+
+                    SentrySdk.CaptureException(ex, scope =>
+                    {
+                        scope.SetTag("in_app_update", "start_flow_failed");
+                        scope.SetTag("java_class", javaClass);
+                        scope.SetExtra("java_message", javaMessage);
+                        scope.SetExtra("java_cause", javaCause);
+                        scope.SetExtra("update_type", updateType.Value);
+                        scope.SetExtra("is_foreground", IsForeground);
+                        scope.SetExtra("android_sdk", (int)global::Android.OS.Build.VERSION.SdkInt);
+                    });
                 }
             }
             else if (info.InstallStatus() == IInstallStatus.Downloaded)
