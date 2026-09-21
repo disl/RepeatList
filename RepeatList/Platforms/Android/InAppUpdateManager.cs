@@ -20,6 +20,9 @@ namespace RepeatList.Platforms.Android
 
         static IAppUpdateManager? _manager;
 
+        // Von MainActivity.OnResume/OnPause gesetzt; true, solange die Activity im Vordergrund ist.
+        public static volatile bool IsForeground;
+
         public static void CheckForUpdate(Activity activity)
         {
             // Play Core auf Geräten ohne Play Store (Sideload/Debug-Install) gar nicht erst
@@ -68,7 +71,10 @@ namespace RepeatList.Platforms.Android
                 // StartUpdateFlowForResult startet dann einen IntentSender auf einer nicht mehr
                 // gültigen Activity → SendIntentException. Beim nächsten OnResume wird es erneut
                 // versucht, daher hier einfach überspringen.
-                if (activity.IsFinishing || activity.IsDestroyed)
+                // Zusätzlich muss die Activity noch im Vordergrund (Resumed) sein. Vermutung
+                // (unbestätigt) zur generischen "Exception_WasThrown" aus Build 166: Der Flow
+                // wurde gestartet, als die Activity nicht mehr aktiv war.
+                if (activity.IsFinishing || activity.IsDestroyed || !IsForeground)
                     return;
 
                 try

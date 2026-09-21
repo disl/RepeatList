@@ -82,7 +82,14 @@ namespace RepeatList
         protected override void OnResume()
         {
             base.OnResume();
+            InAppUpdateManager.IsForeground = true;
             InAppUpdateManager.CheckForUpdate(this);
+        }
+
+        protected override void OnPause()
+        {
+            InAppUpdateManager.IsForeground = false;
+            base.OnPause();
         }
 
         public static string GetPendingIntentData()
