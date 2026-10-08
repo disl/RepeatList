@@ -755,7 +755,12 @@ namespace RepeatList.ViewModels
                 //{
                 foreach (var new_pos in serverPositions)
                 {
-                    var old_pos = Positions.FirstOrDefault(p => p.Id == new_pos.Id);
+                    if (new_pos == null)
+                        continue;
+
+                    // p kann null sein (Sentry-SIGSEGV in v169 genau hier). Vermutlich wird Positions
+                    // per SyncListInPlace umgebaut, während dieser Sync nach einem await weiterläuft.
+                    var old_pos = Positions.FirstOrDefault(p => p != null && p.Id == new_pos.Id);
                     if (old_pos == null)
                     {
                         // Neuer Server-Eintrag → lokal anlegen; evtl. fehlenden Timestamp heilen.

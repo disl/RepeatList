@@ -32,7 +32,7 @@
 		<WindowsPackageType>None</WindowsPackageType>
 
 
-		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">23.0</SupportedOSPlatformVersion>
+		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">24.0</SupportedOSPlatformVersion>
 
 		<PackageIcon>minilist_icon_128.png</PackageIcon>
 		<DefaultLanguage>en</DefaultLanguage>
@@ -60,12 +60,12 @@
 		
 	</PropertyGroup>
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net9.0-android|AnyCPU'">
-	  <ApplicationDisplayVersion>1.0.169</ApplicationDisplayVersion>
-	  <ApplicationVersion>169</ApplicationVersion>
+	  <ApplicationDisplayVersion>1.0.171</ApplicationDisplayVersion>
+	  <ApplicationVersion>171</ApplicationVersion>
 	</PropertyGroup>
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net9.0-android|AnyCPU'">
-	  <ApplicationDisplayVersion>1.0.169</ApplicationDisplayVersion>
-	  <ApplicationVersion>169</ApplicationVersion>
+	  <ApplicationDisplayVersion>1.0.171</ApplicationDisplayVersion>
+	  <ApplicationVersion>171</ApplicationVersion>
 	  <!-- Sentry-Symbol-Upload (de.sentry.io): Die offizielle MSBuild-Integration
 	       (SentryUploadSymbols + UploadDebugInfoToSentry) schlägt auf der EU-Instanz fehl,
 	       weil der sentry-cli Auth-Check "GET /api/0/" dort 404 liefert und das Target den

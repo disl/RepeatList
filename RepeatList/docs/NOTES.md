@@ -27,7 +27,17 @@ Sentry meldet erneut `ApplicationNotResponding: Background ANR`, Stack zeigt `mo
 - Build 157 liegt **vor** dem Symbol-Upload-Target (05.09.), daher fehlen Debug-Symbole — der Stack ist nicht auf App-Code zurückführbar.
 - Vermutung: anderes Problem als der ursprüngliche SQLite/Sync-Bug, evtl. Mono-Runtime/AOT-seitig statt App-Logik.
 - **Zweiter Auftritt (Version 1.0.159, gemeldet 08.09.2026):** identischer Stack (`mono_loader_lock`/`mono_metadata_get_generic_inst`, keine App-Frames, nur `main`-Thread) — bestätigt, dass es kein Einzelfall war. Liegt weiterhin vor 1.0.162, also vor der geplanten Neubewertung.
-- **Nächster Schritt:** Nächsten ANR mit einem Build ≥ 1.0.162 (nach Symbol-Upload-Integration) neu bewerten — der Stack sollte dann App-Frames enthalten. In Sentry nicht abhaken, bis eine Version ≥ 1.0.162 App-Frames im Stack zeigt.
+- **Dritter Auftritt (Version 1.0.169, Android 15, Sentry DOTNET-MAUI-4D, ausgewertet 08.10.2026):** wieder `mono_loader_lock` auf `main`, weiterhin ohne App-Frames — die Erwartung „ab 1.0.162 sind App-Frames sichtbar" hat sich nicht erfüllt.
+  - Die von Sentry als `libbinder` beschrifteten Frames gehören zu `libmonosgen-2.0.so` (Runtime-Pack 9.0.20, Build-ID `6bceca0e711d8fb06f6ba715055d597afce5c4b6`). Von Hand aufgelöst: `mono_magic_trampoline` → `common_call_trampoline` → `mono_jit_compile_method` → `mono_jit_compile_method_with_opt` → `mono_jit_compile_method_inner` → `mono_loader_lock`.
+  - Bedeutung: Der Main-Thread ruft eine noch nicht kompilierte Methode auf, will sie JIT-kompilieren und wartet auf die Loader-Sperre, die ein anderer Thread hält. Welche Methode und welcher Thread, ist aus dem `main`-Stack allein nicht erkennbar.
+  - Symbole für `libmonosgen-2.0.so` liegen nicht im Build-Output und werden vom Target `UploadSymbolsToSentry` daher nicht hochgeladen. Quelle: `https://msdl.microsoft.com/download/symbols/_.debug/elf-buildid-sym-<Build-ID>/_.debug`.
+- **Halter gefunden (08.10.2026, gleiches Event): Deadlock innerhalb der Mono-Runtime, kein App-Code beteiligt.**
+  - `.NET TP Worker` #9253 hält die Loader-Sperre und ist suspendiert: `mono_jit_compile_method_inner` → `mini_method_compile` → `mono_method_to_ir` → `mono_class_vtable_checked` (nimmt die Sperre) → `mono_gc_get_vtable_bits` → `class_kind` → `gc_bridge_class_kind_cb` (libmono-android) → `mono_class_is_subclass_of` → `mono_threads_enter_gc_unsafe_region_unbalanced_with_info` → `mono_threads_state_poll_with_info` → `mono_thread_info_wait_for_resume` (`sem_wait`).
+  - `Finalizer` #9163 hat ihn suspendiert und will danach selbst die Sperre: `finalizer_thread` → `mono_threads_perform_thread_dump` → `mono_thread_info_safe_suspend_and_run` → `get_thread_dump` → `mono_walk_stack_with_state` → … → `mono_aot_find_jit_info` → `mono_get_method_checked` → `mono_class_create_from_typedef` → `mono_loader_lock`.
+  - Folge: #9253 wird nie fortgesetzt, die Sperre nie frei. `main`, `.NET Timer`, `Thread-11` und zwei weitere TP-Worker hängen dahinter.
+  - Auslöser des Thread-Dumps ist nicht belegt; vermutet wird ein `SIGQUIT` von Android (Stack-Dump-Anforderung), auf den Mono mit einem eigenen Thread-Dump reagiert.
+  - Konsequenz: `AnrTimeoutInterval` ändert daran nichts (echter Deadlock, keine Verzögerung). Websuche nach einem passenden Upstream-Issue am 08.10.2026 ohne Treffer.
+- **Nächster Schritt:** Entscheiden, ob der Fall bei dotnet/runtime gemeldet wird und ob ein Wechsel auf .NET 10 geprüft wird. In Sentry nicht als behoben abhaken.
 
 ## In-App-Updates (Flexible Flow, seit 07.09.2026)
 
