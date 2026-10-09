@@ -189,7 +189,10 @@ namespace RepeatList.Services
             Task<T> task = operation();
             Task completed = await Task.WhenAny(task, Task.Delay(Timeout.Infinite, timeoutCts.Token));
             if (completed != task)
+            {
+                ObserveAbandoned(task);
                 throw new TimeoutException($"Supabase request timed out after {RequestTimeout.TotalSeconds}s");
+            }
             return await task;
         }
 
@@ -199,9 +202,20 @@ namespace RepeatList.Services
             Task task = operation();
             Task completed = await Task.WhenAny(task, Task.Delay(Timeout.Infinite, timeoutCts.Token));
             if (completed != task)
+            {
+                ObserveAbandoned(task);
                 throw new TimeoutException($"Supabase request timed out after {RequestTimeout.TotalSeconds}s");
+            }
             await task;
         }
+
+        // Nach einem Timeout läuft der eigentliche Request weiter und schlägt meist später fehl
+        // (z. B. Hotel-/Gast-WLAN mit Captive Portal: "Hostname ... not verified"). Ohne dies
+        // landete der Fehler als UnobservedTaskException ungefiltert in Sentry (v171).
+        private static void ObserveAbandoned(Task task) =>
+            _ = task.ContinueWith(static t => _ = t.Exception, CancellationToken.None,
+                TaskContinuationOptions.ExecuteSynchronously | TaskContinuationOptions.OnlyOnFaulted,
+                TaskScheduler.Default);
 
         private static async Task<T> ExecuteWithRetryAsync<T>(Func<Task<T>> operation)
         {
