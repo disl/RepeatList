@@ -52,7 +52,8 @@ namespace RepeatList.Platforms.Android.Services
         {
             var tcs = new TaskCompletionSource<bool>();
 
-            if (!IsAdReady)
+            // No interstitial while Google Play reports an update (see InAppUpdateManager).
+            if (!IsAdReady || InAppUpdateManager.IsUpdatePending)
             {
                 tcs.SetResult(false);
                 return tcs.Task;

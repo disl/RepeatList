@@ -14,6 +14,9 @@ namespace RepeatList.Platforms.Android.Services
         private const string AdUnitId = "ca-app-pub-9459821903521146/1100900659";
         private const int AdExpirationHours = 4;
 
+        // Longest wait for Google Play's update answer before the ad is shown anyway.
+        private static readonly TimeSpan UpdateCheckTimeout = TimeSpan.FromSeconds(3);
+
         private GmsAppOpenAd? _appOpenAd;
         private DateTime _loadTime;
         private bool _isLoading;
@@ -55,19 +58,25 @@ namespace RepeatList.Platforms.Android.Services
             });
         }
 
-        public Task ShowAdIfReadyAsync()
+        public async Task ShowAdIfReadyAsync()
         {
-            var tcs = new TaskCompletionSource<bool>();
-
             if (!IsAdReady || _isShowing)
-            {
-                tcs.SetResult(false);
-                return tcs.Task;
-            }
+                return;
+
+            // No app open ad while Google Play reports an update: it would cover the update
+            // dialog. The ad is usually ready before Play has answered, so wait for that answer.
+            if (await InAppUpdateManager.IsUpdatePendingAsync(UpdateCheckTimeout))
+                return;
+
+            // State may have changed while waiting.
+            if (!IsAdReady || _isShowing)
+                return;
 
             var activity = Microsoft.Maui.ApplicationModel.Platform.CurrentActivity;
-            if (activity == null) { tcs.SetResult(false); return tcs.Task; }
+            if (activity == null)
+                return;
 
+            var tcs = new TaskCompletionSource<bool>();
             var ad = _appOpenAd;
             _appOpenAd = null;
             _isShowing = true;
@@ -91,7 +100,7 @@ namespace RepeatList.Platforms.Android.Services
                 ad.Show(activity);
             });
 
-            return tcs.Task;
+            await tcs.Task;
         }
     }
 
